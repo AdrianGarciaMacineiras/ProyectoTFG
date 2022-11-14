@@ -1,0 +1,505 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: OpenApi TFG
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8080/v1
+
+
+paths:
+  /project:
+    summary: Company projects
+    get:
+      summary: List all available projects
+      operationId: getProjects
+      tags:
+        - project
+      responses:
+        '200':
+          description: A paged array of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/projects"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    post:
+      summary: Adds a new project
+      operationId: addProject
+      tags:
+        - project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/project"
+      responses:
+        '200':
+          description: A project added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/project"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /project/{projectcode}:
+    get:
+      summary: Gets a project by the code
+      operationId: getProjectByCode
+      parameters:
+        - name: projectcode
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - project
+      responses:
+        '200':
+          description: A project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/project"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    put:
+      summary: Updates the given project
+      operationId: updateProject
+      parameters:
+        - name: projectcode
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/project"
+      responses:
+        '200':
+          description: Project updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/project"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    patch:
+      summary: Updates some of the information of a project
+      parameters:
+        - name: projectcode
+          in: path
+          required: true
+          schema:
+            type: string
+      operationId: updateProject
+      tags:
+        - project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/patchedProject"
+      responses:
+        '200':
+          description: Project updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/project"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    delete:
+      summary: Deletes the given project
+      parameters:
+        - name: projectcode
+          in: path
+          required: true
+          schema:
+            type: string
+      operationId: deleteProject
+      tags:
+        - project
+      responses:
+        '200':
+          description: Project deleted
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /oportunity:
+  /oportunity/{oportunitycode}:
+  /people:
+  /people/{personcode}:
+
+
+components:
+  schemas:
+    projects:
+      type: array
+      items:
+        $ref: "#/components/schemas/project"
+
+    project:
+      type: object
+      required:
+        - code
+        - name
+        - description
+        - initDate
+        - endDate
+        - client
+        - area
+        - domain
+        - duration
+        - guards
+        - techArray
+        - people
+        - historic
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        initDate:
+          type: string
+        endDate:
+          type: string
+        client:
+          type: "#/components/schemas/client"
+        area:
+          type: string
+        domain:
+          type: string
+        duration:
+          type: string
+        guards:
+          type: string
+          enum:
+            - PASSIVE
+            - ACTIVE
+            - NO_GUARD
+        techArray:
+          type: array
+          items:
+            type: string
+        people:
+          type: array
+          items:
+            type: string
+        historic:
+          type: array
+          items:
+            type: string
+
+    patchedProject:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        guards:
+          type: string
+          enum:
+            - PASSIVE
+            - ACTIVE
+            - NO_GUARD
+        techArray:
+          type: array
+          items:
+            type: string
+        people:
+            type: array
+            items:
+              type: string
+
+    opportunities:
+      type: array
+      items:
+        $ref: "#/components/schemas/opportunity"
+
+    opportunity:
+      type: object
+      required:
+        - code
+        - name
+        - project
+        - client
+        - openingDate
+        - closingDate
+        - priority
+        - mode
+        - office
+        - role
+        - skills
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        project:
+          $ref: "#/components/schemas/project"
+        client:
+          $ref: "#/components/schemas/client"
+        openingDate:
+          type: string
+        closingDate:
+          type: string
+        priority:
+          type: string
+        mode:
+          type: string
+          enum:
+            - REMOTE
+            - PRESENTIAL
+            - MIX
+        office:
+          type: string
+        role:
+          type: string
+        skills:
+          $ref: "#/components/schemas/skill"
+
+    client:
+      type: object
+
+    patchedOpportunity:
+      type: object
+      properties:
+        name:
+          type: string
+        priority:
+          type: string
+        mode:
+          type: string
+          enum:
+            - REMOTE
+            - PRESENTIAL
+            - MIX
+        office:
+          type: string
+        role:
+          type: string
+
+    skill:
+      type: object
+      properties:
+        skill:
+          type: string
+        level_req:
+          type: string
+          enum:
+            - MANDATORY
+            - NICE_TO_HAVE
+        min_level:
+          type: string
+          enum:
+            - HIGH
+            - MEDIUM
+            - LOW
+        min_exp:
+          type: string
+
+    people:
+      type: array
+      items:
+          $ref: "#/components/schemas/person"
+
+    person:
+      type: object
+      required:
+        - code
+        - name
+        - surname
+        - birthDate
+        - title
+        - evolution
+        - knows
+        - work_with
+        - master
+        - participate
+        - interest
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        birthDate:
+          type: string
+        title:
+          type: string
+          enum:
+            - Principal
+            - Head/Director
+            - Expert
+            - Senior
+            - Developer
+            - Junior
+        evolution:
+          type: object
+          properties:
+            title:
+              type: string
+            category:
+              type: string
+            fromDate:
+              type: string
+        knows:
+          type: object
+          properties:
+            code:
+              type: string
+            level:
+              type: string
+        work_with:
+          type: array
+          items: string
+        master:
+          type: array
+          items: string
+        participate:
+          type: object
+          properties:
+            code:
+              type: string
+            roles:
+              type: array
+              items:
+                $ref: "#/components/schemas/role"
+        interest:
+          type: array
+          items: string
+
+    role:
+      type: object
+      properties:
+        role:
+          type: string
+        fromDate:
+          type: string
+        endDate:
+          type: string
+
+    patchedPerson:
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        birthDate:
+          type: string
+        title:
+          type: string
+          enum:
+            - Principal
+            - Head/Director
+            - Expert
+            - Senior
+            - Developer
+            - Junior
+        knows:
+          type: object
+          properties:
+            code:
+              type: string
+            level:
+              type: string
+        work_with:
+          type: array
+          items: string
+        master:
+          type: array
+          items: string
+        participate:
+          type: object
+          properties:
+            code:
+              type: string
+            roles:
+              type: array
+              items:
+                $ref: "#/components/schemas/role"
+        interest:
+          type: array
+          items: string
+
+    error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

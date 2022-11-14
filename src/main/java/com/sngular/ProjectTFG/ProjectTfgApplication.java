@@ -1,0 +1,13 @@
+package com.sngular.ProjectTFG;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ProjectTfgApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ProjectTfgApplication.class, args);
+	}
+
+}
