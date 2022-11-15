@@ -49,7 +49,7 @@ paths:
               $ref: "#/components/schemas/project"
       responses:
         '200':
-          description: A project added
+          description: A project has been added
           content:
             application/json:
               schema:
@@ -114,7 +114,7 @@ paths:
               $ref: "#/components/schemas/project"
       responses:
         '200':
-          description: Project updated
+          description: A project has been updated
           content:
             application/json:
               schema:
@@ -149,7 +149,7 @@ paths:
               $ref: "#/components/schemas/patchedProject"
       responses:
         '200':
-          description: Project updated
+          description: A project has been updated
           content:
             application/json:
               schema:
@@ -178,7 +178,7 @@ paths:
         - project
       responses:
         '200':
-          description: Project deleted
+          description: A project has been deleted
         '400':
           description: Bad Request
         '404':
@@ -191,9 +191,366 @@ paths:
                 $ref: "#/components/schemas/error"
 
   /oportunity:
+    summary: Company opportunities
+    get:
+      summary: List all available opportunities
+      operationId: getOpportunities
+      tags:
+        - opportunity
+      responses:
+        '200':
+          description: A paged array of opportunities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/opportunities"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    post:
+      summary: Adds a new opportunity
+      operationId: addOpportunity
+      tags:
+        - opportunity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/opportunity"
+      responses:
+        '200':
+          description: An opportunity has been added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/opportunity"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
   /oportunity/{oportunitycode}:
+    get:
+      summary: Gets an opportunity by the code
+      operationId: getOpportunityByCode
+      parameters:
+        - name: opportunitycode
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - opportunity
+      responses:
+        '200':
+          description: An opportunity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/opportunity"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    put:
+      summary: Updates the given opportunity
+      operationId: updateOpportunity
+      parameters:
+        - name: opportunitycode
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - opportunity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/opportunity"
+      responses:
+        '200':
+          description: An opportunity has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/opportunity"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    patch:
+      summary: Updates some of the information of an opportunity
+      parameters:
+        - name: opportunitycode
+          in: path
+          required: true
+          schema:
+            type: string
+      operationId: updateOpportunity
+      tags:
+        - opportunity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/patchedOpportunity"
+      responses:
+        '200':
+          description: An opportunity has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/opportunity"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    delete:
+      summary: Deletes the given opportunity
+      parameters:
+        - name: opportunitycode
+          in: path
+          required: true
+          schema:
+            type: string
+      operationId: deleteOpportunity
+      tags:
+        - opportunity
+      responses:
+        '200':
+          description: An opportunity has been deleted
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
   /people:
+    summary: Company people
+    get:
+      summary: List all available people
+      operationId: getPeople
+      tags:
+        - people
+      responses:
+        '200':
+          description: A paged array of people
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/people"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    post:
+      summary: Adds a new person
+      operationId: addPerson
+      tags:
+        - people
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/person"
+      responses:
+        '200':
+          description: A person has been added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/person"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
   /people/{personcode}:
+    get:
+      summary: Gets a person by the code
+      operationId: getPersonByCode
+      parameters:
+        - name: personcode
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - people
+      responses:
+        '200':
+          description: A person
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/person"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    put:
+      summary: Updates the given person
+      operationId: updatePerson
+      parameters:
+        - name: personcode
+          in: path
+          required: true
+          schema:
+            type: string
+      tags:
+        - people
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/person"
+      responses:
+        '200':
+          description: A person has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/person"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    patch:
+      summary: Updates some of the information of a person
+      parameters:
+        - name: personcode
+          in: path
+          required: true
+          schema:
+            type: string
+      operationId: updatePerson
+      tags:
+        - people
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/patchedPerson"
+      responses:
+        '200':
+          description: A person has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/person"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    delete:
+      summary: Deletes the given person
+      parameters:
+        - name: personcode
+          in: path
+          required: true
+          schema:
+            type: string
+      operationId: deletePerson
+      tags:
+        - person
+      responses:
+        '200':
+          description: A person has been deleted
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
 
 
 components:
@@ -441,16 +798,6 @@ components:
           items:
             type: string
 
-    role:
-      type: object
-      properties:
-        role:
-          type: string
-        fromDate:
-          type: string
-        endDate:
-          type: string
-
     patchedPerson:
       type: object
       properties:
@@ -497,6 +844,16 @@ components:
           type: array
           items:
             type: string
+
+    role:
+      type: object
+      properties:
+        role:
+          type: string
+        fromDate:
+          type: string
+        endDate:
+          type: string
 
     error:
       type: object

@@ -104,8 +104,9 @@
 									<apiPackage>com.sngular.skilltree.api</apiPackage>
 									<modelPackage>com.sngular.skilltree.api.model</modelPackage>
 									<modelNameSuffix>DTO</modelNameSuffix>
-                            </specFiles>
-                        </configuration>
+                            	</specFile>
+							</specFiles>
+						</configuration>
                     </execution>
                 </executions>
             </plugin>
