@@ -231,7 +231,7 @@ components:
         endDate:
           type: string
         client:
-          type: "#/components/schemas/client"
+          $ref: "#/components/schemas/client"
         area:
           type: string
         domain:
@@ -421,10 +421,12 @@ components:
               type: string
         work_with:
           type: array
-          items: string
+          items: 
+            type: string
         master:
           type: array
-          items: string
+          items: 
+            type: string
         participate:
           type: object
           properties:
@@ -436,7 +438,8 @@ components:
                 $ref: "#/components/schemas/role"
         interest:
           type: array
-          items: string
+          items:
+            type: string
 
     role:
       type: object
@@ -475,10 +478,12 @@ components:
               type: string
         work_with:
           type: array
-          items: string
+          items:
+            type: string
         master:
           type: array
-          items: string
+          items:
+            type: string
         participate:
           type: object
           properties:
@@ -490,7 +495,8 @@ components:
                 $ref: "#/components/schemas/role"
         interest:
           type: array
-          items: string
+          items:
+            type: string
 
     error:
       type: object
