@@ -12,7 +12,8 @@ paths:
   /project:
     summary: Company projects
     get:
-      summary: List all available projects
+      summary: List all projects
+      description: Returns a list of all projects
       operationId: getProjects
       tags:
         - project
@@ -38,6 +39,7 @@ paths:
 
     post:
       summary: Adds a new project
+      description: Adds a new project
       operationId: addProject
       tags:
         - project
@@ -68,6 +70,7 @@ paths:
   /project/{projectcode}:
     get:
       summary: Gets a project by the code
+      description: Returns an individual project, identified by a code
       operationId: getProjectByCode
       parameters:
         - name: projectcode
@@ -75,6 +78,7 @@ paths:
           required: true
           schema:
             type: string
+          description: String that represents the code of a project
       tags:
         - project
       responses:
@@ -97,6 +101,7 @@ paths:
 
     put:
       summary: Updates the given project
+      description: Updates the entirety of a project
       operationId: updateProject
       parameters:
         - name: projectcode
@@ -104,6 +109,7 @@ paths:
           required: true
           schema:
             type: string
+          description: String that represents the code of a project
       tags:
         - project
       requestBody:
@@ -132,13 +138,15 @@ paths:
 
     patch:
       summary: Updates some of the information of a project
+      description: Updates part of a project
       parameters:
         - name: projectcode
           in: path
           required: true
           schema:
             type: string
-      operationId: updateProject
+          description: String that represents the code of a project
+      operationId: patchProject
       tags:
         - project
       requestBody:
@@ -167,12 +175,14 @@ paths:
 
     delete:
       summary: Deletes the given project
+      description: Deletes the project
       parameters:
         - name: projectcode
           in: path
           required: true
           schema:
             type: string
+          description: String that represents the code of a project
       operationId: deleteProject
       tags:
         - project
@@ -192,6 +202,7 @@ paths:
 
   /oportunity:
     summary: Company opportunities
+    description: Returns a list of all opportunities
     get:
       summary: List all available opportunities
       operationId: getOpportunities
@@ -219,6 +230,7 @@ paths:
 
     post:
       summary: Adds a new opportunity
+      description: Adds a new opportunity
       operationId: addOpportunity
       tags:
         - opportunity
@@ -249,6 +261,7 @@ paths:
   /oportunity/{oportunitycode}:
     get:
       summary: Gets an opportunity by the code
+      description: Returns an individual opportunity, identified by a code
       operationId: getOpportunityByCode
       parameters:
         - name: opportunitycode
@@ -256,6 +269,7 @@ paths:
           required: true
           schema:
             type: string
+          description: String that represents the code of an opportunity
       tags:
         - opportunity
       responses:
@@ -278,6 +292,7 @@ paths:
 
     put:
       summary: Updates the given opportunity
+      description: Updates the entirety of an opportunity
       operationId: updateOpportunity
       parameters:
         - name: opportunitycode
@@ -285,6 +300,7 @@ paths:
           required: true
           schema:
             type: string
+          description: String that represents the code of an opportunity
       tags:
         - opportunity
       requestBody:
@@ -313,13 +329,15 @@ paths:
 
     patch:
       summary: Updates some of the information of an opportunity
+      description: Updates part of an opportunity
       parameters:
         - name: opportunitycode
           in: path
           required: true
           schema:
             type: string
-      operationId: updateOpportunity
+          description: String that represents the code of an opportunity
+      operationId: patchOpportunity
       tags:
         - opportunity
       requestBody:
@@ -348,12 +366,14 @@ paths:
 
     delete:
       summary: Deletes the given opportunity
+      description: Deletes the opportunity
       parameters:
         - name: opportunitycode
           in: path
           required: true
           schema:
             type: string
+          description: String that represents the code of an opportunity
       operationId: deleteOpportunity
       tags:
         - opportunity
@@ -373,6 +393,7 @@ paths:
 
   /people:
     summary: Company people
+    description: Returns a list of all people in the company
     get:
       summary: List all available people
       operationId: getPeople
@@ -400,6 +421,7 @@ paths:
 
     post:
       summary: Adds a new person
+      description: Adds a new person
       operationId: addPerson
       tags:
         - people
@@ -430,6 +452,7 @@ paths:
   /people/{personcode}:
     get:
       summary: Gets a person by the code
+      description: Returns an individual person, identified by a code
       operationId: getPersonByCode
       parameters:
         - name: personcode
@@ -437,6 +460,7 @@ paths:
           required: true
           schema:
             type: string
+          description: String that represents the code of a person
       tags:
         - people
       responses:
@@ -459,6 +483,7 @@ paths:
 
     put:
       summary: Updates the given person
+      description: Updates the entirety of a person
       operationId: updatePerson
       parameters:
         - name: personcode
@@ -466,6 +491,7 @@ paths:
           required: true
           schema:
             type: string
+          description: String that represents the code of a person
       tags:
         - people
       requestBody:
@@ -494,13 +520,15 @@ paths:
 
     patch:
       summary: Updates some of the information of a person
+      description: Updates part of a person
       parameters:
         - name: personcode
           in: path
           required: true
           schema:
             type: string
-      operationId: updatePerson
+          description: String that represents the code of a person
+      operationId: patchPerson
       tags:
         - people
       requestBody:
@@ -529,12 +557,14 @@ paths:
 
     delete:
       summary: Deletes the given person
+      description: Deletes a person
       parameters:
         - name: personcode
           in: path
           required: true
           schema:
             type: string
+          description: String that represents the code of a person
       operationId: deletePerson
       tags:
         - person
@@ -551,6 +581,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
+
+
 
 
 components:
@@ -755,7 +787,8 @@ components:
           type: string
           enum:
             - Principal
-            - Head/Director
+            - Head
+            - Director
             - Expert
             - Senior
             - Developer
@@ -811,7 +844,8 @@ components:
           type: string
           enum:
             - Principal
-            - Head/Director
+            - Head
+            - Director
             - Expert
             - Senior
             - Developer

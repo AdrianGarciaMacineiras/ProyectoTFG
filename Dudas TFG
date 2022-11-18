@@ -1,9 +1,9 @@
-Revisar respuestas de las operaciones REST.
 Definicion de cliente.
+
+
+
+Revisar respuestas de las operaciones REST.
+
 Comprobar que se puede modificar en cada entidad para los update.
-OperationID de patch y put igual?
-Patch: (en realidad para todos)
-   - Recibe patchedPoject
-   - Devuelve project
-Como utilizar el plugin (pom)
+
  
