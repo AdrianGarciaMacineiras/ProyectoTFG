@@ -1,4 +1,4 @@
-package com.sngular.skilltree.opportunity.model;
+package com.sngular.skilltree.opportunity.repository.impl.neo4j.model;
 
 import com.sngular.skilltree.client.model.Client;
 import com.sngular.skilltree.project.model.Project;
@@ -6,31 +6,34 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Value;
 import org.springframework.data.neo4j.core.schema.*;
 
 import java.util.Date;
 import java.util.List;
 
 
-@Value
-public class Opportunity {
+@Node
+@Getter
+@Setter
+@NoArgsConstructor
+public class OpportunityNode {
 
-    String code;
+    @Id
+    private @Setter(AccessLevel.PROTECTED) String code;
 
-    String name;
+    private String name;
 
-    Project project;
+    private Project project;
 
-    Client client;
+    private Client client;
 
-    Date openingDate;
+    private Date openingDate;
 
-    Date closingDate;
+    private Date closingDate;
 
-    String priority;
+    private String priority;
 
-    Mode mode;
+    private Mode mode;
 
     private enum Mode{
         REMOTE,
@@ -38,11 +41,11 @@ public class Opportunity {
         MIX
     }
 
-    String office;
+    private String office;
 
-    String role;
+    private String role;
 
-    List<Skill> skills;
+    private List<Skill> skills;
 
     private class Skill{
         String skill;

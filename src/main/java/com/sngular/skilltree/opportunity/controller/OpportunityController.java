@@ -3,10 +3,11 @@ package com.sngular.skilltree.opportunity.controller;
 import com.sngular.skilltree.api.OpportunityApi;
 import com.sngular.skilltree.api.model.OpportunityDTO;
 import com.sngular.skilltree.api.model.PatchedOpportunityDTO;
+import com.sngular.skilltree.opportunity.mapper.OpportunityMapper;
 import com.sngular.skilltree.opportunity.model.Opportunity;
-import com.sngular.skilltree.opportunity.repository.neo4j.repository.OpportunityRepository;
 import com.sngular.skilltree.opportunity.service.OpportunityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import reactor.core.publisher.Flux;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,36 +19,51 @@ import java.util.List;
 public class OpportunityController implements OpportunityApi {
 
     private final OpportunityService opportunityService;
-    private final OpportunityRepository opportunityRepository;
+
+    private final OpportunityMapper opportunityMapper;
 
     @Override
     public ResponseEntity<List<OpportunityDTO>> getOpportunities() {
-        Flux<Opportunity> list = (Flux<Opportunity>) opportunityRepository.findAll();
-        return OpportunityApi.super.getOpportunities();
+        var opportunityList = opportunityService.getAll();
+        return ResponseEntity.ok(opportunityMapper.toOpportunitiesDto(opportunityList));
     }
 
     @Override
     public ResponseEntity<OpportunityDTO> addOpportunity(OpportunityDTO opportunityDTO) {
-        return OpportunityApi.super.addOpportunity(opportunityDTO);
+        return ResponseEntity.ok(opportunityMapper
+                                         .toOpportunityDTO(opportunityService
+                                                                   .create(opportunityMapper
+                                                                                   .toOpportunity(opportunityDTO))));
     }
 
     @Override
     public ResponseEntity<OpportunityDTO> getOpportunityByCode(String opportunitycode) {
-        return OpportunityApi.super.getOpportunityByCode(opportunitycode);
+        return ResponseEntity.ok(opportunityMapper
+                                         .toOpportunityDTO(opportunityService
+                                                                   .findByCode(opportunitycode)));
     }
 
     @Override
     public ResponseEntity<Void> deleteOpportunity(String opportunitycode) {
-        return OpportunityApi.super.deleteOpportunity(opportunitycode);
+
+        var result = opportunityService.deleteBeCode(opportunitycode);
+
+        return ResponseEntity.status(result? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @Override
     public ResponseEntity<OpportunityDTO> updateOpportunity(String opportunitycode, OpportunityDTO opportunityDTO) {
-        return OpportunityApi.super.updateOpportunity(opportunitycode, opportunityDTO);
+        return ResponseEntity.ok(opportunityMapper
+                                         .toOpportunityDTO(opportunityService
+                                                                   .update(opportunitycode, opportunityMapper
+                                                                                   .toOpportunity(opportunityDTO))));
     }
 
     @Override
     public ResponseEntity<OpportunityDTO> patchOpportunity(String opportunitycode, PatchedOpportunityDTO patchedOpportunityDTO) {
-        return OpportunityApi.super.patchOpportunity(opportunitycode, patchedOpportunityDTO);
+        return ResponseEntity.ok(opportunityMapper
+                                         .toOpportunityDTO(opportunityService
+                                                                   .patch(opportunitycode, opportunityMapper
+                                                                           .toOpportunity(patchedOpportunityDTO))));
     }
 }

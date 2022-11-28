@@ -39,7 +39,8 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<version>1.18.24</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -102,30 +103,30 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			 <plugin>
-				 <groupId>net.coru</groupId>
-				 <artifactId>scs-multiapi-maven-plugin</artifactId>
-				 <version>4.2.2</version>
-                <executions>
-                    <execution>
-                        <id>openapi</id>
-                        <goals>
-                            <goal>openapi-generation</goal>
-                        </goals>
-                        <configuration>
-                            <specFiles>
-                                <specFile>
-                                    <filePath>${project.basedir}/src/main/resources/api/skill-tree-api.yml</filePath>
+			<plugin>
+				<groupId>net.coru</groupId>
+				<artifactId>scs-multiapi-maven-plugin</artifactId>
+				<version>4.2.2</version>
+				<executions>
+					<execution>
+						<id>openapi</id>
+						<goals>
+							<goal>openapi-generation</goal>
+						</goals>
+						<configuration>
+							<specFiles>
+								<specFile>
+									<filePath>${project.basedir}/src/main/resources/api/skill-tree-api.yml</filePath>
 									<apiPackage>com.sngular.skilltree.api</apiPackage>
 									<modelPackage>com.sngular.skilltree.api.model</modelPackage>
 									<modelNameSuffix>DTO</modelNameSuffix>
 									<useLombokModelAnnotation>true</useLombokModelAnnotation>
-                            	</specFile>
+									</specFile>
 							</specFiles>
 						</configuration>
-                    </execution>
-                </executions>
-            </plugin>
+					</execution>
+</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -134,9 +135,19 @@
 					<release>19</release>
 					<annotationProcessorPaths>
 						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
+						</path>
+						<path>
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
 							<version>1.5.3.Final</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.24</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
