@@ -200,7 +200,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /oportunity:
+  /opportunity:
     summary: Company opportunities
     description: Returns a list of all opportunities
     get:
@@ -258,7 +258,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /oportunity/{oportunitycode}:
+  /opportunity/{opportunitycode}:
     get:
       summary: Gets an opportunity by the code
       description: Returns an individual opportunity, identified by a code

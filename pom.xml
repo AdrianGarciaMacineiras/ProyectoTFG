@@ -52,11 +52,21 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-core</artifactId>
+			<version>3.4.24</version>
+		</dependency>
+		<dependency>
 			<groupId>net.coru</groupId>
 			<artifactId>scs-multiapi-maven-plugin</artifactId>
 			<version>4.2.2</version>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>1.5.3.Final</version>
+		</dependency>
+    </dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -109,12 +119,28 @@
 									<apiPackage>com.sngular.skilltree.api</apiPackage>
 									<modelPackage>com.sngular.skilltree.api.model</modelPackage>
 									<modelNameSuffix>DTO</modelNameSuffix>
+									<useLombokModelAnnotation>true</useLombokModelAnnotation>
                             	</specFile>
 							</specFiles>
 						</configuration>
                     </execution>
                 </executions>
             </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.10.1</version>
+				<configuration>
+					<release>19</release>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>1.5.3.Final</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>
