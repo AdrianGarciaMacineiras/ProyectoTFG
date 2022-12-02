@@ -51,7 +51,7 @@ public class ProjectController implements ProjectApi {
     @Override
     public ResponseEntity<List<ProjectDTO>> getProjects() {
         var projectList = projectService.getALl();
-        return ResponseEntity.ok(projectMapper.toProjectsDto(projectList));
+        return ResponseEntity.ok(projectMapper.toProjectsDTO(projectList));
     }
 
     @Override

@@ -1,31 +1,21 @@
 package com.sngular.skilltree.person.model;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
-
+import lombok.*;
 import java.util.Date;
 import java.util.List;
 
-@Node
-@Getter
-@Setter
-@NoArgsConstructor
+@Value
 public class Person {
 
-    @Id
-    private @Setter(AccessLevel.PROTECTED) String code;
+    String code;
 
-    private String name;
+    String name;
 
-    private String surname;
+    String surname;
 
-    private Date birthDate;
+    Date birthDate;
 
-    private Title title;
+    Title title;
 
     private enum Title{
         PRINCIPAL,
@@ -37,22 +27,28 @@ public class Person {
         JUNIOR
     }
 
-    private class evolution{
+    Evolution evolution;
+
+    class Evolution{
          String title;
          String category;
          Date fromDate;
     };
 
-    private class knows{
+    Knows knows;
+
+    private class Knows{
         String code;
         String level;
     };
 
-    private List<String> work_with;
+    List<String> work_with;
 
-    private List<String> master;
+    List<String> master;
 
-    private class participate{
+    Participate participate;
+
+    private class Participate{
         String code;
         List<Roles> roles;
 
@@ -63,5 +59,5 @@ public class Person {
         };
     }
 
-    private List<String> interest;
+    List<String> interest;
 }

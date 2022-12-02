@@ -10,7 +10,6 @@ import org.mapstruct.Mapper;
 public interface OpportunityNodeMapper {
 
 
-  @InheritInverseConfiguration
   OpportunityNode toNode(Opportunity opportunity);
 
   Opportunity fromNode(OpportunityNode opportunityNode);

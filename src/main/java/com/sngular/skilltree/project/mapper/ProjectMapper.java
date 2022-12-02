@@ -13,7 +13,7 @@ public interface ProjectMapper {
 
     Project toProject(ProjectDTO projectDTO);
 
-    List<ProjectDTO> toProjectsDto(Collection<Project> projects);
+    List<ProjectDTO> toProjectsDTO(Collection<Project> projects);
 
     Project toProject(PatchedProjectDTO patchedProjectDTO);
 

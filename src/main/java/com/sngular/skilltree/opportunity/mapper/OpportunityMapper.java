@@ -13,7 +13,7 @@ public interface OpportunityMapper {
 
      OpportunityDTO toOpportunityDTO(Opportunity opportunity);
      Opportunity toOpportunity(OpportunityDTO opportunityDTO);
-     List<OpportunityDTO> toOpportunitiesDto(Collection<Opportunity> opportunities);
+     List<OpportunityDTO> toOpportunitiesDTO(Collection<Opportunity> opportunities);
 
      Opportunity toOpportunity(PatchedOpportunityDTO patchedOpportunityDTO);
 

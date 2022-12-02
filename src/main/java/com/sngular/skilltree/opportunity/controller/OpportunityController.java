@@ -23,7 +23,7 @@ public class OpportunityController implements OpportunityApi {
     @Override
     public ResponseEntity<List<OpportunityDTO>> getOpportunities() {
         var opportunityList = opportunityService.getAll();
-        return ResponseEntity.ok(opportunityMapper.toOpportunitiesDto(opportunityList));
+        return ResponseEntity.ok(opportunityMapper.toOpportunitiesDTO(opportunityList));
     }
 
     @Override
