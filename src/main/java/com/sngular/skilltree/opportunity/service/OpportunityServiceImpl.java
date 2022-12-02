@@ -40,7 +40,6 @@ public class OpportunityServiceImpl implements OpportunityService {
   public Opportunity update(final String opportunitycode, final Opportunity newOpportunity) {
     var oldOpportunity = opportunityRepository.findByCode(opportunitycode);
     mapper.update(oldOpportunity, newOpportunity);
-    opportunityRepository.save(oldOpportunity);
     return opportunityRepository.save(oldOpportunity);
   }
 

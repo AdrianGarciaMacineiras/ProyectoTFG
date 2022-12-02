@@ -2,13 +2,7 @@ package com.sngular.skilltree.opportunity.model;
 
 import com.sngular.skilltree.client.model.Client;
 import com.sngular.skilltree.project.model.Project;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.Value;
-import org.springframework.data.neo4j.core.schema.*;
-
 import java.util.Date;
 import java.util.List;
 

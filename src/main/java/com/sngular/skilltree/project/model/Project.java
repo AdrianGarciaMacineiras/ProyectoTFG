@@ -1,52 +1,43 @@
 package com.sngular.skilltree.project.model;
 
 import com.sngular.skilltree.person.model.Person;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
-
+import lombok.Value;
 import java.util.Date;
 import java.util.List;
 
-@Node
-@Getter
-@Setter
-@NoArgsConstructor
+@Value
 public class Project {
 
-    @Id
-    private @Setter(AccessLevel.PROTECTED) String code;
+    String code;
 
-    private String name;
+    String name;
 
-    private String description;
+    String description;
 
-    private Date initDate;
+    Date initDate;
 
-    private Date endDate;
+    Date endDate;
 
-    private String domain;
+    String domain;
 
-    private String duration;
+    String duration;
 
-    private Guards guards;
+    Guards guards;
     private enum Guards{
         PASSIVE,
         ACTIVE,
         NO_GUARD
     }
 
-    private List<Tecnologia> techArray;
+    List<Tecnologia> techArray;
 
     private class Tecnologia{
         String code;
         String nombre;
     }
-    private List<Person> people;
 
-    private List<String> historic;
+    List<Person> people;
+
+    List<String> historic;
 
 }

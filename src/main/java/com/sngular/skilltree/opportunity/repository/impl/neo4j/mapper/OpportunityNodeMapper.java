@@ -14,5 +14,6 @@ public interface OpportunityNodeMapper {
   OpportunityNode toNode(Opportunity opportunity);
 
   Opportunity fromNode(OpportunityNode opportunityNode);
+
   List<Opportunity> map(List<OpportunityNode> all);
 }

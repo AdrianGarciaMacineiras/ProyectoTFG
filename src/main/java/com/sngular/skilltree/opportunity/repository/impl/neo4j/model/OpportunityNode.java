@@ -1,7 +1,7 @@
 package com.sngular.skilltree.opportunity.repository.impl.neo4j.model;
 
 import com.sngular.skilltree.client.model.Client;
-import com.sngular.skilltree.project.model.Project;
+import com.sngular.skilltree.project.repository.impl.neo4j.model.ProjectNode;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.data.neo4j.core.schema.*;
 
 import java.util.Date;
 import java.util.List;
-
 
 @Node
 @Getter
@@ -23,7 +22,7 @@ public class OpportunityNode {
 
     private String name;
 
-    private Project project;
+    private ProjectNode project;
 
     private Client client;
 
