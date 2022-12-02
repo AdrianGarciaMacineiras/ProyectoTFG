@@ -26,31 +26,11 @@ public class Opportunity {
 
     Mode mode;
 
-    private enum Mode{
-        REMOTE,
-        PRESENTIAL,
-        MIX
-    }
-
     String office;
 
     String role;
 
     List<Skill> skills;
 
-    private class Skill{
-        String skill;
-        LevelReq levelReq;
-        enum LevelReq{
-            MANDATORY,
-            NICE_TO_HAVE
-        }
-        MinLevel minLevel;
-        enum MinLevel{
-            HIGH,
-            MEDIUM,
-            LOW
-        }
-        String minExp;
-    }
+
 }

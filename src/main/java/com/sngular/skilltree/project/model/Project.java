@@ -23,18 +23,8 @@ public class Project {
     String duration;
 
     Guards guards;
-    private enum Guards{
-        PASSIVE,
-        ACTIVE,
-        NO_GUARD
-    }
 
     List<Tecnologia> techArray;
-
-    private class Tecnologia{
-        String code;
-        String nombre;
-    }
 
     List<Person> people;
 

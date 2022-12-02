@@ -27,47 +27,15 @@ public class PersonNode {
 
     private Title title;
 
-    private enum Title{
-        PRINCIPAL,
-        HEAD,
-        DIRECTOR,
-        EXPERT,
-        SENIOR,
-        DEVELOPER,
-        JUNIOR
-    }
-
     private Evolution evolution;
-
-    class Evolution{
-        String title;
-        String category;
-        Date fromDate;
-    };
 
     private Knows knows;
 
-    private class Knows{
-        String code;
-        String level;
-    };
+    private List<String> work_with;
 
-    List<String> work_with;
-
-    List<String> master;
+    private List<String> master;
 
     private Participate participate;
 
-    private class Participate{
-        String code;
-        List<Roles> roles;
-
-        private class Roles{
-            String role;
-            Date fromDate;
-            Date enDate;
-        };
-    }
-
-    List<String> interest;
+    private List<String> interest;
 }

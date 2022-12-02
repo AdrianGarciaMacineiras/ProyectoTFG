@@ -33,18 +33,9 @@ public class ProjectNode {
     private String duration;
 
     private Guards guards;
-    private enum Guards{
-        PASSIVE,
-        ACTIVE,
-        NO_GUARD
-    }
 
     private List<Tecnologia> techArray;
 
-    private class Tecnologia{
-        String code;
-        String nombre;
-    }
     private List<Person> people;
 
     private List<String> historic;

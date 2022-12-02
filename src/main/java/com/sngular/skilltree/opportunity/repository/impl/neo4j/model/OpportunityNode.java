@@ -34,31 +34,11 @@ public class OpportunityNode {
 
     private Mode mode;
 
-    private enum Mode{
-        REMOTE,
-        PRESENTIAL,
-        MIX
-    }
-
     private String office;
 
     private String role;
 
     private List<Skill> skills;
 
-    private class Skill{
-        String skill;
-        LevelReq levelReq;
-        enum LevelReq{
-            MANDATORY,
-            NICE_TO_HAVE
-        }
-        MinLevel minLevel;
-        enum MinLevel{
-            HIGH,
-            MEDIUM,
-            LOW
-        }
-        String minExp;
-    }
+
 }
