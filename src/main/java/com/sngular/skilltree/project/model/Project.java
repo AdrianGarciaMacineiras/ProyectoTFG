@@ -1,33 +1,14 @@
 package com.sngular.skilltree.project.model;
 
 import com.sngular.skilltree.person.model.Person;
-import lombok.Value;
+import com.sngular.skilltree.skill.model.Skill;
+
 import java.util.Date;
 import java.util.List;
 
-@Value
-public class Project {
 
-    String code;
-
-    String name;
-
-    String description;
-
-    Date initDate;
-
-    Date endDate;
-
-    String domain;
-
-    String duration;
-
-    Guards guards;
-
-    List<Tecnologia> techArray;
-
-    List<Person> people;
-
-    List<String> historic;
+public record Project(String code, String name, String description, Date initDate, Date endDate, String domain,
+                      String duration, Guards guards, List<Skill> techArray, List<Person> people,
+                      List<String> historic) {
 
 }

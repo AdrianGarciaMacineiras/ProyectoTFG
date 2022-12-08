@@ -38,7 +38,7 @@ public class OpportunityNode {
 
     private String role;
 
-    private List<Skill> skills;
+    private List<Skills> skills;
 
 
 }

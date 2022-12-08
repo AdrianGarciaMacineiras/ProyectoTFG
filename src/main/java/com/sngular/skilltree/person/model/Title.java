@@ -1,6 +1,6 @@
 package com.sngular.skilltree.person.model;
 
-enum Title{
+public enum Title{
         PRINCIPAL,
         HEAD,
         DIRECTOR,
