@@ -582,8 +582,65 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /skills:
+    summary: Skills on the skill tree
+    description: Returns a list of all skills
+    get:
+      summary: List all available skills
+      operationId: getSKills
+      tags:
+        - skills
+      responses:
+        '200':
+          description: A paged array of skills
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/skill"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
 
-
+  /skills/{skillcode}:
+    get:
+      summary: Gets a skill by the code as well as the skills under it
+      description: Returns an individual skill as well as the skills under it, identified by a code
+      operationId: getSkillByCode
+      parameters:
+        - name: skillcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a skill
+      tags:
+        - skills
+      responses:
+        '200':
+          description: A skill
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/skill"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
 
 components:
   schemas:
@@ -636,7 +693,7 @@ components:
         techArray:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/skill"
         people:
           type: array
           items:
@@ -662,11 +719,23 @@ components:
         techArray:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/skill"
         people:
             type: array
             items:
               type: string
+
+    skill:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        subskill:
+          type: array
+          items:
+            $ref: "#/components/schemas/skill"
 
     opportunities:
       type: array
@@ -713,7 +782,7 @@ components:
         role:
           type: string
         skills:
-          $ref: "#/components/schemas/skill"
+          $ref: "#/components/schemas/skills"
 
     client:
       type: object
@@ -736,7 +805,7 @@ components:
         role:
           type: string
 
-    skill:
+    skills:
       type: object
       properties:
         skill:

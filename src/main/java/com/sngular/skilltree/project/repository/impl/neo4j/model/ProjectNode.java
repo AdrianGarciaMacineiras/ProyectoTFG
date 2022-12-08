@@ -1,12 +1,12 @@
 package com.sngular.skilltree.project.repository.impl.neo4j.model;
 
-import com.sngular.skilltree.person.model.Person;
+import com.sngular.skilltree.person.repository.impl.neo4j.model.PersonNode;
+import com.sngular.skilltree.skill.repository.impl.neo4j.model.SkillNode;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.*;
-
 import java.util.Date;
 import java.util.List;
 
@@ -34,9 +34,9 @@ public class ProjectNode {
 
     private Guards guards;
 
-    private List<Tecnologia> techArray;
+    private List<SkillNode> techArray;
 
-    private List<Person> people;
+    private List<PersonNode> people;
 
     private List<String> historic;
 }
