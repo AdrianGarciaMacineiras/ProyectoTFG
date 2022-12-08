@@ -1,5 +1,6 @@
 package com.sngular.skilltree.skill.mapper;
 
+import com.sngular.skilltree.api.model.SkillDTO;
 import com.sngular.skilltree.skill.model.Skill;
 import java.util.Collection;
 import java.util.List;

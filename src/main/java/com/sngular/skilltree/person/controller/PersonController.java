@@ -50,7 +50,7 @@ public class PersonController implements PeopleApi {
 
     @Override
     public ResponseEntity<List<PersonDTO>> getPeople() {
-        var people = personService.getALl();
+        var people = personService.getAll();
         return ResponseEntity.ok(personMapper.toPeopleDto(people));
     }
 

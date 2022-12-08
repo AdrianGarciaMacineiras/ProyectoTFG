@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface PersonService {
 
-    List<Person> getALl();
+    List<Person> getAll();
 
     Person create (final Person toPerson);
 

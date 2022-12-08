@@ -17,7 +17,7 @@ public class PersonServiceImpl implements PersonService{
     private final PersonMapper mapper;
 
     @Override
-    public List<Person> getALl() {
+    public List<Person> getAll() {
         return personRepository.findAll();
     }
 

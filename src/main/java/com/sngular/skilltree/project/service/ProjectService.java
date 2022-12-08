@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProjectService {
 
-    List<Project> getALl();
+    List<Project> getAll();
 
     Project create (final Project toProject);
 
