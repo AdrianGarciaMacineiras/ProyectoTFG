@@ -89,7 +89,15 @@
 				<extensions>true</extensions>
 				<configuration>
 					<testFramework>JUNIT5</testFramework>
+					<contractsDirectory>${project.basedir}/src/main/resources/api</contractsDirectory>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>net.coru</groupId>
+						<artifactId>scc-multiapi-converter</artifactId>
+						<version>3.3.0</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -106,7 +114,7 @@
 			<plugin>
 				<groupId>net.coru</groupId>
 				<artifactId>scs-multiapi-maven-plugin</artifactId>
-				<version>4.2.2</version>
+				<version>4.2.4</version>
 				<executions>
 					<execution>
 						<id>openapi</id>
@@ -125,7 +133,7 @@
 							</specFiles>
 						</configuration>
 					</execution>
-</executions>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

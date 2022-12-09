@@ -786,6 +786,17 @@ components:
 
     client:
       type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        domain:
+          type: string
+        area:
+          type: string
+        country:
+          type: string
 
     patchedOpportunity:
       type: object
