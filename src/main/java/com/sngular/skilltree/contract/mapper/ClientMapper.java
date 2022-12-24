@@ -23,4 +23,6 @@ public interface ClientMapper {
 
     void update(@MappingTarget Client oldClient, Client newClient);
 
+    Client toClient(Object client);
+
 }
