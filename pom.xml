@@ -114,7 +114,7 @@
 			<plugin>
 				<groupId>net.coru</groupId>
 				<artifactId>scs-multiapi-maven-plugin</artifactId>
-				<version>4.2.4</version>
+				<version>4.2.3</version>
 				<executions>
 					<execution>
 						<id>openapi</id>

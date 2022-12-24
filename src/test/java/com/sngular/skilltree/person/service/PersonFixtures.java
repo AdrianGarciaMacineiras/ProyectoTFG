@@ -1,4 +1,4 @@
-package com.sngular.skilltree.person.fixtures;
+package com.sngular.skilltree.person.service;
 
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.testutil.FileHelper;

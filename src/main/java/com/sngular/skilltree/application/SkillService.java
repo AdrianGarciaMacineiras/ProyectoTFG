@@ -1,0 +1,12 @@
+package com.sngular.skilltree.application;
+
+import com.sngular.skilltree.model.Skill;
+import java.util.List;
+
+public interface SkillService {
+
+    List<Skill> getAll();
+
+    Skill findByCode(String skillcode);
+
+}
