@@ -1,13 +1,12 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
-import com.sngular.skilltree.contract.mapper.SkillMapper;
-import com.sngular.skilltree.model.Opportunity;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.OpportunityNode;
-import java.util.List;
-
+import com.sngular.skilltree.model.Opportunity;
 import org.mapstruct.Mapper;
 
-@Mapper(uses = SkillMapper.class)
+import java.util.List;
+
+@Mapper(uses = SkillNodeMapper.class)
 public interface OpportunityNodeMapper {
 
 

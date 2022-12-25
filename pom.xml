@@ -87,10 +87,10 @@
 				<artifactId>spring-cloud-contract-maven-plugin</artifactId>
 				<version>3.1.5</version>
 				<extensions>true</extensions>
-				<configuration>
+		<!--		<configuration>
 					<testFramework>JUNIT5</testFramework>
 					<contractsDirectory>${project.basedir}/src/main/resources/api</contractsDirectory>
-				</configuration>
+				</configuration>-->
 				<dependencies>
 					<dependency>
 						<groupId>net.coru</groupId>
