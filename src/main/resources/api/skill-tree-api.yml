@@ -407,7 +407,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/people"
+                  $ref: "#/components/schemas/peopleList"
         '400':
           description: Bad Request
         '404':
@@ -430,14 +430,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/person"
+              $ref: "#/components/schemas/people"
       responses:
         '200':
           description: A person has been added
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/person"
+                $ref: "#/components/schemas/people"
         '400':
           description: Bad Request
         '404':
@@ -469,7 +469,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/person"
+                $ref: "#/components/schemas/people"
         '400':
           description: Bad Request
         '404':
@@ -499,14 +499,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/person"
+              $ref: "#/components/schemas/people"
       responses:
         '200':
           description: A person has been updated
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/person"
+                $ref: "#/components/schemas/people"
         '400':
           description: Bad Request
         '404':
@@ -536,14 +536,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/patchedPerson"
+              $ref: "#/components/schemas/patchedPeople"
       responses:
         '200':
           description: A person has been updated
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/person"
+                $ref: "#/components/schemas/people"
         '400':
           description: Bad Request
         '404':
@@ -642,6 +642,388 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /candidate:
+    summary: Candidates
+    description: Returns a list of all the company candidates
+    get:
+      summary: List all candidates
+      operationId: getCandidates
+      tags:
+        - candidate
+      responses:
+        '200':
+          description: A paged array of candidates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/candidate"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    post:
+      summary: Adds a new candidate
+      description: Adds a new candidate
+      operationId: addCandidate
+      tags:
+        - candidate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/candidate"
+      responses:
+        '200':
+          description: A candidate has been added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/candidate"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /candidate/{candidatecode}:
+    get:
+      summary: Gets a candidate by the code
+      description: Returns an individual candidate, identified by a code
+      operationId: getCandidateByCode
+      parameters:
+        - name: candidatecode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a candidate
+      tags:
+        - candidate
+      responses:
+        '200':
+          description: A candidate
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/candidate"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    put:
+      summary: Updates the given candidate
+      description: Updates the entirety of a candidate
+      operationId: updateCandidate
+      parameters:
+        - name: candidatecode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a candidate
+      tags:
+        - candidate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/candidate"
+      responses:
+        '200':
+          description: A candidate has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/candidate"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    patch:
+      summary: Updates some of the information of a candidate
+      description: Updates part of a candidate
+      parameters:
+        - name: candidatecode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a candidate
+      operationId: patchCandidate
+      tags:
+        - candidate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/patchedCandidate"
+      responses:
+        '200':
+          description: A candidate has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/candidate"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    delete:
+      summary: Deletes the given client
+      description: Deletes a client
+      parameters:
+        - name: clientcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a client
+      operationId: deleteClient
+      tags:
+        - person
+      responses:
+        '200':
+          description: A client has been deleted
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /client:
+    summary: Clients
+    description: Returns a list of all the company clients
+    get:
+      summary: List all clients
+      operationId: getClients
+      tags:
+        - client
+      responses:
+        '200':
+          description: A paged array of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/clients"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    post:
+      summary: Adds a new client
+      description: Adds a new client
+      operationId: addClient
+      tags:
+        - client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/client"
+      responses:
+        '200':
+          description: A client has been added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/client"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /client/{clientcode}:
+    get:
+      summary: Gets a client by the code
+      description: Returns an individual client, identified by a code
+      operationId: getClientByCode
+      parameters:
+        - name: clientcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a client
+      tags:
+        - client
+      responses:
+        '200':
+          description: A client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/client"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    put:
+      summary: Updates the given client
+      description: Updates the entirety of a client
+      operationId: updateClient
+      parameters:
+        - name: clientcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a client
+      tags:
+        - client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/client"
+      responses:
+        '200':
+          description: A client has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/client"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    patch:
+      summary: Updates some of the information of a client
+      description: Updates part of a client
+      parameters:
+        - name: clientcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a client
+      operationId: patchClient
+      tags:
+        - client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/patchedClient"
+      responses:
+        '200':
+          description: A client has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/client"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    delete:
+      summary: Deletes the given client
+      description: Deletes a client
+      parameters:
+        - name: clientcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a client
+      operationId: deleteClient
+      tags:
+        - person
+      responses:
+        '200':
+          description: A client has been deleted
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
 components:
   schemas:
     projects:
@@ -653,8 +1035,9 @@ components:
       type: object
       required:
         - code
+        - tag
         - name
-        - description
+        - desc
         - initDate
         - endDate
         - client
@@ -663,14 +1046,15 @@ components:
         - duration
         - guards
         - techArray
-        - people
-        - historic
+        - roles
       properties:
         code:
           type: string
+        tag:
+          type: string
         name:
           type: string
-        description:
+        desc:
           type: string
         initDate:
           type: string
@@ -690,25 +1074,23 @@ components:
             - PASSIVE
             - ACTIVE
             - NO_GUARD
-        techArray:
+        skills:
           type: array
           items:
             $ref: "#/components/schemas/skill"
-        people:
+        roles:
           type: array
           items:
-            type: string
-        historic:
-          type: array
-          items:
-            type: string
+            $ref: "#/components/schemas/roles"
 
     patchedProject:
       type: object
       properties:
+        tag:
+          type: string
         name:
           type: string
-        description:
+        desc:
           type: string
         guards:
           type: string
@@ -716,14 +1098,22 @@ components:
             - PASSIVE
             - ACTIVE
             - NO_GUARD
-        techArray:
+        skills:
           type: array
           items:
             $ref: "#/components/schemas/skill"
-        people:
+        roles:
             type: array
             items:
-              type: string
+              $ref: "#/components/schemas/roles"
+
+    roles:
+      type: object
+      properties:
+        rol:
+          type: string
+        number:
+          type: integer
 
     skill:
       type: object
@@ -784,8 +1174,103 @@ components:
         skills:
           $ref: "#/components/schemas/skills"
 
+    clients:
+      type: array
+      items:
+        $ref: "#/components/schemas/client"
+
     client:
       type: object
+      required:
+        - code
+        - name
+        - industry
+        - country
+        - offices
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        industry:
+          type: string
+        country:
+          type: string
+        principalOffice:
+          type: string
+        HQ:
+          type: string
+        offices:
+          type: array
+          items:
+            $ref: "#/components/schemas/office"
+
+    patchedClient:
+      type: object
+      properties:
+        name:
+          type: string
+        industry:
+          type: string
+        country:
+          type: string
+        principalOffice:
+          type: string
+        offices:
+          type: array
+          items:
+            $ref: "#/components/schemas/office"
+
+    office:
+      type: object
+      required:
+        - code
+        - name
+        - address
+        - phone
+        - geolocation
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        geolocation:
+          type: string
+
+    candidates:
+      type: array
+      items:
+        $ref: "#/components/schemas/candidate"
+
+    candidate:
+      type: object
+      required:
+        - code
+        - opportunity
+        - skills
+      properties:
+        code:
+          type: string
+        opportunity:
+          $ref: "#/components/schemas/opportunity"
+        skills:
+          type: array
+          items:
+            $ref: "#/components/schemas/skill"
+
+    patchedCandidate:
+      type: object
+      properties:
+        opportunity:
+          $ref: "#/components/schemas/opportunity"
+        skills:
+          type: array
+          items:
+            $ref: "#/components/schemas/skill"
 
     patchedOpportunity:
       type: object
@@ -824,12 +1309,12 @@ components:
         min_exp:
           type: string
 
-    people:
+    peopleList:
       type: array
       items:
-          $ref: "#/components/schemas/person"
+          $ref: "#/components/schemas/people"
 
-    person:
+    people:
       type: object
       required:
         - code
@@ -900,7 +1385,7 @@ components:
           items:
             type: string
 
-    patchedPerson:
+    patchedPeople:
       type: object
       properties:
         name:
