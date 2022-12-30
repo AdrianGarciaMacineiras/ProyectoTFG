@@ -3,7 +3,6 @@ package com.sngular.skilltree.application;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.model.Candidate;
-import com.sngular.skilltree.model.Client;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

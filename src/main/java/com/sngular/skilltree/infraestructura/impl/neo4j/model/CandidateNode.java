@@ -16,6 +16,8 @@ import java.util.List;
 public class CandidateNode {
 
     @Id
+    private Long id;
+
     private @Setter(AccessLevel.PROTECTED) String code;
 
     private OpportunityNode opportunity;

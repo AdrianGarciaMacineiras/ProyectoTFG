@@ -34,7 +34,7 @@ public class PeopleServiceTest {
     }
 
     @Test
-    @DisplayName("Testing getAll the persons")
+    @DisplayName("Testing getAll the people")
     void testGetAll(){
         when(peopleRepository.findAll()).thenReturn(List.of(PersonFixtures.PEOPLE_BY_CODE));
         List<People> result = peopleService.getAll();

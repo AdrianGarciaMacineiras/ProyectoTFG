@@ -1,7 +1,6 @@
 package com.sngular.skilltree.application;
 
 import com.sngular.skilltree.model.Candidate;
-import com.sngular.skilltree.model.Client;
 
 import java.util.List;
 

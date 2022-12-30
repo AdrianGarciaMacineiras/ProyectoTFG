@@ -17,6 +17,8 @@ import java.util.List;
 public class PeopleNode {
 
     @Id
+    private Long id;
+
     private @Setter(AccessLevel.PROTECTED) String code;
 
     private String name;

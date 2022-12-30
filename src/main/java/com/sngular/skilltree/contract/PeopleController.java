@@ -29,8 +29,8 @@ public class PeopleController implements PeopleApi {
 
     @Override
     public ResponseEntity<Void> deletePerson(String peoplecode) {
-        var result = peopleService.deleteByCode(peoplecode);
-        return ResponseEntity.status(result? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR).build();    }
+        peopleService.deleteByCode(peoplecode);
+        return ResponseEntity.status(HttpStatus.OK).build();    }
 
     @Override
     public ResponseEntity<PeopleDTO> updatePerson(String peoplecode, PeopleDTO peopleDTO) {

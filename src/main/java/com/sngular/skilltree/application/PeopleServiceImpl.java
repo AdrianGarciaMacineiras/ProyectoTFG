@@ -1,11 +1,13 @@
 package com.sngular.skilltree.application;
 
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Override
     public People create(People people) {
-        validate(people);
+        // validate(people);
         return peopleRepository.save(people);
     }
 
@@ -32,8 +34,9 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public boolean deleteByCode(String personcode) {
-        return peopleRepository.deleteByCode(personcode);
+    public boolean deleteByCode(String personCode) {
+        validate(personCode);
+        return peopleRepository.deleteByCode(personCode);
     }
 
     @Override
@@ -49,6 +52,10 @@ public class PeopleServiceImpl implements PeopleService {
         mapper.update(oldperson, patchedPeople);
         return peopleRepository.save(oldperson);    }
 
-    private void validate(People people) {
+    private void validate(String code) {
+        var oldPerson = peopleRepository.findByCode(code);
+        if (Objects.isNull(oldPerson)) {
+            throw new EntityNotFoundException("People", code);
+        }
     }
 }
