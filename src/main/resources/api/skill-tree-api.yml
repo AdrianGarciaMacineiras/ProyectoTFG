@@ -567,7 +567,7 @@ paths:
           description: String that represents the code of a person
       operationId: deletePerson
       tags:
-        - person
+        - people
       responses:
         '200':
           description: A person has been deleted
@@ -807,21 +807,21 @@ paths:
                 $ref: "#/components/schemas/error"
 
     delete:
-      summary: Deletes the given client
-      description: Deletes a client
+      summary: Deletes the given candidate
+      description: Deletes a candidate
       parameters:
-        - name: clientcode
+        - name: candidatecode
           in: path
           required: true
           schema:
             type: string
-          description: String that represents the code of a client
-      operationId: deleteClient
+          description: String that represents the code of a candidate
+      operationId: deleteCandidate
       tags:
-        - person
+        - candidate
       responses:
         '200':
-          description: A client has been deleted
+          description: A candidate has been deleted
         '400':
           description: Bad Request
         '404':
@@ -1009,7 +1009,7 @@ paths:
           description: String that represents the code of a client
       operationId: deleteClient
       tags:
-        - person
+        - client
       responses:
         '200':
           description: A client has been deleted
