@@ -6,5 +6,5 @@ import org.springframework.data.neo4j.core.schema.RelationshipProperties;
 import org.springframework.data.neo4j.core.schema.TargetNode;
 
 @RelationshipProperties
-public record KnowsRelationship(@Id @GeneratedValue String code, String level, @TargetNode SkillNode skillNode) {
+public record KnowsRelationship(String code, String level, @TargetNode SkillNode skillNode) {
 };

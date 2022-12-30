@@ -5,5 +5,5 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.TargetNode;
 
-public record SkillsCandidateRelationship(@Id @GeneratedValue String code, @TargetNode SkillNode skill, EnumLevel level, int experience) {
+public record SkillsCandidateRelationship(String code, @TargetNode SkillNode skill, EnumLevel level, int experience) {
 }
