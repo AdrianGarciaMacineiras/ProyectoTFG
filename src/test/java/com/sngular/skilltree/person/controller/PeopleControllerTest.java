@@ -9,12 +9,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sngular.skilltree.application.PeopleService;
+import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.contract.PeopleController;
+import com.sngular.skilltree.contract.mapper.PeopleMapper;
+import com.sngular.skilltree.contract.mapper.SkillMapper;
+import com.sngular.skilltree.model.People;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -29,15 +38,13 @@ class PeopleControllerTest {
   @MockBean
   private PeopleService peopleService;
 
-  private ObjectMapper mapper = new ObjectMapper();
-
   @Test
   void getPersonByCode() throws Exception {
     when(peopleService.findByCode(anyString())).thenReturn(PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
                             .get("/people/pc1120")
                             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(content().json(PESON_BY_CODE_JSON));
+            .andExpect(content().json(PERSON_BY_CODE_JSON));
   }
 
   @Test
@@ -50,7 +57,8 @@ class PeopleControllerTest {
   }
   @Test
   void shouldDeletePersonFail() throws Exception{
-    when(peopleService.findByCode(anyString())).thenReturn(null);
+
+    when(peopleService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("People", "pc1120"));
     mockMvc.perform(MockMvcRequestBuilders
                             .delete("/people/pc1120")
                             .accept(MediaType.APPLICATION_JSON))
@@ -69,7 +77,19 @@ class PeopleControllerTest {
   void getPeople() {
   }
 
-  @Test
-  void addPerson() {
+  @TestConfiguration
+  static class ControllerTestConfiguration {
+    @Bean
+    public PeopleMapper getPeopleMapper() {
+      return Mappers.getMapper(PeopleMapper.class);
+    }
+
+    @Bean
+    public SkillMapper getSkillMapper() {
+      return Mappers.getMapper(SkillMapper.class);
+    }
+
+    @MockBean
+    public ResolveService resolveService;
   }
 }

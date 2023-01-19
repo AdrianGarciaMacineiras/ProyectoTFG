@@ -8,5 +8,5 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 import java.util.List;
 
 @RelationshipProperties
-public record ParticipateRelationship(String code, @TargetNode ProjectNode project, List<Roles> roles) {
+public record ParticipateRelationship(@Id @GeneratedValue Long id, String code, @TargetNode ProjectNode project, List<Roles> roles) {
 }

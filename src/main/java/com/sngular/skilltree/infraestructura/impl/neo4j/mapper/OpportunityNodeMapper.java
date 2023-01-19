@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(uses = SkillNodeMapper.class)
+@Mapper(componentModel = "spring", uses = SkillNodeMapper.class)
 public interface OpportunityNodeMapper {
 
 

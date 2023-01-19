@@ -6,7 +6,7 @@ import lombok.Builder;
 
 
 @Builder
-public record People(String code, String name, String surname, Date birthDate, EnumTitle enumTitle, List<Evolution> evolution,
+public record People(String code, String name, String surname, Date birthDate, EnumTitle title, List<Evolution> evolution,
                      List<Knows> knows, List<Skill> work_with, List<Skill> master, List<Participate> participate,
                      List<Skill> interest) {
 

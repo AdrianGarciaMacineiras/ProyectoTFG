@@ -8,17 +8,17 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SkillServiceImpl implements SkillRepository {
+public class SkillServiceImpl implements SkillService {
 
     private final SkillRepository skillRepository;
 
     @Override
-    public List<Skill> findAll() {
+    public List<Skill> getAll() {
         return skillRepository.findAll();
     }
 
     @Override
-    public Skill findByCode(String skillcode) {
-        return skillRepository.findByCode(skillcode);
+    public Skill findByCode(String skillCode) {
+        return skillRepository.findByCode(skillCode);
     }
 }
