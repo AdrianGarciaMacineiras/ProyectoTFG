@@ -3,10 +3,12 @@ package com.sngular.skilltree.contract.mapper;
 import com.sngular.skilltree.api.model.PatchedPeopleDTO;
 import com.sngular.skilltree.api.model.PeopleDTO;
 import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.model.EnumTitle;
 import com.sngular.skilltree.model.People;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.ValueMapping;
 
 import java.util.Collection;
 import java.util.List;

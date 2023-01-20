@@ -1,12 +1,12 @@
 package com.sngular.skilltree.person.controller;
 
-import static com.sngular.skilltree.person.fixtures.PersonFixtures.PEOPLE_BY_CODE;
-import static com.sngular.skilltree.person.fixtures.PersonFixtures.PESON_BY_CODE_JSON;
-import static org.mockito.ArgumentMatchers.anyString;
+import static com.sngular.skilltree.person.fixtures.PersonFixtures.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.ResolveService;
@@ -27,9 +27,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.MOCK)
-@AutoConfigureMockMvc
+@Slf4j
+@WebMvcTest(controllers = PeopleController.class)
 class PeopleControllerTest {
 
   @Autowired
@@ -66,7 +67,25 @@ class PeopleControllerTest {
   }
 
   @Test
-  void updatePerson() {
+  void updatePerson() throws Exception {
+    when(peopleService.update(anyString(),any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
+    mockMvc.perform(MockMvcRequestBuilders.put("/people/pc1120")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .content(PERSONDTO_BY_CODE_JSON))
+            //.andDo(result -> log.info("-----" + result.getResponse().getStatus()));
+            .andExpect(content().json(PERSONDTO_BY_CODE_JSON));
+  }
+
+  @Test
+  void addPerson() throws Exception {
+    when(peopleService.create(any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
+    mockMvc.perform(MockMvcRequestBuilders.post("/people")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .content(PERSONDTO_BY_CODE_JSON))
+            //.andDo(result -> log.info("-----" + result.getResponse().getStatus()));
+            .andExpect(content().json(PERSONDTO_BY_CODE_JSON));
   }
 
   @Test

@@ -1069,11 +1069,7 @@ components:
         duration:
           type: string
         guards:
-          type: string
-          enum:
-            - PASSIVE
-            - ACTIVE
-            - NO_GUARD
+          $ref: "#/components/schemas/guards"
         skills:
           type: array
           items:
@@ -1093,11 +1089,7 @@ components:
         desc:
           type: string
         guards:
-          type: string
-          enum:
-            - PASSIVE
-            - ACTIVE
-            - NO_GUARD
+          $ref: "#/components/schemas/guards"
         skills:
           type: array
           items:
@@ -1106,6 +1098,13 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/roles"
+
+    guards:
+      type: string
+      enum:
+        - PASSIVE
+        - ACTIVE
+        - NO_GUARD
 
     roles:
       type: object
@@ -1162,11 +1161,7 @@ components:
         priority:
           type: string
         mode:
-          type: string
-          enum:
-            - REMOTE
-            - PRESENTIAL
-            - MIX
+          $ref: "#/components/schemas/mode"
         office:
           type: string
         role:
@@ -1174,6 +1169,27 @@ components:
         skills:
           $ref: "#/components/schemas/skills"
 
+    patchedOpportunity:
+      type: object
+      properties:
+        name:
+          type: string
+        priority:
+          type: string
+        mode:
+          $ref: "#/components/schemas/mode"
+        office:
+          type: string
+        role:
+          type: string
+
+    mode:
+      type: string
+      enum:
+        - REMOTE
+        - PRESENTIAL
+        - MIX
+        -
     clients:
       type: array
       items:
@@ -1272,24 +1288,6 @@ components:
           items:
             $ref: "#/components/schemas/skill"
 
-    patchedOpportunity:
-      type: object
-      properties:
-        name:
-          type: string
-        priority:
-          type: string
-        mode:
-          type: string
-          enum:
-            - REMOTE
-            - PRESENTIAL
-            - MIX
-        office:
-          type: string
-        role:
-          type: string
-
     skills:
       type: object
       properties:
@@ -1338,15 +1336,7 @@ components:
         birthDate:
           type: string
         title:
-          type: string
-          enum:
-            - Principal
-            - Head
-            - Director
-            - Expert
-            - Senior
-            - Developer
-            - Junior
+          $ref: "#/components/schemas/title"
         evolution:
           type: object
           properties:
@@ -1395,15 +1385,7 @@ components:
         birthDate:
           type: string
         title:
-          type: string
-          enum:
-            - Principal
-            - Head
-            - Director
-            - Expert
-            - Senior
-            - Developer
-            - Junior
+          $ref: "#/components/schemas/title"
         knows:
           type: object
           properties:
@@ -1432,6 +1414,17 @@ components:
           type: array
           items:
             type: string
+
+    title:
+      type: string
+      enum:
+        - PRINCIPAL
+        - HEAD
+        - DIRECTOR
+        - EXPERT
+        - SENIOR
+        - DEVELOPER
+        - JUNIOR
 
     role:
       type: object

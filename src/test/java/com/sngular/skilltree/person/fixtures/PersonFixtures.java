@@ -4,9 +4,13 @@ import com.sngular.skilltree.model.EnumTitle;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.testutil.FileHelper;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 public final class PersonFixtures {
 
-  public static Date date = new Date();
+  public static final Date date = new GregorianCalendar(2023, Calendar.JANUARY, 20).getTime();
 
   public static final String PERSON_BY_CODE_JSON = FileHelper.getContent("/person/person_by_code.json");
 

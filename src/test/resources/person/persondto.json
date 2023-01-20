@@ -2,9 +2,5 @@
   "code": "pc1120",
   "name": "people2",
   "title": "DEVELOPER",
-  "birthdate": "27/04/1976",
-  "interest": ["interest1", "interest2"],
-  "surname": "surname2",
-  "master": ["master1, master2"],
-  "fromdate": "27/04/1976"
+  "birthDate": "20/1/23, 0:00"
 }
