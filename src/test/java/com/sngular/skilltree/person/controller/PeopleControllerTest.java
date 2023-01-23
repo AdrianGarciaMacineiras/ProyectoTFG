@@ -5,9 +5,6 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
@@ -18,7 +15,6 @@ import com.sngular.skilltree.model.People;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -27,7 +23,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 @Slf4j
 @WebMvcTest(controllers = PeopleController.class)
@@ -49,6 +44,15 @@ class PeopleControllerTest {
   }
 
   @Test
+  void shouldGetPersonByCodeFail() throws Exception {
+    when(peopleService.findByCode(anyString())).thenThrow(new EntityNotFoundException("People", "pc1124"));
+    mockMvc.perform(MockMvcRequestBuilders
+                    .get("/people/pc1124")
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
+  }
+
+  @Test
   void shouldDeletePersonBySuccess() throws Exception{
     when(peopleService.deleteByCode(anyString())).thenReturn(true);
     mockMvc.perform(MockMvcRequestBuilders
@@ -56,9 +60,9 @@ class PeopleControllerTest {
                             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().is2xxSuccessful());
   }
+
   @Test
   void shouldDeletePersonFail() throws Exception{
-
     when(peopleService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("People", "pc1120"));
     mockMvc.perform(MockMvcRequestBuilders
                             .delete("/people/pc1120")
@@ -69,31 +73,43 @@ class PeopleControllerTest {
   @Test
   void updatePerson() throws Exception {
     when(peopleService.update(anyString(),any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
-    mockMvc.perform(MockMvcRequestBuilders.put("/people/pc1120")
+    mockMvc.perform(MockMvcRequestBuilders
+                            .put("/people/pc1120")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .content(PERSONDTO_BY_CODE_JSON))
-            //.andDo(result -> log.info("-----" + result.getResponse().getStatus()));
             .andExpect(content().json(PERSONDTO_BY_CODE_JSON));
   }
 
   @Test
   void addPerson() throws Exception {
-    when(peopleService.create(any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
-    mockMvc.perform(MockMvcRequestBuilders.post("/people")
+    when(peopleService.create(any(People.class))).thenReturn(PEOPLE_BY_CODE);
+    mockMvc.perform(MockMvcRequestBuilders
+                            .post("/people")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
-                            .content(PERSONDTO_BY_CODE_JSON))
-            //.andDo(result -> log.info("-----" + result.getResponse().getStatus()));
-            .andExpect(content().json(PERSONDTO_BY_CODE_JSON));
+                            .content(PERSON_BY_CODE_JSON))
+            .andExpect(content().json(PERSON_BY_CODE_JSON));
   }
 
   @Test
-  void patchPerson() {
+  void patchPerson() throws Exception {
+    when(peopleService.patch(anyString(),any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
+    mockMvc.perform(MockMvcRequestBuilders
+                            .patch("/people/pc1120")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .content(PATCH_PERSONDTO_BY_CODE_JSON))
+            .andExpect(content().json(PATCH_PERSONDTO_BY_CODE_JSON));
   }
 
   @Test
-  void getPeople() {
+  void getPeople() throws Exception {
+    when(peopleService.getAll()).thenReturn(PEOPLE_LIST);
+    mockMvc.perform(MockMvcRequestBuilders
+                            .get("/people")
+                            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(content().json(LIST_PERSONDTO_JSON));
   }
 
   @TestConfiguration
