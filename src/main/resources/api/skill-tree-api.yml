@@ -1108,6 +1108,9 @@ components:
 
     roles:
       type: object
+      required:
+        - rol
+        - number
       properties:
         rol:
           type: string
@@ -1116,6 +1119,10 @@ components:
 
     skill:
       type: object
+      required:
+        - code
+        - type
+        - subskill
       properties:
         code:
           type: string
@@ -1189,7 +1196,7 @@ components:
         - REMOTE
         - PRESENTIAL
         - MIX
-        -
+
     clients:
       type: array
       items:
@@ -1290,6 +1297,11 @@ components:
 
     skills:
       type: object
+      required:
+        - skill
+        - level_req
+        - min_level
+        - min_exp
       properties:
         skill:
           type: string
@@ -1428,6 +1440,10 @@ components:
 
     role:
       type: object
+      required:
+        - role
+        - fromDate
+        - endDate
       properties:
         role:
           type: string
