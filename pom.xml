@@ -112,9 +112,9 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>net.coru</groupId>
+				<groupId>com.sngular</groupId>
 				<artifactId>scs-multiapi-maven-plugin</artifactId>
-				<version>4.2.3</version>
+				<version>4.3.11</version>
 				<executions>
 					<execution>
 						<id>openapi</id>

@@ -2,6 +2,7 @@ package com.sngular.skilltree.candidate.fixtures;
 
 
 import com.sngular.skilltree.model.*;
+import com.sngular.skilltree.testutil.FileHelper;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -95,4 +96,6 @@ public class CandidateFixtures {
                     .opportunity(OPPORTUNITY_BY_CODE)
                     .skills(List.of(SKILLS_CANDIDATE))
                     .build();
+
+    public static final String CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/candidate_by_code.json");
 }
