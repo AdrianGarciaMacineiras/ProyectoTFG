@@ -14,12 +14,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import static com.sngular.skilltree.candidate.fixtures.CandidateFixtures.CANDIDATE_BY_CODE;
 import static com.sngular.skilltree.candidate.fixtures.CandidateFixtures.CANDIDATE_BY_CODE_JSON;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @Slf4j
@@ -36,7 +36,7 @@ final class CandidateControllerTest {
     void getCandidateByCode() throws Exception {
         when(candidateService.findByCode(anyString())).thenReturn(CANDIDATE_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                                .get("/candidate/c1120")
+                                .get("/candidate/pc1120")
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(CANDIDATE_BY_CODE_JSON));
     }
