@@ -1302,14 +1302,14 @@ components:
               code:
                 type: string
               level:
-                type: integer
-              experience:
                 type: string
                 enum:
-                  - HIGH
-                  - MEDIUM
-                  - CONFIDENT
-                  - LOW
+                - HIGH
+                - MEDIUM
+                - CONFIDENT
+                - LOW
+              experience:
+                type: integer
     patchedCandidate:
       type: object
       properties:

@@ -8,7 +8,7 @@ import org.mapstruct.MappingTarget;
 import java.util.Collection;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = SkillMapper.class)
 public interface ProjectMapper {
 
     ProjectDTO toProjectDTO(Project project);

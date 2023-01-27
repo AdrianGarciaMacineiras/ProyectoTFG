@@ -21,5 +21,4 @@ public interface CandidateMapper {
     Candidate toCandidate(PatchedCandidateDTO patchedCandidateDTO);
 
     void update(@MappingTarget Candidate oldCandidate, Candidate newCandidate);
-
 }
