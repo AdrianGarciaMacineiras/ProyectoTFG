@@ -21,6 +21,8 @@ public class ProjectNode {
 
     private String name;
 
+    private String tag;
+
     private String desc;
 
     private Date initDate;

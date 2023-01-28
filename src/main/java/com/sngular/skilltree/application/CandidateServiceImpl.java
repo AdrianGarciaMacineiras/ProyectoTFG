@@ -33,7 +33,7 @@ public class CandidateServiceImpl implements CandidateService{
     }
 
     @Override
-    public boolean deleteBeCode(String candidatenode) {
+    public boolean deleteByCode(String candidatenode) {
         return candidateRepository.deleteByCode(candidatenode);
     }
 

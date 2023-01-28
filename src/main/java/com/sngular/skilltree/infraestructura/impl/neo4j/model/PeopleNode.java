@@ -23,6 +23,8 @@ public class PeopleNode {
 
     private String name;
 
+    private String employeeId;
+
     private String surname;
 
     private Date birthDate;
@@ -40,4 +42,6 @@ public class PeopleNode {
     private List<ParticipateRelationship> participate;
 
     private List<SkillNode> interest;
+
+    private List<Certificate> certificates;
 }

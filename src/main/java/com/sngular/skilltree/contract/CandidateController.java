@@ -43,7 +43,7 @@ public class CandidateController implements CandidateApi {
 
     @Override
     public ResponseEntity<Void> deleteCandidate(String candidatecode) {
-        var result = candidateService.deleteBeCode(candidatecode);
+        var result = candidateService.deleteByCode(candidatecode);
         return ResponseEntity.status(result? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 

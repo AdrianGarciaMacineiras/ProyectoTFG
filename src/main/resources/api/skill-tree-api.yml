@@ -1024,6 +1024,197 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /team:
+    summary: Teams
+    description: Returns a list of all the company teams
+    get:
+      summary: List all teams
+      operationId: getTeams
+      tags:
+        - team
+      responses:
+        '200':
+          description: A paged array of teams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/teams"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    post:
+      summary: Adds a new team
+      description: Adds a new team
+      operationId: addTeam
+      tags:
+        - team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/team"
+      responses:
+        '200':
+          description: A team has been added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/team"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /team/{teamcode}:
+    get:
+      summary: Gets a team by the code
+      description: Returns an individual team, identified by a code
+      operationId: getTeamByCode
+      parameters:
+        - name: teamcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a team
+      tags:
+        - team
+      responses:
+        '200':
+          description: A team
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/team"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    put:
+      summary: Updates the given team
+      description: Updates the entirety of a team
+      operationId: updateTeam
+      parameters:
+        - name: teamcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a team
+      tags:
+        - client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/team"
+      responses:
+        '200':
+          description: A team has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/team"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    patch:
+      summary: Updates some of the information of a team
+      description: Updates part of a team
+      parameters:
+        - name: teamcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a team
+      operationId: patchTeam
+      tags:
+        - team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/patchedTeam"
+      responses:
+        '200':
+          description: A team has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/team"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    delete:
+      summary: Deletes the given team
+      description: Deletes a team
+      parameters:
+        - name: teamcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a team
+      operationId: deleteTeam
+      tags:
+        - team
+      responses:
+        '200':
+          description: A team has been deleted
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
 components:
   schemas:
     projects:
@@ -1040,7 +1231,7 @@ components:
         - desc
         - initDate
         - endDate
-        - client
+        - clientCode
         - area
         - domain
         - duration
@@ -1143,8 +1334,8 @@ components:
       required:
         - code
         - name
-        - project
-        - client
+        - projectCode
+        - clientCode
         - openingDate
         - closingDate
         - priority
@@ -1280,8 +1471,8 @@ components:
       type: object
       required:
         - code
-        - candidate
-        - opportunity
+        - candidateCode
+        - opportunityCode
         - skills
       properties:
         code:
@@ -1310,6 +1501,8 @@ components:
                 - LOW
               experience:
                 type: integer
+                format: int32
+
     patchedCandidate:
       type: object
       properties:
@@ -1369,6 +1562,7 @@ components:
       type: object
       required:
         - code
+        - employeeId
         - name
         - surname
         - birthDate
@@ -1381,6 +1575,8 @@ components:
         - interest
       properties:
         code:
+          type: string
+        employeeId:
           type: string
         name:
           type: string
@@ -1398,7 +1594,7 @@ components:
               type: string
             category:
               type: string
-            fromDate:
+            initDate:
               type: string
               format: date
         knows:
@@ -1408,6 +1604,10 @@ components:
               type: string
             level:
               type: string
+            primary:
+              type: boolean
+            avoidable:
+              type: boolean
         work_with:
           type: array
           items: 
@@ -1429,10 +1629,16 @@ components:
           type: array
           items:
             type: string
+        certificates:
+          type: array
+          items:
+            $ref: "#/components/schemas/certificate"
 
     patchedPeople:
       type: object
       properties:
+        employeeId:
+          type: string
         name:
           type: string
         surname:
@@ -1448,6 +1654,10 @@ components:
               type: string
             level:
               type: string
+            primary:
+              type: boolean
+            avoidable:
+              type: boolean
         work_with:
           type: array
           items:
@@ -1469,6 +1679,21 @@ components:
           type: array
           items:
             type: string
+        certificates:
+          type: array
+          items:
+            $ref: "#/components/schemas/certificate"
+
+    certificate:
+      type: object
+      properties:
+        code:
+          type: string
+        comment:
+          type: string
+        date:
+          type: string
+          format: date
 
     title:
       type: string
@@ -1496,6 +1721,67 @@ components:
         endDate:
           type: string
           format: date
+
+    teams:
+      type: array
+      items:
+        $ref: "#/components/schemas/team"
+
+    team:
+      type: object
+      required:
+        - code
+        - name
+        - description
+        - tags
+        - members
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              peopleCode:
+                type: string
+              position:
+                type: string
+                enum:
+                  - DIRECTOR
+                  - HEAD
+
+    patchedTeam:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              peopleCode:
+                type: string
+              position:
+                type: string
+                enum:
+                  - DIRECTOR
+                  - HEAD
 
     error:
       type: object

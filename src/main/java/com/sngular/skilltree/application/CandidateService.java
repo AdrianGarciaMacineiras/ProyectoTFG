@@ -12,7 +12,7 @@ public interface CandidateService {
 
     Candidate findByCode(final String candidatenode);
 
-    boolean deleteBeCode(final String candidatenode);
+    boolean deleteByCode(final String candidatenode);
 
     Candidate update(final String candidatenode, final Candidate newCandidate);
 

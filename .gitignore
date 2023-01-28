@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+/infra/conf/
+/infra/data/
+/infra/import/
+/infra/logs/
+/infra/plugins/
