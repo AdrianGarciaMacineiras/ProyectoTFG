@@ -14,8 +14,10 @@ public class CandidateNode {
     @Id
     private String code;
 
+    private PeopleNode candidate;
+
     private OpportunityNode opportunity;
 
-    List<SkillsCandidateRelationship> skills;
+    private List<SkillsCandidateRelationship> skills;
 
 }

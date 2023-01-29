@@ -97,5 +97,12 @@ public class CandidateFixtures {
                     .skills(List.of(SKILLS_CANDIDATE))
                     .build();
 
+    public static final Candidate UPDATED_CANDIDATE_BY_CODE =
+            Candidate.builder()
+                    .code("pc1120")
+                    .opportunity(OPPORTUNITY_BY_CODE)
+                    .skills(List.of(SKILLS_CANDIDATE))
+                    .build();
+
     public static final String CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/candidate_by_code.json");
 }

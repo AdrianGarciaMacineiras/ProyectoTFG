@@ -2,18 +2,21 @@ package com.sngular.skilltree.contract.mapper;
 
 import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedCandidateDTO;
+import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.model.Candidate;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import java.util.Collection;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ResolveService.class, OpportunityMapper.class})
 public interface CandidateMapper {
 
     CandidateDTO toCandidateDTO(Candidate candidate);
 
+    @Mapping(source = "opportunityCode", target = "opportunity", qualifiedByName = {"resolveService", "resolveCodeOpportunity"})
     Candidate toCandidate(CandidateDTO candidateDTO);
 
     List<CandidateDTO> toCandidatesDTO(Collection<Candidate> candidates);
