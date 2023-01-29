@@ -1,6 +1,7 @@
 package com.sngular.skilltree.candidate.controller;
 
 import com.sngular.skilltree.application.CandidateService;
+import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.CandidateController;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
@@ -37,12 +38,16 @@ final class CandidateControllerTest {
     @MockBean
     private CandidateService candidateService;
 
+    @MockBean
+    private ResolveService resolveService;
+
     @Test
     void getCandidateByCode() throws Exception {
         when(candidateService.findByCode(anyString())).thenReturn(CANDIDATE_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                                 .get("/candidate/pc1120")
                                 .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(CANDIDATE_BY_CODE_JSON));
     }
 
@@ -91,5 +96,6 @@ final class CandidateControllerTest {
         CandidateMapper candidateMapper() {
             return Mappers.getMapper(CandidateMapper.class);
         }
+
     }
 }

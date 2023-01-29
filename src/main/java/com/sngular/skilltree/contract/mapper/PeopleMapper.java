@@ -31,4 +31,8 @@ public interface PeopleMapper {
     People toPeople (PatchedPeopleDTO patchedPersonDTO);
 
     void update(@MappingTarget People oldPeople, People newPeople);
+
+    default String toPeopleCode(final People people) {
+        return people.code();
+    }
 }

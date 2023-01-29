@@ -78,6 +78,7 @@ class PeopleControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .content(PERSONDTO_BY_CODE_JSON))
+            .andExpect(status().isOk())
             .andExpect(content().json(PERSONDTO_BY_CODE_JSON));
   }
 
@@ -89,6 +90,7 @@ class PeopleControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .content(PERSON_BY_CODE_JSON))
+            .andExpect(status().isOk())
             .andExpect(content().json(PERSON_BY_CODE_JSON));
   }
 

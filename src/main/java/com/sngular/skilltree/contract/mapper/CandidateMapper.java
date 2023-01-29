@@ -11,12 +11,13 @@ import org.mapstruct.MappingTarget;
 import java.util.Collection;
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {ResolveService.class, OpportunityMapper.class})
+@Mapper(componentModel = "spring", uses = {ResolveService.class, OpportunityMapper.class, PeopleMapper.class})
 public interface CandidateMapper {
 
     CandidateDTO toCandidateDTO(Candidate candidate);
 
     @Mapping(source = "opportunityCode", target = "opportunity", qualifiedByName = {"resolveService", "resolveCodeOpportunity"})
+    @Mapping(source = "candidateCode", target = "candidate", qualifiedByName = {"resolveService", "resolveCodePeople"})
     Candidate toCandidate(CandidateDTO candidateDTO);
 
     List<CandidateDTO> toCandidatesDTO(Collection<Candidate> candidates);
