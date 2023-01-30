@@ -109,8 +109,5 @@ final class CandidateControllerTest {
         CandidateMapper candidateMapper() {
             return Mappers.getMapper(CandidateMapper.class);
         }
-
-        @MockBean
-        public ResolveService resolveService;
     }
 }
