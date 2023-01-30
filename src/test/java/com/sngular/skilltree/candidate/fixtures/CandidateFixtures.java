@@ -90,16 +90,29 @@ public class CandidateFixtures {
                     .experience(2)
                     .level(EnumLevel.LOW)
                     .build();
+
+    public static final People PEOPLE_BY_CODE =
+            People.builder()
+                    .code("pc1120")
+                    .name("people")
+                    .surname("surname")
+                    .employeeId("employeeId")
+                    .title(EnumTitle.SENIOR)
+                    .birthDate(date)
+                    .build();
+
     public static final Candidate CANDIDATE_BY_CODE =
             Candidate.builder()
-                    .code("pc1120")
+                    .code("c1120")
+                    .candidate(PEOPLE_BY_CODE)
                     .opportunity(OPPORTUNITY_BY_CODE)
                     .skills(List.of(SKILLS_CANDIDATE))
                     .build();
 
     public static final Candidate UPDATED_CANDIDATE_BY_CODE =
             Candidate.builder()
-                    .code("pc1120")
+                    .code("c1120")
+                    .candidate(PEOPLE_BY_CODE)
                     .opportunity(OPPORTUNITY_BY_CODE)
                     .skills(List.of(SKILLS_CANDIDATE))
                     .build();

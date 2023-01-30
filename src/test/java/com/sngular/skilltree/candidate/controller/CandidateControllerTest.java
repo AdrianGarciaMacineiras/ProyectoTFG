@@ -45,7 +45,7 @@ final class CandidateControllerTest {
     void getCandidateByCode() throws Exception {
         when(candidateService.findByCode(anyString())).thenReturn(CANDIDATE_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                                .get("/candidate/pc1120")
+                                .get("/candidate/c1120")
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(CANDIDATE_BY_CODE_JSON));

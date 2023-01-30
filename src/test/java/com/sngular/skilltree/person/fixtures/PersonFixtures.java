@@ -25,6 +25,7 @@ public final class PersonFixtures {
                 .code("pc1120")
                 .name("people")
                 .surname("surname")
+                .employeeId("employeeId")
                 .title(EnumTitle.SENIOR)
                 .birthDate(date)
                 .build();
@@ -34,6 +35,7 @@ public final class PersonFixtures {
                   .code("pc1121")
                   .name("people3")
                   .surname("surname3")
+                  .employeeId("employeeId")
                   .title(EnumTitle.SENIOR)
                   .birthDate(date)
                   .build();
@@ -43,6 +45,7 @@ public final class PersonFixtures {
                   .code("pc1120")
                   .name("people2")
                   .surname("surname2")
+                  .employeeId("employeeId")
                   .title(EnumTitle.DEVELOPER)
                   .birthDate(date)
                   .build();
