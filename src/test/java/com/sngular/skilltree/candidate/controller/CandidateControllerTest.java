@@ -91,7 +91,7 @@ final class CandidateControllerTest {
     }
 
     @Test
-    void addPerson() throws Exception {
+    void addCandidate() throws Exception {
         when(candidateService.create(any(Candidate.class))).thenReturn(CANDIDATE_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/candidate")

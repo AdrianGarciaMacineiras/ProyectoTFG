@@ -126,6 +126,6 @@ public class CandidateFixtures {
 
     public static final String CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/candidate_by_code.json");
 
-    public static final String UPDATED_CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/Updated_candidate_by_code.json");
+    public static final String UPDATED_CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/updated_candidate_by_code.json");
 
 }
