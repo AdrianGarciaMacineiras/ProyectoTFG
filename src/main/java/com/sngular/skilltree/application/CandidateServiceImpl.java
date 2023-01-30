@@ -38,8 +38,8 @@ public class CandidateServiceImpl implements CandidateService{
     }
 
     @Override
-    public Candidate update(String candidatenode, Candidate newCandidate) {
-        var oldCandidate = candidateRepository.findByCode(candidatenode);
+    public Candidate update(String candidatecode, Candidate newCandidate) {
+        var oldCandidate = candidateRepository.findByCode(candidatecode);
         mapper.update(oldCandidate, newCandidate);
         return candidateRepository.save(oldCandidate);
     }

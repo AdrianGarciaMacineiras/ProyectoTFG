@@ -4,7 +4,7 @@
   "opportunityCode": "itxtl1",
   "skills": [{
     "code": "sc1120",
-    "experience": 2,
-    "level": "LOW"
+    "experience": 3,
+    "level": "HIGH"
   }]
 }

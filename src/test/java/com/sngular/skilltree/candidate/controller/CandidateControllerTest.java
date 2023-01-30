@@ -82,11 +82,12 @@ final class CandidateControllerTest {
     void updateCandidate() throws Exception {
         when(candidateService.update(anyString(),any(Candidate.class))).thenReturn(UPDATED_CANDIDATE_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/people/pc1120")
+                        .put("/candidate/c1120")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(PERSONDTO_BY_CODE_JSON))
-                .andExpect(content().json(PERSONDTO_BY_CODE_JSON));
+                        .content(UPDATED_CANDIDATE_BY_CODE_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(UPDATED_CANDIDATE_BY_CODE_JSON));
     }
 
     @TestConfiguration

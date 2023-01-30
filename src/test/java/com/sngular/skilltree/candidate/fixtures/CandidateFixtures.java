@@ -91,6 +91,13 @@ public class CandidateFixtures {
                     .level(EnumLevel.LOW)
                     .build();
 
+    public static final SkillsCandidate UPDATED_SKILLS_CANDIDATE =
+            SkillsCandidate.builder()
+                    .code("sc1120")
+                    .experience(3)
+                    .level(EnumLevel.HIGH)
+                    .build();
+
     public static final People PEOPLE_BY_CODE =
             People.builder()
                     .code("pc1120")
@@ -114,8 +121,11 @@ public class CandidateFixtures {
                     .code("c1120")
                     .candidate(PEOPLE_BY_CODE)
                     .opportunity(OPPORTUNITY_BY_CODE)
-                    .skills(List.of(SKILLS_CANDIDATE))
+                    .skills(List.of(UPDATED_SKILLS_CANDIDATE))
                     .build();
 
     public static final String CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/candidate_by_code.json");
+
+    public static final String UPDATED_CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/Updated_candidate_by_code.json");
+
 }

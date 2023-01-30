@@ -14,6 +14,8 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {ResolveService.class, OpportunityMapper.class, PeopleMapper.class})
 public interface CandidateMapper {
 
+    @Mapping(source = "candidate.code", target = "candidateCode")
+    @Mapping(source = "opportunity.code", target = "opportunityCode")
     CandidateDTO toCandidateDTO(Candidate candidate);
 
     @Mapping(source = "opportunityCode", target = "opportunity", qualifiedByName = {"resolveService", "resolveCodeOpportunity"})
