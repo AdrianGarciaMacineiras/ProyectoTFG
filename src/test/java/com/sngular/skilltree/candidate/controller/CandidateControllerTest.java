@@ -4,7 +4,7 @@ import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.CandidateController;
-import com.sngular.skilltree.contract.mapper.CandidateMapper;
+import com.sngular.skilltree.contract.mapper.*;
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.People;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.sngular.skilltree.candidate.fixtures.CandidateFixtures.*;
-import static com.sngular.skilltree.person.fixtures.PersonFixtures.PERSONDTO_BY_CODE_JSON;
-import static com.sngular.skilltree.person.fixtures.PersonFixtures.UPDATED_PEOPLE_BY_CODE;
+import static com.sngular.skilltree.person.fixtures.PersonFixtures.*;
+import static com.sngular.skilltree.person.fixtures.PersonFixtures.PERSON_BY_CODE_JSON;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -90,6 +90,18 @@ final class CandidateControllerTest {
                 .andExpect(content().json(UPDATED_CANDIDATE_BY_CODE_JSON));
     }
 
+    @Test
+    void addPerson() throws Exception {
+        when(candidateService.create(any(Candidate.class))).thenReturn(CANDIDATE_BY_CODE);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/candidate")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(CANDIDATE_BY_CODE_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(CANDIDATE_BY_CODE_JSON));
+    }
+
     @TestConfiguration
     static class CandidateControllerTestConfiguration {
 
@@ -98,5 +110,7 @@ final class CandidateControllerTest {
             return Mappers.getMapper(CandidateMapper.class);
         }
 
+        @MockBean
+        public ResolveService resolveService;
     }
 }
