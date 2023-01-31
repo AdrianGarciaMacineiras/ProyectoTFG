@@ -79,7 +79,7 @@ class PeopleControllerTest {
                             .accept(MediaType.APPLICATION_JSON)
                             .content(PERSONDTO_BY_CODE_JSON))
             .andExpect(status().isOk())
-            .andExpect(content().json(PERSONDTO_BY_CODE_JSON));
+            .andExpect(content().json(UPDATED_PERSON_BY_CODE_JSON));
   }
 
   @Test
