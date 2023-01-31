@@ -1,5 +1,6 @@
 package com.sngular.skilltree.contract.mapper;
 
+
 import com.sngular.skilltree.api.model.PatchedProjectDTO;
 import com.sngular.skilltree.api.model.ProjectDTO;
 import com.sngular.skilltree.application.ResolveService;

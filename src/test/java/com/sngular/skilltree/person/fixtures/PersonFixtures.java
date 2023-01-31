@@ -23,10 +23,10 @@ public final class PersonFixtures {
   public static final People PEOPLE_BY_CODE =
         People.builder()
                 .code("pc1120")
-                .name("people")
-                .surname("surname")
-                .employeeId("employeeId")
-                .title(EnumTitle.SENIOR)
+                .name("people2")
+                .surname("LaPel")
+                .employeeId("900003940059")
+                .title(EnumTitle.DEVELOPER)
                 .birthDate(date)
                 .build();
 

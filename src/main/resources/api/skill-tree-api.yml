@@ -616,7 +616,7 @@ paths:
       description: Returns an individual skill as well as the skills under it, identified by a code
       operationId: getSkillByCode
       parameters:
-        - name: skillCode
+        - name: skillcode
           in: path
           required: true
           schema:
@@ -1367,7 +1367,9 @@ components:
         role:
           type: string
         skills:
-          $ref: "#/components/schemas/skills"
+          type: array
+          items:
+            $ref: "#/components/schemas/opportunitySkills"
 
     patchedOpportunity:
       type: object
@@ -1386,7 +1388,9 @@ components:
         role:
           type: string
         skills:
-          $ref: "#/components/schemas/skills"
+          type: array
+          items:
+            $ref: "#/components/schemas/opportunitySkills"
 
     mode:
       type: string
@@ -1528,28 +1532,28 @@ components:
                 type: integer
                 format: int32
 
-    skills:
+    opportunitySkills:
       type: object
       required:
         - skill
-        - level_req
-        - min_level
-        - min_exp
+        - levelReq
+        - minLevel
+        - minExp
       properties:
         skill:
           type: string
-        level_req:
+        levelReq:
           type: string
           enum:
             - MANDATORY
             - NICE_TO_HAVE
-        min_level:
+        minLevel:
           type: string
           enum:
             - HIGH
             - MEDIUM
             - LOW
-        min_exp:
+        minExp:
           type: integer
           format: int32
 

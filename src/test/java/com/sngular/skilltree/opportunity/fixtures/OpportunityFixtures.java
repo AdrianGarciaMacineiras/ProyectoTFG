@@ -1,12 +1,18 @@
-package com.sngular.skilltree.candidate.services;
+package com.sngular.skilltree.opportunity.fixtures;
 
 import com.sngular.skilltree.model.*;
+import com.sngular.skilltree.testutil.FileHelper;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
-public class CandidateFixtures {
+public class OpportunityFixtures {
 
     public static final Date date = new GregorianCalendar(2023, Calendar.JANUARY, 20).getTime();
+
+    public static final String OPPORTUNITY_BY_CODE_JSON = FileHelper.getContent("/opportunity/opportunity_by_code.json");
 
     public static final Office OFFICE =
             Office.builder()
@@ -69,7 +75,7 @@ public class CandidateFixtures {
                     .code("itxtl1")
                     .office("itxhq")
                     .role("Team Leader")
-                    .name("Teach Leader at INDITEX")
+                    .name("Tech Leader at INDITEX")
                     .client(CLIENT_BY_CODE)
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
@@ -78,49 +84,4 @@ public class CandidateFixtures {
                     .project(PROJECT_BY_CODE)
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
-
-    public static final SkillsCandidate SKILLS_CANDIDATE =
-            SkillsCandidate.builder()
-                    .code("sc1120")
-                    .experience(2)
-                    .level(EnumLevel.LOW)
-                    .build();
-
-    public static final SkillsCandidate UPDATED_SKILLS_CANDIDATE =
-            SkillsCandidate.builder()
-                    .code("sc1120")
-                    .experience(3)
-                    .level(EnumLevel.HIGH)
-                    .build();
-
-    public static final People PEOPLE_BY_CODE =
-            People.builder()
-                    .code("pc1120")
-                    .name("people")
-                    .surname("surname")
-                    .employeeId("employeeId")
-                    .title(EnumTitle.SENIOR)
-                    .birthDate(date)
-                    .build();
-
-    public static final Candidate CANDIDATE_BY_CODE =
-            Candidate.builder()
-                    .code("c1120")
-                    .candidate(PEOPLE_BY_CODE)
-                    .opportunity(OPPORTUNITY_BY_CODE)
-                    .skills(List.of(SKILLS_CANDIDATE))
-                    .build();
-
-    public static final Candidate CANDIDATE2_BY_CODE =
-            Candidate.builder()
-                    .code("c1120")
-                    .candidate(PEOPLE_BY_CODE)
-                    .opportunity(OPPORTUNITY_BY_CODE)
-                    .skills(List.of(SKILLS_CANDIDATE))
-                    .build();
-
-    public static final List<Candidate> CANDIDATE_LIST = new ArrayList<Candidate>(){{
-        add(CANDIDATE_BY_CODE);
-        add(CANDIDATE2_BY_CODE);
-    }};
 }

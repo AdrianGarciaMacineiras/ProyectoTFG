@@ -1,6 +1,7 @@
 package com.sngular.skilltree.application;
 
 import com.sngular.skilltree.model.Opportunity;
+import com.sngular.skilltree.model.OpportunitySkill;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Skill;
 import lombok.RequiredArgsConstructor;
@@ -52,4 +53,5 @@ public class ResolveService {
     public People resolveCodePeople(final String peopleCode) {
         return peopleService.findByCode(peopleCode);
     }
+
 }

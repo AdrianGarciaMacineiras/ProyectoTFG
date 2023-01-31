@@ -6,7 +6,6 @@ import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.CandidateController;
 import com.sngular.skilltree.contract.mapper.*;
 import com.sngular.skilltree.model.Candidate;
-import com.sngular.skilltree.model.People;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -20,8 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.sngular.skilltree.candidate.fixtures.CandidateFixtures.*;
-import static com.sngular.skilltree.person.fixtures.PersonFixtures.*;
-import static com.sngular.skilltree.person.fixtures.PersonFixtures.PERSON_BY_CODE_JSON;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

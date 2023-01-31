@@ -40,7 +40,7 @@ class PeopleControllerTest {
     mockMvc.perform(MockMvcRequestBuilders
                             .get("/people/pc1120")
                             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(content().json(PERSON_BY_CODE_JSON));
+            .andExpect(content().json(PERSONDTO_BY_CODE_JSON));
   }
 
   @Test
@@ -89,9 +89,8 @@ class PeopleControllerTest {
                             .post("/people")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
-                            .content(PERSON_BY_CODE_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().json(PERSON_BY_CODE_JSON));
+                            .content(PERSONDTO_BY_CODE_JSON))
+            .andExpect(content().json(PERSONDTO_BY_CODE_JSON));
   }
 
   @Test

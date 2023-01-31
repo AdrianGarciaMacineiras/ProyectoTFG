@@ -13,6 +13,10 @@ public class CandidateFixtures {
 
     public static final Date date = new GregorianCalendar(2023, Calendar.JANUARY, 20).getTime();
 
+    public static final String CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/candidate_by_code.json");
+
+    public static final String UPDATED_CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/updated_candidate_by_code.json");
+
     public static final Office OFFICE =
             Office.builder()
                     .code("itxhq")
@@ -64,9 +68,9 @@ public class CandidateFixtures {
     public static final OpportunitySkill OPPORTUNITY_SKILL =
             OpportunitySkill.builder()
                     .skill(SKILL_BY_CODE)
-                    .enumLevelReq(EnumLevelReq.MANDATORY)
+                    .levelReq(EnumLevelReq.MANDATORY)
                     .minExp(7)
-                    .enumMinLevel(EnumMinLevel.HIGH)
+                    .minLevel(EnumMinLevel.HIGH)
                     .build();
 
     public static final Opportunity OPPORTUNITY_BY_CODE =
@@ -77,7 +81,7 @@ public class CandidateFixtures {
                     .name("Teach Leader at INDITEX")
                     .client(CLIENT_BY_CODE)
                     .closingDate(date)
-                    .enumMode(EnumMode.REMOTE)
+                    .mode(EnumMode.REMOTE)
                     .openingDate(date)
                     .priority("HIGH")
                     .project(PROJECT_BY_CODE)
@@ -123,9 +127,5 @@ public class CandidateFixtures {
                     .opportunity(OPPORTUNITY_BY_CODE)
                     .skills(List.of(UPDATED_SKILLS_CANDIDATE))
                     .build();
-
-    public static final String CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/candidate_by_code.json");
-
-    public static final String UPDATED_CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/updated_candidate_by_code.json");
 
 }
