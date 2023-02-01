@@ -1376,8 +1376,15 @@ components:
       properties:
         name:
           type: string
+        projectCode:
+          type: string
+        clientCode:
+          type: string
         priority:
           type: string
+        openingDate:
+          type: string
+          format: date
         closingDate:
           type: string
           format: date

@@ -7,6 +7,7 @@ import com.sngular.skilltree.contract.OpportunityController;
 import com.sngular.skilltree.contract.mapper.OpportunityMapper;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import com.sngular.skilltree.model.Opportunity;
+import com.sngular.skilltree.model.People;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -21,6 +22,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.sngular.skilltree.opportunity.fixtures.OpportunityFixtures.*;
 import static com.sngular.skilltree.opportunity.fixtures.OpportunityFixtures.OPPORTUNITY_BY_CODE;
+import static com.sngular.skilltree.person.fixtures.PersonFixtures.*;
+import static com.sngular.skilltree.person.fixtures.PersonFixtures.LIST_PERSON_JSON;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -92,6 +95,25 @@ final class OpportunityControllerTest {
                 .andExpect(content().json(OPPORTUNITY_BY_CODE_JSON));
     }
 
+    @Test
+    void patchOpportunity() throws Exception {
+        when(opportunityService.patch(anyString(),any(Opportunity.class))).thenReturn(UPDATED_OPPORTUNITY_BY_CODE);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .patch("/opportunity/itxtl1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(PATCH_OPPORTUNITY_BY_CODE_JSON))
+                .andExpect(content().json(PATCH_OPPORTUNITY_BY_CODE_JSON));
+    }
+
+    @Test
+    void getOpportunities() throws Exception {
+        when(opportunityService.getAll()).thenReturn(OPPORTUNITY_LIST);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/opportunity")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(LIST_OPPORTUNITY_JSON));
+    }
 
     @TestConfiguration
     static class OpportunityControllerTestConfiguration {

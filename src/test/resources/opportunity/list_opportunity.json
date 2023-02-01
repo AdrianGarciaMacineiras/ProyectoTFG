@@ -1,0 +1,37 @@
+[{
+    "code": "itxtl1",
+    "name": "Tech Leader at INDITEX",
+    "projectCode": "cosmosdata",
+    "clientCode": "itx",
+    "openingDate": "20/1/23, 0:00",
+    "closingDate": "20/1/23, 0:00",
+    "priority": "HIGH",
+    "mode": "REMOTE",
+    "office": "itxhq",
+    "role": "Team Leader",
+    "opportunitySkillsDTO": [{
+      "skill": "s1120",
+      "levelReq": "MANDATORY",
+      "minLevel": "HIGH",
+      "minExp": 7
+    }]
+  },
+  {
+    "code": "itxtl2",
+    "name": "Tech Leader at INDITEX",
+    "projectCode": "cosmosdata",
+    "clientCode": "itx",
+    "openingDate": "20/1/23, 0:00",
+    "closingDate": "20/1/23, 0:00",
+    "priority": "HIGH",
+    "mode": "REMOTE",
+    "office": "itxhq",
+    "role": "Team Leader",
+    "opportunitySkillsDTO": [{
+      "skill": "s1120",
+      "levelReq": "MANDATORY",
+      "minLevel": "HIGH",
+      "minExp": 7
+    }]
+  }
+]

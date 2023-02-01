@@ -67,4 +67,5 @@ public class PeopleServiceTest {
         boolean result = peopleService.deleteByCode("pc1120");
         assertThat(result).isTrue();
     }
+
 }
