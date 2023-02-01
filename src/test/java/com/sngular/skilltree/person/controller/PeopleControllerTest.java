@@ -40,7 +40,7 @@ class PeopleControllerTest {
     mockMvc.perform(MockMvcRequestBuilders
                             .get("/people/pc1120")
                             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(content().json(PERSONDTO_BY_CODE_JSON));
+            .andExpect(content().json(PERSON_BY_CODE_JSON));
   }
 
   @Test
@@ -77,7 +77,7 @@ class PeopleControllerTest {
                             .put("/people/pc1120")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
-                            .content(PERSONDTO_BY_CODE_JSON))
+                            .content(PERSON_BY_CODE_JSON))
             .andExpect(status().isOk())
             .andExpect(content().json(UPDATED_PERSON_BY_CODE_JSON));
   }
@@ -89,8 +89,8 @@ class PeopleControllerTest {
                             .post("/people")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
-                            .content(PERSONDTO_BY_CODE_JSON))
-            .andExpect(content().json(PERSONDTO_BY_CODE_JSON));
+                            .content(PERSON_BY_CODE_JSON))
+            .andExpect(content().json(PERSON_BY_CODE_JSON));
   }
 
   @Test
@@ -100,8 +100,8 @@ class PeopleControllerTest {
                             .patch("/people/pc1120")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
-                            .content(PATCH_PERSONDTO_BY_CODE_JSON))
-            .andExpect(content().json(PATCH_PERSONDTO_BY_CODE_JSON));
+                            .content(PATCH_PERSON_BY_CODE_JSON))
+            .andExpect(content().json(PATCH_PERSON_BY_CODE_JSON));
   }
 
   @Test
@@ -110,7 +110,7 @@ class PeopleControllerTest {
     mockMvc.perform(MockMvcRequestBuilders
                             .get("/people")
                             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(content().json(LIST_PERSONDTO_JSON));
+            .andExpect(content().json(LIST_PERSON_JSON));
   }
 
   @TestConfiguration

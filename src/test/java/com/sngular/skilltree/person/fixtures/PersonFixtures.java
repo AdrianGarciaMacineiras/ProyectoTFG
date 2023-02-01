@@ -10,15 +10,14 @@ public final class PersonFixtures {
 
   public static final Date date = new GregorianCalendar(2023, Calendar.JANUARY, 20).getTime();
 
-  public static final String PERSON_BY_CODE_JSON = FileHelper.getContent("/person/person_by_code.json");
 
   public static final String UPDATED_PERSON_BY_CODE_JSON = FileHelper.getContent("/person/updated_person_by_code.json");
 
-  public static final String PERSONDTO_BY_CODE_JSON = FileHelper.getContent("/person/persondto.json");
+  public static final String PERSON_BY_CODE_JSON = FileHelper.getContent("/person/person_by_code.json");
 
-  public static final String PATCH_PERSONDTO_BY_CODE_JSON = FileHelper.getContent("/person/patched_persondto.json");
+  public static final String PATCH_PERSON_BY_CODE_JSON = FileHelper.getContent("/person/patched_person.json");
 
-  public static final String LIST_PERSONDTO_JSON = FileHelper.getContent("/person/list_persondto.json");
+  public static final String LIST_PERSON_JSON = FileHelper.getContent("/person/list_person.json");
 
   public static final People PEOPLE_BY_CODE =
         People.builder()

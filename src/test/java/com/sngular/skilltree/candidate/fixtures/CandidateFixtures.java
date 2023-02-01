@@ -17,6 +17,9 @@ public class CandidateFixtures {
 
     public static final String UPDATED_CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/updated_candidate_by_code.json");
 
+    public static final String PATCH_CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/patched_candidate.json");
+
+
     public static final Office OFFICE =
             Office.builder()
                     .code("itxhq")
