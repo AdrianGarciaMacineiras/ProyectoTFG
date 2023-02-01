@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;

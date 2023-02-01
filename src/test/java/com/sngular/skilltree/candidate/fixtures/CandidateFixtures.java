@@ -59,7 +59,7 @@ public class CandidateFixtures {
                     .duration("Ethernal")
                     .roles(List.of(ROLES))
                     .endDate(date)
-                    .enumGuards(EnumGuards.PASSIVE)
+                    .guards(EnumGuards.PASSIVE)
                     .historic(List.of("Historic"))
                     .initDate(date)
                     .name("Cosmos Data")

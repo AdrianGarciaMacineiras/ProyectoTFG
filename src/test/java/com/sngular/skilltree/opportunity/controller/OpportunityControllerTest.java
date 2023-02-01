@@ -7,7 +7,6 @@ import com.sngular.skilltree.contract.OpportunityController;
 import com.sngular.skilltree.contract.mapper.OpportunityMapper;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import com.sngular.skilltree.model.Opportunity;
-import com.sngular.skilltree.model.People;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -22,8 +21,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.sngular.skilltree.opportunity.fixtures.OpportunityFixtures.*;
 import static com.sngular.skilltree.opportunity.fixtures.OpportunityFixtures.OPPORTUNITY_BY_CODE;
-import static com.sngular.skilltree.person.fixtures.PersonFixtures.*;
-import static com.sngular.skilltree.person.fixtures.PersonFixtures.LIST_PERSON_JSON;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;

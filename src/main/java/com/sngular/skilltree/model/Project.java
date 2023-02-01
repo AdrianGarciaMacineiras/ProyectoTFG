@@ -8,6 +8,6 @@ import java.util.List;
 
 @Builder
 public record Project(String code, String tag, String name, String desc, Date initDate, Date endDate, String domain,
-                      String duration, EnumGuards enumGuards, List<Skill> skills, List<String> historic,
+                      String duration, EnumGuards guards, List<Skill> skills, List<String> historic,
                       Client client, String area, List<ProjectRoles> roles) {
 }

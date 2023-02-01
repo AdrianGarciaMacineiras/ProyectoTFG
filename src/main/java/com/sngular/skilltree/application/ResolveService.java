@@ -1,7 +1,6 @@
 package com.sngular.skilltree.application;
 
 import com.sngular.skilltree.model.Opportunity;
-import com.sngular.skilltree.model.OpportunitySkill;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Skill;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +20,17 @@ public class ResolveService {
     private final OpportunityService opportunityService;
 
     private final PeopleService peopleService;
+
+    public String resolveSkillToCode(final Skill skill) {return skill.name();}
+
+    @Named("resolveSkillToCode")
+    public List<String> resolveSKillToCode(final List<Skill> skillList){
+        final var codeList = new ArrayList<String>();
+        for (var skill : skillList) {
+            codeList.add(resolveSkillToCode(skill));
+        }
+        return codeList;
+    }
 
     public Skill resolveCodeSkill(final String code) {
         return skillService.findByCode(code);

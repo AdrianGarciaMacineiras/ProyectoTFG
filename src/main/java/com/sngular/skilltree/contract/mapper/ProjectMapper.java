@@ -14,6 +14,9 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {SkillMapper.class, ResolveService.class})
 public interface ProjectMapper {
 
+    @Mapping(source = "client.code", target = "clientCode")
+    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveSkillToCode"})
+    @Mapping(source = "roles", target = "rolesDTO")
     ProjectDTO toProjectDTO(Project project);
 
     @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveCodeSkill"})
