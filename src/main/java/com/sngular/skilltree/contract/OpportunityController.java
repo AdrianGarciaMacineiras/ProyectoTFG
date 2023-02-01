@@ -44,7 +44,7 @@ public class OpportunityController implements OpportunityApi {
 
     @Override
     public ResponseEntity<Void> deleteOpportunity(String opportunitycode) {
-        var result = opportunityService.deleteBeCode(opportunitycode);
+        var result = opportunityService.deleteByCode(opportunitycode);
         return ResponseEntity.status(result? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 

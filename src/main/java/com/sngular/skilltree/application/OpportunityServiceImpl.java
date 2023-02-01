@@ -32,7 +32,7 @@ public class OpportunityServiceImpl implements OpportunityService {
   }
 
   @Override
-  public boolean deleteBeCode(final String opportunitycode) {
+  public boolean deleteByCode(final String opportunitycode) {
     return opportunityRepository.deleteByCode(opportunitycode);
   }
 

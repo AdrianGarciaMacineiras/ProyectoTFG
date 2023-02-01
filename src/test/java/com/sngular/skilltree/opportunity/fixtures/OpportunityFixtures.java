@@ -14,6 +14,8 @@ public class OpportunityFixtures {
 
     public static final String OPPORTUNITY_BY_CODE_JSON = FileHelper.getContent("/opportunity/opportunity_by_code.json");
 
+    public static final String UPDATED_OPPORTUNITY_BY_CODE_JSON = FileHelper.getContent("/opportunity/updated_opportunity_by_code.json");
+
     public static final Office OFFICE =
             Office.builder()
                     .code("itxhq")
@@ -81,6 +83,21 @@ public class OpportunityFixtures {
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)
                     .priority("HIGH")
+                    .project(PROJECT_BY_CODE)
+                    .skills(List.of(OPPORTUNITY_SKILL))
+                    .build();
+
+    public static final Opportunity UPDATED_OPPORTUNITY_BY_CODE =
+            Opportunity.builder()
+                    .code("itxtl1")
+                    .office("itxhq2")
+                    .role("Leader")
+                    .name("Leader at INDITEX")
+                    .client(CLIENT_BY_CODE)
+                    .closingDate(date)
+                    .mode(EnumMode.REMOTE)
+                    .openingDate(date)
+                    .priority("MEDIUM")
                     .project(PROJECT_BY_CODE)
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();

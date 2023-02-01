@@ -2,9 +2,11 @@ package com.sngular.skilltree.opportunity.controller;
 
 import com.sngular.skilltree.application.OpportunityService;
 import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.OpportunityController;
 import com.sngular.skilltree.contract.mapper.OpportunityMapper;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
+import com.sngular.skilltree.model.Opportunity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -17,8 +19,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.sngular.skilltree.opportunity.fixtures.OpportunityFixtures.*;
 import static com.sngular.skilltree.opportunity.fixtures.OpportunityFixtures.OPPORTUNITY_BY_CODE;
-import static com.sngular.skilltree.opportunity.fixtures.OpportunityFixtures.OPPORTUNITY_BY_CODE_JSON;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,6 +47,48 @@ final class OpportunityControllerTest {
                                 .get("/opportunity/itxtl1")
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
+                .andExpect(content().json(OPPORTUNITY_BY_CODE_JSON));
+    }
+
+    @Test
+    void shouldDeleteOpportunityBySuccess() throws Exception{
+        when(opportunityService.deleteByCode(anyString())).thenReturn(true);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/opportunity/itxtl1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    void shouldDeleteCandidateFail() throws Exception{
+        when(opportunityService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("OPportunity", "itxtl1"));
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/opportunity/itxtl1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+   @Test
+    void updateOpportunity() throws Exception {
+        when(opportunityService.update(anyString(),any(Opportunity.class))).thenReturn(UPDATED_OPPORTUNITY_BY_CODE);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/opportunity/itxtl1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(UPDATED_OPPORTUNITY_BY_CODE_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(UPDATED_OPPORTUNITY_BY_CODE_JSON));
+    }
+
+    @Test
+    void addCandidate() throws Exception {
+        when(opportunityService.create(any(Opportunity.class))).thenReturn(OPPORTUNITY_BY_CODE);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/opportunity")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(OPPORTUNITY_BY_CODE_JSON))
+                .andExpect(status().isOk())
                 .andExpect(content().json(OPPORTUNITY_BY_CODE_JSON));
     }
 

@@ -12,8 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.List;
+
 import static com.sngular.skilltree.candidate.services.CandidateFixtures.CANDIDATE2_BY_CODE;
 import static com.sngular.skilltree.candidate.services.CandidateFixtures.CANDIDATE_BY_CODE;
 import static com.sngular.skilltree.candidate.services.CandidateFixtures.CANDIDATE_LIST;
@@ -53,7 +53,7 @@ public class CandidateServiceTest {
     @Test
     @DisplayName("Testing findByCode a person")
     void testFindByCode(){
-        when(candidateService.findByCode(anyString())).thenReturn(CANDIDATE_BY_CODE);
+        when(candidateRepository.findByCode(anyString())).thenReturn(CANDIDATE_BY_CODE);
         Candidate result = candidateService.findByCode("c1120");
         assertThat(result).isEqualTo(CANDIDATE_BY_CODE);
     }

@@ -1,0 +1,18 @@
+{
+  "code": "itxtl1",
+  "name": "Leader at INDITEX",
+  "projectCode": "cosmosdata",
+  "clientCode": "itx",
+  "openingDate": "20/1/23, 0:00",
+  "closingDate": "20/1/23, 0:00",
+  "priority": "MEDIUM",
+  "mode": "REMOTE",
+  "office": "itxhq2",
+  "role": "Leader",
+  "opportunitySkillsDTO": [{
+    "skill": "s1120",
+    "levelReq": "MANDATORY",
+    "minLevel": "HIGH",
+    "minExp": 7
+  }]
+}
