@@ -1,0 +1,23 @@
+[{
+  "code": "c1120",
+  "candidateCode": "pc1120",
+  "opportunityCode": "itxtl1",
+  "skills":
+    [{
+    "code": "sc1120",
+    "experience": 2,
+    "level": "LOW"
+    }]
+  },
+  {
+    "code": "c1121",
+    "candidateCode": "pc1120",
+    "opportunityCode": "itxtl1",
+    "skills":
+      [{
+        "code": "sc1120",
+        "experience": 2,
+        "level": "LOW"
+      }]
+  }
+]

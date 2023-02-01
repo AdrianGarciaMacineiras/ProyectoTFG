@@ -4,10 +4,7 @@ package com.sngular.skilltree.candidate.fixtures;
 import com.sngular.skilltree.model.*;
 import com.sngular.skilltree.testutil.FileHelper;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 public class CandidateFixtures {
 
@@ -19,6 +16,7 @@ public class CandidateFixtures {
 
     public static final String PATCH_CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/patched_candidate.json");
 
+    public static final String LIST_CANDIDATE_JSON = FileHelper.getContent("/candidate/list_candidate.json");
 
     public static final Office OFFICE =
             Office.builder()
@@ -123,6 +121,14 @@ public class CandidateFixtures {
                     .skills(List.of(SKILLS_CANDIDATE))
                     .build();
 
+    public static final Candidate CANDIDATE2_BY_CODE =
+            Candidate.builder()
+                    .code("c1121")
+                    .candidate(PEOPLE_BY_CODE)
+                    .opportunity(OPPORTUNITY_BY_CODE)
+                    .skills(List.of(SKILLS_CANDIDATE))
+                    .build();
+
     public static final Candidate UPDATED_CANDIDATE_BY_CODE =
             Candidate.builder()
                     .code("c1120")
@@ -131,4 +137,8 @@ public class CandidateFixtures {
                     .skills(List.of(UPDATED_SKILLS_CANDIDATE))
                     .build();
 
+    public static final List<Candidate> CANDIDATE_LIST = new ArrayList<Candidate>(){{
+        add(CANDIDATE_BY_CODE);
+        add(CANDIDATE2_BY_CODE);
+    }};
 }
