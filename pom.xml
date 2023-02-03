@@ -67,7 +67,7 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.5.3.Final</version>
 		</dependency>
-    </dependencies>
+  </dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -82,15 +82,15 @@
 
 	<build>
 		<plugins>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-contract-maven-plugin</artifactId>
 				<version>3.1.5</version>
 				<extensions>true</extensions>
-		<!--		<configuration>
+				<configuration>
 					<testFramework>JUNIT5</testFramework>
 					<contractsDirectory>${project.basedir}/src/main/resources/api</contractsDirectory>
-				</configuration>-->
+				</configuration>
 				<dependencies>
 					<dependency>
 						<groupId>net.coru</groupId>
@@ -98,7 +98,7 @@
 						<version>3.3.0</version>
 					</dependency>
 				</dependencies>
-			</plugin>
+			</plugin>-->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -114,7 +114,7 @@
 			<plugin>
 				<groupId>com.sngular</groupId>
 				<artifactId>scs-multiapi-maven-plugin</artifactId>
-				<version>4.3.11</version>
+				<version>4.3.12</version>
 				<executions>
 					<execution>
 						<id>openapi</id>

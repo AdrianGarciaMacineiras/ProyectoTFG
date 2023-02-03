@@ -60,13 +60,7 @@ public class ProjectFixtures {
                     .name("spring")
                     .build();
 
-    public static final List<Skill> SKILL_LIST = new ArrayList<Skill>(){{
-        add(SKILL1);
-        add(SKILL2);
-        add(SKILL3);
-        add(SKILL4);
-        add(SKILL5);
-    }};
+    public static final List<Skill> SKILL_LIST = List.of(SKILL1, SKILL2, SKILL3, SKILL4, SKILL5);
 
     public static final ProjectRoles ROLE1 =
             ProjectRoles.builder()
@@ -86,11 +80,7 @@ public class ProjectFixtures {
                     .number(1)
                     .build();
 
-    public static final List<ProjectRoles> ROLES_LIST = new ArrayList<ProjectRoles>(){{
-        add(ROLE1);
-        add(ROLE2);
-        add(ROLE3);
-    }};
+    public static final List<ProjectRoles> ROLES_LIST = List.of(ROLE1, ROLE2, ROLE3);
 
     public  static final Project PROJECT_BY_CODE =
             Project.builder()

@@ -11,7 +11,7 @@
   "duration": "Ethernal",
   "guards": "PASSIVE",
   "skills": ["jdk11", "kafka", "db2", "mongodb", "spring"],
-  "rolesDTO":
+  "roles":
     [
       {
         "rol": "SENIOR",

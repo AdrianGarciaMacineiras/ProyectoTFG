@@ -1369,7 +1369,7 @@ components:
         skills:
           type: array
           items:
-            $ref: "#/components/schemas/opportunitySkills"
+            $ref: "#/components/schemas/opportunitySkill"
 
     patchedOpportunity:
       type: object
@@ -1397,7 +1397,7 @@ components:
         skills:
           type: array
           items:
-            $ref: "#/components/schemas/opportunitySkills"
+            $ref: "#/components/schemas/opportunitySkill"
 
     mode:
       type: string
@@ -1495,24 +1495,7 @@ components:
         skills:
           type: array
           items:
-            type: object
-            required:
-            - code
-            - level
-            - experience
-            properties:
-              code:
-                type: string
-              level:
-                type: string
-                enum:
-                - HIGH
-                - MEDIUM
-                - CONFIDENT
-                - LOW
-              experience:
-                type: integer
-                format: int32
+            $ref: "#/components/schemas/candidateSkill"
 
     patchedCandidate:
       type: object
@@ -1520,26 +1503,29 @@ components:
         skills:
           type: array
           items:
-            type: object
-            required:
-            - code
-            - level
-            - experience
-            properties:
-              code:
-                type: string
-              level:
-                type: string
-                enum:
-                  - HIGH
-                  - MEDIUM
-                  - CONFIDENT
-                  - LOW
-              experience:
-                type: integer
-                format: int32
+            $ref: "#/components/schemas/candidateSkill"
 
-    opportunitySkills:
+    candidateSkill:
+      type: object
+      required:
+      - code
+      - level
+      - experience
+      properties:
+        code:
+          type: string
+        level:
+          type: string
+          enum:
+          - HIGH
+          - MEDIUM
+          - CONFIDENT
+          - LOW
+        experience:
+          type: integer
+          format: int32
+
+    opportunitySkill:
       type: object
       required:
         - skill

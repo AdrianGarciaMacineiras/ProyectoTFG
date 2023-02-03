@@ -1,13 +1,17 @@
 package com.sngular.skilltree.project.controller;
 
+import com.sngular.skilltree.application.OpportunityService;
+import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.ProjectService;
 import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.contract.ProjectController;
 import com.sngular.skilltree.contract.mapper.ProjectMapper;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -56,6 +60,17 @@ class ProjectControllerTest {
         }
 
         @MockBean
-        public ResolveService resolveService;
+        public SkillService skillService;
+
+        @MockBean
+        public OpportunityService opportunityService;
+
+        @MockBean
+        public PeopleService peopleService;
+
+        @Bean
+        public ResolveService resolveService() {
+            return new ResolveService(skillService, opportunityService, peopleService);
+        };
     }
 }

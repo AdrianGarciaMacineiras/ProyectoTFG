@@ -21,10 +21,13 @@ public class ResolveService {
 
     private final PeopleService peopleService;
 
-    public String resolveSkillToCode(final Skill skill) {return skill.name();}
+    @Named("resolveSkillCode")
+    public String resolveSkillToCode(final Skill skill) {
+        return skill.name();
+    }
 
-    @Named("resolveSkillToCode")
-    public List<String> resolveSKillToCode(final List<Skill> skillList){
+    @Named("resolveSkillCodeList")
+    public List<String> resolveSkillToCode(final List<Skill> skillList){
         final var codeList = new ArrayList<String>();
         for (var skill : skillList) {
             codeList.add(resolveSkillToCode(skill));
@@ -32,11 +35,12 @@ public class ResolveService {
         return codeList;
     }
 
+    @Named("resolveCodeToSkill")
     public Skill resolveCodeSkill(final String code) {
         return skillService.findByCode(code);
     }
 
-    @Named("resolveCodeSkill")
+    @Named("resolveCodeSkillList")
     public List<Skill> resolveCodeSkill(final List<String> codeList) {
         final var skillList = new ArrayList<Skill>();
         for (var code : codeList) {

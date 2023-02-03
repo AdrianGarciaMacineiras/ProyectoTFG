@@ -15,16 +15,15 @@ import java.util.List;
 public interface ProjectMapper {
 
     @Mapping(source = "client.code", target = "clientCode")
-    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveSkillToCode"})
-    @Mapping(source = "roles", target = "rolesDTO")
+    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveSkillCodeList"})
     ProjectDTO toProjectDTO(Project project);
 
-    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveCodeSkill"})
+    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
     Project toProject(ProjectDTO projectDTO);
 
     List<ProjectDTO> toProjectsDTO(Collection<Project> projects);
 
-    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveCodeSkill"})
+    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
     Project toProject(PatchedProjectDTO patchedProjectDTO);
 
     void update(@MappingTarget Project oldProject, Project newProject);
