@@ -9,7 +9,7 @@
   "mode": "REMOTE",
   "office": "itxhq2",
   "role": "Leader",
-  "opportunitySkillsDTO": [{
+  "skills": [{
     "skill": "s1120",
     "levelReq": "MANDATORY",
     "minLevel": "HIGH",

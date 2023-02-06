@@ -118,8 +118,5 @@ public class OpportunityFixtures {
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 
-    public static final List<Opportunity> OPPORTUNITY_LIST = new ArrayList<Opportunity>(){{
-        add(OPPORTUNITY_BY_CODE);
-        add(OPPORTUNITY2_BY_CODE);
-    }};
+    public static final List<Opportunity> OPPORTUNITY_LIST = List.of(OPPORTUNITY_BY_CODE, OPPORTUNITY2_BY_CODE);
 }

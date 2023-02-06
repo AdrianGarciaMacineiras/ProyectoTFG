@@ -1,5 +1,5 @@
 [{
-    "code": "itxtl1",
+    "code": "itxtl2",
     "name": "Tech Leader at INDITEX",
     "projectCode": "cosmosdata",
     "clientCode": "itx",
@@ -9,8 +9,8 @@
     "mode": "REMOTE",
     "office": "itxhq",
     "role": "Team Leader",
-    "opportunitySkillsDTO": [{
-      "skill": "s1120",
+    "skills": [{
+      "skill": "Spring",
       "levelReq": "MANDATORY",
       "minLevel": "HIGH",
       "minExp": 7

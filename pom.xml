@@ -58,14 +58,30 @@
 			<version>3.4.24</version>
 		</dependency>
 		<dependency>
-			<groupId>net.coru</groupId>
-			<artifactId>scs-multiapi-maven-plugin</artifactId>
-			<version>4.2.2</version>
-		</dependency>
-		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 			<version>1.5.3.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
+			<scope>test</scope>
 		</dependency>
   </dependencies>
 	<dependencyManagement>
@@ -114,7 +130,7 @@
 			<plugin>
 				<groupId>com.sngular</groupId>
 				<artifactId>scs-multiapi-maven-plugin</artifactId>
-				<version>4.3.12</version>
+				<version>4.3.13</version>
 				<executions>
 					<execution>
 						<id>openapi</id>

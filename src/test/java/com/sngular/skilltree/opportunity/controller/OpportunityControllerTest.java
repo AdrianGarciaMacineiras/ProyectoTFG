@@ -1,7 +1,9 @@
 package com.sngular.skilltree.opportunity.controller;
 
 import com.sngular.skilltree.application.OpportunityService;
+import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.OpportunityController;
 import com.sngular.skilltree.contract.mapper.OpportunityMapper;
@@ -34,11 +36,8 @@ final class OpportunityControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Autowired
     private OpportunityService opportunityService;
-
-    @MockBean
-    private ResolveService resolveService;
 
     @Test
     void getOpportunityByCode() throws Exception{
@@ -123,6 +122,19 @@ final class OpportunityControllerTest {
         @Bean
         SkillMapper skillMapper() {
             return Mappers.getMapper(SkillMapper.class);
+        }
+
+        @MockBean
+        SkillService skillService;
+
+        @MockBean
+        OpportunityService opportunityService;
+
+        @MockBean
+        PeopleService peopleService;
+        @Bean
+        ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService, final PeopleService peopleService) {
+          return new ResolveService(skillService, opportunityService, peopleService);
         }
     }
 }
