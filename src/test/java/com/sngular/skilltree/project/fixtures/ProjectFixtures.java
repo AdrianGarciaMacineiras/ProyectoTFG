@@ -11,6 +11,12 @@ public class ProjectFixtures {
 
     public static final String PROJECT_BY_CODE_JSON = FileHelper.getContent("/project/project_by_code.json");
 
+    public static final String UPDATED_PROJECT_BY_CODE_JSON = FileHelper.getContent("/project/updated_project_by_code.json");
+
+    public static final String PATCH_PROJECT_BY_CODE_JSON = FileHelper.getContent("/project/patched_project_by_code.json");
+
+    public static final String LIST_PROJECT_JSON = FileHelper.getContent("/project/list_project.json");
+
     public static final Office OFFICE =
             Office.builder()
                     .code("itxhq")
@@ -82,7 +88,7 @@ public class ProjectFixtures {
 
     public static final List<ProjectRoles> ROLES_LIST = List.of(ROLE1, ROLE2, ROLE3);
 
-    public  static final Project PROJECT_BY_CODE =
+    public static final Project PROJECT_BY_CODE =
             Project.builder()
                     .code("cosmosdata")
                     .area("Logistica")
@@ -100,4 +106,44 @@ public class ProjectFixtures {
                     .name("Cosmos Data")
                     .skills(SKILL_LIST)
                     .build();
+
+    public static final Project PROJECT2_BY_CODE =
+            Project.builder()
+                    .code("cosmosdata2")
+                    .area("Logistica")
+                    .tag("Project")
+                    .initDate(date)
+                    .desc("Data consolidation project for Data Analytics")
+                    .client(CLIENT_BY_CODE)
+                    .domain("Stocks")
+                    .duration("Ethernal")
+                    .roles(ROLES_LIST)
+                    .endDate(date)
+                    .guards(EnumGuards.PASSIVE)
+                    .historic(List.of("Historic"))
+                    .initDate(date)
+                    .name("Cosmos Data")
+                    .skills(SKILL_LIST)
+                    .build();
+
+    public static final Project UPDATED_PROJECT_BY_CODE =
+            Project.builder()
+                    .code("cosmosdata")
+                    .area("Textil")
+                    .tag("Project")
+                    .initDate(date)
+                    .desc("Updated description")
+                    .client(CLIENT_BY_CODE)
+                    .domain("Stocks")
+                    .duration("1 year")
+                    .roles(ROLES_LIST)
+                    .endDate(date)
+                    .guards(EnumGuards.PASSIVE)
+                    .historic(List.of("Historic"))
+                    .initDate(date)
+                    .name("Cosmos Data")
+                    .skills(SKILL_LIST)
+                    .build();
+
+    public static final List<Project> PROJECT_LIST = List.of(PROJECT_BY_CODE, PROJECT2_BY_CODE);
 }

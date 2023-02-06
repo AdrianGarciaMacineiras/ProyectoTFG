@@ -1419,6 +1419,8 @@ components:
         - industry
         - country
         - offices
+        - HQ
+        - principalOffice
       properties:
         code:
           type: string

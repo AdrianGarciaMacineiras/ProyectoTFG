@@ -29,8 +29,10 @@ public class ResolveService {
     @Named("resolveSkillCodeList")
     public List<String> resolveSkillToCode(final List<Skill> skillList){
         final var codeList = new ArrayList<String>();
-        for (var skill : skillList) {
-            codeList.add(resolveSkillToCode(skill));
+        if (skillList != null) {
+            for (var skill : skillList) {
+                codeList.add(resolveSkillToCode(skill));
+            }
         }
         return codeList;
     }
@@ -43,8 +45,10 @@ public class ResolveService {
     @Named("resolveCodeSkillList")
     public List<Skill> resolveCodeSkill(final List<String> codeList) {
         final var skillList = new ArrayList<Skill>();
-        for (var code : codeList) {
-            skillList.add(resolveCodeSkill(code));
+        if (codeList != null) {
+            for (var code : codeList) {
+                skillList.add(resolveCodeSkill(code));
+            }
         }
         return skillList;
     }
@@ -57,8 +61,10 @@ public class ResolveService {
     @Named("resolveCodeOpportunityList")
     public List<Opportunity> resolveCodeOpportunityList(final List<String> codeList) {
         final var opportunityList = new ArrayList<Opportunity>();
-        for (var code : codeList) {
-            opportunityList.add(resolveCodeOpportunity(code));
+        if (codeList != null) {
+            for (var code : codeList) {
+                opportunityList.add(resolveCodeOpportunity(code));
+            }
         }
         return opportunityList;
     }

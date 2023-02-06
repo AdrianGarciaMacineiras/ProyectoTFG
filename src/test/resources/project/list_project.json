@@ -1,0 +1,59 @@
+[{
+    "code": "cosmosdata",
+    "tag": "Project",
+    "name": "Cosmos Data",
+    "desc": "Data consolidation project for Data Analytics",
+    "initDate": "20/1/23, 0:00",
+    "endDate": "20/1/23, 0:00",
+    "clientCode": "ITX",
+    "area": "Logistica",
+    "domain": "Stocks",
+    "duration": "Ethernal",
+    "guards": "PASSIVE",
+    "skills": ["jdk11", "kafka", "db2", "mongodb", "spring"],
+    "roles":
+      [
+        {
+          "rol": "SENIOR",
+          "number": 2
+        },
+        {
+          "rol": "DEVELOPER",
+          "number": 2
+        },
+        {
+          "rol": "JUNIOR",
+          "number": 1
+        }
+      ]
+  },
+  {
+    "code": "cosmosdata2",
+    "tag": "Project",
+    "name": "Cosmos Data",
+    "desc": "Data consolidation project for Data Analytics",
+    "initDate": "20/1/23, 0:00",
+    "endDate": "20/1/23, 0:00",
+    "clientCode": "ITX",
+    "area": "Logistica",
+    "domain": "Stocks",
+    "duration": "Ethernal",
+    "guards": "PASSIVE",
+    "skills": ["jdk11", "kafka", "db2", "mongodb", "spring"],
+    "roles":
+    [
+      {
+        "rol": "SENIOR",
+        "number": 2
+      },
+      {
+        "rol": "DEVELOPER",
+        "number": 2
+      },
+      {
+        "rol": "JUNIOR",
+        "number": 1
+      }
+    ]
+  }
+]

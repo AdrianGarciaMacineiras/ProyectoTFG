@@ -33,7 +33,7 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public boolean deleteBeCode(String clientcode) {
+    public boolean deleteByCode(String clientcode) {
         return clientRepository.deleteByCode(clientcode);
     }
 

@@ -6,8 +6,10 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.sngular.skilltree.application.OpportunityService;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.PeopleController;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
@@ -32,7 +34,7 @@ class PeopleControllerTest {
   @Autowired
   private MockMvc mockMvc;
 
-  @MockBean
+  @Autowired
   private PeopleService peopleService;
 
   @Test
@@ -127,6 +129,17 @@ class PeopleControllerTest {
     }
 
     @MockBean
-    public ResolveService resolveService;
+    SkillService skillService;
+
+    @MockBean
+    OpportunityService opportunityService;
+
+    @MockBean
+    PeopleService peopleService;
+
+    @Bean
+    ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService, final PeopleService peopleService) {
+      return new ResolveService(skillService, opportunityService, peopleService);
+    }
   }
 }

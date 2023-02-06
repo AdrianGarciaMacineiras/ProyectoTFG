@@ -1,7 +1,6 @@
 package com.sngular.skilltree.candidate.controller;
 
-import com.sngular.skilltree.application.CandidateService;
-import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.application.*;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.CandidateController;
 import com.sngular.skilltree.contract.mapper.*;
@@ -27,16 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Slf4j
 @WebMvcTest(controllers = CandidateController.class)
-final class CandidateControllerTest {
+class CandidateControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Autowired
     private CandidateService candidateService;
-
-    @MockBean
-    private ResolveService resolveService;
 
     @Test
     void getCandidateByCode() throws Exception {
@@ -125,6 +121,23 @@ final class CandidateControllerTest {
         @Bean
         CandidateMapper candidateMapper() {
             return Mappers.getMapper(CandidateMapper.class);
+        }
+
+        @MockBean
+        CandidateService candidateService;
+
+        @MockBean
+        SkillService skillService;
+
+        @MockBean
+        OpportunityService opportunityService;
+
+        @MockBean
+        PeopleService peopleService;
+
+        @Bean
+        ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService, final PeopleService peopleService) {
+            return new ResolveService(skillService, opportunityService, peopleService);
         }
     }
 }

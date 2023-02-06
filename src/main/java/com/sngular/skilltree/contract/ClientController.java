@@ -43,7 +43,7 @@ public class ClientController implements ClientApi {
 
     @Override
     public ResponseEntity<Void> deleteClient(String clientcode) {
-        var result = clientService.deleteBeCode(clientcode);
+        var result = clientService.deleteByCode(clientcode);
         return ResponseEntity.status(result? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 

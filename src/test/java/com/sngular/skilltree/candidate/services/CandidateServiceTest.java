@@ -24,6 +24,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CandidateServiceTest {
+
     @Mock
     private CandidateRepository candidateRepository;
 

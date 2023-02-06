@@ -12,7 +12,7 @@ public interface ClientService {
 
     Client findByCode(final String clientcode);
 
-    boolean deleteBeCode(final String clientcode);
+    boolean deleteByCode(final String clientcode);
 
     Client update(final String clientcode, final Client newClient);
 

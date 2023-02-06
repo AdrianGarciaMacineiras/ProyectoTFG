@@ -1,0 +1,29 @@
+{
+  "code": "cosmosdata",
+  "tag": "Project",
+  "name": "Cosmos Data",
+  "desc": "Updated description",
+  "initDate": "20/1/23, 0:00",
+  "endDate": "20/1/23, 0:00",
+  "clientCode": "ITX",
+  "area": "Textil",
+  "domain": "Stocks",
+  "duration": "1 year",
+  "guards": "PASSIVE",
+  "skills": ["jdk11", "kafka", "db2", "mongodb", "spring"],
+  "roles":
+    [
+      {
+        "rol": "SENIOR",
+        "number": 2
+      },
+      {
+        "rol": "DEVELOPER",
+        "number": 2
+      },
+      {
+        "rol": "JUNIOR",
+        "number": 1
+      }
+    ]
+}

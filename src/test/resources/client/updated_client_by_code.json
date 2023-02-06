@@ -1,0 +1,18 @@
+{
+  "code": "itx",
+  "name": "Inditex",
+  "industry": "TECH",
+  "country": "Spain",
+  "principalOffice": "itxhq",
+  "hQ": "Santiago",
+  "offices":
+  [
+    {
+      "code": "itxhq",
+      "name": "Servicios Centrales",
+      "address": "Baños de Arteixo S/N",
+      "phone": "555 89 90 09",
+      "geolocation": "45.667776, 12.455555"
+    }
+  ]
+}

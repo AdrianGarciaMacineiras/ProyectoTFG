@@ -5,6 +5,7 @@ import com.sngular.skilltree.api.model.ClientDTO;
 import com.sngular.skilltree.api.model.PatchedClientDTO;
 import com.sngular.skilltree.model.Client;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import java.util.Collection;
@@ -13,6 +14,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
 
+    @Mapping(source="HQ", target="hQ")
     ClientDTO toClientDTO(Client client);
 
     Client toClient(ClientDTO clientDTO);

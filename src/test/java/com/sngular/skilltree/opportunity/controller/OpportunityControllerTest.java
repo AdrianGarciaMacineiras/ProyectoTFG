@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Slf4j
 @WebMvcTest(controllers = OpportunityController.class)
-final class OpportunityControllerTest {
+class OpportunityControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -59,8 +59,8 @@ final class OpportunityControllerTest {
     }
 
     @Test
-    void shouldDeleteCandidateFail() throws Exception{
-        when(opportunityService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("OPportunity", "itxtl1"));
+    void shouldDeleteOpportunityFail() throws Exception{
+        when(opportunityService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("Opportunity", "itxtl1"));
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/opportunity/itxtl1")
                         .accept(MediaType.APPLICATION_JSON))
@@ -80,7 +80,7 @@ final class OpportunityControllerTest {
     }
 
     @Test
-    void addCandidate() throws Exception {
+    void addOpportunity() throws Exception {
         when(opportunityService.create(any(Opportunity.class))).thenReturn(OPPORTUNITY_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/opportunity")
@@ -132,6 +132,7 @@ final class OpportunityControllerTest {
 
         @MockBean
         PeopleService peopleService;
+
         @Bean
         ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService, final PeopleService peopleService) {
           return new ResolveService(skillService, opportunityService, peopleService);
