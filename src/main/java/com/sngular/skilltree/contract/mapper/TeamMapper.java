@@ -16,7 +16,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = PeopleMapper.class)
 public interface TeamMapper {
 
-    @Mapping(target = "tags", ignore = true)
     TeamDTO toTeamDTO(Team team);
 
     @AfterMapping
@@ -26,6 +25,7 @@ public interface TeamMapper {
 
     List<MembersDTO> toMember(List<Member> members);
 
+    @Mapping(source="people.code", target = "peopleCode")
     MembersDTO toMember(Member members);
 
     Team toTeam(TeamDTO teamDTO);

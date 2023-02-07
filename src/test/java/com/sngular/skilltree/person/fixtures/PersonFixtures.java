@@ -10,7 +10,6 @@ public final class PersonFixtures {
 
   public static final Date date = new GregorianCalendar(2023, Calendar.JANUARY, 20).getTime();
 
-
   public static final String UPDATED_PERSON_BY_CODE_JSON = FileHelper.getContent("/person/updated_person_by_code.json");
 
   public static final String PERSON_BY_CODE_JSON = FileHelper.getContent("/person/person_by_code.json");

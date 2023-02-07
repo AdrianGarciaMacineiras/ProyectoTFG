@@ -1,0 +1,13 @@
+{
+  "code" : "t1120",
+  "tags": ["Project"],
+  "name": "TeamName",
+  "description": "Team description",
+  "members":
+    [
+      {
+        "position": "DIRECTOR",
+        "peopleCode": "pc1120"
+      }
+    ]
+}

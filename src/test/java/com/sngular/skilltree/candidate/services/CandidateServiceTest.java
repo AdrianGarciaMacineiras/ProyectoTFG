@@ -52,7 +52,7 @@ public class CandidateServiceTest {
     }
 
     @Test
-    @DisplayName("Testing findByCode a person")
+    @DisplayName("Testing findByCode a candidate")
     void testFindByCode(){
         when(candidateRepository.findByCode(anyString())).thenReturn(CANDIDATE_BY_CODE);
         Candidate result = candidateService.findByCode("c1120");

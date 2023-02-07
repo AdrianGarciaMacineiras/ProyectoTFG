@@ -16,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static com.sngular.skilltree.client.service.ClientFixtures.*;
-import static com.sngular.skilltree.opportunity.service.OpportunityFixtures.OPPORTUNITY_BY_CODE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;

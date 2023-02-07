@@ -1,0 +1,28 @@
+[
+  {
+    "code" : "t1120",
+    "tags": ["Project"],
+    "name": "TeamName",
+    "description": "Team description",
+    "members":
+      [
+        {
+          "position": "DIRECTOR",
+          "peopleCode": "pc1120"
+        }
+      ]
+  },
+  {
+    "code" : "t1121",
+    "tags": ["Backend"],
+    "name": "TeamName2",
+    "description": "Team2 description",
+    "members":
+    [
+      {
+        "position": "DIRECTOR",
+        "peopleCode": "pc1120"
+      }
+    ]
+  }
+]

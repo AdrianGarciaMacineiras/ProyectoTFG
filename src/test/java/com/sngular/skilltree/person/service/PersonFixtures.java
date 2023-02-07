@@ -2,15 +2,12 @@ package com.sngular.skilltree.person.service;
 
 import com.sngular.skilltree.model.EnumTitle;
 import com.sngular.skilltree.model.People;
-import com.sngular.skilltree.testutil.FileHelper;
 
 import java.util.*;
 
 public final class PersonFixtures {
 
   public static final Date date = new GregorianCalendar(2023, Calendar.JANUARY, 20).getTime();
-
-  //public static final String PERSON_BY_CODE_JSON = FileHelper.getContent("/people/person_by_code.json");
 
   public static final People PEOPLE_BY_CODE =
           People.builder()

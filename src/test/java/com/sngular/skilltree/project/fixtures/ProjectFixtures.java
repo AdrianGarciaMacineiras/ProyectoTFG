@@ -25,6 +25,7 @@ public class ProjectFixtures {
                     .geolocation("45.667776, 12.455555")
                     .name("Servicios Centrales")
                     .build();
+
     public static final Client CLIENT_BY_CODE =
             Client.builder()
                     .code("ITX")

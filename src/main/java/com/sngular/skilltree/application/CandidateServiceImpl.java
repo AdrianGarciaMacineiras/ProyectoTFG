@@ -28,13 +28,13 @@ public class CandidateServiceImpl implements CandidateService{
     }
 
     @Override
-    public Candidate findByCode(String candidatenode) {
-        return candidateRepository.findByCode(candidatenode);
+    public Candidate findByCode(String candidatecode) {
+        return candidateRepository.findByCode(candidatecode);
     }
 
     @Override
-    public boolean deleteByCode(String candidatenode) {
-        return candidateRepository.deleteByCode(candidatenode);
+    public boolean deleteByCode(String candidatecode) {
+        return candidateRepository.deleteByCode(candidatecode);
     }
 
     @Override

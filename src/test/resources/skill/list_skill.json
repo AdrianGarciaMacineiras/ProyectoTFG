@@ -1,0 +1,17 @@
+[
+  {
+    "code": "s1120",
+    "name": "Spring",
+    "subSkills":
+      [
+        {
+          "code": "s1121",
+          "name": "Kafka"
+        }
+      ]
+  },
+  {
+    "code": "s1122",
+    "name": "Mongodb"
+  }
+]

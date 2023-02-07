@@ -1313,13 +1313,13 @@ components:
       required:
         - code
         - type
-        - subSkill
+        - subSkills
       properties:
         code:
           type: string
         name:
           type: string
-        subSkill:
+        subSkills:
           type: array
           items:
             $ref: "#/components/schemas/skill"

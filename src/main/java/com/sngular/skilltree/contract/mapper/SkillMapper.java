@@ -3,6 +3,7 @@ package com.sngular.skilltree.contract.mapper;
 import com.sngular.skilltree.api.model.SkillDTO;
 import com.sngular.skilltree.model.Skill;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.Collection;
 import java.util.List;
