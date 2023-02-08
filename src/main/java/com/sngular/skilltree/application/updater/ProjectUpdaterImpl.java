@@ -1,0 +1,31 @@
+package com.sngular.skilltree.application.updater;
+
+import com.sngular.skilltree.contract.mapper.ProjectMapper;
+import com.sngular.skilltree.infraestructura.ProjectRepository;
+import com.sngular.skilltree.model.Project;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class ProjectUpdaterImpl implements ProjectUpdater{
+
+    private final ProjectRepository projectRepository;
+
+    private final ProjectMapper mapper;
+
+    @Override
+    public Project update(String projectcode, Project newProject) {
+        var oldProject = projectRepository.findByCode(projectcode);
+        mapper.update(oldProject,newProject);
+        return projectRepository.save(oldProject);
+    }
+
+    @Override
+    public Project patch(String projectcode, Project patchedProject) {
+        var oldProject = projectRepository.findByCode(projectcode);
+        mapper.update(oldProject,patchedProject);
+        return projectRepository.save(oldProject);
+    }
+
+}

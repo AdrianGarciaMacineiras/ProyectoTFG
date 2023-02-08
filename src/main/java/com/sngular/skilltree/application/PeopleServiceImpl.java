@@ -15,8 +15,6 @@ public class PeopleServiceImpl implements PeopleService {
 
     private final PeopleRepository peopleRepository;
 
-    private final PeopleMapper mapper;
-
     @Override
     public List<People> getAll() {
         return peopleRepository.findAll();
@@ -24,7 +22,7 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Override
     public People create(People people) {
-        // validate(people);
+        //validate(people);
         return peopleRepository.save(people);
     }
 
@@ -38,19 +36,6 @@ public class PeopleServiceImpl implements PeopleService {
         validate(personCode);
         return peopleRepository.deleteByCode(personCode);
     }
-
-    @Override
-    public People update(String personcode, People newPeople) {
-        var oldperson = peopleRepository.findByCode(personcode);
-        mapper.update(oldperson, newPeople);
-        return peopleRepository.save(oldperson);
-    }
-
-    @Override
-    public People patch(String personcode, People patchedPeople) {
-        var oldperson = peopleRepository.findByCode(personcode);
-        mapper.update(oldperson, patchedPeople);
-        return peopleRepository.save(oldperson);    }
 
     private void validate(String code) {
         var oldPerson = peopleRepository.findByCode(code);

@@ -13,8 +13,4 @@ public interface CandidateService {
     Candidate findByCode(final String candidatecode);
 
     boolean deleteByCode(final String candidatecode);
-
-    Candidate update(final String candidatecode, final Candidate newCandidate);
-
-    Candidate patch(final String candidatecode, final Candidate patchedCandidate);
 }

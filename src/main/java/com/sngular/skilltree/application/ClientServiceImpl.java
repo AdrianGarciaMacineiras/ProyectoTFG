@@ -14,8 +14,6 @@ public class ClientServiceImpl implements ClientService{
 
     private final ClientRepository clientRepository;
 
-    private final ClientMapper mapper;
-
     @Override
     public List<Client> getAll() {
         return clientRepository.findAll();
@@ -35,20 +33,6 @@ public class ClientServiceImpl implements ClientService{
     @Override
     public boolean deleteByCode(String clientcode) {
         return clientRepository.deleteByCode(clientcode);
-    }
-
-    @Override
-    public Client update(String clientcode, Client newClient) {
-        var oldClient = clientRepository.findByCode(clientcode);
-        mapper.update(oldClient, newClient);
-        return clientRepository.save(oldClient);
-    }
-
-    @Override
-    public Client patch(String clientcode, Client patchedClient) {
-        var oldClient = clientRepository.findByCode(clientcode);
-        mapper.update(oldClient, patchedClient);
-        return clientRepository.save(oldClient);
     }
 
     private void validate(Client client) {

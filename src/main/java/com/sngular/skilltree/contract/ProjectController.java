@@ -4,6 +4,7 @@ import com.sngular.skilltree.api.ProjectApi;
 import com.sngular.skilltree.api.model.PatchedProjectDTO;
 import com.sngular.skilltree.api.model.ProjectDTO;
 import com.sngular.skilltree.application.ProjectService;
+import com.sngular.skilltree.application.updater.ProjectUpdater;
 import com.sngular.skilltree.contract.mapper.ProjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import java.util.List;
 public class ProjectController implements ProjectApi {
 
     private final ProjectService projectService;
+
+    private final ProjectUpdater projectUpdater;
 
     private final ProjectMapper projectMapper;
 
@@ -35,7 +38,7 @@ public class ProjectController implements ProjectApi {
     @Override
     public ResponseEntity<ProjectDTO> updateProject(String projectcode, ProjectDTO projectDTO) {
         return ResponseEntity.ok(projectMapper
-                .toProjectDTO(projectService
+                .toProjectDTO(projectUpdater
                         .update(projectcode, projectMapper
                                 .toProject(projectDTO))));
     }
@@ -43,7 +46,7 @@ public class ProjectController implements ProjectApi {
     @Override
     public ResponseEntity<ProjectDTO> patchProject(String projectcode, PatchedProjectDTO patchedProjectDTO) {
         return ResponseEntity.ok(projectMapper
-                .toProjectDTO(projectService
+                .toProjectDTO(projectUpdater
                         .patch(projectcode, projectMapper
                                 .toProject(patchedProjectDTO))));
     }

@@ -12,8 +12,4 @@ public interface OpportunityService {
   Opportunity findByCode(final String opportunitycode);
 
   boolean deleteByCode(final String opportunitycode);
-
-  Opportunity update(final String opportunitycode, final Opportunity newOpportunity);
-
-  Opportunity patch(final String opportunitycode, final Opportunity patchedOpportunity);
 }

@@ -14,8 +14,6 @@ public class TeamServiceImpl implements TeamService{
 
     private final TeamRepository teamRepository;
 
-    private final TeamMapper mapper;
-
     @Override
     public List<Team> getAll() {
         return teamRepository.findAll();
@@ -36,19 +34,6 @@ public class TeamServiceImpl implements TeamService{
     public boolean deleteByCode(String teamcode) {
         return teamRepository.deleteByCode(teamcode);
     }
-
-    @Override
-    public Team update(String teamcode, Team newTeam) {
-        var oldTeam = teamRepository.findByCode(teamcode);
-        mapper.update(oldTeam, newTeam);
-        return teamRepository.save(oldTeam);
-    }
-
-    @Override
-    public Team patch(String teamcode, Team patchedTeam) {
-        var oldTeam = teamRepository.findByCode(teamcode);
-        mapper.update(oldTeam, patchedTeam);
-        return teamRepository.save(oldTeam);    }
 
     private void validate(Team team) {
     }

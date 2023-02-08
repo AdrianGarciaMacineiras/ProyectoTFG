@@ -4,6 +4,7 @@ import com.sngular.skilltree.api.ClientApi;
 import com.sngular.skilltree.api.model.ClientDTO;
 import com.sngular.skilltree.api.model.PatchedClientDTO;
 import com.sngular.skilltree.application.ClientService;
+import com.sngular.skilltree.application.updater.ClientUpdater;
 import com.sngular.skilltree.contract.mapper.ClientMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import java.util.List;
 public class ClientController implements ClientApi {
 
     private final ClientService clientService;
+
+    private final ClientUpdater clientUpdater;
 
     private final ClientMapper clientMapper;
 
@@ -50,7 +53,7 @@ public class ClientController implements ClientApi {
     @Override
     public ResponseEntity<ClientDTO> updateClient(String clientcode, ClientDTO clientDTO) {
         return ResponseEntity.ok(clientMapper
-                .toClientDTO(clientService
+                .toClientDTO(clientUpdater
                         .update(clientcode, clientMapper
                                 .toClient(clientDTO))));
     }
@@ -58,7 +61,7 @@ public class ClientController implements ClientApi {
     @Override
     public ResponseEntity<ClientDTO> patchClient(String clientcode, PatchedClientDTO patchedClientDTO) {
         return ResponseEntity.ok(clientMapper
-                .toClientDTO(clientService
+                .toClientDTO(clientUpdater
                         .patch(clientcode, clientMapper
                                 .toClient(patchedClientDTO))));
     }

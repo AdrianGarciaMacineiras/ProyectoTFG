@@ -14,7 +14,4 @@ public interface ProjectService {
 
     boolean deleteByCode(final String projectcode);
 
-    Project update(final String projectcode, final Project newProject);
-
-    Project patch(final String projectcode, final Project patchedProject);
 }

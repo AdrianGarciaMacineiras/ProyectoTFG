@@ -14,7 +14,4 @@ public interface PeopleService {
 
     boolean deleteByCode(final String personcode);
 
-    People update(final String personcode, final People newPeople);
-
-    People patch(final String personcode, final People patchedPeople);
 }

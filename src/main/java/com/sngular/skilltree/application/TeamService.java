@@ -14,7 +14,4 @@ public interface TeamService {
 
     boolean deleteByCode(final String teamcode);
 
-    Team update(final String teamcode, final Team newTeam);
-
-    Team patch(final String teamcode, final Team patchedTeam);
 }

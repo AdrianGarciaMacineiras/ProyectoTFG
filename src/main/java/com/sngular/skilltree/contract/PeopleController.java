@@ -4,6 +4,7 @@ import com.sngular.skilltree.api.PeopleApi;
 import com.sngular.skilltree.api.model.PatchedPeopleDTO;
 import com.sngular.skilltree.api.model.PeopleDTO;
 import com.sngular.skilltree.application.PeopleService;
+import com.sngular.skilltree.application.updater.PeopleUpdater;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import java.util.List;
 public class PeopleController implements PeopleApi {
 
     private final PeopleService peopleService;
+
+    private final PeopleUpdater peopleUpdater;
 
     private final PeopleMapper peopleMapper;
 
@@ -35,7 +38,7 @@ public class PeopleController implements PeopleApi {
     @Override
     public ResponseEntity<PeopleDTO> updatePerson(String peoplecode, PeopleDTO peopleDTO) {
         return ResponseEntity.ok(peopleMapper
-                .toPersonDTO(peopleService
+                .toPersonDTO(peopleUpdater
                         .update(peoplecode, peopleMapper
                                 .toPerson(peopleDTO))));
     }
@@ -43,7 +46,7 @@ public class PeopleController implements PeopleApi {
     @Override
     public ResponseEntity<PeopleDTO> patchPerson(String personcode, PatchedPeopleDTO patchedPeopleDTO) {
         return ResponseEntity.ok(peopleMapper
-                .toPersonDTO(peopleService
+                .toPersonDTO(peopleUpdater
                         .patch(personcode, peopleMapper
                                 .toPeople(patchedPeopleDTO))));
     }

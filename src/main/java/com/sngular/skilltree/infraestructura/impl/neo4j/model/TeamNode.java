@@ -16,9 +16,7 @@ import java.util.List;
 public class TeamNode {
 
     @Id
-    private Long id;
-
-    private @Setter(AccessLevel.PROTECTED) String code;
+    private String code;
 
     private String name;
 

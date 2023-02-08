@@ -3,6 +3,7 @@ package com.sngular.skilltree.contract;
 import com.sngular.skilltree.api.TeamApi;
 import com.sngular.skilltree.api.model.PatchedTeamDTO;
 import com.sngular.skilltree.application.TeamService;
+import com.sngular.skilltree.application.updater.TeamUpdater;
 import com.sngular.skilltree.contract.mapper.TeamMapper;
 import com.sngular.skilltree.api.model.TeamDTO;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,8 @@ import java.util.List;
 public class TeamController implements TeamApi {
 
     private final TeamService teamService;
+
+    private final TeamUpdater teamUpdater;
 
     private final TeamMapper teamMapper;
 
@@ -49,7 +52,7 @@ public class TeamController implements TeamApi {
     @Override
     public ResponseEntity<TeamDTO> updateTeam(String teamcode, TeamDTO teamDTO) {
         return ResponseEntity.ok(teamMapper
-                .toTeamDTO(teamService
+                .toTeamDTO(teamUpdater
                         .update(teamcode, teamMapper
                                 .toTeam(teamDTO))));
     }
@@ -57,7 +60,7 @@ public class TeamController implements TeamApi {
     @Override
     public ResponseEntity<TeamDTO> patchTeam(String teamcode, PatchedTeamDTO patchedTeamDTO) {
         return ResponseEntity.ok(teamMapper
-                .toTeamDTO(teamService
+                .toTeamDTO(teamUpdater
                         .patch(teamcode, teamMapper
                                 .toTeam(patchedTeamDTO))));
     }

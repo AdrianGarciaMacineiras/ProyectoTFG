@@ -14,7 +14,6 @@ public class ProjectServiceImpl implements ProjectService{
 
     private final ProjectRepository projectRepository;
 
-    private final ProjectMapper mapper;
     @Override
     public List<Project> getAll() {
         return projectRepository.findAll();
@@ -34,20 +33,6 @@ public class ProjectServiceImpl implements ProjectService{
     @Override
     public boolean deleteByCode(String projectcode) {
         return projectRepository.deleteByCode(projectcode);
-    }
-
-    @Override
-    public Project update(String projectcode, Project newProject) {
-        var oldProject = projectRepository.findByCode(projectcode);
-        mapper.update(oldProject,newProject);
-        return projectRepository.save(oldProject);
-    }
-
-    @Override
-    public Project patch(String projectcode, Project patchedProject) {
-        var oldProject = projectRepository.findByCode(projectcode);
-        mapper.update(oldProject,patchedProject);
-        return projectRepository.save(oldProject);
     }
 
     private void validate(Project project) {
