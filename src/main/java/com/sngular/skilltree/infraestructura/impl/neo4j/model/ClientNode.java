@@ -9,9 +9,9 @@ import org.springframework.data.neo4j.core.schema.Node;
 
 import java.util.List;
 
-@Node
 @Getter
 @Setter
+@Node("Client")
 @NoArgsConstructor
 public class ClientNode {
 

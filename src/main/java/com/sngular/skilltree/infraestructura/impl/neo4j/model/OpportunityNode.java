@@ -9,10 +9,10 @@ import org.springframework.data.neo4j.core.schema.*;
 import java.util.Date;
 import java.util.List;
 
-@Node
 @Getter
 @Setter
 @NoArgsConstructor
+@Node("Opportunity")
 public class OpportunityNode {
 
     @Id

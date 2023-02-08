@@ -8,9 +8,9 @@ import org.springframework.data.neo4j.core.schema.*;
 import java.util.Date;
 import java.util.List;
 
-@Node
 @Getter
 @Setter
+@Node("Project")
 @NoArgsConstructor
 public class ProjectNode {
 

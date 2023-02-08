@@ -11,9 +11,9 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.util.List;
 
-@Node
 @Getter
 @Setter
+@Node("Skill")
 @NoArgsConstructor
 public class SkillNode {
 

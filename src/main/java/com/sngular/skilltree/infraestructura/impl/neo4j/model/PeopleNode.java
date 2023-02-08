@@ -10,9 +10,9 @@ import org.springframework.data.neo4j.core.schema.Node;
 import java.util.Date;
 import java.util.List;
 
-@Node
 @Getter
 @Setter
+@Node("People")
 @NoArgsConstructor
 public class PeopleNode {
 
