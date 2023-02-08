@@ -1,6 +1,7 @@
 package com.sngular.skilltree.team.controller;
 
 import com.sngular.skilltree.application.*;
+import com.sngular.skilltree.application.updater.TeamUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.TeamController;
 import com.sngular.skilltree.contract.mapper.OpportunityMapper;
@@ -35,6 +36,9 @@ public class TeamControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
+    private TeamUpdater teamUpdater;
+
+    @Autowired
     private TeamService teamService;
 
     @Test
@@ -67,7 +71,7 @@ public class TeamControllerTest {
 
     @Test
     void updateTeam() throws Exception {
-        when(teamService.update(anyString(),any(Team.class))).thenReturn(UPDATED_TEAM_BY_CODE);
+        when(teamUpdater.update(anyString(),any(Team.class))).thenReturn(UPDATED_TEAM_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/team/team1120")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -91,7 +95,7 @@ public class TeamControllerTest {
 
     @Test
     void patchTeam() throws Exception {
-        when(teamService.patch(anyString(),any(Team.class))).thenReturn(UPDATED_TEAM_BY_CODE);
+        when(teamUpdater.patch(anyString(),any(Team.class))).thenReturn(UPDATED_TEAM_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/team/team1120")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -121,6 +125,9 @@ public class TeamControllerTest {
         SkillMapper skillMapper() {
             return Mappers.getMapper(SkillMapper.class);
         }
+
+        @MockBean
+        TeamUpdater teamUpdater;
 
         @MockBean
         TeamService teamService;

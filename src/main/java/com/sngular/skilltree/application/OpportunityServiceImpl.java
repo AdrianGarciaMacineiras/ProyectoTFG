@@ -1,6 +1,5 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.contract.mapper.OpportunityMapper;
 import com.sngular.skilltree.model.Opportunity;
 import com.sngular.skilltree.infraestructura.OpportunityRepository;
 import java.util.List;

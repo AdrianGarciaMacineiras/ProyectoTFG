@@ -1,7 +1,6 @@
 package com.sngular.skilltree.application;
 
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
-import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import lombok.RequiredArgsConstructor;

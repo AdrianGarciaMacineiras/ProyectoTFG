@@ -32,7 +32,7 @@ public class TeamServiceTest {
     private TeamMapper mapper = Mappers.getMapper(TeamMapper.class);
 
     @BeforeEach
-    void setUp(){teamService = new TeamServiceImpl(teamRepository,mapper);
+    void setUp(){teamService = new TeamServiceImpl(teamRepository);
     }
 
     @Test

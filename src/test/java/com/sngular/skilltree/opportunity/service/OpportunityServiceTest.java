@@ -33,7 +33,7 @@ public class OpportunityServiceTest {
     private OpportunityMapper mapper = Mappers.getMapper(OpportunityMapper.class);
 
     @BeforeEach
-    void setUp() {opportunityService = new OpportunityServiceImpl(opportunityRepository, mapper);}
+    void setUp() {opportunityService = new OpportunityServiceImpl(opportunityRepository);}
 
     @Test
     @DisplayName("Testing save opportunity")

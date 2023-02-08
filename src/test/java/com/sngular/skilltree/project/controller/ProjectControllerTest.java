@@ -5,6 +5,7 @@ import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.ProjectService;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.application.SkillService;
+import com.sngular.skilltree.application.updater.ProjectUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.ProjectController;
 import com.sngular.skilltree.contract.mapper.ProjectMapper;
@@ -39,6 +40,9 @@ class ProjectControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
+    private ProjectUpdater projectUpdater;
+
+    @Autowired
     private ProjectService projectService;
 
     @Test
@@ -69,7 +73,7 @@ class ProjectControllerTest {
 
     @Test
     void updateProject() throws Exception {
-        when(projectService.update(anyString(),any(Project.class))).thenReturn(UPDATED_PROJECT_BY_CODE);
+        when(projectUpdater.update(anyString(),any(Project.class))).thenReturn(UPDATED_PROJECT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/project/cosmosdata")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -93,7 +97,7 @@ class ProjectControllerTest {
 
     @Test
     void patchProject() throws Exception {
-        when(projectService.patch(anyString(),any(Project.class))).thenReturn(UPDATED_PROJECT_BY_CODE);
+        when(projectUpdater.patch(anyString(),any(Project.class))).thenReturn(UPDATED_PROJECT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/project/cosmosdata")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -123,6 +127,9 @@ class ProjectControllerTest {
         public SkillMapper getSkillMapper() {
             return Mappers.getMapper(SkillMapper.class);
         }
+
+        @MockBean
+        ProjectUpdater projectUpdater;
 
         @MockBean
         ProjectService projectService;

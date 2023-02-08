@@ -32,7 +32,7 @@ public class ClientServiceTest {
     private ClientMapper mapper = Mappers.getMapper(ClientMapper.class);
 
     @BeforeEach
-    void setUp(){clientService = new ClientServiceImpl(clientRepository, mapper);}
+    void setUp(){clientService = new ClientServiceImpl(clientRepository);}
 
     @Test
     @DisplayName("Testing save client")

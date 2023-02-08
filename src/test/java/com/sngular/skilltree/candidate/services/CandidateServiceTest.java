@@ -33,7 +33,7 @@ public class CandidateServiceTest {
     private CandidateMapper mapper = Mappers.getMapper(CandidateMapper.class);
 
     @BeforeEach
-    void setUp() {candidateService = new CandidateServiceImpl(candidateRepository, mapper);}
+    void setUp() {candidateService = new CandidateServiceImpl(candidateRepository);}
 
     @Test
     @DisplayName("Testing save a candidate")

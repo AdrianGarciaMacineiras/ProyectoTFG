@@ -10,6 +10,7 @@ import com.sngular.skilltree.application.OpportunityService;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.application.SkillService;
+import com.sngular.skilltree.application.updater.PeopleUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.PeopleController;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
@@ -33,6 +34,9 @@ class PeopleControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
+
+  @Autowired
+  private PeopleUpdater peopleUpdater;
 
   @Autowired
   private PeopleService peopleService;
@@ -75,7 +79,7 @@ class PeopleControllerTest {
 
   @Test
   void updatePerson() throws Exception {
-    when(peopleService.update(anyString(),any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
+    when(peopleUpdater.update(anyString(),any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
                             .put("/people/pc1120")
                             .contentType(MediaType.APPLICATION_JSON)
@@ -98,7 +102,7 @@ class PeopleControllerTest {
 
   @Test
   void patchPerson() throws Exception {
-    when(peopleService.patch(anyString(),any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
+    when(peopleUpdater.patch(anyString(),any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
                             .patch("/people/pc1120")
                             .contentType(MediaType.APPLICATION_JSON)
@@ -127,6 +131,9 @@ class PeopleControllerTest {
     public SkillMapper getSkillMapper() {
       return Mappers.getMapper(SkillMapper.class);
     }
+
+    @MockBean
+    PeopleUpdater peopleUpdater;
 
     @MockBean
     SkillService skillService;

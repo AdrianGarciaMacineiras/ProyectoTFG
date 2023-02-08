@@ -1,6 +1,7 @@
 package com.sngular.skilltree.client.controller;
 
 import com.sngular.skilltree.application.*;
+import com.sngular.skilltree.application.updater.ClientUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.ClientController;
 import com.sngular.skilltree.contract.mapper.ClientMapper;
@@ -31,6 +32,9 @@ class ClientControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ClientUpdater clientUpdater;
 
     @Autowired
     private ClientService clientService;
@@ -65,7 +69,7 @@ class ClientControllerTest {
 
     @Test
     void updateClient() throws Exception {
-        when(clientService.update(anyString(),any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
+        when(clientUpdater.update(anyString(),any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/client/itx")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -88,7 +92,7 @@ class ClientControllerTest {
 
     @Test
     void patchClient() throws Exception {
-        when(clientService.patch(anyString(),any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
+        when(clientUpdater.patch(anyString(),any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/client/itx")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -121,6 +125,9 @@ class ClientControllerTest {
 
         @MockBean
         ClientService clientService;
+
+        @MockBean
+        ClientUpdater clientUpdater;
 
         @MockBean
         SkillService skillService;

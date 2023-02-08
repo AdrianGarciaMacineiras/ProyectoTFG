@@ -1,6 +1,6 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.contract.mapper.CandidateMapper;
+import com.sngular.skilltree.application.updater.CandidateUpdater;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.model.Candidate;
 import lombok.RequiredArgsConstructor;

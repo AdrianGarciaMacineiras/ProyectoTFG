@@ -4,6 +4,7 @@ import com.sngular.skilltree.application.OpportunityService;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.application.SkillService;
+import com.sngular.skilltree.application.updater.OpportunityUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.OpportunityController;
 import com.sngular.skilltree.contract.mapper.OpportunityMapper;
@@ -35,6 +36,9 @@ class OpportunityControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private OpportunityUpdater opportunityUpdater;
 
     @Autowired
     private OpportunityService opportunityService;
@@ -69,7 +73,7 @@ class OpportunityControllerTest {
 
    @Test
     void updateOpportunity() throws Exception {
-        when(opportunityService.update(anyString(),any(Opportunity.class))).thenReturn(UPDATED_OPPORTUNITY_BY_CODE);
+        when(opportunityUpdater.update(anyString(),any(Opportunity.class))).thenReturn(UPDATED_OPPORTUNITY_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/opportunity/itxtl1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -93,7 +97,7 @@ class OpportunityControllerTest {
 
     @Test
     void patchOpportunity() throws Exception {
-        when(opportunityService.patch(anyString(),any(Opportunity.class))).thenReturn(UPDATED_OPPORTUNITY_BY_CODE);
+        when(opportunityUpdater.patch(anyString(),any(Opportunity.class))).thenReturn(UPDATED_OPPORTUNITY_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/opportunity/itxtl1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -123,6 +127,9 @@ class OpportunityControllerTest {
         SkillMapper skillMapper() {
             return Mappers.getMapper(SkillMapper.class);
         }
+
+        @MockBean
+        OpportunityUpdater opportunityUpdater;
 
         @MockBean
         SkillService skillService;

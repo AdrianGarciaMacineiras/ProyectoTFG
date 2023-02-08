@@ -1,6 +1,7 @@
 package com.sngular.skilltree.candidate.controller;
 
 import com.sngular.skilltree.application.*;
+import com.sngular.skilltree.application.updater.CandidateUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.CandidateController;
 import com.sngular.skilltree.contract.mapper.*;
@@ -30,6 +31,9 @@ class CandidateControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private CandidateUpdater candidateUpdater;
 
     @Autowired
     private CandidateService candidateService;
@@ -73,7 +77,7 @@ class CandidateControllerTest {
 
     @Test
     void updateCandidate() throws Exception {
-        when(candidateService.update(anyString(),any(Candidate.class))).thenReturn(UPDATED_CANDIDATE_BY_CODE);
+        when(candidateUpdater.update(anyString(),any(Candidate.class))).thenReturn(UPDATED_CANDIDATE_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/candidate/c1120")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -97,7 +101,7 @@ class CandidateControllerTest {
 
     @Test
     void patchCandidate() throws Exception{
-        when(candidateService.patch(anyString(),any(Candidate.class))).thenReturn(UPDATED_CANDIDATE_BY_CODE);
+        when(candidateUpdater.patch(anyString(),any(Candidate.class))).thenReturn(UPDATED_CANDIDATE_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/candidate/c1120")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -125,6 +129,9 @@ class CandidateControllerTest {
 
         @MockBean
         CandidateService candidateService;
+
+        @MockBean
+        CandidateUpdater candidateUpdater;
 
         @MockBean
         SkillService skillService;

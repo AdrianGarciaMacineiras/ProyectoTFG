@@ -1,6 +1,5 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.contract.mapper.TeamMapper;
 import com.sngular.skilltree.infraestructura.TeamRepository;
 import com.sngular.skilltree.model.Team;
 import lombok.RequiredArgsConstructor;

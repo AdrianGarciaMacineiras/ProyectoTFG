@@ -32,7 +32,7 @@ public class PeopleServiceTest {
 
     @BeforeEach
     void setUp(){
-        peopleService = new PeopleServiceImpl(peopleRepository, mapper);
+        peopleService = new PeopleServiceImpl(peopleRepository);
     }
 
     @Test

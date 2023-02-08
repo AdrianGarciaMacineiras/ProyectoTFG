@@ -33,7 +33,7 @@ public class ProjectServiceTest {
     private ProjectMapper mapper = Mappers.getMapper(ProjectMapper.class);
 
     @BeforeEach
-    void setUp(){projectService = new ProjectServiceImpl(projectRepository,mapper);}
+    void setUp(){projectService = new ProjectServiceImpl(projectRepository);}
 
     @Test
     @DisplayName("Testing save project")
