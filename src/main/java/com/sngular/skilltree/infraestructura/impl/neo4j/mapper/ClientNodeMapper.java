@@ -9,6 +9,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ClientNodeMapper {
+
     @InheritInverseConfiguration
     ClientNode toNode(Client Client);
 

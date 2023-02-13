@@ -1418,9 +1418,6 @@ components:
         - name
         - industry
         - country
-        - offices
-        - HQ
-        - principalOffice
       properties:
         code:
           type: string
@@ -1564,14 +1561,6 @@ components:
         - employeeId
         - name
         - surname
-        - birthDate
-        - title
-        - evolution
-        - knows
-        - work_with
-        - master
-        - participate
-        - interest
       properties:
         code:
           type: string
