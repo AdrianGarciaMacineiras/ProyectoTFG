@@ -35,4 +35,5 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
     crud.delete(node);
     return true;
   }
+
 }

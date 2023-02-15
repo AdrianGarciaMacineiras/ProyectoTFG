@@ -1,11 +1,11 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.util.Date;
 import java.util.List;
@@ -19,7 +19,7 @@ public class PeopleNode {
     @Id
     private Long id;
 
-    private @Setter(AccessLevel.PROTECTED) String code;
+    private String code;
 
     private String name;
 
@@ -31,17 +31,24 @@ public class PeopleNode {
 
     private EnumTitle enumTitle;
 
-    private List<Evolution> evolution;
+    @Relationship(type="EVOLVED", direction = Relationship.Direction.OUTGOING)
+    private List<EvolutionRelationship> evolutionRelationship;
 
+    @Relationship(type="KNOWS", direction = Relationship.Direction.OUTGOING)
     private List<KnowsRelationship> knows;
 
+    @Relationship(type="WORK_WITH", direction = Relationship.Direction.OUTGOING)
     private List<SkillNode> work_with;
 
+    @Relationship(type="MASTER", direction = Relationship.Direction.OUTGOING)
     private List<SkillNode> master;
 
+    @Relationship(type="PARTICIPATE", direction = Relationship.Direction.OUTGOING)
     private List<ParticipateRelationship> participate;
 
+    @Relationship(type="IS_INTERESTED", direction = Relationship.Direction.OUTGOING)
     private List<SkillNode> interest;
 
-    private List<Certificate> certificates;
+    @Relationship(type="HAS_CERTIFICATE", direction = Relationship.Direction.OUTGOING)
+    private List<CertificateRelationship> certificateRelationships;
 }

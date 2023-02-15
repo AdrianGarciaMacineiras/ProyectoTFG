@@ -1370,6 +1370,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/opportunitySkill"
+        managedBy:
+          type: string
 
     patchedOpportunity:
       type: object
@@ -1398,6 +1400,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/opportunitySkill"
+        managedBy:
+          type: string
 
     mode:
       type: string

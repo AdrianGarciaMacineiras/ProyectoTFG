@@ -20,6 +20,8 @@ public interface OpportunityMapper {
 
      @Mapping(source = "project.code", target = "projectCode")
      @Mapping(source = "client.code", target = "clientCode")
+     @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
+     @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
      OpportunityDTO toOpportunityDTO(Opportunity opportunity);
 
      @Mapping(target = "skill", source = "skill", qualifiedByName = {"resolveService", "resolveSkillCode"})
