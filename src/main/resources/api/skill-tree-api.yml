@@ -1487,6 +1487,15 @@ components:
       properties:
         code:
           type: string
+        introductionDate:
+          type: string
+          format: date
+        resolutionDate:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [INTERVIEWED, PRESENTED, OK, KO]
         candidateCode:
           type: string
         opportunityCode:

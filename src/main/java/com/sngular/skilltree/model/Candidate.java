@@ -4,6 +4,6 @@ import lombok.Builder;
 
 import java.util.List;
 
-@Builder
+@Builder(toBuilder = true)
 public record Candidate(String code, People candidate, Opportunity opportunity, List<SkillsCandidate> skills) {
 }
