@@ -2,6 +2,7 @@ package com.sngular.skilltree.contract.mapper;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedCandidateDTO;
@@ -10,6 +11,7 @@ import com.sngular.skilltree.model.Candidate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring", uses = {ResolveService.class, OpportunityMapper.class, PeopleMapper.class})
 public interface CandidateMapper {
@@ -26,5 +28,5 @@ public interface CandidateMapper {
 
     Candidate toCandidate(PatchedCandidateDTO patchedCandidateDTO);
 
-    void update(@MappingTarget Candidate oldCandidate, Candidate newCandidate);
+    void update(Candidate newCandidate, @MappingTarget Candidate oldCandidate);
 }
