@@ -21,11 +21,13 @@ public interface PeopleMapper {
     @Mapping(target = "work_with", source = "work_with", qualifiedByName = {"resolveService", "resolveSkillCodeList"})
     @Mapping(target = "master", source = "master", qualifiedByName = {"resolveService", "resolveSkillCodeList"})
     @Mapping(target = "interest", source = "interest", qualifiedByName = {"resolveService", "resolveSkillCodeList"})
+    @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
     PeopleDTO toPersonDTO(People people);
 
     @Mapping(source = "work_with", target = "work_with", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
     @Mapping(source = "master", target = "master", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
     @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
+    @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
     People toPerson(PeopleDTO peopleDTO);
 
     List<PeopleDTO> toPeopleDto(Collection<People> people);
@@ -33,6 +35,7 @@ public interface PeopleMapper {
     @Mapping(source = "work_with", target = "work_with", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
     @Mapping(source = "master", target = "master", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
     @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
+    @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
     People toPeople (PatchedPeopleDTO patchedPersonDTO);
 
     void update(@MappingTarget People oldPeople, People newPeople);

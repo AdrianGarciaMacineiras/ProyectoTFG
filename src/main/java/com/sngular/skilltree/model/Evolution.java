@@ -1,7 +1,10 @@
 package com.sngular.skilltree.model;
 
+import lombok.Builder;
+
 import java.util.Date;
 
 
-public record Evolution(String title, String category, Date fromDate) {
+@Builder(toBuilder = true)
+public record Evolution(String role, String category, Date fromDate) {
 }

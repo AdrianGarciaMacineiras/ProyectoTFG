@@ -4,6 +4,6 @@ import lombok.Builder;
 
 import java.util.Date;
 
-@Builder
+@Builder(toBuilder = true)
 public record Certificate(String code, String comment, Date date) {
 }

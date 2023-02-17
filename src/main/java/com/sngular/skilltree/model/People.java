@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Builder;
 
 
-@Builder
+@Builder(toBuilder = true)
 public record People(String code, String employeeId, String name, String surname, Date birthDate, EnumTitle title,
                      List<Evolution> evolution, List<Knows> knows, List<Skill> work_with, List<Skill> master,
                      List<Participate> participate, List<Skill> interest, List<Certificate> certificates) {

@@ -16,9 +16,13 @@ public interface ProjectMapper {
 
     @Mapping(source = "client.code", target = "clientCode")
     @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveSkillCodeList"})
+    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
     ProjectDTO toProjectDTO(Project project);
 
     @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
+    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
     Project toProject(ProjectDTO projectDTO);
 
     List<ProjectDTO> toProjectsDTO(Collection<Project> projects);

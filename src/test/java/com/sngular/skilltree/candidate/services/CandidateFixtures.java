@@ -70,12 +70,12 @@ public class CandidateFixtures {
                     .office("itxhq")
                     .role("Team Leader")
                     .name("Teach Leader at INDITEX")
-                    .client(CLIENT_BY_CODE)
+                    .client("itx")
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)
                     .priority("HIGH")
-                    .project(PROJECT_BY_CODE)
+                    .project("cosmosdata")
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 

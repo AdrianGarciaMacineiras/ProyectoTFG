@@ -18,10 +18,10 @@ import org.mapstruct.MappingTarget;
 @Mapper(uses = {ClientMapper.class, SkillMapper.class, ResolveService.class}, componentModel = "spring")
 public interface OpportunityMapper {
 
-     @Mapping(source = "project.code", target = "projectCode")
-     @Mapping(source = "client.code", target = "clientCode")
      @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
      @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
+     @Mapping(target= "projectCode", source = "project")
+     @Mapping(target= "clientCode", source = "client")
      OpportunityDTO toOpportunityDTO(Opportunity opportunity);
 
      @Mapping(target = "skill", source = "skill", qualifiedByName = {"resolveService", "resolveSkillCode"})
@@ -30,11 +30,15 @@ public interface OpportunityMapper {
      @Mapping(target = "skill", source = "skill", qualifiedByName = {"resolveService", "resolveCodeToSkill"})
      OpportunitySkill toOpportunitySkills(OpportunitySkillDTO opportunitySkill);
 
+     @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
+     @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
      Opportunity toOpportunity(OpportunityDTO opportunityDTO);
 
      List<OpportunityDTO> toOpportunitiesDTO(Collection<Opportunity> opportunities);
 
      @Mapping(target = "skills", ignore = true)
+     @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
+     @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
      Opportunity toOpportunity(PatchedOpportunityDTO patchedOpportunityDTO);
 
      void update(@MappingTarget Opportunity oldOpportunity, Opportunity newOpportunity);

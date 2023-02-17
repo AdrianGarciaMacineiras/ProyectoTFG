@@ -80,12 +80,12 @@ public class OpportunityFixtures {
                     .office("itxhq")
                     .role("Team Leader")
                     .name("Tech Leader at INDITEX")
-                    .client(CLIENT_BY_CODE)
+                    .client("itx")
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)
                     .priority("HIGH")
-                    .project(PROJECT_BY_CODE)
+                    .project("cosmosdata")
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 
@@ -95,12 +95,12 @@ public class OpportunityFixtures {
                     .office("itxhq2")
                     .role("Leader")
                     .name("Leader at INDITEX")
-                    .client(CLIENT_BY_CODE)
+                    .client("itx")
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)
                     .priority("MEDIUM")
-                    .project(PROJECT_BY_CODE)
+                    .project("cosmosdata")
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 
@@ -110,12 +110,12 @@ public class OpportunityFixtures {
                     .office("itxhq")
                     .role("Team Leader")
                     .name("Tech Leader at INDITEX")
-                    .client(CLIENT_BY_CODE)
+                    .client("itx")
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)
                     .priority("HIGH")
-                    .project(PROJECT_BY_CODE)
+                    .project("cosmosdata")
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 

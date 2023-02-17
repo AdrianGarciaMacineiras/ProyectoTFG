@@ -32,7 +32,7 @@ public class PeopleNode {
     private EnumTitle enumTitle;
 
     @Relationship(type="EVOLVED", direction = Relationship.Direction.OUTGOING)
-    private List<EvolutionRelationship> evolutionRelationship;
+    private List<Role> roles;
 
     @Relationship(type="KNOWS", direction = Relationship.Direction.OUTGOING)
     private List<KnowsRelationship> knows;
