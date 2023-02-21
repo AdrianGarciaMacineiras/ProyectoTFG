@@ -39,9 +39,11 @@ public interface OpportunityProjection {
 
         String getCode();
 
+        String getName();
+
     }
 
-    PeopleNode getManagedBy();
+    PeopleSummary getManagedBy();
 
     interface PeopleSummary{
 

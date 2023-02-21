@@ -9,5 +9,8 @@ import java.util.Collection;
 
 public interface OpportunityCrudRepository extends Neo4jRepository<OpportunityNode, Long> {
 
-  OpportunityProjection findByCode(String opportunitycode);
+  OpportunityNode findByCode(String opportunitycode);
+
+  //OpportunityProjection findByCode(String opportunitycode);
+
 }

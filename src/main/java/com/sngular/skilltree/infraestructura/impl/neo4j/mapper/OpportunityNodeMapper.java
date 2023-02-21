@@ -37,4 +37,8 @@ public interface OpportunityNodeMapper {
   OpportunitySkill toOpportunitySkill(OpportunitySkillsRelationship opportunitySkillsRelationship);
 
   List<Opportunity> map(List<OpportunityNode> all);
+
+  @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
+  @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
+  OpportunityNode fromOpportunityProjection(OpportunityProjection opportunityProjection);
 }
