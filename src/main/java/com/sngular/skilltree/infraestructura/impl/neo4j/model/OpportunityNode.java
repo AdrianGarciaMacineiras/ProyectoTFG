@@ -13,7 +13,7 @@ import java.util.List;
 @Node("Opportunity")
 public class OpportunityNode {
 
-    @Id
+    @Id @GeneratedValue
     private Long id;
 
     private String code;
@@ -32,7 +32,7 @@ public class OpportunityNode {
 
     private String priority;
 
-    private EnumMode enumMode;
+    private EnumMode mode;
 
     @Relationship(type="IN_THE_OFFICE", direction = Relationship.Direction.OUTGOING)
     private OfficeNode office;
@@ -42,7 +42,7 @@ public class OpportunityNode {
 
     private String role;
 
-    @Relationship(type="REQUIRE", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type="NEEDS", direction = Relationship.Direction.OUTGOING)
     private List<OpportunitySkillsRelationship> skills;
 
 

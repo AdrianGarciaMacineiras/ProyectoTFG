@@ -7,8 +7,8 @@ import java.util.List;
 
 
 @Builder(toBuilder = true)
-public record Opportunity(String code, String name, String project, String client, Date openingDate, Date closingDate,
-                          String priority, EnumMode mode, String office, String role, List<OpportunitySkill> skills,
-                          String managedBy) {
+public record Opportunity(String code, String name, Project project, Client client, Date openingDate, Date closingDate,
+                          String priority, EnumMode mode, Office office, String role, List<OpportunitySkill> skills,
+                          People managedBy) {
 
 }

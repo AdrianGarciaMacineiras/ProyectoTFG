@@ -1,8 +1,7 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.model.Opportunity;
-import com.sngular.skilltree.model.People;
-import com.sngular.skilltree.model.Skill;
+import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.OfficeNodeMapper;
+import com.sngular.skilltree.model.*;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,12 @@ public class ResolveService {
     private final OpportunityService opportunityService;
 
     private final PeopleService peopleService;
+
+    private final ProjectService projectService;
+
+    private final OfficeService officeService;
+
+    private final ClientService clientService;
 
     @Named("resolveSkillCode")
     public String resolveSkillToCode(final Skill skill) {
@@ -73,5 +78,14 @@ public class ResolveService {
     public People resolveCodePeople(final String peopleCode) {
         return peopleService.findByCode(peopleCode);
     }
+
+    @Named("resolveCodeProject")
+    public Project resolveCodeProject(final String projectCode) {return projectService.findByCode(projectCode);}
+
+    @Named("resolveCodeOffice")
+    public Office resolveCodeOffice(final String officeCode) {return officeService.findByCode(officeCode);}
+
+    @Named("resolveCodeClient")
+    public Client resolveCodeClient(final String clientCode){return clientService.findByCode(clientCode);}
 
 }

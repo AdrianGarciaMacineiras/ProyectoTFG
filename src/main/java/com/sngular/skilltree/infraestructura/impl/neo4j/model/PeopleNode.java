@@ -3,6 +3,7 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class PeopleNode {
 
-    @Id
+    @Id @GeneratedValue
     private Long id;
 
     private String code;
@@ -27,7 +28,7 @@ public class PeopleNode {
 
     private String surname;
 
-    private Date birthDate;
+    private String birthDate;
 
     private EnumTitle enumTitle;
 
@@ -50,5 +51,5 @@ public class PeopleNode {
     private List<SkillNode> interest;
 
     @Relationship(type="HAS_CERTIFICATE", direction = Relationship.Direction.OUTGOING)
-    private List<CertificateRelationship> certificateRelationships;
+    private List<CertificateRelationship> certificates;
 }

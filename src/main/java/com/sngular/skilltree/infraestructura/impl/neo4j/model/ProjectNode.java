@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ProjectNode {
 
-    @Id
+    @Id @GeneratedValue
     private Long id;
 
     private String code;
@@ -25,22 +25,22 @@ public class ProjectNode {
 
     private String desc;
 
-    private Date initDate;
+    private String initDate;
 
-    private Date endDate;
+    private String endDate;
 
-    private String domain;
+    private String dominio;
 
     private String area;
 
     private String duration;
 
-    private EnumGuards enumGuards;
+    private EnumGuards guards;
 
     @Relationship(type="REQUIRED", direction = Relationship.Direction.OUTGOING)
     private List<SkillNode> skills;
 
-    @Relationship(type="PROJECT_FOR", direction = Relationship.Direction.INCOMING)
+    @Relationship(type="PROJECT_FOR", direction = Relationship.Direction.OUTGOING)
     private ClientNode client;
 
     @Relationship(type="REQUIRE", direction = Relationship.Direction.INCOMING)

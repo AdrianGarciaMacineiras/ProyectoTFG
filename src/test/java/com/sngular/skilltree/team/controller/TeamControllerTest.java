@@ -140,10 +140,20 @@ public class TeamControllerTest {
 
         @MockBean
         PeopleService peopleService;
+        @MockBean
+        ProjectService projectService;
+
+        @MockBean
+        OfficeService officeService;
+
+        @MockBean
+        ClientService clientService;
 
         @Bean
-        ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService, final PeopleService peopleService) {
-            return new ResolveService(skillService, opportunityService, peopleService);
+        ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService,
+                                      final PeopleService peopleService, final ProjectService projectService,
+                                      final OfficeService officeService, final ClientService clientService) {
+            return new ResolveService(skillService, opportunityService, peopleService, projectService, officeService, clientService);
         }
     }
 }

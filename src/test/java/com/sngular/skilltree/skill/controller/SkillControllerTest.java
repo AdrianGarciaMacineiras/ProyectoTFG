@@ -1,9 +1,6 @@
 package com.sngular.skilltree.skill.controller;
 
-import com.sngular.skilltree.application.OpportunityService;
-import com.sngular.skilltree.application.PeopleService;
-import com.sngular.skilltree.application.ResolveService;
-import com.sngular.skilltree.application.SkillService;
+import com.sngular.skilltree.application.*;
 import com.sngular.skilltree.contract.SkillController;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -68,9 +65,20 @@ public class SkillControllerTest {
         @MockBean
         PeopleService peopleService;
 
+        @MockBean
+        ProjectService projectService;
+
+        @MockBean
+        OfficeService officeService;
+
+        @MockBean
+        ClientService clientService;
+
         @Bean
-        ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService, final PeopleService peopleService) {
-            return new ResolveService(skillService, opportunityService, peopleService);
+        ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService,
+                                      final PeopleService peopleService, final ProjectService projectService,
+                                      final OfficeService officeService, final ClientService clientService) {
+            return new ResolveService(skillService, opportunityService, peopleService, projectService, officeService, clientService);
         }
     }
 }

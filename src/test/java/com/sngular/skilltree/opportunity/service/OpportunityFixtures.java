@@ -16,6 +16,7 @@ public class OpportunityFixtures {
                     .geolocation("45.667776, 12.455555")
                     .name("Servicios Centrales")
                     .build();
+
     public static final Client CLIENT_BY_CODE =
             Client.builder()
                     .code("itx")
@@ -67,30 +68,30 @@ public class OpportunityFixtures {
     public static final Opportunity OPPORTUNITY_BY_CODE =
             Opportunity.builder()
                     .code("itxtl1")
-                    .office("itxhq")
+                    .office(OFFICE)
                     .role("Team Leader")
                     .name("Tech Leader at INDITEX")
-                    .client("itx")
+                    .client(CLIENT_BY_CODE)
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)
                     .priority("HIGH")
-                    .project("cosmosdata")
+                    .project(PROJECT_BY_CODE)
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 
     public static final Opportunity OPPORTUNITY2_BY_CODE =
             Opportunity.builder()
                     .code("itxtl2")
-                    .office("itxhq")
+                    .office(OFFICE)
                     .role("Team Leader")
                     .name("Tech Leader at INDITEX")
-                    .client("itx")
+                    .client(CLIENT_BY_CODE)
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)
                     .priority("HIGH")
-                    .project("cosmosdata")
+                    .project(PROJECT_BY_CODE)
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 

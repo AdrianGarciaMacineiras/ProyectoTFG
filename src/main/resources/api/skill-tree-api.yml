@@ -1249,8 +1249,10 @@ components:
           type: string
         initDate:
           type: string
+          format: date
         endDate:
           type: string
+          format: date
         clientCode:
           type: string
         area:
@@ -1588,10 +1590,10 @@ components:
           format: date
         title:
           $ref: "#/components/schemas/title"
-        evolution:
+        roles:
           type: object
           properties:
-            title:
+            role:
               type: string
             category:
               type: string
@@ -1646,6 +1648,7 @@ components:
           type: string
         birthDate:
           type: string
+          format: date
         title:
           $ref: "#/components/schemas/title"
         knows:

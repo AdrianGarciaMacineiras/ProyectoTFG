@@ -11,5 +11,5 @@ import java.util.List;
 
 @RelationshipProperties
 public record ParticipateRelationship(@Id @GeneratedValue Long id, @TargetNode ProjectNode project,
-                                      Date endDate, Date initDate, String role) {
+                                      String endDate, String initDate, String role) {
 }

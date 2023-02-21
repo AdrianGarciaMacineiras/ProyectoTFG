@@ -67,15 +67,15 @@ public class CandidateFixtures {
     public static final Opportunity OPPORTUNITY_BY_CODE =
             Opportunity.builder()
                     .code("itxtl1")
-                    .office("itxhq")
+                    .office(OFFICE)
                     .role("Team Leader")
                     .name("Teach Leader at INDITEX")
-                    .client("itx")
+                    .client(CLIENT_BY_CODE)
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)
                     .priority("HIGH")
-                    .project("cosmosdata")
+                    .project(PROJECT_BY_CODE)
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 

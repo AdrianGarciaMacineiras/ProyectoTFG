@@ -7,5 +7,5 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 
 
 @RelationshipProperties
-public record OpportunitySkillsRelationship(@Id @GeneratedValue Long id, @TargetNode SkillNode skill, EnumLevelReq levelReq, EnumMinLevel minLevel, Integer minExp) {
+public record OpportunitySkillsRelationship(@Id @GeneratedValue Long id, @TargetNode SkillNode skill, EnumLevelReq req_level, EnumMinLevel min_level, String min_exp) {
 }

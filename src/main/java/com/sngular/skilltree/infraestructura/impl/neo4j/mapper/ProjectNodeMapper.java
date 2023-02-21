@@ -8,13 +8,17 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(uses = {PeopleNodeMapper.class, SkillNodeMapper.class}, componentModel = "spring")
+@Mapper(uses = {PeopleNodeMapper.class, SkillNodeMapper.class, ClientNodeMapper.class}, componentModel = "spring")
 public interface ProjectNodeMapper {
 
     @InheritInverseConfiguration
+    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
     ProjectNode toNode(Project project);
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "domain", source = "dominio")
     Project fromNode(ProjectNode projectNode);
 
     List<Project> map(List<ProjectNode> all);

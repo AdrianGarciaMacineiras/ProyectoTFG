@@ -1,10 +1,6 @@
 package com.sngular.skilltree.project.controller;
 
-import com.sngular.skilltree.application.OpportunityService;
-import com.sngular.skilltree.application.PeopleService;
-import com.sngular.skilltree.application.ProjectService;
-import com.sngular.skilltree.application.ResolveService;
-import com.sngular.skilltree.application.SkillService;
+import com.sngular.skilltree.application.*;
 import com.sngular.skilltree.application.updater.ProjectUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.ProjectController;
@@ -143,9 +139,17 @@ class ProjectControllerTest {
         @MockBean
         PeopleService peopleService;
 
+        @MockBean
+        OfficeService officeService;
+
+        @MockBean
+        ClientService clientService;
+
         @Bean
-        public ResolveService resolveService() {
-            return new ResolveService(skillService, opportunityService, peopleService);
-        };
+        ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService,
+                                      final PeopleService peopleService, final ProjectService projectService,
+                                      final OfficeService officeService, final ClientService clientService) {
+            return new ResolveService(skillService, opportunityService, peopleService, projectService, officeService, clientService);
+        }
     }
 }

@@ -15,13 +15,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(uses = {ClientMapper.class, SkillMapper.class, ResolveService.class}, componentModel = "spring")
+@Mapper(uses = {ClientMapper.class, SkillMapper.class, ResolveService.class, PeopleMapper.class, ProjectMapper.class, OfficeMapper.class}, componentModel = "spring")
 public interface OpportunityMapper {
 
      @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
      @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
-     @Mapping(target= "projectCode", source = "project")
-     @Mapping(target= "clientCode", source = "client")
+     @Mapping(target= "projectCode", source = "project.code")
+     @Mapping(target= "clientCode", source = "client.code")
+     @Mapping(target = "office", source = "office.name")
      OpportunityDTO toOpportunityDTO(Opportunity opportunity);
 
      @Mapping(target = "skill", source = "skill", qualifiedByName = {"resolveService", "resolveSkillCode"})
@@ -32,6 +33,10 @@ public interface OpportunityMapper {
 
      @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
      @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
+     @Mapping(target = "project", source = "projectCode", qualifiedByName = {"resolveService", "resolveCodeProject"})
+     @Mapping(target = "managedBy", source = "managedBy", qualifiedByName = {"resolveService", "resolveCodePeople"})
+     @Mapping(target = "office", source = "office", qualifiedByName = {"resolveService", "resolveCodeOffice"})
+     @Mapping(target = "client", source = "clientCode", qualifiedByName = {"resolveService", "resolveCodeClient"})
      Opportunity toOpportunity(OpportunityDTO opportunityDTO);
 
      List<OpportunityDTO> toOpportunitiesDTO(Collection<Opportunity> opportunities);
@@ -39,6 +44,8 @@ public interface OpportunityMapper {
      @Mapping(target = "skills", ignore = true)
      @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
      @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
+     @Mapping(target = "office", source = "office", qualifiedByName = {"resolveService", "resolveCodeOffice"})
+     @Mapping(target = "managedBy", source = "managedBy", qualifiedByName = {"resolveService", "resolveCodePeople"})
      Opportunity toOpportunity(PatchedOpportunityDTO patchedOpportunityDTO);
 
      void update(@MappingTarget Opportunity oldOpportunity, Opportunity newOpportunity);

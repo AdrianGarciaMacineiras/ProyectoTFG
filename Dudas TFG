@@ -1,5 +1,1 @@
-Levantar seervicio project, people, oportunity.
-
-Skills en api solo get.
-
 docker-compose -f dockercompose.yaml up
