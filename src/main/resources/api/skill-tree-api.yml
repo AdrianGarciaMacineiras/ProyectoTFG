@@ -1652,16 +1652,18 @@ components:
         title:
           $ref: "#/components/schemas/title"
         knows:
-          type: object
-          properties:
-            code:
-              type: string
-            level:
-              type: string
-            primary:
-              type: boolean
-            avoidable:
-              type: boolean
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              level:
+                type: string
+              primary:
+                type: boolean
+              avoidable:
+                type: boolean
         work_with:
           type: array
           items:
@@ -1670,15 +1672,10 @@ components:
           type: array
           items:
             type: string
-        participate:
-          type: object
-          properties:
-            code:
-              type: string
-            roles:
-              type: array
-              items:
-                $ref: "#/components/schemas/role"
+        participates:
+          type: array
+          items:
+            $ref: "#/components/schemas/participate"
         interest:
           type: array
           items:
@@ -1687,6 +1684,16 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/certificate"
+
+    participate:
+      type: object
+      properties:
+        code:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/role"
 
     certificate:
       type: object
