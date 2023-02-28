@@ -18,13 +18,14 @@ import java.util.List;
 @NoArgsConstructor
 public class SkillNode {
 
-    @Id @GeneratedValue
-    private Long id;
+    /*@Id @GeneratedValue
+    private Long id;*/
 
+    @Id
     private String code;
 
     private String name;
 
     @Relationship(type="REQUIRE", direction = Relationship.Direction.INCOMING)
-    private List<SkillNode> subSkills;
+    private List<SubskillsRelationship> subSkills;
 }

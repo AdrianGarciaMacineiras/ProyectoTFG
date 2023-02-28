@@ -13,9 +13,10 @@ import java.util.List;
 @Node("Opportunity")
 public class OpportunityNode {
 
-    @Id @GeneratedValue
-    private Long id;
+    /*@Id @GeneratedValue
+    private Long id;*/
 
+    @Id
     private String code;
 
     private String name;

@@ -1314,7 +1314,7 @@ components:
       type: object
       required:
         - code
-        - type
+        - name
         - subSkills
       properties:
         code:

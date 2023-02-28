@@ -13,10 +13,11 @@ import org.springframework.data.neo4j.core.schema.Node;
 @NoArgsConstructor
 public class OfficeNode {
 
-    @Id
+    /*@Id
     @GeneratedValue
-    private Long id;
+    private Long id;*/
 
+    @Id
     private String code;
 
     private String name;

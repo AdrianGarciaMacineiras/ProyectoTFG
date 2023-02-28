@@ -14,9 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 public class ProjectNode {
 
-    @Id @GeneratedValue
-    private Long id;
+    /*@Id @GeneratedValue
+    private Long id;*/
 
+    @Id
     private String code;
 
     private String name;

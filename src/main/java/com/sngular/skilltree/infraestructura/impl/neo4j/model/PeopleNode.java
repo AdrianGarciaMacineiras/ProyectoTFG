@@ -17,9 +17,10 @@ import java.util.List;
 @NoArgsConstructor
 public class PeopleNode {
 
-    @Id @GeneratedValue
-    private Long id;
+    /*@Id @GeneratedValue
+    private Long id;*/
 
+    @Id
     private String code;
 
     private String name;

@@ -7,7 +7,7 @@ import org.springframework.data.neo4j.repository.query.Query;
 
 import java.util.Collection;
 
-public interface OpportunityCrudRepository extends Neo4jRepository<OpportunityNode, Long> {
+public interface OpportunityCrudRepository extends Neo4jRepository<OpportunityNode, String> {
 
   OpportunityNode findByCode(String opportunitycode);
 
