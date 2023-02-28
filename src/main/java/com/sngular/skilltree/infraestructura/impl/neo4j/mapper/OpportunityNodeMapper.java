@@ -1,6 +1,5 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.OpportunityNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.OpportunitySkillsRelationship;
 import com.sngular.skilltree.infraestructura.impl.neo4j.projections.OpportunityProjection;

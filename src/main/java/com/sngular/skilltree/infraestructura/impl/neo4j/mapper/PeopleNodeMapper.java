@@ -1,34 +1,51 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.CertificateRelationship;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.ParticipateRelationship;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
-import com.sngular.skilltree.model.Certificate;
-import com.sngular.skilltree.model.Participate;
-import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.infraestructura.ProjectRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.ProjectCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveServiceNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.Role;
+import com.sngular.skilltree.model.*;
+import com.sngular.skilltree.model.Roles;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-@Mapper(componentModel = "spring", uses = ResolveRepository.class)
+@Mapper(componentModel = "spring", uses = ResolveServiceNode.class)
 public interface PeopleNodeMapper {
 
     @InheritInverseConfiguration
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "participate", source = "participate", qualifiedByName = {"resolveServiceNode", "mapToParticipateRelationship"})
     PeopleNode toNode(People People);
 
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "participate", source = "participate", qualifiedByName = {"resolveServiceNode", "mapToParticipate"})
     People fromNode(PeopleNode peopleNode);
 
     @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "code", source = "skillNode.code")
     Certificate certificateRelationshipToCertificate(CertificateRelationship certificateRelationship);
 
-    /*@Mapping(target = "name", source = "project.code")
-    @Mapping(target = "roles", qualifiedByName = {"resolveRepository", "resolveRoles"})
-    Participate participateRelationshipToParticipate(ParticipateRelationship participateRelationship);*/
+    @Mapping(target = "skillNode", source = "code", qualifiedByName = {"resolveServiceNode", "resolveCodeToSkillNode"})
+    @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
+    CertificateRelationship certificateToCertificateRelationship(Certificate certificate);
+
+    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    com.sngular.skilltree.model.Role roleToRole(Role role);
+
+    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    Role roleToRole1(com.sngular.skilltree.model.Role role);
+
+    @Mapping(target = "code", source = "skillNode.code")
+    Knows knowsRelationshipToKnows(KnowsRelationship knowsRelationship);
+
+    @Mapping(target = "skillNode", source = "code", qualifiedByName={"resolveServiceNode", "resolveCodeToSkillNode"})
+    KnowsRelationship knowsToKnowsRelationship(Knows knows);
 
     List<People> map(List<PeopleNode> all);
 }

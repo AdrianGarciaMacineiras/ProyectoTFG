@@ -1,10 +1,8 @@
 package com.sngular.skilltree.contract.mapper;
 
-import com.sngular.skilltree.api.model.PatchedPeopleDTO;
-import com.sngular.skilltree.api.model.PeopleDTO;
+import com.sngular.skilltree.api.model.*;
 import com.sngular.skilltree.application.ResolveService;
-import com.sngular.skilltree.model.EnumTitle;
-import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.*;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -37,6 +35,25 @@ public interface PeopleMapper {
     @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
     People toPeople (PatchedPeopleDTO patchedPersonDTO);
+
+    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    RolesDTO roleToRolesDTO(Role role);
+
+    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    Roles roleDTOToRoles(RoleDTO roleDTO);
+
+    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
+    RoleDTO rolesToRoleDTO(Roles roles);
+
+    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    Role rolesDTOToRole(RolesDTO rolesDTO);
+
+    @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
+    CertificateDTO certificateToCertificateDTO(Certificate certificate);
+
+    @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
+    Certificate certificateDTOToCertificate(CertificateDTO certificateDTO);
 
     void update(@MappingTarget People oldPeople, People newPeople);
 

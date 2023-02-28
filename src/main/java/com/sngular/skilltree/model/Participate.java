@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder(toBuilder = true)
-public record Participate(String name, List<Roles> roles) {
+public record Participate(String code, List<Roles> roles) {
 }

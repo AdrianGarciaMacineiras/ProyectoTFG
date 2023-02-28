@@ -7,5 +7,5 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 
 
 @RelationshipProperties
-public record CertificateRelationship(@Id @GeneratedValue Long id, @TargetNode SkillNode skill, String comment, String date) {
+public record CertificateRelationship(@Id @GeneratedValue Long id, @TargetNode SkillNode skillNode, String comments, String date) {
 }

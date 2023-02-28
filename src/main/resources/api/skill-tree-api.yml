@@ -1591,26 +1591,30 @@ components:
         title:
           $ref: "#/components/schemas/title"
         roles:
-          type: object
-          properties:
-            role:
-              type: string
-            category:
-              type: string
-            initDate:
-              type: string
-              format: date
+          type: array
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+              category:
+                type: string
+              initDate:
+                type: string
+                format: date
         knows:
-          type: object
-          properties:
-            code:
-              type: string
-            level:
-              type: string
-            primary:
-              type: boolean
-            avoidable:
-              type: boolean
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              level:
+                type: string
+              primary:
+                type: boolean
+              avoidable:
+                type: boolean
         work_with:
           type: array
           items: 
@@ -1620,14 +1624,16 @@ components:
           items: 
             type: string
         participate:
-          type: object
-          properties:
-            code:
-              type: string
-            roles:
-              type: array
-              items:
-                $ref: "#/components/schemas/role"
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              roles:
+                type: array
+                items:
+                  $ref: "#/components/schemas/role"
         interest:
           type: array
           items:
@@ -1672,10 +1678,17 @@ components:
           type: array
           items:
             type: string
-        participates:
+        participate:
           type: array
           items:
-            $ref: "#/components/schemas/participate"
+            type: object
+            properties:
+              name:
+                type: string
+              roles:
+                type: array
+                items:
+                  $ref: "#/components/schemas/role"
         interest:
           type: array
           items:
@@ -1685,22 +1698,12 @@ components:
           items:
             $ref: "#/components/schemas/certificate"
 
-    participate:
-      type: object
-      properties:
-        code:
-          type: string
-        roles:
-          type: array
-          items:
-            $ref: "#/components/schemas/role"
-
     certificate:
       type: object
       properties:
         code:
           type: string
-        comment:
+        comments:
           type: string
         date:
           type: string
@@ -1721,12 +1724,12 @@ components:
       type: object
       required:
         - role
-        - fromDate
+        - initDate
         - endDate
       properties:
         role:
           type: string
-        fromDate:
+        initDate:
           type: string
           format: date
         endDate:
