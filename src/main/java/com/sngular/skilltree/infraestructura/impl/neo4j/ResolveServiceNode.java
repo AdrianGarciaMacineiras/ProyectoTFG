@@ -1,11 +1,9 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.OfficeNode;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.ParticipateRelationship;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
 import com.sngular.skilltree.model.Participate;
 import com.sngular.skilltree.model.Roles;
+import com.sngular.skilltree.model.Skill;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
@@ -99,5 +97,18 @@ public class ResolveServiceNode {
         return participateRelationshipList;
     }
 
+    @Named("mapToSubskill")
+    public List<Skill> mapToSubskill(List<SubskillsRelationship> subskillsRelationships){
+        final List<Skill> skillList = new ArrayList<>();
+        /*for (var subSkill: subskillsRelationships){
+            var skill = Skill.builder()
+                    .name(subSkill.skillNode().getName())
+                    .code(subSkill.skillNode().getCode())
+                    .subSkills(new ArrayList<>())
+                    .build();
+            skillList.add(skill);
+        }*/
+        return skillList;
+    }
 
 }
