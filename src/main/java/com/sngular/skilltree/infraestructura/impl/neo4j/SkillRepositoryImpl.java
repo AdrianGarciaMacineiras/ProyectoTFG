@@ -31,6 +31,7 @@ public class SkillRepositoryImpl implements SkillRepository {
             }
             Skill skill = new Skill(skillNode.getCode(), skillNode.getName(), subSkills);
             skills.add(skill);
+            subSkills.clear();
         }
         return skills;
     }
