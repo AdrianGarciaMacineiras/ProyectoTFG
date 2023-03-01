@@ -90,9 +90,9 @@ public class ResolveServiceNode {
                 endDate = formatter.format(rol.endDate());
                 initDate = formatter.format(rol.initDate());
                 role = rol.role();
+                ParticipateRelationship participateRelationship = new ParticipateRelationship(null, project, endDate, initDate, role);
+                participateRelationshipList.add(participateRelationship);
             }
-            ParticipateRelationship participateRelationship = new ParticipateRelationship(null, project, endDate, initDate, role);
-            participateRelationshipList.add(participateRelationship);
         }
         return participateRelationshipList;
     }

@@ -1270,7 +1270,7 @@ components:
         roles:
           type: array
           items:
-            $ref: "#/components/schemas/roles"
+            $ref: "#/components/schemas/projectRoles"
 
     patchedProject:
       type: object
@@ -1290,7 +1290,7 @@ components:
         roles:
             type: array
             items:
-              $ref: "#/components/schemas/roles"
+              $ref: "#/components/schemas/projectRoles"
 
     guards:
       type: string
@@ -1299,7 +1299,7 @@ components:
         - ACTIVE
         - NO_GUARD
 
-    roles:
+    projectRoles:
       type: object
       required:
         - rol
