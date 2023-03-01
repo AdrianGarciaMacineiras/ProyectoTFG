@@ -2,6 +2,7 @@ package com.sngular.skilltree.contract.mapper;
 
 import com.sngular.skilltree.api.model.MembersDTO;
 import com.sngular.skilltree.api.model.PatchedTeamDTO;
+import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.Team;
 import com.sngular.skilltree.api.model.TeamDTO;
@@ -13,7 +14,7 @@ import org.mapstruct.MappingTarget;
 import java.util.Collection;
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = PeopleMapper.class)
+@Mapper(componentModel = "spring", uses = {PeopleMapper.class, ResolveService.class})
 public interface TeamMapper {
 
     TeamDTO toTeamDTO(Team team);
@@ -26,7 +27,10 @@ public interface TeamMapper {
     List<MembersDTO> toMember(List<Member> members);
 
     @Mapping(source="people.code", target = "peopleCode")
-    MembersDTO toMember(Member members);
+    MembersDTO toMemberDTO(Member members);
+
+    @Mapping(target = "people", source = "peopleCode", qualifiedByName = {"resolveService", "resolveCodePeople"})
+    Member toMember(MembersDTO membersDTO);
 
     Team toTeam(TeamDTO teamDTO);
 

@@ -4,6 +4,7 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
 import com.sngular.skilltree.model.Participate;
 import com.sngular.skilltree.model.Roles;
 import com.sngular.skilltree.model.Skill;
+import com.sngular.skilltree.model.SkillsCandidate;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
@@ -122,4 +123,28 @@ public class ResolveServiceNode {
         return subskillsRelationshipsList;
     }
 
+    @Named("mapToSkillCandidate")
+    public List<SkillsCandidate> mapToSkillCandidate(List<SkillsCandidateRelationship> skillsCandidateRelationshipList){
+        final List<SkillsCandidate> skillsCandidateList = new ArrayList<>();
+        for (var skillCandidateRelationship: skillsCandidateRelationshipList){
+            var skill = SkillsCandidate.builder()
+                    .code(skillCandidateRelationship.skill().getCode())
+                    .experience(Integer.parseInt(skillCandidateRelationship.experience()))
+                    .level(skillCandidateRelationship.level()).build();
+            skillsCandidateList.add(skill);
+        }
+        return skillsCandidateList;
+    }
+
+    @Named("mapToSkillCandidateRelationship")
+    public  List<SkillsCandidateRelationship> mapToSkillCandidateRelationship(List<SkillsCandidate> skillsCandidateList){
+        final List<SkillsCandidateRelationship> skillsCandidateRelationshipList = new ArrayList<>();
+        for (var skill: skillsCandidateList){
+            var skillNode = skillCrudRepository.findByCode(skill.code());
+            SkillsCandidateRelationship skillsCandidateRelationship = new SkillsCandidateRelationship(null, skillNode,
+                    skill.level(), String.valueOf(skill.experience()));
+            skillsCandidateRelationshipList.add(skillsCandidateRelationship);
+        }
+        return skillsCandidateRelationshipList;
+    }
 }
