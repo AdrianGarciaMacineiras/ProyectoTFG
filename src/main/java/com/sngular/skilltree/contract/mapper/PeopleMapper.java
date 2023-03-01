@@ -40,6 +40,7 @@ public interface PeopleMapper {
     RolesDTO roleToRolesDTO(Role role);
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
     Roles roleDTOToRoles(RoleDTO roleDTO);
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")

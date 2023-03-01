@@ -21,7 +21,7 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Override
     public People create(People people) {
-        validate(people.code());
+        //validate(people.code());
         return peopleRepository.save(people);
     }
 

@@ -111,4 +111,15 @@ public class ResolveServiceNode {
         return skillList;
     }
 
+    @Named("mapToSkillRelationship")
+    public List<SubskillsRelationship> mapToSkillRelationship(List<Skill> skills){
+        final List<SubskillsRelationship> subskillsRelationshipsList = new ArrayList<>();
+        for (var skill: skills){
+            var skillNode = skillCrudRepository.findByCode(skill.code());
+            SubskillsRelationship subskillsRelationship = new SubskillsRelationship(null, skillNode,"own");
+            subskillsRelationshipsList.add(subskillsRelationship);
+        }
+        return subskillsRelationshipsList;
+    }
+
 }

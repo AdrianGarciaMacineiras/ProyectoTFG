@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Mapper(componentModel = "spring", uses = ResolveServiceNode.class)
+@Mapper(componentModel = "spring", uses = {ResolveServiceNode.class, SkillNodeMapper.class})
 public interface PeopleNodeMapper {
 
     @InheritInverseConfiguration

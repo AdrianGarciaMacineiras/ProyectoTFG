@@ -14,5 +14,8 @@ public interface SkillNodeMapper {
     @Mapping(target = "subSkills", source = "subSkills", qualifiedByName = {"resolveServiceNode", "mapToSubskill"})
     Skill fromNode(SkillNode skillNode);
 
+    @Mapping(target = "subSkills", source = "subSkills", qualifiedByName = {"resolveServiceNode", "mapToSkillRelationship"})
+    SkillNode toNode (Skill skill);
+
     List<Skill> map(List<SkillNode> all);
 }

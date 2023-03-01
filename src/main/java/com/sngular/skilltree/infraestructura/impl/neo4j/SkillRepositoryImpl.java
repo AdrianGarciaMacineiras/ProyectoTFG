@@ -25,13 +25,13 @@ public class SkillRepositoryImpl implements SkillRepository {
         List<Skill> subSkills = new ArrayList<>();
         List<Skill> skills = new ArrayList<>();
         for(SkillNode skillNode: skillNodeList){
+            subSkills = new ArrayList<>();
             for (SubskillsRelationship subSkillNode: skillNode.getSubSkills()){
                 var toSkill = mapper.fromNode(subSkillNode.skillNode());
                 subSkills.add(toSkill);
             }
             Skill skill = new Skill(skillNode.getCode(), skillNode.getName(), subSkills);
             skills.add(skill);
-            subSkills.clear();
         }
         return skills;
     }
