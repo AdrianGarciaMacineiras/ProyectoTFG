@@ -1,5 +1,6 @@
 package com.sngular.skilltree.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import java.util.List;

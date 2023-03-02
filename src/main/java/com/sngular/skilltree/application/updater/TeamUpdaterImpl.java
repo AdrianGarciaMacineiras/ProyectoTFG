@@ -18,13 +18,13 @@ public class TeamUpdaterImpl implements TeamUpdater{
     public Team update(String teamcode, Team newTeam) {
         var oldTeam = teamRepository.findByCode(teamcode);
         mapper.update(oldTeam, newTeam);
-        return teamRepository.save(oldTeam);
+        return teamRepository.save(newTeam);
     }
 
     @Override
     public Team patch(String teamcode, Team patchedTeam) {
         var oldTeam = teamRepository.findByCode(teamcode);
-        mapper.update(oldTeam, patchedTeam);
-        return teamRepository.save(oldTeam);
+        var team = mapper.update(patchedTeam, oldTeam);
+        return teamRepository.save(team);
     }
 }

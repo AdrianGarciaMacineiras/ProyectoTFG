@@ -17,14 +17,14 @@ public class PeopleUpdaterImpl implements  PeopleUpdater{
     @Override
     public People update(String personcode, People newPeople) {
         var oldperson = peopleRepository.findByCode(personcode);
-        mapper.update(oldperson, newPeople);
-        return peopleRepository.save(oldperson);
+        //mapper.update(oldperson, newPeople);
+        return peopleRepository.save(newPeople);
     }
 
     @Override
     public People patch(String personcode, People patchedPeople) {
         var oldperson = peopleRepository.findByCode(personcode);
-        mapper.update(oldperson, patchedPeople);
-        return peopleRepository.save(oldperson);
+        var person = mapper.update(patchedPeople, oldperson);
+        return peopleRepository.save(person);
     }
 }

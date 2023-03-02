@@ -88,4 +88,18 @@ public class ResolveService {
     @Named("resolveCodeClient")
     public Client resolveCodeClient(final String clientCode){return clientService.findByCode(clientCode);}
 
+    /*@Named("updateClient")
+    public Client updateClient(Client newClient, Client oldClient){
+        oldClient.toBuilder()
+                .industry(newClient.industry())
+                .country(newClient.country())
+                .HQ(newClient.HQ())
+                .offices(newClient.offices())
+                .principalOffice(newClient.principalOffice())
+                .name(newClient.name())
+                .build();
+        return oldClient;
+    }*/
+
+
 }

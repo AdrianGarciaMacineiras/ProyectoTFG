@@ -13,18 +13,18 @@ public class ClientUpdaterImpl implements ClientUpdater{
     private final ClientRepository clientRepository;
 
     private final ClientMapper mapper;
+
     @Override
     public Client update(String clientcode, Client newClient) {
         var oldClient = clientRepository.findByCode(clientcode);
-        mapper.update(oldClient, newClient);
-        return clientRepository.save(oldClient);
+        return clientRepository.save(newClient);
     }
 
     @Override
     public Client patch(String clientcode, Client patchedClient) {
         var oldClient = clientRepository.findByCode(clientcode);
-        mapper.update(oldClient, patchedClient);
-        return clientRepository.save(oldClient);
+        var client = mapper.update(patchedClient, oldClient);
+        return clientRepository.save(client);
     }
 
 }

@@ -17,15 +17,15 @@ public class ProjectUpdaterImpl implements ProjectUpdater{
     @Override
     public Project update(String projectcode, Project newProject) {
         var oldProject = projectRepository.findByCode(projectcode);
-        mapper.update(oldProject,newProject);
-        return projectRepository.save(oldProject);
+        //mapper.update(oldProject,newProject);
+        return projectRepository.save(newProject);
     }
 
     @Override
     public Project patch(String projectcode, Project patchedProject) {
         var oldProject = projectRepository.findByCode(projectcode);
-        mapper.update(oldProject,patchedProject);
-        return projectRepository.save(oldProject);
+        var project = mapper.update(patchedProject, oldProject);
+        return projectRepository.save(project);
     }
 
 }

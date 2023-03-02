@@ -17,16 +17,15 @@ public class OpportunityUpdaterImpl implements OpportunityUpdater{
     @Override
     public Opportunity update(final String opportunitycode, final Opportunity newOpportunity) {
         var oldOpportunity = opportunityRepository.findByCode(opportunitycode);
-        mapper.update(oldOpportunity, newOpportunity);
-        return opportunityRepository.save(oldOpportunity);
+        //mapper.update(oldOpportunity, newOpportunity);
+        return opportunityRepository.save(newOpportunity);
     }
 
     @Override
     public Opportunity patch(final String opportunitycode, final Opportunity patchedOpportunity) {
         var oldOpportunity = opportunityRepository.findByCode(opportunitycode);
-        mapper.update(oldOpportunity, patchedOpportunity);
-        opportunityRepository.save(oldOpportunity);
-        return opportunityRepository.save(oldOpportunity);
+        var opportunity = mapper.update(patchedOpportunity, oldOpportunity);
+        return opportunityRepository.save(opportunity);
     }
 
 }

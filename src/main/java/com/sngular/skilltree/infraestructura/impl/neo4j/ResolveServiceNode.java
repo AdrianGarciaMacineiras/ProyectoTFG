@@ -50,7 +50,9 @@ public class ResolveServiceNode {
     }
 
     @Named("resolveCodeToSkillNode")
-    public SkillNode resolveCodeToSkillNode(final String code) {return skillCrudRepository.findByCode(code);}
+    public SkillNode resolveCodeToSkillNode(final String code) {
+        return skillCrudRepository.findByCode(code);
+    }
 
     @Named("mapToParticipate")
     public List<Participate> mapToParticipate(List<ParticipateRelationship> participateRelationshipList) {
@@ -80,14 +82,14 @@ public class ResolveServiceNode {
     }
 
     @Named("mapToParticipateRelationship")
-    public List<ParticipateRelationship> mapToParticipateRelationship(List<Participate> participateList){
+    public List<ParticipateRelationship> mapToParticipateRelationship(List<Participate> participateList) {
         final List<ParticipateRelationship> participateRelationshipList = new ArrayList<>();
-        for(var participate: participateList){
+        for (var participate : participateList) {
             String endDate = null;
             String initDate = null;
             String role = null;
             var project = projectCrudRepository.findByCode(participate.code());
-            for(var rol: participate.roles()){
+            for (var rol : participate.roles()) {
                 endDate = formatter.format(rol.endDate());
                 initDate = formatter.format(rol.initDate());
                 role = rol.role();
@@ -99,7 +101,7 @@ public class ResolveServiceNode {
     }
 
     @Named("mapToSubskill")
-    public List<Skill> mapToSubskill(List<SubskillsRelationship> subskillsRelationships){
+    public List<Skill> mapToSubskill(List<SubskillsRelationship> subskillsRelationships) {
         final List<Skill> skillList = new ArrayList<>();
         /*for (var subSkill: subskillsRelationships){
             var skill = Skill.builder()
@@ -113,20 +115,20 @@ public class ResolveServiceNode {
     }
 
     @Named("mapToSkillRelationship")
-    public List<SubskillsRelationship> mapToSkillRelationship(List<Skill> skills){
+    public List<SubskillsRelationship> mapToSkillRelationship(List<Skill> skills) {
         final List<SubskillsRelationship> subskillsRelationshipsList = new ArrayList<>();
-        for (var skill: skills){
+        for (var skill : skills) {
             var skillNode = skillCrudRepository.findByCode(skill.code());
-            SubskillsRelationship subskillsRelationship = new SubskillsRelationship(null, skillNode,"own");
+            SubskillsRelationship subskillsRelationship = new SubskillsRelationship(null, skillNode, "own");
             subskillsRelationshipsList.add(subskillsRelationship);
         }
         return subskillsRelationshipsList;
     }
 
     @Named("mapToSkillCandidate")
-    public List<SkillsCandidate> mapToSkillCandidate(List<SkillsCandidateRelationship> skillsCandidateRelationshipList){
+    public List<SkillsCandidate> mapToSkillCandidate(List<SkillsCandidateRelationship> skillsCandidateRelationshipList) {
         final List<SkillsCandidate> skillsCandidateList = new ArrayList<>();
-        for (var skillCandidateRelationship: skillsCandidateRelationshipList){
+        for (var skillCandidateRelationship : skillsCandidateRelationshipList) {
             var skill = SkillsCandidate.builder()
                     .code(skillCandidateRelationship.skill().getCode())
                     .experience(Integer.parseInt(skillCandidateRelationship.experience()))
@@ -137,9 +139,9 @@ public class ResolveServiceNode {
     }
 
     @Named("mapToSkillCandidateRelationship")
-    public  List<SkillsCandidateRelationship> mapToSkillCandidateRelationship(List<SkillsCandidate> skillsCandidateList){
+    public List<SkillsCandidateRelationship> mapToSkillCandidateRelationship(List<SkillsCandidate> skillsCandidateList) {
         final List<SkillsCandidateRelationship> skillsCandidateRelationshipList = new ArrayList<>();
-        for (var skill: skillsCandidateList){
+        for (var skill : skillsCandidateList) {
             var skillNode = skillCrudRepository.findByCode(skill.code());
             SkillsCandidateRelationship skillsCandidateRelationship = new SkillsCandidateRelationship(null, skillNode,
                     skill.level(), String.valueOf(skill.experience()));

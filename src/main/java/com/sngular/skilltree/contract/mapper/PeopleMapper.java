@@ -3,12 +3,7 @@ package com.sngular.skilltree.contract.mapper;
 import com.sngular.skilltree.api.model.*;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.model.*;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ValueMapping;
-import org.springframework.jmx.export.annotation.ManagedOperation;
+import org.mapstruct.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -62,7 +57,30 @@ public interface PeopleMapper {
     @Mapping(target = "code", source = "name")
     Participate participateDTOToParticipate(ParticipateDTO participateDTO);
 
-    void update(@MappingTarget People oldPeople, People newPeople);
+    //void update(@MappingTarget People oldPeople, People newPeople);
+
+    @Named("update")
+    default People update(People newPeople, People oldPeople) {
+        People.PeopleBuilder peopleBuilder = oldPeople.toBuilder();
+
+        People people = peopleBuilder
+                .code(oldPeople.code())
+                .employeeId((newPeople.employeeId() == null) ? oldPeople.employeeId() : newPeople.employeeId())
+                .birthDate((newPeople.birthDate() == null) ? oldPeople.birthDate() : newPeople.birthDate())
+                .name((newPeople.name() == null) ? oldPeople.name() : newPeople.name())
+                .surname((newPeople.surname() == null) ? oldPeople.surname() : newPeople.surname())
+                .title((newPeople.title() == null) ? oldPeople.title() : newPeople.title())
+                .certificates((newPeople.certificates() == null) ? oldPeople.certificates() : newPeople.certificates())
+                .interest((newPeople.interest() == null) ? oldPeople.interest() : newPeople.interest())
+                .knows((newPeople.knows() == null) ? oldPeople.knows() : newPeople.knows())
+                .master((newPeople.master() == null) ? oldPeople.master() : newPeople.master())
+                .participate((newPeople.participate() == null) ? oldPeople.participate() : newPeople.participate())
+                .work_with((newPeople.work_with() == null) ? oldPeople.work_with() : newPeople.work_with())
+                .roles((newPeople.roles() == null) ? oldPeople.roles() : newPeople.roles())
+                .build();
+
+        return people;
+    };
 
     default String toPeopleCode(final People people) {
         return people.code();

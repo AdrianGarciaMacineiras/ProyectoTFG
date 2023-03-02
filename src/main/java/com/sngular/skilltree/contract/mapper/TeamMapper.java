@@ -4,12 +4,10 @@ import com.sngular.skilltree.api.model.MembersDTO;
 import com.sngular.skilltree.api.model.PatchedTeamDTO;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.model.Member;
+import com.sngular.skilltree.model.Opportunity;
 import com.sngular.skilltree.model.Team;
 import com.sngular.skilltree.api.model.TeamDTO;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -38,5 +36,20 @@ public interface TeamMapper {
 
     Team toTeam(PatchedTeamDTO patchedTeamDTO);
 
-    void update(@MappingTarget Team oldTeam, Team newTeam);
+    //void update(@MappingTarget Team oldTeam, Team newTeam);
+
+    @Named("update")
+    default Team update(Team newTeam, Team oldTeam) {
+        Team.TeamBuilder teamBuilder = oldTeam.toBuilder();
+
+        Team team = teamBuilder
+                .code(oldTeam.code())
+                .members((newTeam.members() == null) ? oldTeam.members() : newTeam.members())
+                .description((newTeam.description() == null) ? oldTeam.description() : newTeam.description())
+                .name((newTeam.name() == null) ? oldTeam.name() : newTeam.name())
+                .tags((newTeam == null) ? oldTeam.tags() : newTeam.tags())
+                .build();
+
+        return team;
+    };
 }
