@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -12,9 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @Node("Opportunity")
 public class OpportunityNode {
-
-    /*@Id @GeneratedValue
-    private Long id;*/
 
     @Id
     private String code;
@@ -27,9 +25,9 @@ public class OpportunityNode {
     @Relationship(type="FOR_CLIENT", direction = Relationship.Direction.OUTGOING)
     private ClientNode client;
 
-    private String openingDate;
+    private LocalDate openingDate;
 
-    private String closingDate;
+    private LocalDate closingDate;
 
     private String priority;
 
@@ -46,5 +44,6 @@ public class OpportunityNode {
     @Relationship(type="NEEDS", direction = Relationship.Direction.OUTGOING)
     private List<OpportunitySkillsRelationship> skills;
 
+    private boolean deleted;
 
 }

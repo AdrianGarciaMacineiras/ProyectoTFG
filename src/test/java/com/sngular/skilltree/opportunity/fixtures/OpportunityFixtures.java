@@ -3,11 +3,13 @@ package com.sngular.skilltree.opportunity.fixtures;
 import com.sngular.skilltree.model.*;
 import com.sngular.skilltree.testutil.FileHelper;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class OpportunityFixtures {
 
-    public static final Date date = new GregorianCalendar(2023, Calendar.JANUARY, 20).getTime();
+    public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
     public static final String OPPORTUNITY_BY_CODE_JSON = FileHelper.getContent("/opportunity/opportunity_by_code.json");
 
@@ -28,7 +30,7 @@ public class OpportunityFixtures {
 
     public static final Client CLIENT_BY_CODE =
             Client.builder()
-                    .code("itx")
+                    .code(1)
                     .HQ("A Coruña")
                     .country("Spain")
                     .industry("RETAIL")
@@ -51,7 +53,7 @@ public class OpportunityFixtures {
 
     public  static final Project PROJECT_BY_CODE =
             Project.builder()
-                    .code("cosmosdata")
+                    .code(1)
                     .area("Logistica")
                     .desc("Data consolidation project for Data Analytics")
                     .client(CLIENT_BY_CODE)

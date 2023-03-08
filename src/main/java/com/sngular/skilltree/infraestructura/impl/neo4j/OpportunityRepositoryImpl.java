@@ -32,7 +32,6 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
   @Override
   public boolean deleteByCode(String opportunitycode) {
     var node = crud.findByCode(opportunitycode);
-    //crud.delete(mapper.fromOpportunityProjection(node));
     crud.delete(node);
     return true;
   }

@@ -11,14 +11,13 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 @Named("resolveServiceNode")
 public class ResolveServiceNode {
-
-    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     private final OfficeCrudRepository officeCrudRepository;
 
@@ -45,7 +44,7 @@ public class ResolveServiceNode {
     }
 
     @Named("resolveCodeToPeopleNode")
-    public PeopleNode resolveCodePeopleNode(final String code) {
+    public PeopleNode resolveCodePeopleNode(final Integer code) {
         return peopleCrudRepository.findByCode(code);
     }
 
@@ -57,23 +56,18 @@ public class ResolveServiceNode {
     @Named("mapToParticipate")
     public List<Participate> mapToParticipate(List<ParticipateRelationship> participateRelationshipList) {
         final List<Participate> participateList = new ArrayList<>();
-        var participateMap = new HashMap<String, List<Roles>>();
+        var participateMap = new HashMap<Integer, List<Roles>>();
         for (var participateRelationship : participateRelationshipList) {
             participateMap.compute(participateRelationship.project().getCode(), (code, roleList) -> {
-                try {
-                    var rol = Roles.builder()
+                var rol = Roles.builder()
                             .role(participateRelationship.role())
-                            .initDate(formatter.parse(participateRelationship.initDate()))
-                            .endDate(formatter.parse(participateRelationship.endDate()))
+                            .initDate(participateRelationship.initDate())
+                            .endDate(participateRelationship.endDate())
                             .build();
-                    if (Objects.isNull(roleList)) {
-                        roleList = new ArrayList<>();
-                    }
-                    roleList.add(rol);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                if (Objects.isNull(roleList)) {
+                    roleList = new ArrayList<>();
                 }
-
+                roleList.add(rol);
                 return roleList;
             });
         }
@@ -85,13 +79,13 @@ public class ResolveServiceNode {
     public List<ParticipateRelationship> mapToParticipateRelationship(List<Participate> participateList) {
         final List<ParticipateRelationship> participateRelationshipList = new ArrayList<>();
         for (var participate : participateList) {
-            String endDate = null;
-            String initDate = null;
+            LocalDate endDate = null;
+            LocalDate initDate = null;
             String role = null;
             var project = projectCrudRepository.findByCode(participate.code());
             for (var rol : participate.roles()) {
-                endDate = formatter.format(rol.endDate());
-                initDate = formatter.format(rol.initDate());
+                endDate = rol.endDate();
+                initDate = rol.initDate();
                 role = rol.role();
                 ParticipateRelationship participateRelationship = new ParticipateRelationship(null, project, endDate, initDate, role);
                 participateRelationshipList.add(participateRelationship);
@@ -103,14 +97,6 @@ public class ResolveServiceNode {
     @Named("mapToSubskill")
     public List<Skill> mapToSubskill(List<SubskillsRelationship> subskillsRelationships) {
         final List<Skill> skillList = new ArrayList<>();
-        /*for (var subSkill: subskillsRelationships){
-            var skill = Skill.builder()
-                    .name(subSkill.skillNode().getName())
-                    .code(subSkill.skillNode().getCode())
-                    .subSkills(new ArrayList<>())
-                    .build();
-            skillList.add(skill);
-        }*/
         return skillList;
     }
 

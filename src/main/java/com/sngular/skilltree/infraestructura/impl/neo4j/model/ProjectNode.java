@@ -1,10 +1,9 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.neo4j.core.schema.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -12,13 +11,11 @@ import java.util.List;
 @Setter
 @Node("Project")
 @NoArgsConstructor
+@EqualsAndHashCode
 public class ProjectNode {
 
-    /*@Id @GeneratedValue
-    private Long id;*/
-
     @Id
-    private String code;
+    private Integer code;
 
     private String name;
 
@@ -26,9 +23,9 @@ public class ProjectNode {
 
     private String desc;
 
-    private String initDate;
+    private LocalDate initDate;
 
-    private String endDate;
+    private LocalDate endDate;
 
     private String dominio;
 
@@ -37,6 +34,8 @@ public class ProjectNode {
     private String duration;
 
     private EnumGuards guards;
+
+    private boolean deleted;
 
     @Relationship(type="REQUIRED", direction = Relationship.Direction.OUTGOING)
     private List<SkillNode> skills;

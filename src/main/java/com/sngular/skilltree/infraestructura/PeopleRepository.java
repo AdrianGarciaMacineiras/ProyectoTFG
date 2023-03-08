@@ -9,7 +9,7 @@ public interface PeopleRepository {
 
     People save(People people);
 
-    People findByCode(String personcode);
+    People findByCode(Integer personcode);
 
-    boolean deleteByCode(String personcode);
+    boolean deleteByCode(Integer personcode);
 }

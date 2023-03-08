@@ -38,20 +38,20 @@ public class ClientController implements ClientApi {
     }
 
     @Override
-    public ResponseEntity<ClientDTO> getClientByCode(String clientcode) {
+    public ResponseEntity<ClientDTO> getClientByCode(Integer clientcode) {
         return ResponseEntity.ok(clientMapper
                 .toClientDTO(clientService
                         .findByCode(clientcode)));
     }
 
     @Override
-    public ResponseEntity<Void> deleteClient(String clientcode) {
+    public ResponseEntity<Void> deleteClient(Integer clientcode) {
         var result = clientService.deleteByCode(clientcode);
         return ResponseEntity.status(result? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @Override
-    public ResponseEntity<ClientDTO> updateClient(String clientcode, ClientDTO clientDTO) {
+    public ResponseEntity<ClientDTO> updateClient(Integer clientcode, ClientDTO clientDTO) {
         return ResponseEntity.ok(clientMapper
                 .toClientDTO(clientUpdater
                         .update(clientcode, clientMapper
@@ -59,7 +59,7 @@ public class ClientController implements ClientApi {
     }
 
     @Override
-    public ResponseEntity<ClientDTO> patchClient(String clientcode, PatchedClientDTO patchedClientDTO) {
+    public ResponseEntity<ClientDTO> patchClient(Integer clientcode, PatchedClientDTO patchedClientDTO) {
         return ResponseEntity.ok(clientMapper
                 .toClientDTO(clientUpdater
                         .patch(clientcode, clientMapper

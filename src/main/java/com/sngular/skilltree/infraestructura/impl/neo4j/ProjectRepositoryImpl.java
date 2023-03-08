@@ -27,12 +27,12 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     }
 
     @Override
-    public Project findByCode(String projectcode) {
+    public Project findByCode(Integer projectcode) {
         return mapper.fromNode(crud.findByCode(projectcode));
     }
 
     @Override
-    public boolean deleteByCode(String projectcode) {
+    public boolean deleteByCode(Integer projectcode) {
         var node = crud.findByCode(projectcode);
         crud.delete(node);
         return true;

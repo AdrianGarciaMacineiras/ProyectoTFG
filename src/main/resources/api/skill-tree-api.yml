@@ -77,7 +77,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
           description: String that represents the code of a project
       tags:
         - project
@@ -108,7 +108,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
           description: String that represents the code of a project
       tags:
         - project
@@ -144,7 +144,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
           description: String that represents the code of a project
       operationId: patchProject
       tags:
@@ -181,7 +181,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
           description: String that represents the code of a project
       operationId: deleteProject
       tags:
@@ -459,7 +459,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
           description: String that represents the code of a person
       tags:
         - people
@@ -490,7 +490,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
           description: String that represents the code of a person
       tags:
         - people
@@ -526,7 +526,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
           description: String that represents the code of a person
       operationId: patchPerson
       tags:
@@ -563,7 +563,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
           description: String that represents the code of a person
       operationId: deletePerson
       tags:
@@ -901,7 +901,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
           description: String that represents the code of a client
       tags:
         - client
@@ -932,7 +932,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
           description: String that represents the code of a client
       tags:
         - client
@@ -968,7 +968,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
           description: String that represents the code of a client
       operationId: patchClient
       tags:
@@ -1005,7 +1005,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
           description: String that represents the code of a client
       operationId: deleteClient
       tags:
@@ -1240,7 +1240,7 @@ components:
         - roles
       properties:
         code:
-          type: string
+          type: integer
         tag:
           type: string
         name:
@@ -1254,7 +1254,7 @@ components:
           type: string
           format: date
         clientCode:
-          type: string
+          type: integer
         area:
           type: string
         domain:
@@ -1281,6 +1281,20 @@ components:
           type: string
         desc:
           type: string
+        initDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        clientCode:
+          type: integer
+        area:
+          type: string
+        domain:
+          type: string
+        duration:
+          type: string
         guards:
           $ref: "#/components/schemas/guards"
         skills:
@@ -1288,9 +1302,9 @@ components:
           items:
             type: string
         roles:
-            type: array
-            items:
-              $ref: "#/components/schemas/projectRoles"
+          type: array
+          items:
+            $ref: "#/components/schemas/projectRoles"
 
     guards:
       type: string
@@ -1351,9 +1365,9 @@ components:
         name:
           type: string
         projectCode:
-          type: string
+          type: integer
         clientCode:
-          type: string
+          type: integer
         openingDate:
           type: string
           format: date
@@ -1381,17 +1395,17 @@ components:
         name:
           type: string
         projectCode:
-          type: string
+          type: integer
         clientCode:
-          type: string
-        priority:
-          type: string
+          type: integer
         openingDate:
           type: string
           format: date
         closingDate:
           type: string
           format: date
+        priority:
+          type: string
         mode:
           $ref: "#/components/schemas/mode"
         office:
@@ -1426,7 +1440,7 @@ components:
         - country
       properties:
         code:
-          type: string
+          type: integer
         name:
           type: string
         industry:
@@ -1452,6 +1466,8 @@ components:
         country:
           type: string
         principalOffice:
+          type: string
+        HQ:
           type: string
         offices:
           type: array
@@ -1503,7 +1519,7 @@ components:
           type: string
           enum: [INTERVIEWED, PRESENTED, OK, KO]
         candidateCode:
-          type: string
+          type: integer
         opportunityCode:
           type: string
         skills:
@@ -1514,6 +1530,19 @@ components:
     patchedCandidate:
       type: object
       properties:
+        introductionDate:
+          type: string
+          format: date
+        resolutionDate:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [ INTERVIEWED, PRESENTED, OK, KO ]
+        candidateCode:
+          type: integer
+        opportunityCode:
+          type: string
         skills:
           type: array
           items:
@@ -1578,7 +1607,7 @@ components:
         - surname
       properties:
         code:
-          type: string
+          type: integer
         employeeId:
           type: string
         name:
@@ -1657,6 +1686,18 @@ components:
           format: date
         title:
           $ref: "#/components/schemas/title"
+        roles:
+          type: array
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+              category:
+                type: string
+              initDate:
+                type: string
+                format: date
         knows:
           type: array
           items:
@@ -1766,7 +1807,7 @@ components:
             type: object
             properties:
               peopleCode:
-                type: string
+                type: integer
               position:
                 type: string
                 enum:
@@ -1790,7 +1831,7 @@ components:
             type: object
             properties:
               peopleCode:
-                type: string
+                type: integer
               position:
                 type: string
                 enum:

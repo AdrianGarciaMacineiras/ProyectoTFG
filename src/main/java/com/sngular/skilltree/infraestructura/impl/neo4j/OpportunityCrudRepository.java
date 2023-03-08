@@ -11,6 +11,4 @@ public interface OpportunityCrudRepository extends Neo4jRepository<OpportunityNo
 
   OpportunityNode findByCode(String opportunitycode);
 
-  //OpportunityProjection findByCode(String opportunitycode);
-
 }

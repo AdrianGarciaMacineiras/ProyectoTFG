@@ -24,9 +24,6 @@ public interface ClientMapper {
 
     Client toClient(PatchedClientDTO patchedClientDTO);
 
-
-    //void update(@MappingTarget Client oldClient, Client newClient);
-
     @Named("update")
     default Client update(Client newClient, Client oldClient) {
         Client.ClientBuilder clientBuilder = oldClient.toBuilder();
@@ -43,7 +40,4 @@ public interface ClientMapper {
 
         return client;
     };
-
-    Client toClient(Object client);
-
 }

@@ -1,6 +1,6 @@
 [{
   "code": "c1120",
-  "candidateCode": "pc1120",
+  "candidateCode": 1,
   "opportunityCode": "itxtl1",
   "skills":
     [{
@@ -11,7 +11,7 @@
   },
   {
     "code": "c1121",
-    "candidateCode": "pc1120",
+    "candidateCode": 1,
     "opportunityCode": "itxtl1",
     "skills":
       [{

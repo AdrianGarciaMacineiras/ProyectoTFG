@@ -57,8 +57,6 @@ public interface PeopleMapper {
     @Mapping(target = "code", source = "name")
     Participate participateDTOToParticipate(ParticipateDTO participateDTO);
 
-    //void update(@MappingTarget People oldPeople, People newPeople);
-
     @Named("update")
     default People update(People newPeople, People oldPeople) {
         People.PeopleBuilder peopleBuilder = oldPeople.toBuilder();
@@ -82,7 +80,7 @@ public interface PeopleMapper {
         return people;
     };
 
-    default String toPeopleCode(final People people) {
+    default Integer toPeopleCode(final People people) {
         return people.code();
     }
 }

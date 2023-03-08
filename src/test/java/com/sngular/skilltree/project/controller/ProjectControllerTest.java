@@ -43,35 +43,35 @@ class ProjectControllerTest {
 
     @Test
     void getProjectByCode() throws Exception {
-        when(projectService.findByCode(anyString())).thenReturn(PROJECT_BY_CODE);
+        when(projectService.findByCode(anyInt())).thenReturn(PROJECT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                                .get("/project/cosmosdata")
+                                .get("/project/1")
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(PROJECT_BY_CODE_JSON));
     }
     @Test
     void shouldDeleteProjectBySuccess() throws Exception{
-        when(projectService.deleteByCode(anyString())).thenReturn(true);
+        when(projectService.deleteByCode(anyInt())).thenReturn(true);
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/project/cosmosdata")
+                        .delete("/project/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     void shouldDeleteProjectFail() throws Exception{
-        when(projectService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("Project", "cosmosdata"));
+        when(projectService.deleteByCode(anyInt())).thenThrow(new EntityNotFoundException("Project", "cosmosdata"));
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/project/cosmosdata")
+                        .delete("/project/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void updateProject() throws Exception {
-        when(projectUpdater.update(anyString(),any(Project.class))).thenReturn(UPDATED_PROJECT_BY_CODE);
+        when(projectUpdater.update(anyInt(),any(Project.class))).thenReturn(UPDATED_PROJECT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/project/cosmosdata")
+                        .put("/project/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(UPDATED_PROJECT_BY_CODE_JSON))
@@ -93,9 +93,9 @@ class ProjectControllerTest {
 
     @Test
     void patchProject() throws Exception {
-        when(projectUpdater.patch(anyString(),any(Project.class))).thenReturn(UPDATED_PROJECT_BY_CODE);
+        when(projectUpdater.patch(anyInt(),any(Project.class))).thenReturn(UPDATED_PROJECT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch("/project/cosmosdata")
+                        .patch("/project/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(PATCH_PROJECT_BY_CODE_JSON))

@@ -18,9 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 public class SkillNode {
 
-    /*@Id @GeneratedValue
-    private Long id;*/
-
     @Id
     private String code;
 

@@ -2,6 +2,8 @@ package com.sngular.skilltree.project.service;
 
 import com.sngular.skilltree.model.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -9,7 +11,7 @@ import java.util.List;
 
 public class ProjectFixtures {
 
-    public static final Date date = new GregorianCalendar(2023, Calendar.JANUARY, 20).getTime();
+    public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
     public static final Office OFFICE =
             Office.builder()
@@ -22,7 +24,7 @@ public class ProjectFixtures {
 
     public static final Client CLIENT_BY_CODE =
             Client.builder()
-                    .code("ITX")
+                    .code(1)
                     .HQ("A Coruña")
                     .country("Spain")
                     .industry("RETAIL")
@@ -85,7 +87,7 @@ public class ProjectFixtures {
 
     public static final Project PROJECT_BY_CODE =
             Project.builder()
-                    .code("cosmosdata")
+                    .code(1)
                     .area("Logistica")
                     .tag("Project")
                     .initDate(date)
@@ -104,7 +106,7 @@ public class ProjectFixtures {
 
     public static final Project PROJECT2_BY_CODE =
             Project.builder()
-                    .code("cosmosdata2")
+                    .code(2)
                     .area("Logistica")
                     .tag("Project")
                     .initDate(date)

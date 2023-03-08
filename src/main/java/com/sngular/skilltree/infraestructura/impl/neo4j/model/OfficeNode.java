@@ -13,10 +13,6 @@ import org.springframework.data.neo4j.core.schema.Node;
 @NoArgsConstructor
 public class OfficeNode {
 
-    /*@Id
-    @GeneratedValue
-    private Long id;*/
-
     @Id
     private String code;
 
@@ -27,4 +23,7 @@ public class OfficeNode {
     private String phone;
 
     private String geolocation;
+
+    private boolean deleted;
+
 }

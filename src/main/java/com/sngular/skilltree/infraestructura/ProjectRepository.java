@@ -9,7 +9,7 @@ public interface ProjectRepository {
 
     Project save(Project project);
 
-    Project findByCode(String projectcode);
+    Project findByCode(Integer projectcode);
 
-    boolean deleteByCode(String projectcode);
+    boolean deleteByCode(Integer projectcode);
 }

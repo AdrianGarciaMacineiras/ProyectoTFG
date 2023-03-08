@@ -14,11 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ClientNode {
 
-    /*@Id @GeneratedValue
-    private Long id;*/
-
     @Id
-    private String code;
+    private Integer code;
 
     private String name;
 
@@ -32,5 +29,7 @@ public class ClientNode {
 
     @Relationship(type="CLIENT", direction = Relationship.Direction.INCOMING)
     private List<OfficeNode> offices;
+
+    private boolean deleted;
 
 }

@@ -3,6 +3,8 @@ package com.sngular.skilltree.team.fixtures;
 import com.sngular.skilltree.model.*;
 import com.sngular.skilltree.testutil.FileHelper;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -10,7 +12,7 @@ import java.util.List;
 
 public class TeamFixtures {
 
-    public static final Date date = new GregorianCalendar(2023, Calendar.JANUARY, 20).getTime();
+    public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
     public static final String TEAM_BY_CODE_JSON = FileHelper.getContent("/team/team_by_code.json");
 
@@ -22,7 +24,7 @@ public class TeamFixtures {
 
     public static final People PEOPLE_BY_CODE =
             People.builder()
-                    .code("pc1120")
+                    .code(1)
                     .name("people2")
                     .surname("LaPel")
                     .employeeId("900003940059")

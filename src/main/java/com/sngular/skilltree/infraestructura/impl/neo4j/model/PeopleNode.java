@@ -8,6 +8,7 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,21 +18,20 @@ import java.util.List;
 @NoArgsConstructor
 public class PeopleNode {
 
-    /*@Id @GeneratedValue
-    private Long id;*/
-
     @Id
-    private String code;
+    private Integer code;
 
     private String name;
 
-    private String employeeId;
+    private Integer employeeId;
 
     private String surname;
 
-    private String birthDate;
+    private LocalDate birthDate;
 
     private EnumTitle enumTitle;
+
+    private boolean deleted;
 
     @Relationship(type="EVOLVED", direction = Relationship.Direction.OUTGOING)
     private List<Role> roles;

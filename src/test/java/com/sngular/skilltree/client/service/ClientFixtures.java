@@ -18,7 +18,7 @@ public class ClientFixtures {
 
     public static final Client CLIENT_BY_CODE =
             Client.builder()
-                    .code("itx")
+                    .code(1)
                     .HQ("A Coruña")
                     .country("Spain")
                     .industry("RETAIL")
@@ -29,7 +29,7 @@ public class ClientFixtures {
 
     public static final Client CLIENT2_BY_CODE =
             Client.builder()
-                    .code("itx2")
+                    .code(2)
                     .HQ("A Coruña")
                     .country("Spain")
                     .industry("RETAIL")

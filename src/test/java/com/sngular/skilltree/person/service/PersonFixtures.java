@@ -3,15 +3,17 @@ package com.sngular.skilltree.person.service;
 import com.sngular.skilltree.model.EnumTitle;
 import com.sngular.skilltree.model.People;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public final class PersonFixtures {
 
-  public static final Date date = new GregorianCalendar(2023, Calendar.JANUARY, 20).getTime();
+  public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
   public static final People PEOPLE_BY_CODE =
           People.builder()
-                  .code("pc1120")
+                  .code(1)
                   .name("people")
                   .surname("surname")
                   .employeeId("employeeId")
@@ -21,7 +23,7 @@ public final class PersonFixtures {
 
   public static final People PEOPLE2_BY_CODE =
           People.builder()
-                  .code("pc1121")
+                  .code(2)
                   .name("people3")
                   .surname("surname3")
                   .employeeId("employeeId")
@@ -31,7 +33,7 @@ public final class PersonFixtures {
 
   public static final People UPDATED_PEOPLE_BY_CODE =
           People.builder()
-                  .code("pc1120")
+                  .code(1)
                   .name("people2")
                   .surname("surname2")
                   .employeeId("employeeId")

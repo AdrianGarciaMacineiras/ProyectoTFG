@@ -1,11 +1,15 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.ParticipateRelationship;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import javax.management.InstanceNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -27,12 +31,12 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     }
 
     @Override
-    public People findByCode(String personcode) {
+    public People findByCode(Integer personcode) {
         return mapper.fromNode(crud.findByCode(personcode));
     }
 
     @Override
-    public boolean deleteByCode(String personcode) {
+    public boolean deleteByCode(Integer personcode) {
         var node = crud.findByCode(personcode);
         crud.delete(node);
         return true;

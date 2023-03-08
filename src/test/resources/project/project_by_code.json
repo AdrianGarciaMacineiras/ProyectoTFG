@@ -1,11 +1,11 @@
 {
-  "code": "cosmosdata",
+  "code": 1,
   "tag": "Project",
   "name": "Cosmos Data",
   "desc": "Data consolidation project for Data Analytics",
   "initDate": "20-01-2023",
   "endDate": "20-01-2023",
-  "clientCode": "ITX",
+  "clientCode": 1,
   "area": "Logistica",
   "domain": "Stocks",
   "duration": "Ethernal",

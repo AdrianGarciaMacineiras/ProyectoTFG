@@ -2,11 +2,13 @@ package com.sngular.skilltree.candidate.services;
 
 import com.sngular.skilltree.model.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class CandidateFixtures {
 
-    public static final Date date = new GregorianCalendar(2023, Calendar.JANUARY, 20).getTime();
+    public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
     public static final Office OFFICE =
             Office.builder()
@@ -16,9 +18,10 @@ public class CandidateFixtures {
                     .geolocation("45.667776, 12.455555")
                     .name("Servicios Centrales")
                     .build();
+
     public static final Client CLIENT_BY_CODE =
             Client.builder()
-                    .code("itx")
+                    .code(1)
                     .HQ("A Coruña")
                     .country("Spain")
                     .industry("RETAIL")
@@ -41,7 +44,7 @@ public class CandidateFixtures {
 
     public  static final Project PROJECT_BY_CODE =
             Project.builder()
-                    .code("cosmosdata")
+                    .code(1)
                     .area("Logistica")
                     .desc("Data consolidation project for Data Analytics")
                     .client(CLIENT_BY_CODE)
@@ -95,7 +98,7 @@ public class CandidateFixtures {
 
     public static final People PEOPLE_BY_CODE =
             People.builder()
-                    .code("pc1120")
+                    .code(1)
                     .name("people")
                     .surname("surname")
                     .employeeId("employeeId")

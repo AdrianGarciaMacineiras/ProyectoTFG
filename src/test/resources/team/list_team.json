@@ -8,7 +8,7 @@
       [
         {
           "position": "DIRECTOR",
-          "peopleCode": "pc1120"
+          "peopleCode": 1
         }
       ]
   },
@@ -21,7 +21,7 @@
     [
       {
         "position": "DIRECTOR",
-        "peopleCode": "pc1120"
+        "peopleCode": 1
       }
     ]
   }

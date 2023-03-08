@@ -23,20 +23,20 @@ public class ProjectController implements ProjectApi {
     private final ProjectMapper projectMapper;
 
     @Override
-    public ResponseEntity<ProjectDTO> getProjectByCode(String projectcode) {
+    public ResponseEntity<ProjectDTO> getProjectByCode(Integer projectcode) {
         return ResponseEntity.ok(projectMapper
                 .toProjectDTO(projectService
                         .findByCode(projectcode)));
     }
 
     @Override
-    public ResponseEntity<Void> deleteProject(String projectcode) {
+    public ResponseEntity<Void> deleteProject(Integer projectcode) {
         var result = projectService.deleteByCode(projectcode);
         return ResponseEntity.status(result? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @Override
-    public ResponseEntity<ProjectDTO> updateProject(String projectcode, ProjectDTO projectDTO) {
+    public ResponseEntity<ProjectDTO> updateProject(Integer projectcode, ProjectDTO projectDTO) {
         return ResponseEntity.ok(projectMapper
                 .toProjectDTO(projectUpdater
                         .update(projectcode, projectMapper
@@ -44,7 +44,7 @@ public class ProjectController implements ProjectApi {
     }
 
     @Override
-    public ResponseEntity<ProjectDTO> patchProject(String projectcode, PatchedProjectDTO patchedProjectDTO) {
+    public ResponseEntity<ProjectDTO> patchProject(Integer projectcode, PatchedProjectDTO patchedProjectDTO) {
         return ResponseEntity.ok(projectMapper
                 .toProjectDTO(projectUpdater
                         .patch(projectcode, projectMapper

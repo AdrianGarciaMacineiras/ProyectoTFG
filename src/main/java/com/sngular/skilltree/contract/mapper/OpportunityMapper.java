@@ -20,7 +20,7 @@ public interface OpportunityMapper {
      @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
      @Mapping(target= "projectCode", source = "project.code")
      @Mapping(target= "clientCode", source = "client.code")
-     @Mapping(target = "office", source = "office.name")
+     @Mapping(target = "office", source = "office.code")
      OpportunityDTO toOpportunityDTO(Opportunity opportunity);
 
      @Mapping(target = "skill", source = "skill", qualifiedByName = {"resolveService", "resolveSkillCode"})
@@ -45,8 +45,6 @@ public interface OpportunityMapper {
      @Mapping(target = "office", source = "office", qualifiedByName = {"resolveService", "resolveCodeOffice"})
      @Mapping(target = "managedBy", source = "managedBy", qualifiedByName = {"resolveService", "resolveCodePeople"})
      Opportunity toOpportunity(PatchedOpportunityDTO patchedOpportunityDTO);
-
-     //void update(@MappingTarget Opportunity oldOpportunity, Opportunity newOpportunity);
 
      @Named("update")
      default Opportunity update(Opportunity newOpportunity, Opportunity oldOpportunity) {

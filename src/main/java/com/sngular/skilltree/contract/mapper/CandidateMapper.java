@@ -30,8 +30,6 @@ public interface CandidateMapper {
 
     Candidate toCandidate(PatchedCandidateDTO patchedCandidateDTO);
 
-    //void update(Candidate newCandidate, @MappingTarget Candidate oldCandidate);
-
     @Named("update")
     default Candidate update(Candidate newCandidate, Candidate oldCandidate) {
         Candidate.CandidateBuilder candidateBuilder = oldCandidate.toBuilder();

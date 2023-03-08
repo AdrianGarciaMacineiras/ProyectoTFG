@@ -11,7 +11,7 @@ public interface ClientRepository {
 
     Client save(Client client);
 
-    Client findByCode(String clientcode);
+    Client findByCode(Integer clientcode);
 
-    boolean deleteByCode(String clientcode);
+    boolean deleteByCode(Integer clientcode);
 }

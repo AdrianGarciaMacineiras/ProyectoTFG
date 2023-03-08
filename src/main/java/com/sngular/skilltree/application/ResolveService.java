@@ -75,31 +75,18 @@ public class ResolveService {
     }
 
     @Named("resolveCodePeople")
-    public People resolveCodePeople(final String peopleCode) {
+    public People resolveCodePeople(final Integer peopleCode) {
         return peopleService.findByCode(peopleCode);
     }
 
     @Named("resolveCodeProject")
-    public Project resolveCodeProject(final String projectCode) {return projectService.findByCode(projectCode);}
+    public Project resolveCodeProject(final Integer projectCode) {return projectService.findByCode(projectCode);}
 
     @Named("resolveCodeOffice")
     public Office resolveCodeOffice(final String officeCode) {return officeService.findByCode(officeCode);}
 
     @Named("resolveCodeClient")
-    public Client resolveCodeClient(final String clientCode){return clientService.findByCode(clientCode);}
-
-    /*@Named("updateClient")
-    public Client updateClient(Client newClient, Client oldClient){
-        oldClient.toBuilder()
-                .industry(newClient.industry())
-                .country(newClient.country())
-                .HQ(newClient.HQ())
-                .offices(newClient.offices())
-                .principalOffice(newClient.principalOffice())
-                .name(newClient.name())
-                .build();
-        return oldClient;
-    }*/
+    public Client resolveCodeClient(final Integer clientCode){return clientService.findByCode(clientCode);}
 
 
 }

@@ -5,6 +5,7 @@ import com.sngular.skilltree.application.updater.OpportunityUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.OpportunityController;
 import com.sngular.skilltree.contract.mapper.OpportunityMapper;
+import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import com.sngular.skilltree.model.Opportunity;
 import lombok.extern.slf4j.Slf4j;
@@ -124,6 +125,9 @@ class OpportunityControllerTest {
         SkillMapper skillMapper() {
             return Mappers.getMapper(SkillMapper.class);
         }
+
+        @Bean
+        PeopleMapper peopleMapper(){return Mappers.getMapper(PeopleMapper.class);}
 
         @MockBean
         OpportunityUpdater opportunityUpdater;
