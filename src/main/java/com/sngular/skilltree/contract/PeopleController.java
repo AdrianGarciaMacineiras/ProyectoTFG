@@ -24,19 +24,19 @@ public class PeopleController implements PeopleApi {
     private final PeopleMapper peopleMapper;
 
     @Override
-    public ResponseEntity<PeopleDTO> getPersonByCode(Integer peoplecode) {
+    public ResponseEntity<PeopleDTO> getPersonByCode(Long peoplecode) {
         return ResponseEntity.ok(peopleMapper
                 .toPersonDTO(peopleService
                         .findByCode(peoplecode)));
     }
 
     @Override
-    public ResponseEntity<Void> deletePerson(Integer peoplecode) {
+    public ResponseEntity<Void> deletePerson(Long peoplecode) {
         peopleService.deleteByCode(peoplecode);
         return ResponseEntity.status(HttpStatus.OK).build();    }
 
     @Override
-    public ResponseEntity<PeopleDTO> updatePerson(Integer peoplecode, PeopleDTO peopleDTO) {
+    public ResponseEntity<PeopleDTO> updatePerson(Long peoplecode, PeopleDTO peopleDTO) {
         return ResponseEntity.ok(peopleMapper
                 .toPersonDTO(peopleUpdater
                         .update(peoplecode, peopleMapper
@@ -44,7 +44,7 @@ public class PeopleController implements PeopleApi {
     }
 
     @Override
-    public ResponseEntity<PeopleDTO> patchPerson(Integer personcode, PatchedPeopleDTO patchedPeopleDTO) {
+    public ResponseEntity<PeopleDTO> patchPerson(Long personcode, PatchedPeopleDTO patchedPeopleDTO) {
         return ResponseEntity.ok(peopleMapper
                 .toPersonDTO(peopleUpdater
                         .patch(personcode, peopleMapper

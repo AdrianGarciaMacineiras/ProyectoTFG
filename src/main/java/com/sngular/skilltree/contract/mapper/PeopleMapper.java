@@ -80,7 +80,7 @@ public interface PeopleMapper {
         return people;
     };
 
-    default Integer toPeopleCode(final People people) {
+    default Long toPeopleCode(final People people) {
         return people.code();
     }
 }

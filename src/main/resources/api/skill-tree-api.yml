@@ -78,6 +78,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: String that represents the code of a project
       tags:
         - project
@@ -109,6 +110,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: String that represents the code of a project
       tags:
         - project
@@ -145,6 +147,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: String that represents the code of a project
       operationId: patchProject
       tags:
@@ -182,6 +185,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: String that represents the code of a project
       operationId: deleteProject
       tags:
@@ -460,6 +464,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: String that represents the code of a person
       tags:
         - people
@@ -491,6 +496,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: String that represents the code of a person
       tags:
         - people
@@ -527,6 +533,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: String that represents the code of a person
       operationId: patchPerson
       tags:
@@ -564,6 +571,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: String that represents the code of a person
       operationId: deletePerson
       tags:
@@ -902,6 +910,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: String that represents the code of a client
       tags:
         - client
@@ -933,6 +942,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: String that represents the code of a client
       tags:
         - client
@@ -969,6 +979,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: String that represents the code of a client
       operationId: patchClient
       tags:
@@ -1006,6 +1017,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: String that represents the code of a client
       operationId: deleteClient
       tags:
@@ -1226,21 +1238,11 @@ components:
       type: object
       required:
         - code
-        - tag
-        - name
-        - desc
-        - initDate
-        - endDate
         - clientCode
-        - area
-        - domain
-        - duration
-        - guards
-        - techArray
-        - roles
       properties:
         code:
           type: integer
+          format: int64
         tag:
           type: string
         name:
@@ -1255,6 +1257,7 @@ components:
           format: date
         clientCode:
           type: integer
+          format: int64
         area:
           type: string
         domain:
@@ -1289,6 +1292,7 @@ components:
           format: date
         clientCode:
           type: integer
+          format: int64
         area:
           type: string
         domain:
@@ -1349,15 +1353,8 @@ components:
       type: object
       required:
         - code
-        - name
         - projectCode
         - clientCode
-        - openingDate
-        - closingDate
-        - priority
-        - mode
-        - office
-        - role
         - skills
       properties:
         code:
@@ -1366,8 +1363,10 @@ components:
           type: string
         projectCode:
           type: integer
+          format: int64
         clientCode:
           type: integer
+          format: int64
         openingDate:
           type: string
           format: date
@@ -1396,8 +1395,10 @@ components:
           type: string
         projectCode:
           type: integer
+          format: int64
         clientCode:
           type: integer
+          format: int64
         openingDate:
           type: string
           format: date
@@ -1435,12 +1436,10 @@ components:
       type: object
       required:
         - code
-        - name
-        - industry
-        - country
       properties:
         code:
           type: integer
+          format: int64
         name:
           type: string
         industry:
@@ -1478,10 +1477,6 @@ components:
       type: object
       required:
         - code
-        - name
-        - address
-        - phone
-        - geolocation
       properties:
         code:
           type: string
@@ -1520,6 +1515,7 @@ components:
           enum: [INTERVIEWED, PRESENTED, OK, KO]
         candidateCode:
           type: integer
+          format: int64
         opportunityCode:
           type: string
         skills:
@@ -1541,6 +1537,7 @@ components:
           enum: [ INTERVIEWED, PRESENTED, OK, KO ]
         candidateCode:
           type: integer
+          format: int64
         opportunityCode:
           type: string
         skills:
@@ -1602,12 +1599,10 @@ components:
       type: object
       required:
         - code
-        - employeeId
-        - name
-        - surname
       properties:
         code:
           type: integer
+          format: int64
         employeeId:
           type: string
         name:
@@ -1763,10 +1758,6 @@ components:
 
     role:
       type: object
-      required:
-        - role
-        - initDate
-        - endDate
       properties:
         role:
           type: string
@@ -1786,10 +1777,6 @@ components:
       type: object
       required:
         - code
-        - name
-        - description
-        - tags
-        - members
       properties:
         code:
           type: string
@@ -1808,6 +1795,7 @@ components:
             properties:
               peopleCode:
                 type: integer
+                format: int64
               position:
                 type: string
                 enum:
@@ -1832,6 +1820,7 @@ components:
             properties:
               peopleCode:
                 type: integer
+                format: int64
               position:
                 type: string
                 enum:

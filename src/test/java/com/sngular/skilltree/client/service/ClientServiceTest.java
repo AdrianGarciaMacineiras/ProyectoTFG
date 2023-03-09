@@ -17,8 +17,7 @@ import java.util.List;
 
 import static com.sngular.skilltree.client.service.ClientFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
@@ -54,17 +53,17 @@ public class ClientServiceTest {
     @Test
     @DisplayName("Testing findByCode a client")
     void testFindByCode(){
-        when(clientRepository.findByCode(anyInt())).thenReturn(CLIENT_BY_CODE);
-        Client result = clientService.findByCode(1);
+        when(clientRepository.findByCode(anyLong())).thenReturn(CLIENT_BY_CODE);
+        Client result = clientService.findByCode(1L);
         assertThat(result).isEqualTo(CLIENT_BY_CODE);
     }
 
     @Test
     @DisplayName("Testing deleteByCode")
     void testDeleteByCode(){
-        when(clientRepository.deleteByCode(anyInt())).thenReturn(true);
-        lenient().when(clientRepository.findByCode(anyInt())).thenReturn(CLIENT_BY_CODE);
-        boolean result = clientService.deleteByCode(1);
+        when(clientRepository.deleteByCode(anyLong())).thenReturn(true);
+        lenient().when(clientRepository.findByCode(anyLong())).thenReturn(CLIENT_BY_CODE);
+        boolean result = clientService.deleteByCode(1L);
         assertThat(result).isTrue();
     }
 }

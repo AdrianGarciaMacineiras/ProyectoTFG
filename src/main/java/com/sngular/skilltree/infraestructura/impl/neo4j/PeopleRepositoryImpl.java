@@ -31,14 +31,21 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     }
 
     @Override
-    public People findByCode(Integer personcode) {
+    public People findByCode(Long personcode) {
         return mapper.fromNode(crud.findByCode(personcode));
     }
 
     @Override
-    public boolean deleteByCode(Integer personcode) {
+    public boolean deleteByCode(Long personcode) {
         var node = crud.findByCode(personcode);
-        crud.delete(node);
+        node.setDeleted(true);
+        crud.save(node);
+        //crud.delete(node);
         return true;
+    }
+
+    @Override
+    public List<People> findByDeletedIsFalse() {
+        return mapper.map(crud.findByDeletedIsFalse());
     }
 }

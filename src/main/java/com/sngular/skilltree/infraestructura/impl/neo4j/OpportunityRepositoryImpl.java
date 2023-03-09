@@ -32,8 +32,16 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
   @Override
   public boolean deleteByCode(String opportunitycode) {
     var node = crud.findByCode(opportunitycode);
-    crud.delete(node);
+    node.setDeleted(true);
+    crud.save(node);
+    //crud.delete(node);
     return true;
   }
+
+  @Override
+  public List<Opportunity> findByDeletedIsFalse() {
+    return mapper.map(crud.findByDeletedIsFalse());
+  }
+
 
 }

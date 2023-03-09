@@ -4,7 +4,7 @@ import com.sngular.skilltree.model.Project;
 
 public interface ProjectUpdater {
 
-    Project update(final Integer projectcode, final Project newProject);
+    Project update(final Long projectcode, final Project newProject);
 
-    Project patch(final Integer projectcode, final Project patchedProject);
+    Project patch(final Long projectcode, final Project patchedProject);
 }

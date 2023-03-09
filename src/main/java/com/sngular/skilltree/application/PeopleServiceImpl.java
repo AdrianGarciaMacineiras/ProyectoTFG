@@ -2,13 +2,11 @@ package com.sngular.skilltree.application;
 
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.ParticipateRelationship;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,7 +18,7 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Override
     public List<People> getAll() {
-        return peopleRepository.findAll();
+        return peopleRepository.findByDeletedIsFalse();
     }
 
     @Override
@@ -30,26 +28,29 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public People findByCode(Integer personcode) {
-        return peopleRepository.findByCode(personcode);
+    public People findByCode(Long personcode) {
+        var people = peopleRepository.findByCode(personcode);
+        if (Objects.isNull(people) || people.deleted())
+            throw new EntityNotFoundException("People", personcode);
+        return people;
     }
 
     @Override
-    public boolean deleteByCode(Integer personCode) {
-        validateDoesntExist(personCode);
+    public boolean deleteByCode(Long personCode) {
+        validateDoesNotExist(personCode);
         return peopleRepository.deleteByCode(personCode);
     }
 
-    private void validateExist(Integer code) {
+    private void validateExist(Long code) {
         var oldPerson = peopleRepository.findByCode(code);
-        if (!Objects.isNull(oldPerson)) {
+        if (!Objects.isNull(oldPerson) && !oldPerson.deleted()) {
             throw new EntityFoundException("People", code);
         }
     }
 
-    private void validateDoesntExist(Integer code) {
+    private void validateDoesNotExist(Long code) {
         var oldPerson = peopleRepository.findByCode(code);
-        if (Objects.isNull(oldPerson)) {
+        if (Objects.isNull(oldPerson) || oldPerson.deleted()) {
             throw new EntityNotFoundException("People", code);
         }
     }

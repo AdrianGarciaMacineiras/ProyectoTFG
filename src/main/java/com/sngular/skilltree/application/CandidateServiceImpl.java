@@ -19,9 +19,7 @@ public class CandidateServiceImpl implements CandidateService{
 
     @Override
     public List<Candidate> getAll() {
-        var all = candidateRepository.findAll();
-        CollectionUtils.filter(all, candidate -> !candidate.deleted());
-        return all;
+        return candidateRepository.findByDeletedIsFalse();
     }
 
     @Override
@@ -33,7 +31,7 @@ public class CandidateServiceImpl implements CandidateService{
     @Override
     public Candidate findByCode(String candidatecode) {
         var candidate = candidateRepository.findByCode(candidatecode);
-        if(Objects.isNull(candidate) && candidate.deleted()){
+        if(Objects.isNull(candidate) || candidate.deleted()){
             throw new EntityNotFoundException("Candidate", candidatecode);
         }
         return candidate;
@@ -41,7 +39,7 @@ public class CandidateServiceImpl implements CandidateService{
 
     @Override
     public boolean deleteByCode(String candidatecode) {
-        validateDoesntExist(candidatecode);
+        validateDoesNotExist(candidatecode);
         return candidateRepository.deleteByCode(candidatecode);
     }
 
@@ -53,7 +51,7 @@ public class CandidateServiceImpl implements CandidateService{
         }
     }
 
-    private void validateDoesntExist(String code) {
+    private void validateDoesNotExist(String code) {
         var oldCandidate = candidateRepository.findByCode(code);
         if (Objects.isNull(oldCandidate) && oldCandidate.deleted()) {
             throw new EntityNotFoundException("Candidate", code);

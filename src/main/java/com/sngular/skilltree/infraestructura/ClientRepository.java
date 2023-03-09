@@ -11,7 +11,9 @@ public interface ClientRepository {
 
     Client save(Client client);
 
-    Client findByCode(Integer clientcode);
+    Client findByCode(Long clientcode);
 
-    boolean deleteByCode(Integer clientcode);
+    boolean deleteByCode(Long clientcode);
+
+    List<Client> findByDeletedIsFalse();
 }

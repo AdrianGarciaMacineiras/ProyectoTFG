@@ -4,7 +4,7 @@ public class EntityNotFoundException extends RuntimeException {
 
     private static final String ERROR_MESSAGE = "Entity of type %s with code %s not found";
 
-    public EntityNotFoundException(final String entityType, final Integer code) {
+    public EntityNotFoundException(final String entityType, final Long code) {
         super(String.format(ERROR_MESSAGE, entityType, code));
     }
 

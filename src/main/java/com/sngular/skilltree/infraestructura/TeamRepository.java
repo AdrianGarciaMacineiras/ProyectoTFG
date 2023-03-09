@@ -12,4 +12,6 @@ public interface TeamRepository {
     Team findByCode(String teamcode);
 
     boolean deleteByCode(String teamcode);
+
+    List<Team> findByDeletedIsFalse();
 }

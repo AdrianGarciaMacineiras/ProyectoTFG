@@ -1,10 +1,8 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
-import com.sngular.skilltree.model.Participate;
+import com.sngular.skilltree.model.*;
 import com.sngular.skilltree.model.Roles;
-import com.sngular.skilltree.model.Skill;
-import com.sngular.skilltree.model.SkillsCandidate;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,8 @@ public class ResolveServiceNode {
 
     private final ProjectCrudRepository projectCrudRepository;
 
+    private final TeamCrudRepository teamCrudRepository;
+
     @Named("resolveCodeToOfficeNode")
     public OfficeNode resolveCodeOfficeNode(final String code) {
         return officeCrudRepository.findByCode(code);
@@ -44,7 +44,7 @@ public class ResolveServiceNode {
     }
 
     @Named("resolveCodeToPeopleNode")
-    public PeopleNode resolveCodePeopleNode(final Integer code) {
+    public PeopleNode resolveCodePeopleNode(final Long code) {
         return peopleCrudRepository.findByCode(code);
     }
 
@@ -56,9 +56,9 @@ public class ResolveServiceNode {
     @Named("mapToParticipate")
     public List<Participate> mapToParticipate(List<ParticipateRelationship> participateRelationshipList) {
         final List<Participate> participateList = new ArrayList<>();
-        var participateMap = new HashMap<Integer, List<Roles>>();
+        var participateMap = new HashMap<Long, List<Roles>>();
         for (var participateRelationship : participateRelationshipList) {
-            participateMap.compute(participateRelationship.project().getCode(), (code, roleList) -> {
+            participateMap.compute(Long.valueOf(participateRelationship.project().getCode()), (code, roleList) -> {
                 var rol = Roles.builder()
                             .role(participateRelationship.role())
                             .initDate(participateRelationship.initDate())
@@ -135,4 +135,6 @@ public class ResolveServiceNode {
         }
         return skillsCandidateRelationshipList;
     }
+
+
 }

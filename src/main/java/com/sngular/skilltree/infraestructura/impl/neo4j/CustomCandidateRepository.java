@@ -7,6 +7,4 @@ import java.util.List;
 
 public interface CustomCandidateRepository {
 
-    @Query("MATCH (p:People)-[k:KNOWS]-(sk) WHERE sk.code= ~$skillcode RETURN p")
-    List<CandidateNode> findCandidatesBySkill(String skillcode);
 }

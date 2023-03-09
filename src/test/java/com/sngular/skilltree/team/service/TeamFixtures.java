@@ -15,7 +15,7 @@ public class TeamFixtures {
 
     public static final People PEOPLE_BY_CODE =
             People.builder()
-                    .code(1)
+                    .code(1L)
                     .name("people2")
                     .surname("LaPel")
                     .employeeId("900003940059")

@@ -17,8 +17,7 @@ import java.util.List;
 
 import static com.sngular.skilltree.person.service.PersonFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,17 +54,17 @@ public class PeopleServiceTest {
     @Test
     @DisplayName("Testing findByCode a person")
     void testFindByCode(){
-        when(peopleRepository.findByCode(anyInt())).thenReturn(PEOPLE_BY_CODE);
-        People result = peopleService.findByCode(1);
+        when(peopleRepository.findByCode(anyLong())).thenReturn(PEOPLE_BY_CODE);
+        People result = peopleService.findByCode(1L);
         assertThat(result).isEqualTo(PEOPLE_BY_CODE);
     }
 
     @Test
     @DisplayName("Testing deleteByCode")
     void testDeleteByCode(){
-        when(peopleRepository.deleteByCode(anyInt())).thenReturn(true);
-        when(peopleRepository.findByCode(1)).thenReturn(PEOPLE_BY_CODE);
-        boolean result = peopleService.deleteByCode(1);
+        when(peopleRepository.deleteByCode(anyLong())).thenReturn(true);
+        when(peopleRepository.findByCode(1L)).thenReturn(PEOPLE_BY_CODE);
+        boolean result = peopleService.deleteByCode(1L);
         assertThat(result).isTrue();
     }
 

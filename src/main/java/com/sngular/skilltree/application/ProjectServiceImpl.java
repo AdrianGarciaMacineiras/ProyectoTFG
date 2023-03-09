@@ -18,7 +18,7 @@ public class ProjectServiceImpl implements ProjectService{
 
     @Override
     public List<Project> getAll() {
-        return projectRepository.findAll();
+        return projectRepository.findByDeletedIsFalse();
     }
 
     @Override
@@ -28,26 +28,29 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     @Override
-    public Project findByCode(Integer projectcode) {
-        return projectRepository.findByCode(projectcode);
+    public Project findByCode(Long projectcode) {
+        var project = projectRepository.findByCode(projectcode);
+        if (Objects.isNull(project) || project.deleted())
+            throw new EntityNotFoundException("Project", projectcode);
+        return project;
     }
 
     @Override
-    public boolean deleteByCode(Integer projectcode) {
-        validateDoesntExist(projectcode);
+    public boolean deleteByCode(Long projectcode) {
+        validateDoesNotExist(projectcode);
         return projectRepository.deleteByCode(projectcode);
     }
 
-    private void validateExist(Integer code) {
+    private void validateExist(Long code) {
         var oldProject = projectRepository.findByCode(code);
-        if (!Objects.isNull(oldProject)) {
+        if (!Objects.isNull(oldProject) && !oldProject.deleted()) {
             throw new EntityFoundException("Project", code);
         }
     }
 
-    private void validateDoesntExist(Integer code) {
+    private void validateDoesNotExist(Long code) {
         var oldProject = projectRepository.findByCode(code);
-        if (Objects.isNull(oldProject)) {
+        if (Objects.isNull(oldProject) || oldProject.deleted()) {
             throw new EntityNotFoundException("Project", code);
         }
     }

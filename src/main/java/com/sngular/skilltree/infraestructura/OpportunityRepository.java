@@ -13,4 +13,5 @@ public interface OpportunityRepository {
 
   boolean deleteByCode(String opportunitycode);
 
+  List<Opportunity> findByDeletedIsFalse();
 }

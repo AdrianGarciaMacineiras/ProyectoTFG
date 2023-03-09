@@ -18,7 +18,7 @@ public class TeamServiceImpl implements TeamService{
 
     @Override
     public List<Team> getAll() {
-        return teamRepository.findAll();
+        return teamRepository.findByDeletedIsFalse();
     }
 
     @Override
@@ -29,25 +29,28 @@ public class TeamServiceImpl implements TeamService{
 
     @Override
     public Team findByCode(String teamcode) {
-        return teamRepository.findByCode(teamcode);
+        var team = teamRepository.findByCode(teamcode);
+        if (Objects.isNull(team) || team.deleted())
+            throw new EntityNotFoundException("Team", teamcode);
+        return team;
     }
 
     @Override
     public boolean deleteByCode(String teamcode) {
-        validateDoesntExist(teamcode);
+        validateDoesNotExist(teamcode);
         return teamRepository.deleteByCode(teamcode);
     }
 
     private void validateExist(String code) {
         var oldTeam = teamRepository.findByCode(code);
-        if (!Objects.isNull(oldTeam)) {
+        if (!Objects.isNull(oldTeam) && !oldTeam.deleted()) {
             throw new EntityFoundException("Team", code);
         }
     }
 
-    private void validateDoesntExist(String code) {
+    private void validateDoesNotExist(String code) {
         var oldTeam = teamRepository.findByCode(code);
-        if (Objects.isNull(oldTeam)) {
+        if (Objects.isNull(oldTeam) || oldTeam.deleted()) {
             throw new EntityNotFoundException("Team", code);
         }
     }

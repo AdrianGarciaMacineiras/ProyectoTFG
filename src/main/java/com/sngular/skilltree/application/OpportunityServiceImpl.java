@@ -18,7 +18,7 @@ public class OpportunityServiceImpl implements OpportunityService {
 
   @Override
   public List<Opportunity> getAll() {
-    return opportunityRepository.findAll();
+    return opportunityRepository.findByDeletedIsFalse();
   }
 
   @Override
@@ -29,26 +29,30 @@ public class OpportunityServiceImpl implements OpportunityService {
 
   @Override
   public Opportunity findByCode(final String opportunitycode) {
-    return opportunityRepository.findByCode(opportunitycode);
+    var opportunity = opportunityRepository.findByCode(opportunitycode);
+    if (Objects.isNull(opportunity) || opportunity.deleted()) {
+      throw new EntityNotFoundException("Opportunity", opportunitycode);
+    }
+    return opportunity;
   }
 
   @Override
   public boolean deleteByCode(final String opportunitycode) {
-    validateDoesntExist(opportunitycode);
+    validateDoesNotExist(opportunitycode);
     return opportunityRepository.deleteByCode(opportunitycode);
   }
 
 
   private void validateExist(String code) {
     var oldOpportunity = opportunityRepository.findByCode(code);
-    if (!Objects.isNull(oldOpportunity)) {
+    if (!Objects.isNull(oldOpportunity) && !oldOpportunity.deleted()) {
       throw new EntityFoundException("Opportunity", code);
     }
   }
 
-  private void validateDoesntExist(String code) {
+  private void validateDoesNotExist(String code) {
     var oldOpportunity = opportunityRepository.findByCode(code);
-    if (Objects.isNull(oldOpportunity)) {
+    if (Objects.isNull(oldOpportunity) || oldOpportunity.deleted()) {
       throw new EntityNotFoundException("Opportunity", code);
     }
   }

@@ -19,11 +19,11 @@ import java.util.List;
 public class PeopleNode {
 
     @Id
-    private Integer code;
+    private Long code;
 
     private String name;
 
-    private Integer employeeId;
+    private String employeeId;
 
     private String surname;
 
@@ -32,6 +32,8 @@ public class PeopleNode {
     private EnumTitle enumTitle;
 
     private boolean deleted;
+
+    private boolean assignable;
 
     @Relationship(type="EVOLVED", direction = Relationship.Direction.OUTGOING)
     private List<Role> roles;

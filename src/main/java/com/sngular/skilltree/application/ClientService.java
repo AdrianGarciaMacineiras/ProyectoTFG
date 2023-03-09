@@ -10,7 +10,7 @@ public interface ClientService {
 
     Client create(final Client client);
 
-    Client findByCode(final Integer clientcode);
+    Client findByCode(final Long clientcode);
 
-    boolean deleteByCode(final Integer clientcode);
+    boolean deleteByCode(final Long clientcode);
 }

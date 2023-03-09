@@ -75,18 +75,18 @@ public class ResolveService {
     }
 
     @Named("resolveCodePeople")
-    public People resolveCodePeople(final Integer peopleCode) {
+    public People resolveCodePeople(final Long peopleCode) {
         return peopleService.findByCode(peopleCode);
     }
 
     @Named("resolveCodeProject")
-    public Project resolveCodeProject(final Integer projectCode) {return projectService.findByCode(projectCode);}
+    public Project resolveCodeProject(final Long projectCode) {return projectService.findByCode(projectCode);}
 
     @Named("resolveCodeOffice")
     public Office resolveCodeOffice(final String officeCode) {return officeService.findByCode(officeCode);}
 
     @Named("resolveCodeClient")
-    public Client resolveCodeClient(final Integer clientCode){return clientService.findByCode(clientCode);}
+    public Client resolveCodeClient(final Long clientCode){return clientService.findByCode(clientCode);}
 
 
 }

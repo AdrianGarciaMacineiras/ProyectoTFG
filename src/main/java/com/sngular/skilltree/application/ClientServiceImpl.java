@@ -19,9 +19,7 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public List<Client> getAll() {
-        var all = clientRepository.findAll();
-        CollectionUtils.filter(all, client -> !client.deleted());
-        return all;
+        return clientRepository.findByDeletedIsFalse();
     }
 
     @Override
@@ -31,30 +29,30 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public Client findByCode(Integer clientcode) {
+    public Client findByCode(Long clientcode) {
         var client = clientRepository.findByCode(clientcode);
-        if (Objects.isNull(client) && client.deleted())
+        if (Objects.isNull(client) || client.deleted())
             throw new EntityNotFoundException("Client", clientcode);
         return client;
     }
 
     @Override
-    public boolean deleteByCode(Integer clientcode) {
-        validateDoesntExist(clientcode);
+    public boolean deleteByCode(Long clientcode) {
+        validateDoesNotExist(clientcode);
         return clientRepository.deleteByCode(clientcode);
     }
 
 
-    private void validateExist(Integer code) {
+    private void validateExist(Long code) {
         var oldClient = clientRepository.findByCode(code);
         if (!Objects.isNull(oldClient) && !oldClient.deleted()) {
             throw new EntityFoundException("Client", code);
         }
     }
 
-    private void validateDoesntExist(Integer code) {
+    private void validateDoesNotExist(Long code) {
         var oldClient = clientRepository.findByCode(code);
-        if (Objects.isNull(oldClient) && oldClient.deleted()) {
+        if (Objects.isNull(oldClient) || oldClient.deleted()) {
             throw new EntityNotFoundException("Client", code);
         }
     }

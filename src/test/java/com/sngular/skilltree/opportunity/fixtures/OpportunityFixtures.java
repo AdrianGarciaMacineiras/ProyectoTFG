@@ -30,7 +30,7 @@ public class OpportunityFixtures {
 
     public static final Client CLIENT_BY_CODE =
             Client.builder()
-                    .code(1)
+                    .code(1L)
                     .HQ("A Coruña")
                     .country("Spain")
                     .industry("RETAIL")
@@ -53,7 +53,7 @@ public class OpportunityFixtures {
 
     public  static final Project PROJECT_BY_CODE =
             Project.builder()
-                    .code(1)
+                    .code(1L)
                     .area("Logistica")
                     .desc("Data consolidation project for Data Analytics")
                     .client(CLIENT_BY_CODE)

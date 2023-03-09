@@ -9,7 +9,9 @@ public interface PeopleRepository {
 
     People save(People people);
 
-    People findByCode(Integer personcode);
+    People findByCode(Long personcode);
 
-    boolean deleteByCode(Integer personcode);
+    boolean deleteByCode(Long personcode);
+
+    List<People> findByDeletedIsFalse();
 }

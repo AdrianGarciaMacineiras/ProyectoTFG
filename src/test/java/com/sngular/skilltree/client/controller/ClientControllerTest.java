@@ -40,7 +40,7 @@ class ClientControllerTest {
 
     @Test
     void getClientByCode() throws Exception{
-        when(clientService.findByCode(anyInt())).thenReturn(CLIENT_BY_CODE);
+        when(clientService.findByCode(anyLong())).thenReturn(CLIENT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/client/1")
                         .accept(MediaType.APPLICATION_JSON))
@@ -50,7 +50,7 @@ class ClientControllerTest {
 
     @Test
     void shouldDeleteClientBySuccess() throws Exception{
-        when(clientService.deleteByCode(anyInt())).thenReturn(true);
+        when(clientService.deleteByCode(anyLong())).thenReturn(true);
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/client/1")
                         .accept(MediaType.APPLICATION_JSON))
@@ -59,7 +59,7 @@ class ClientControllerTest {
 
     @Test
     void shouldDeleteClientFail() throws Exception{
-        when(clientService.deleteByCode(anyInt())).thenThrow(new EntityNotFoundException("Client", "1"));
+        when(clientService.deleteByCode(anyLong())).thenThrow(new EntityNotFoundException("Client", "1"));
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/client/1")
                         .accept(MediaType.APPLICATION_JSON))
@@ -68,7 +68,7 @@ class ClientControllerTest {
 
     @Test
     void updateClient() throws Exception {
-        when(clientUpdater.update(anyInt(),any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
+        when(clientUpdater.update(anyLong(),any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/client/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -91,7 +91,7 @@ class ClientControllerTest {
 
     @Test
     void patchClient() throws Exception {
-        when(clientUpdater.patch(anyInt(),any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
+        when(clientUpdater.patch(anyLong(),any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/client/1")
                         .contentType(MediaType.APPLICATION_JSON)

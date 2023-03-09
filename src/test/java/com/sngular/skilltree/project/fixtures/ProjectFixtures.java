@@ -30,7 +30,7 @@ public class ProjectFixtures {
 
     public static final Client CLIENT_BY_CODE =
             Client.builder()
-                    .code(1)
+                    .code(1L)
                     .HQ("A Coruña")
                     .country("Spain")
                     .industry("RETAIL")
@@ -93,7 +93,7 @@ public class ProjectFixtures {
 
     public static final Project PROJECT_BY_CODE =
             Project.builder()
-                    .code(1)
+                    .code(1L)
                     .area("Logistica")
                     .tag("Project")
                     .initDate(date)
@@ -112,7 +112,7 @@ public class ProjectFixtures {
 
     public static final Project PROJECT2_BY_CODE =
             Project.builder()
-                    .code(2)
+                    .code(2L)
                     .area("Logistica")
                     .tag("Project")
                     .initDate(date)
@@ -131,7 +131,7 @@ public class ProjectFixtures {
 
     public static final Project UPDATED_PROJECT_BY_CODE =
             Project.builder()
-                    .code(1)
+                    .code(1L)
                     .area("Textil")
                     .tag("Project")
                     .initDate(date)

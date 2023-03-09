@@ -34,9 +34,14 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     @Override
     public boolean deleteByCode(String candidatecode) {
         var node = crud.findByCode(candidatecode);
-        node.isDeleted();
+        node.setDeleted(true);
         crud.save(node);
         //crud.delete(node);
         return true;
+    }
+
+    @Override
+    public List<Candidate> findByDeletedIsFalse() {
+        return mapper.map(crud.findByDeletedIsFalse());
     }
 }

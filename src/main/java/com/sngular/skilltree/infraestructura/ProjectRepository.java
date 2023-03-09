@@ -9,7 +9,9 @@ public interface ProjectRepository {
 
     Project save(Project project);
 
-    Project findByCode(Integer projectcode);
+    Project findByCode(Long projectcode);
 
-    boolean deleteByCode(Integer projectcode);
+    boolean deleteByCode(Long projectcode);
+
+    List<Project> findByDeletedIsFalse();
 }

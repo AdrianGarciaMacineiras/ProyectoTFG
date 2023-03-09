@@ -10,8 +10,8 @@ public interface PeopleService {
 
     People create (final People toPeople);
 
-    People findByCode(final Integer personcode);
+    People findByCode(final Long personcode);
 
-    boolean deleteByCode(final Integer personcode);
+    boolean deleteByCode(final Long personcode);
 
 }

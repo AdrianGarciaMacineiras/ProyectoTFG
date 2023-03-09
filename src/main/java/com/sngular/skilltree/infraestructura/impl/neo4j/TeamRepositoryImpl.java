@@ -28,7 +28,14 @@ public class TeamRepositoryImpl implements TeamRepository {
     @Override
     public boolean deleteByCode(String teamcode) {
         var node = crud.findByCode(teamcode);
-        crud.delete(node);
+        node.setDeleted(true);
+        crud.save(node);
+        //crud.delete(node);
         return true;
+    }
+
+    @Override
+    public List<Team> findByDeletedIsFalse() {
+        return mapper.map(crud.findByDeletedIsFalse());
     }
 }

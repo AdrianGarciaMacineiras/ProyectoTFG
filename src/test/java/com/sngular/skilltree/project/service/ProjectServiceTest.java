@@ -18,8 +18,7 @@ import java.util.List;
 import static com.sngular.skilltree.project.service.ProjectFixtures.*;
 import static com.sngular.skilltree.project.service.ProjectFixtures.PROJECT_BY_CODE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
@@ -55,17 +54,17 @@ public class ProjectServiceTest {
     @Test
     @DisplayName("Testing findByCode a project")
     void testFindByCode(){
-        when(projectRepository.findByCode(anyInt())).thenReturn(PROJECT_BY_CODE);
-        Project result = projectService.findByCode(1);
+        when(projectRepository.findByCode(anyLong())).thenReturn(PROJECT_BY_CODE);
+        Project result = projectService.findByCode(1L);
         assertThat(result).isEqualTo(PROJECT_BY_CODE);
     }
 
     @Test
     @DisplayName("Testing deleteByCode")
     void testDeleteByCode(){
-        when(projectRepository.deleteByCode(anyInt())).thenReturn(true);
-        when(projectRepository.findByCode(1)).thenReturn(PROJECT_BY_CODE);
-        boolean result = projectService.deleteByCode(1);
+        when(projectRepository.deleteByCode(anyLong())).thenReturn(true);
+        when(projectRepository.findByCode(1L)).thenReturn(PROJECT_BY_CODE);
+        boolean result = projectService.deleteByCode(1L);
         assertThat(result).isTrue();
     }
 

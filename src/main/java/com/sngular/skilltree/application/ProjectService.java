@@ -10,8 +10,8 @@ public interface ProjectService {
 
     Project create (final Project toProject);
 
-    Project findByCode(final Integer projectcode);
+    Project findByCode(final Long projectcode);
 
-    boolean deleteByCode(final Integer projectcode);
+    boolean deleteByCode(final Long projectcode);
 
 }

@@ -24,19 +24,19 @@ public class PeopleUpdaterImpl implements  PeopleUpdater{
     private final PeopleMapper mapper;
 
     @Override
-    public People update(Integer personcode, People newPeople) {
+    public People update(Long personcode, People newPeople) {
         validate(personcode);
         return peopleRepository.save(newPeople);
     }
 
     @Override
-    public People patch(Integer personcode, People patchedPeople) {
+    public People patch(Long personcode, People patchedPeople) {
         var oldperson = peopleRepository.findByCode(personcode);
         var person = mapper.update(patchedPeople, oldperson);
         return peopleRepository.save(person);
     }
 
-    private void validate(Integer code) {
+    private void validate(Long code) {
         var oldPerson = peopleRepository.findByCode(code);
         if (Objects.isNull(oldPerson)) {
             throw new EntityNotFoundException("People", code);

@@ -43,7 +43,7 @@ class ProjectControllerTest {
 
     @Test
     void getProjectByCode() throws Exception {
-        when(projectService.findByCode(anyInt())).thenReturn(PROJECT_BY_CODE);
+        when(projectService.findByCode(anyLong())).thenReturn(PROJECT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                                 .get("/project/1")
                                 .accept(MediaType.APPLICATION_JSON))
@@ -51,7 +51,7 @@ class ProjectControllerTest {
     }
     @Test
     void shouldDeleteProjectBySuccess() throws Exception{
-        when(projectService.deleteByCode(anyInt())).thenReturn(true);
+        when(projectService.deleteByCode(anyLong())).thenReturn(true);
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/project/1")
                         .accept(MediaType.APPLICATION_JSON))
@@ -60,7 +60,7 @@ class ProjectControllerTest {
 
     @Test
     void shouldDeleteProjectFail() throws Exception{
-        when(projectService.deleteByCode(anyInt())).thenThrow(new EntityNotFoundException("Project", "cosmosdata"));
+        when(projectService.deleteByCode(anyLong())).thenThrow(new EntityNotFoundException("Project", "cosmosdata"));
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/project/1")
                         .accept(MediaType.APPLICATION_JSON))
@@ -69,7 +69,7 @@ class ProjectControllerTest {
 
     @Test
     void updateProject() throws Exception {
-        when(projectUpdater.update(anyInt(),any(Project.class))).thenReturn(UPDATED_PROJECT_BY_CODE);
+        when(projectUpdater.update(anyLong(),any(Project.class))).thenReturn(UPDATED_PROJECT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/project/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -93,7 +93,7 @@ class ProjectControllerTest {
 
     @Test
     void patchProject() throws Exception {
-        when(projectUpdater.patch(anyInt(),any(Project.class))).thenReturn(UPDATED_PROJECT_BY_CODE);
+        when(projectUpdater.patch(anyLong(),any(Project.class))).thenReturn(UPDATED_PROJECT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/project/1")
                         .contentType(MediaType.APPLICATION_JSON)
