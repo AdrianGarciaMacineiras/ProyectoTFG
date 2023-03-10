@@ -5,7 +5,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 import java.util.List;
 
-public interface PeopleCrudRepository extends Neo4jRepository<PeopleNode, Long> {
+public interface PeopleCrudRepository extends Neo4jRepository<PeopleNode, Long>, CustomPeopleRepository {
 
     PeopleNode findByCode(Long personcode);
 

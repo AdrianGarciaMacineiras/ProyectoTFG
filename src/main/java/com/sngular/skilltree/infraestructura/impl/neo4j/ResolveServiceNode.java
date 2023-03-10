@@ -56,9 +56,9 @@ public class ResolveServiceNode {
     @Named("mapToParticipate")
     public List<Participate> mapToParticipate(List<ParticipateRelationship> participateRelationshipList) {
         final List<Participate> participateList = new ArrayList<>();
-        var participateMap = new HashMap<Long, List<Roles>>();
+        var participateMap = new HashMap<String, List<Roles>>();
         for (var participateRelationship : participateRelationshipList) {
-            participateMap.compute(Long.valueOf(participateRelationship.project().getCode()), (code, roleList) -> {
+            participateMap.compute(participateRelationship.project().getName(), (code, roleList) -> {
                 var rol = Roles.builder()
                             .role(participateRelationship.role())
                             .initDate(participateRelationship.initDate())
@@ -71,7 +71,7 @@ public class ResolveServiceNode {
                 return roleList;
             });
         }
-        participateMap.forEach((code, roleList) -> participateList.add(Participate.builder().code(code).roles(roleList).build()));
+        participateMap.forEach((code, roleList) -> participateList.add(Participate.builder().name(code).roles(roleList).build()));
         return participateList;
     }
 
@@ -82,7 +82,7 @@ public class ResolveServiceNode {
             LocalDate endDate = null;
             LocalDate initDate = null;
             String role = null;
-            var project = projectCrudRepository.findByCode(participate.code());
+            var project = projectCrudRepository.findByName(participate.name());
             for (var rol : participate.roles()) {
                 endDate = rol.endDate();
                 initDate = rol.initDate();

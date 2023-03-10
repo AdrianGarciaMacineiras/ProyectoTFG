@@ -40,7 +40,6 @@ public class PeopleRepositoryImpl implements PeopleRepository {
         var node = crud.findByCode(personcode);
         node.setDeleted(true);
         crud.save(node);
-        //crud.delete(node);
         return true;
     }
 

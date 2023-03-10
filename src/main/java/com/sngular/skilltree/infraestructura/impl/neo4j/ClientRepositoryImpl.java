@@ -34,7 +34,6 @@ public class ClientRepositoryImpl implements ClientRepository {
         var node = crud.findByCode(clientcode);
         node.setDeleted(true);
         crud.save(node);
-        //crud.delete(node);
         return true;
     }
 

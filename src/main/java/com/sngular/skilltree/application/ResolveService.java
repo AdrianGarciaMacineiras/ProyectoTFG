@@ -49,11 +49,13 @@ public class ResolveService {
 
     @Named("resolveCodeSkillList")
     public List<Skill> resolveCodeSkill(final List<String> codeList) {
-        final var skillList = new ArrayList<Skill>();
+        var skillList = new ArrayList<Skill>();
         if (codeList != null) {
             for (var code : codeList) {
                 skillList.add(resolveCodeSkill(code));
             }
+        } else {
+            skillList = null;
         }
         return skillList;
     }

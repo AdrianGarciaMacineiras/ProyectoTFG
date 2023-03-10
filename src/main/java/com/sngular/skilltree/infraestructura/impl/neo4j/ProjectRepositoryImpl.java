@@ -36,7 +36,6 @@ public class ProjectRepositoryImpl implements ProjectRepository {
         var node = crud.findByCode(projectcode);
         node.setDeleted(true);
         crud.save(node);
-        //crud.delete(node);
         return true;
     }
 

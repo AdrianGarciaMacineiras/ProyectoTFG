@@ -51,11 +51,11 @@ public interface PeopleMapper {
     @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
     Certificate certificateDTOToCertificate(CertificateDTO certificateDTO);
 
-    @Mapping(target = "name", source = "code")
+    /*@Mapping(target = "name", source = "code")
     ParticipateDTO participateToParticipateDTO(Participate participate);
 
     @Mapping(target = "code", source = "name")
-    Participate participateDTOToParticipate(ParticipateDTO participateDTO);
+    Participate participateDTOToParticipate(ParticipateDTO participateDTO);*/
 
     @Named("update")
     default People update(People newPeople, People oldPeople) {

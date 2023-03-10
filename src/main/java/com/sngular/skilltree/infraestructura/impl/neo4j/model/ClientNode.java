@@ -27,8 +27,8 @@ public class ClientNode {
 
     private String hQ;
 
-    /*@Relationship(type="CLIENT", direction = Relationship.Direction.INCOMING)
-    private List<OfficeNode> offices;*/
+    @Relationship(type="CLIENT", direction = Relationship.Direction.INCOMING)
+    private List<OfficeNode> offices;
 
     private boolean deleted;
 

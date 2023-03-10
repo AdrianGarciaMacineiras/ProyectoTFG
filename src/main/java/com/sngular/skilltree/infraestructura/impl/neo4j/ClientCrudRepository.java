@@ -5,7 +5,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 import java.util.List;
 
-public interface ClientCrudRepository extends Neo4jRepository<ClientNode, Long> {
+public interface ClientCrudRepository extends Neo4jRepository<ClientNode, Long>, CustomClientRepository {
 
     ClientNode findByCode(Long clientcode);
 
