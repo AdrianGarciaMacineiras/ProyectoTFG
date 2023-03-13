@@ -50,7 +50,10 @@ public class ResolveServiceNode {
 
     @Named("resolveCodeToSkillNode")
     public SkillNode resolveCodeToSkillNode(final String code) {
-        return skillCrudRepository.findByCode(code);
+        var skillNode = skillCrudRepository.findSkillByCode(code);
+        skillCrudRepository.deleteRequire(code);
+        return skillNode;
+        //return skillCrudRepository.findSkillByCode(code);
     }
 
     @Named("mapToParticipate")
@@ -104,7 +107,7 @@ public class ResolveServiceNode {
     public List<SubskillsRelationship> mapToSkillRelationship(List<Skill> skills) {
         final List<SubskillsRelationship> subskillsRelationshipsList = new ArrayList<>();
         for (var skill : skills) {
-            var skillNode = skillCrudRepository.findByCode(skill.code());
+            var skillNode = skillCrudRepository.findSkillByCode(skill.code());
             SubskillsRelationship subskillsRelationship = new SubskillsRelationship(null, skillNode, "own");
             subskillsRelationshipsList.add(subskillsRelationship);
         }
@@ -128,7 +131,7 @@ public class ResolveServiceNode {
     public List<SkillsCandidateRelationship> mapToSkillCandidateRelationship(List<SkillsCandidate> skillsCandidateList) {
         final List<SkillsCandidateRelationship> skillsCandidateRelationshipList = new ArrayList<>();
         for (var skill : skillsCandidateList) {
-            var skillNode = skillCrudRepository.findByCode(skill.code());
+            var skillNode = skillCrudRepository.findSkillByCode(skill.code());
             SkillsCandidateRelationship skillsCandidateRelationship = new SkillsCandidateRelationship(null, skillNode,
                     skill.level(), String.valueOf(skill.experience()));
             skillsCandidateRelationshipList.add(skillsCandidateRelationship);

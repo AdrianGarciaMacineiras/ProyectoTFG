@@ -36,6 +36,11 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     }
 
     @Override
+    public People findPeopleByCode(Long personcode) {
+        return mapper.fromNode(crud.findPeopleByCode(personcode));
+    }
+
+    @Override
     public boolean deleteByCode(Long personcode) {
         var node = crud.findByCode(personcode);
         node.setDeleted(true);

@@ -44,7 +44,7 @@ public class ResolveService {
 
     @Named("resolveCodeToSkill")
     public Skill resolveCodeSkill(final String code) {
-        return skillService.findByCode(code);
+        return skillService.findSkill(code);
     }
 
     @Named("resolveCodeSkillList")
@@ -78,7 +78,7 @@ public class ResolveService {
 
     @Named("resolveCodePeople")
     public People resolveCodePeople(final Long peopleCode) {
-        return peopleService.findByCode(peopleCode);
+        return peopleService.findPeopleByCode(peopleCode);
     }
 
     @Named("resolveCodeProject")

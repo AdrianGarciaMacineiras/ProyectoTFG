@@ -11,6 +11,8 @@ public interface PeopleRepository {
 
     People findByCode(Long personcode);
 
+    People findPeopleByCode(Long personcode);
+
     boolean deleteByCode(Long personcode);
 
     List<People> findByDeletedIsFalse();

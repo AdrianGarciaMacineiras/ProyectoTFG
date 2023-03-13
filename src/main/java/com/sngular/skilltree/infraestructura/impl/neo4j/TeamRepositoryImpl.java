@@ -30,7 +30,6 @@ public class TeamRepositoryImpl implements TeamRepository {
         var node = crud.findByCode(teamcode);
         node.setDeleted(true);
         crud.save(node);
-        //crud.delete(node);
         return true;
     }
 

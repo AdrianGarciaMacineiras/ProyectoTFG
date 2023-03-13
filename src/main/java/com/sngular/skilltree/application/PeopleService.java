@@ -12,6 +12,8 @@ public interface PeopleService {
 
     People findByCode(final Long personcode);
 
+    People findPeopleByCode(final Long personcode);
+
     boolean deleteByCode(final Long personcode);
 
 }

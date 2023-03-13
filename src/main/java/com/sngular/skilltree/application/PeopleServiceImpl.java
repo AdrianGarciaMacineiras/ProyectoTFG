@@ -36,6 +36,13 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
+    public People findPeopleByCode(Long personcode) {
+        var people = peopleRepository.findPeopleByCode(personcode);
+        if (Objects.isNull(people) || people.deleted())
+            throw new EntityNotFoundException("People", personcode);
+        return people;    }
+
+    @Override
     public boolean deleteByCode(Long personCode) {
         validateDoesNotExist(personCode);
         return peopleRepository.deleteByCode(personCode);

@@ -48,4 +48,11 @@ public class SkillRepositoryImpl implements SkillRepository {
         return skill;
     }
 
+    @Override
+    public Skill findSkill(String skillcode) {
+        var skillNode = crud.findByCode(skillcode);
+        Skill skill = new Skill(skillcode, skillNode.getName(), new ArrayList<>());
+        return skill;
+    }
+
 }

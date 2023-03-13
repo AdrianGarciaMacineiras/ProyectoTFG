@@ -21,4 +21,9 @@ public class SkillServiceImpl implements SkillService {
     public Skill findByCode(String skillCode) {
         return skillRepository.findByCode(skillCode);
     }
+
+    @Override
+    public Skill findSkill(String skillcode) {
+        return skillRepository.findSkill(skillcode);
+    }
 }
