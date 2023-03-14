@@ -4,6 +4,7 @@ import com.sngular.skilltree.api.ProjectApi;
 import com.sngular.skilltree.api.model.PatchedProjectDTO;
 import com.sngular.skilltree.api.model.ProjectDTO;
 import com.sngular.skilltree.application.ProjectService;
+import com.sngular.skilltree.application.updater.ProjectUpdater;
 import com.sngular.skilltree.contract.mapper.ProjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,33 +18,35 @@ public class ProjectController implements ProjectApi {
 
     private final ProjectService projectService;
 
+    private final ProjectUpdater projectUpdater;
+
     private final ProjectMapper projectMapper;
 
     @Override
-    public ResponseEntity<ProjectDTO> getProjectByCode(String projectcode) {
+    public ResponseEntity<ProjectDTO> getProjectByCode(Long projectcode) {
         return ResponseEntity.ok(projectMapper
                 .toProjectDTO(projectService
                         .findByCode(projectcode)));
     }
 
     @Override
-    public ResponseEntity<Void> deleteProject(String projectcode) {
+    public ResponseEntity<Void> deleteProject(Long projectcode) {
         var result = projectService.deleteByCode(projectcode);
         return ResponseEntity.status(result? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @Override
-    public ResponseEntity<ProjectDTO> updateProject(String projectcode, ProjectDTO projectDTO) {
+    public ResponseEntity<ProjectDTO> updateProject(Long projectcode, ProjectDTO projectDTO) {
         return ResponseEntity.ok(projectMapper
-                .toProjectDTO(projectService
+                .toProjectDTO(projectUpdater
                         .update(projectcode, projectMapper
                                 .toProject(projectDTO))));
     }
 
     @Override
-    public ResponseEntity<ProjectDTO> patchProject(String projectcode, PatchedProjectDTO patchedProjectDTO) {
+    public ResponseEntity<ProjectDTO> patchProject(Long projectcode, PatchedProjectDTO patchedProjectDTO) {
         return ResponseEntity.ok(projectMapper
-                .toProjectDTO(projectService
+                .toProjectDTO(projectUpdater
                         .patch(projectcode, projectMapper
                                 .toProject(patchedProjectDTO))));
     }

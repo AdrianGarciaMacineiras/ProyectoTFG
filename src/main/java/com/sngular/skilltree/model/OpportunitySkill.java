@@ -1,4 +1,7 @@
 package com.sngular.skilltree.model;
 
-public record OpportunitySkill(Skill skill, EnumLevelReq enumLevelReq, EnumMinLevel enumMinLevel, int minExp) {
+import lombok.Builder;
+
+@Builder(toBuilder = true)
+public record OpportunitySkill(Skill skill, EnumLevelReq levelReq, EnumMinLevel minLevel, Integer minExp) {
 }

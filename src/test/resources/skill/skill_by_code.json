@@ -1,0 +1,11 @@
+{
+  "code": "s1120",
+  "name": "Spring",
+  "subSkills":
+    [
+      {
+        "code": "s1121",
+        "name": "Kafka"
+      }
+    ]
+}

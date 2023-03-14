@@ -1,9 +1,15 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.contract.mapper.OpportunityMapper;
+import com.sngular.skilltree.common.exceptions.EntityFoundException;
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.infraestructura.CandidateRepository;
+import com.sngular.skilltree.infraestructura.PeopleRepository;
+import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.Opportunity;
 import com.sngular.skilltree.infraestructura.OpportunityRepository;
 import java.util.List;
+import java.util.Objects;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +19,6 @@ public class OpportunityServiceImpl implements OpportunityService {
 
   private final OpportunityRepository opportunityRepository;
 
-  private final OpportunityMapper mapper;
-
   @Override
   public List<Opportunity> getAll() {
     return opportunityRepository.findAll();
@@ -22,35 +26,37 @@ public class OpportunityServiceImpl implements OpportunityService {
 
   @Override
   public Opportunity create(final Opportunity opportunity) {
-    validate(opportunity);
+    validateExist(opportunity.code());
     return opportunityRepository.save(opportunity);
   }
 
   @Override
   public Opportunity findByCode(final String opportunitycode) {
-    return opportunityRepository.findByCode(opportunitycode);
+    var opportunity = opportunityRepository.findByCode(opportunitycode);
+    if (Objects.isNull(opportunity) || opportunity.deleted()) {
+      throw new EntityNotFoundException("Opportunity", opportunitycode);
+    }
+    return opportunity;
   }
 
   @Override
-  public boolean deleteBeCode(final String opportunitycode) {
+  public boolean deleteByCode(final String opportunitycode) {
+    validateDoesNotExist(opportunitycode);
     return opportunityRepository.deleteByCode(opportunitycode);
   }
 
-  @Override
-  public Opportunity update(final String opportunitycode, final Opportunity newOpportunity) {
-    var oldOpportunity = opportunityRepository.findByCode(opportunitycode);
-    mapper.update(oldOpportunity, newOpportunity);
-    return opportunityRepository.save(oldOpportunity);
+
+  private void validateExist(String code) {
+    var oldOpportunity = opportunityRepository.findByCode(code);
+    if (!Objects.isNull(oldOpportunity) && !oldOpportunity.deleted()) {
+      throw new EntityFoundException("Opportunity", code);
+    }
   }
 
-  @Override
-  public Opportunity patch(final String opportunitycode, final Opportunity patchedOpportunity) {
-    var oldOpportunity = opportunityRepository.findByCode(opportunitycode);
-    mapper.update(oldOpportunity, patchedOpportunity);
-    opportunityRepository.save(oldOpportunity);
-    return opportunityRepository.save(oldOpportunity);
-  }
-
-  private void validate(Opportunity opportunity) {
+  private void validateDoesNotExist(String code) {
+    var oldOpportunity = opportunityRepository.findByCode(code);
+    if (Objects.isNull(oldOpportunity) || oldOpportunity.deleted()) {
+      throw new EntityNotFoundException("Opportunity", code);
+    }
   }
 }

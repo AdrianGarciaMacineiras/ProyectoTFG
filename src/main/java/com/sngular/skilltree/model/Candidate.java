@@ -1,6 +1,9 @@
 package com.sngular.skilltree.model;
 
+import lombok.Builder;
+
 import java.util.List;
 
-public record Candidate(String code, Opportunity opportunity, List<SkillsCandidate> skills) {
+@Builder(toBuilder = true)
+public record Candidate(String code, People candidate, String status, Opportunity opportunity, List<SkillsCandidate> skills, boolean deleted) {
 }

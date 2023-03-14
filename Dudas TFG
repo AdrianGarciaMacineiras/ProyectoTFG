@@ -1,3 +1,20 @@
-Levantar seervicio project, people, oportunity.
+docker-compose -f dockercompose.yaml up
 
-Skills en api solo get.
+
+ClientNode:
+    - principalOffice
+    - HQ
+
+PeopleNode:
+    - birthDate
+    - enumTitle
+
+ProjectNode:
+    - initDate
+    - endDate
+
+Brick? Topic?
+
+SkillNode include relationship?
+
+Completar campos obligatorios skill-tree-api

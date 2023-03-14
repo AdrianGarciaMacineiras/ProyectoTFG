@@ -8,4 +8,6 @@ public interface SkillRepository {
     List<Skill> findAll();
 
     Skill findByCode(String skillcode);
+
+    Skill findSkill(String skillcode);
 }

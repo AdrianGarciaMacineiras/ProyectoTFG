@@ -10,11 +10,10 @@ public interface PeopleService {
 
     People create (final People toPeople);
 
-    People findByCode(final String personcode);
+    People findByCode(final Long personcode);
 
-    boolean deleteByCode(final String personcode);
+    People findPeopleByCode(final Long personcode);
 
-    People update(final String personcode, final People newPeople);
+    boolean deleteByCode(final Long personcode);
 
-    People patch(final String personcode, final People patchedPeople);
 }

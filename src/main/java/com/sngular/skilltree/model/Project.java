@@ -1,10 +1,14 @@
 package com.sngular.skilltree.model;
 
+import lombok.Builder;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 
-public record Project(String code, String name, String desc, Date initDate, Date endDate, String domain,
-                      String duration, EnumGuards enumGuards, List<Skill> skills, List<String> historic,
-                      Client client, String area, List<ProjectRoles> roles) {
+@Builder(toBuilder = true)
+public record Project(Long code, String tag, String name, String desc, LocalDate initDate, LocalDate endDate, String domain,
+                      String duration, EnumGuards guards, List<Skill> skills, List<String> historic,
+                      Client client, String area, List<ProjectRoles> roles, boolean deleted) {
 }

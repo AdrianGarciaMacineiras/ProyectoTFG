@@ -4,6 +4,7 @@ import com.sngular.skilltree.api.CandidateApi;
 import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedCandidateDTO;
 import com.sngular.skilltree.application.CandidateService;
+import com.sngular.skilltree.application.updater.CandidateUpdater;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import java.util.List;
 public class CandidateController implements CandidateApi {
 
     private final CandidateService candidateService;
+
+    private final CandidateUpdater candidateUpdater;
 
     private final CandidateMapper candidateMapper;
 
@@ -43,14 +46,14 @@ public class CandidateController implements CandidateApi {
 
     @Override
     public ResponseEntity<Void> deleteCandidate(String candidatecode) {
-        var result = candidateService.deleteBeCode(candidatecode);
+        var result = candidateService.deleteByCode(candidatecode);
         return ResponseEntity.status(result? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @Override
     public ResponseEntity<CandidateDTO> updateCandidate(String candidatecode, CandidateDTO candidateDTO) {
         return ResponseEntity.ok(candidateMapper
-                .toCandidateDTO(candidateService
+                .toCandidateDTO(candidateUpdater
                         .update(candidatecode, candidateMapper
                                 .toCandidate(candidateDTO))));
     }
@@ -58,7 +61,7 @@ public class CandidateController implements CandidateApi {
     @Override
     public ResponseEntity<CandidateDTO> patchCandidate(String candidatecode, PatchedCandidateDTO patchedCandidateDTO) {
         return ResponseEntity.ok(candidateMapper
-                .toCandidateDTO(candidateService
+                .toCandidateDTO(candidateUpdater
                         .patch(candidatecode, candidateMapper
                                 .toCandidate(patchedCandidateDTO))));
     }

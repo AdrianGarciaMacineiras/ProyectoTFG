@@ -50,7 +50,7 @@ paths:
             schema:
               $ref: "#/components/schemas/project"
       responses:
-        '200':
+        '201':
           description: A project has been added
           content:
             application/json:
@@ -77,7 +77,8 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
           description: String that represents the code of a project
       tags:
         - project
@@ -108,7 +109,8 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
           description: String that represents the code of a project
       tags:
         - project
@@ -144,7 +146,8 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
           description: String that represents the code of a project
       operationId: patchProject
       tags:
@@ -181,7 +184,8 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
           description: String that represents the code of a project
       operationId: deleteProject
       tags:
@@ -241,7 +245,7 @@ paths:
             schema:
               $ref: "#/components/schemas/opportunity"
       responses:
-        '200':
+        '201':
           description: An opportunity has been added
           content:
             application/json:
@@ -432,7 +436,7 @@ paths:
             schema:
               $ref: "#/components/schemas/people"
       responses:
-        '200':
+        '201':
           description: A person has been added
           content:
             application/json:
@@ -459,7 +463,8 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
           description: String that represents the code of a person
       tags:
         - people
@@ -490,7 +495,8 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
           description: String that represents the code of a person
       tags:
         - people
@@ -526,7 +532,8 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
           description: String that represents the code of a person
       operationId: patchPerson
       tags:
@@ -563,7 +570,8 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
           description: String that represents the code of a person
       operationId: deletePerson
       tags:
@@ -683,7 +691,7 @@ paths:
             schema:
               $ref: "#/components/schemas/candidate"
       responses:
-        '200':
+        '201':
           description: A candidate has been added
           content:
             application/json:
@@ -901,7 +909,8 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
           description: String that represents the code of a client
       tags:
         - client
@@ -932,7 +941,8 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
           description: String that represents the code of a client
       tags:
         - client
@@ -968,7 +978,8 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
           description: String that represents the code of a client
       operationId: patchClient
       tags:
@@ -1005,7 +1016,8 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
           description: String that represents the code of a client
       operationId: deleteClient
       tags:
@@ -1013,6 +1025,197 @@ paths:
       responses:
         '200':
           description: A client has been deleted
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /team:
+    summary: Teams
+    description: Returns a list of all the company teams
+    get:
+      summary: List all teams
+      operationId: getTeams
+      tags:
+        - team
+      responses:
+        '200':
+          description: A paged array of teams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/teams"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    post:
+      summary: Adds a new team
+      description: Adds a new team
+      operationId: addTeam
+      tags:
+        - team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/team"
+      responses:
+        '200':
+          description: A team has been added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/team"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /team/{teamcode}:
+    get:
+      summary: Gets a team by the code
+      description: Returns an individual team, identified by a code
+      operationId: getTeamByCode
+      parameters:
+        - name: teamcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a team
+      tags:
+        - team
+      responses:
+        '200':
+          description: A team
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/team"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    put:
+      summary: Updates the given team
+      description: Updates the entirety of a team
+      operationId: updateTeam
+      parameters:
+        - name: teamcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a team
+      tags:
+        - client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/team"
+      responses:
+        '200':
+          description: A team has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/team"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    patch:
+      summary: Updates some of the information of a team
+      description: Updates part of a team
+      parameters:
+        - name: teamcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a team
+      operationId: patchTeam
+      tags:
+        - team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/patchedTeam"
+      responses:
+        '200':
+          description: A team has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/team"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+    delete:
+      summary: Deletes the given team
+      description: Deletes a team
+      parameters:
+        - name: teamcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a team
+      operationId: deleteTeam
+      tags:
+        - team
+      responses:
+        '200':
+          description: A team has been deleted
         '400':
           description: Bad Request
         '404':
@@ -1035,21 +1238,11 @@ components:
       type: object
       required:
         - code
-        - tag
-        - name
-        - desc
-        - initDate
-        - endDate
-        - client
-        - area
-        - domain
-        - duration
-        - guards
-        - techArray
-        - roles
+        - clientCode
       properties:
         code:
-          type: string
+          type: integer
+          format: int64
         tag:
           type: string
         name:
@@ -1058,10 +1251,13 @@ components:
           type: string
         initDate:
           type: string
+          format: date
         endDate:
           type: string
-        client:
-          $ref: "#/components/schemas/client"
+          format: date
+        clientCode:
+          type: integer
+          format: int64
         area:
           type: string
         domain:
@@ -1069,19 +1265,15 @@ components:
         duration:
           type: string
         guards:
-          type: string
-          enum:
-            - PASSIVE
-            - ACTIVE
-            - NO_GUARD
+          $ref: "#/components/schemas/guards"
         skills:
           type: array
           items:
-            $ref: "#/components/schemas/skill"
+            type: string
         roles:
           type: array
           items:
-            $ref: "#/components/schemas/roles"
+            $ref: "#/components/schemas/projectRoles"
 
     patchedProject:
       type: object
@@ -1092,23 +1284,44 @@ components:
           type: string
         desc:
           type: string
-        guards:
+        initDate:
           type: string
-          enum:
-            - PASSIVE
-            - ACTIVE
-            - NO_GUARD
+          format: date
+        endDate:
+          type: string
+          format: date
+        clientCode:
+          type: integer
+          format: int64
+        area:
+          type: string
+        domain:
+          type: string
+        duration:
+          type: string
+        guards:
+          $ref: "#/components/schemas/guards"
         skills:
           type: array
           items:
-            $ref: "#/components/schemas/skill"
+            type: string
         roles:
-            type: array
-            items:
-              $ref: "#/components/schemas/roles"
+          type: array
+          items:
+            $ref: "#/components/schemas/projectRoles"
 
-    roles:
+    guards:
+      type: string
+      enum:
+        - PASSIVE
+        - ACTIVE
+        - NO_GUARD
+
+    projectRoles:
       type: object
+      required:
+        - rol
+        - number
       properties:
         rol:
           type: string
@@ -1117,12 +1330,16 @@ components:
 
     skill:
       type: object
+      required:
+        - code
+        - name
+        - subSkills
       properties:
         code:
           type: string
         name:
           type: string
-        subskill:
+        subSkills:
           type: array
           items:
             $ref: "#/components/schemas/skill"
@@ -1136,43 +1353,81 @@ components:
       type: object
       required:
         - code
-        - name
-        - project
-        - client
-        - openingDate
-        - closingDate
-        - priority
-        - mode
-        - office
-        - role
+        - projectCode
+        - clientCode
         - skills
       properties:
         code:
           type: string
         name:
           type: string
-        project:
-          $ref: "#/components/schemas/project"
-        client:
-          $ref: "#/components/schemas/client"
+        projectCode:
+          type: integer
+          format: int64
+        clientCode:
+          type: integer
+          format: int64
         openingDate:
           type: string
+          format: date
         closingDate:
           type: string
+          format: date
         priority:
           type: string
         mode:
-          type: string
-          enum:
-            - REMOTE
-            - PRESENTIAL
-            - MIX
+          $ref: "#/components/schemas/mode"
         office:
           type: string
         role:
           type: string
         skills:
-          $ref: "#/components/schemas/skills"
+          type: array
+          items:
+            $ref: "#/components/schemas/opportunitySkill"
+        managedBy:
+          type: integer
+          format: int64
+
+    patchedOpportunity:
+      type: object
+      properties:
+        name:
+          type: string
+        projectCode:
+          type: integer
+          format: int64
+        clientCode:
+          type: integer
+          format: int64
+        openingDate:
+          type: string
+          format: date
+        closingDate:
+          type: string
+          format: date
+        priority:
+          type: string
+        mode:
+          $ref: "#/components/schemas/mode"
+        office:
+          type: string
+        role:
+          type: string
+        skills:
+          type: array
+          items:
+            $ref: "#/components/schemas/opportunitySkill"
+        managedBy:
+          type: integer
+          format: int64
+
+    mode:
+      type: string
+      enum:
+        - REMOTE
+        - PRESENTIAL
+        - MIX
 
     clients:
       type: array
@@ -1183,13 +1438,10 @@ components:
       type: object
       required:
         - code
-        - name
-        - industry
-        - country
-        - offices
       properties:
         code:
-          type: string
+          type: integer
+          format: int64
         name:
           type: string
         industry:
@@ -1216,6 +1468,8 @@ components:
           type: string
         principalOffice:
           type: string
+        HQ:
+          type: string
         offices:
           type: array
           items:
@@ -1225,10 +1479,6 @@ components:
       type: object
       required:
         - code
-        - name
-        - address
-        - phone
-        - geolocation
       properties:
         code:
           type: string
@@ -1250,64 +1500,97 @@ components:
       type: object
       required:
         - code
-        - opportunity
+        - candidateCode
+        - opportunityCode
         - skills
       properties:
         code:
           type: string
-        opportunity:
-          $ref: "#/components/schemas/opportunity"
+        introductionDate:
+          type: string
+          format: date
+        resolutionDate:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [INTERVIEWED, PRESENTED, OK, KO]
+        candidateCode:
+          type: integer
+          format: int64
+        opportunityCode:
+          type: string
         skills:
           type: array
           items:
-            $ref: "#/components/schemas/skill"
+            $ref: "#/components/schemas/candidateSkill"
 
     patchedCandidate:
       type: object
       properties:
-        opportunity:
-          $ref: "#/components/schemas/opportunity"
+        introductionDate:
+          type: string
+          format: date
+        resolutionDate:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [ INTERVIEWED, PRESENTED, OK, KO ]
+        candidateCode:
+          type: integer
+          format: int64
+        opportunityCode:
+          type: string
         skills:
           type: array
           items:
-            $ref: "#/components/schemas/skill"
+            $ref: "#/components/schemas/candidateSkill"
 
-    patchedOpportunity:
+    candidateSkill:
       type: object
+      required:
+      - code
+      - level
+      - experience
       properties:
-        name:
+        code:
           type: string
-        priority:
-          type: string
-        mode:
+        level:
           type: string
           enum:
-            - REMOTE
-            - PRESENTIAL
-            - MIX
-        office:
-          type: string
-        role:
-          type: string
+          - HIGH
+          - MEDIUM
+          - CONFIDENT
+          - LOW
+        experience:
+          type: integer
+          format: int32
 
-    skills:
+    opportunitySkill:
       type: object
+      required:
+        - skill
+        - levelReq
+        - minLevel
+        - minExp
       properties:
         skill:
           type: string
-        level_req:
+        levelReq:
           type: string
           enum:
             - MANDATORY
             - NICE_TO_HAVE
-        min_level:
+        minLevel:
           type: string
           enum:
             - HIGH
             - MEDIUM
             - LOW
-        min_exp:
-          type: string
+        minExp:
+          type: integer
+          format: int32
 
     peopleList:
       type: array
@@ -1318,18 +1601,11 @@ components:
       type: object
       required:
         - code
-        - name
-        - surname
-        - birthDate
-        - title
-        - evolution
-        - knows
-        - work_with
-        - master
-        - participate
-        - interest
       properties:
         code:
+          type: integer
+          format: int64
+        employeeId:
           type: string
         name:
           type: string
@@ -1337,32 +1613,34 @@ components:
           type: string
         birthDate:
           type: string
+          format: date
         title:
-          type: string
-          enum:
-            - Principal
-            - Head
-            - Director
-            - Expert
-            - Senior
-            - Developer
-            - Junior
-        evolution:
-          type: object
-          properties:
-            title:
-              type: string
-            category:
-              type: string
-            fromDate:
-              type: string
+          $ref: "#/components/schemas/title"
+        roles:
+          type: array
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+              category:
+                type: string
+              initDate:
+                type: string
+                format: date
         knows:
-          type: object
-          properties:
-            code:
-              type: string
-            level:
-              type: string
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              level:
+                type: string
+              primary:
+                type: boolean
+              experience:
+                type: integer
         work_with:
           type: array
           items: 
@@ -1372,45 +1650,64 @@ components:
           items: 
             type: string
         participate:
-          type: object
-          properties:
-            code:
-              type: string
-            roles:
-              type: array
-              items:
-                $ref: "#/components/schemas/role"
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              roles:
+                type: array
+                items:
+                  $ref: "#/components/schemas/role"
         interest:
           type: array
           items:
             type: string
+        certificates:
+          type: array
+          items:
+            $ref: "#/components/schemas/certificate"
 
     patchedPeople:
       type: object
       properties:
+        employeeId:
+          type: string
         name:
           type: string
         surname:
           type: string
         birthDate:
           type: string
+          format: date
         title:
-          type: string
-          enum:
-            - Principal
-            - Head
-            - Director
-            - Expert
-            - Senior
-            - Developer
-            - Junior
+          $ref: "#/components/schemas/title"
+        roles:
+          type: array
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+              category:
+                type: string
+              initDate:
+                type: string
+                format: date
         knows:
-          type: object
-          properties:
-            code:
-              type: string
-            level:
-              type: string
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              level:
+                type: string
+              primary:
+                type: boolean
+              avoidable:
+                type: boolean
         work_with:
           type: array
           items:
@@ -1420,28 +1717,117 @@ components:
           items:
             type: string
         participate:
-          type: object
-          properties:
-            code:
-              type: string
-            roles:
-              type: array
-              items:
-                $ref: "#/components/schemas/role"
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              roles:
+                type: array
+                items:
+                  $ref: "#/components/schemas/role"
         interest:
           type: array
           items:
             type: string
+        certificates:
+          type: array
+          items:
+            $ref: "#/components/schemas/certificate"
+
+    certificate:
+      type: object
+      properties:
+        code:
+          type: string
+        comments:
+          type: string
+        date:
+          type: string
+          format: date
+
+    title:
+      type: string
+      enum:
+        - PRINCIPAL
+        - HEAD
+        - DIRECTOR
+        - EXPERT
+        - SENIOR
+        - DEVELOPER
+        - JUNIOR
 
     role:
       type: object
       properties:
         role:
           type: string
-        fromDate:
+        initDate:
           type: string
+          format: date
         endDate:
           type: string
+          format: date
+
+    teams:
+      type: array
+      items:
+        $ref: "#/components/schemas/team"
+
+    team:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              peopleCode:
+                type: integer
+                format: int64
+              position:
+                type: string
+                enum:
+                  - DIRECTOR
+                  - HEAD
+
+    patchedTeam:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              peopleCode:
+                type: integer
+                format: int64
+              position:
+                type: string
+                enum:
+                  - DIRECTOR
+                  - HEAD
 
     error:
       type: object

@@ -1,12 +1,14 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.contract.mapper.ProjectMapper;
+import com.sngular.skilltree.common.exceptions.EntityFoundException;
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.model.Project;
 import com.sngular.skilltree.infraestructura.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -14,7 +16,6 @@ public class ProjectServiceImpl implements ProjectService{
 
     private final ProjectRepository projectRepository;
 
-    private final ProjectMapper mapper;
     @Override
     public List<Project> getAll() {
         return projectRepository.findAll();
@@ -22,34 +23,42 @@ public class ProjectServiceImpl implements ProjectService{
 
     @Override
     public Project create(Project project) {
-        validate(project);
+        validateExist(project.code());
         return projectRepository.save(project);
     }
 
     @Override
-    public Project findByCode(String projectcode) {
-        return projectRepository.findByCode(projectcode);
+    public Project findByCode(Long projectcode) {
+        var project = projectRepository.findByCode(projectcode);
+        if (Objects.isNull(project) || project.deleted())
+            throw new EntityNotFoundException("Project", projectcode);
+        return project;
     }
 
     @Override
-    public boolean deleteByCode(String projectcode) {
+    public boolean deleteByCode(Long projectcode) {
+        validateDoesNotExist(projectcode);
         return projectRepository.deleteByCode(projectcode);
     }
 
     @Override
-    public Project update(String projectcode, Project newProject) {
-        var oldProject = projectRepository.findByCode(projectcode);
-        mapper.update(oldProject,newProject);
-        return projectRepository.save(oldProject);
+    public Project findProject(Long projectcode) {
+        var project = projectRepository.findProject(projectcode);
+        if (Objects.isNull(project) || project.deleted())
+            throw new EntityNotFoundException("Project", projectcode);
+        return project;    }
+
+    private void validateExist(Long code) {
+        var oldProject = projectRepository.findByCode(code);
+        if (!Objects.isNull(oldProject) && !oldProject.deleted()) {
+            throw new EntityFoundException("Project", code);
+        }
     }
 
-    @Override
-    public Project patch(String projectcode, Project patchedProject) {
-        var oldProject = projectRepository.findByCode(projectcode);
-        mapper.update(oldProject,patchedProject);
-        return projectRepository.save(oldProject);
-    }
-
-    private void validate(Project project) {
+    private void validateDoesNotExist(Long code) {
+        var oldProject = projectRepository.findByCode(code);
+        if (Objects.isNull(oldProject) || oldProject.deleted()) {
+            throw new EntityNotFoundException("Project", code);
+        }
     }
 }

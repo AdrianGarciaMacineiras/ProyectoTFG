@@ -1,0 +1,19 @@
+{
+  "code": "itxtl1",
+  "name": "Leader at INDITEX",
+  "projectCode": 1,
+  "clientCode": 1,
+  "openingDate": "20-01-2023",
+  "closingDate": "20-01-2023",
+  "priority": "MEDIUM",
+  "mode": "REMOTE",
+  "office": "itxhq",
+  "role": "Leader",
+  "managedBy": 1,
+  "skills": [{
+    "skill": "Spring",
+    "levelReq": "MANDATORY",
+    "minLevel": "HIGH",
+    "minExp": 7
+  }]
+}

@@ -1,6 +1,11 @@
 package com.sngular.skilltree.model;
 
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+
+import java.time.LocalDate;
 import java.util.Date;
 
-public record Roles(String role, Date fromDate, Date enDate) {
+@Builder(toBuilder = true)
+public record Roles(String role, LocalDate initDate, LocalDate endDate) {
 }

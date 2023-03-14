@@ -1,0 +1,29 @@
+{
+  "code": 1,
+  "tag": "Project",
+  "name": "Cosmos Data",
+  "desc": "Updated description",
+  "initDate": "20-01-2023",
+  "endDate": "20-01-2023",
+  "clientCode": 1,
+  "area": "Textil",
+  "domain": "Stocks",
+  "duration": "1 year",
+  "guards": "PASSIVE",
+  "skills": ["jdk11", "kafka", "db2", "mongodb", "spring"],
+  "roles":
+    [
+      {
+        "rol": "SENIOR",
+        "number": 2
+      },
+      {
+        "rol": "DEVELOPER",
+        "number": 2
+      },
+      {
+        "rol": "JUNIOR",
+        "number": 1
+      }
+    ]
+}

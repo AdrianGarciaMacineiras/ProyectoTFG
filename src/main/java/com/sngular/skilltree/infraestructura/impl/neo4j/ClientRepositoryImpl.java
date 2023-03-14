@@ -17,7 +17,7 @@ public class ClientRepositoryImpl implements ClientRepository {
     private final ClientNodeMapper mapper;
 
     @Override
-    public List<Client> findAll() { return mapper.map(crud.findAll()); }
+    public List<Client> findAll() { return mapper.map(crud.findByDeletedIsFalse()); }
 
     @Override
     public Client save(Client client) {
@@ -25,14 +25,20 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
 
     @Override
-    public Client findByCode(String clientcode) {
+    public Client findByCode(Long clientcode) {
         return mapper.fromNode(crud.findByCode(clientcode));
     }
 
     @Override
-    public boolean deleteByCode(String clientcode) {
+    public boolean deleteByCode(Long clientcode) {
         var node = crud.findByCode(clientcode);
-        crud.delete(node);
+        node.setDeleted(true);
+        crud.save(node);
         return true;
+    }
+
+    @Override
+    public List<Client> findByDeletedIsFalse() {
+        return mapper.map(crud.findByDeletedIsFalse());
     }
 }

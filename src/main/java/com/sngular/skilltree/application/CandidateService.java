@@ -10,11 +10,7 @@ public interface CandidateService {
 
     Candidate create(final Candidate candidate);
 
-    Candidate findByCode(final String candidatenode);
+    Candidate findByCode(final String candidatecode);
 
-    boolean deleteBeCode(final String candidatenode);
-
-    Candidate update(final String candidatenode, final Candidate newCandidate);
-
-    Candidate patch(final String candidatecode, final Candidate patchedCandidate);
+    boolean deleteByCode(final String candidatecode);
 }

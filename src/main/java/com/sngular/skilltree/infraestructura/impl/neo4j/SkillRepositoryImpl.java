@@ -1,5 +1,6 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubskillsRelationship;
 import com.sngular.skilltree.model.Skill;
 import com.sngular.skilltree.infraestructura.SkillRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.SkillNodeMapper;
@@ -7,6 +8,7 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -20,11 +22,12 @@ public class SkillRepositoryImpl implements SkillRepository {
     @Override
     public List<Skill> findAll() {
         var skillNodeList = crud.findAll();
-        List<Skill> subSkills = null;
-        List<Skill> skills = null;
+        List<Skill> subSkills = new ArrayList<>();
+        List<Skill> skills = new ArrayList<>();
         for(SkillNode skillNode: skillNodeList){
-            for (SkillNode subSkillNode: skillNode.getSubSkills()){
-                var toSkill = mapper.fromNode(subSkillNode);
+            subSkills = new ArrayList<>();
+            for (SubskillsRelationship subSkillNode: skillNode.getSubSkills()){
+                var toSkill = mapper.fromNode(subSkillNode.skillNode());
                 subSkills.add(toSkill);
             }
             Skill skill = new Skill(skillNode.getCode(), skillNode.getName(), subSkills);
@@ -36,12 +39,19 @@ public class SkillRepositoryImpl implements SkillRepository {
     @Override
     public Skill findByCode(String skillcode) {
         var skillNode = crud.findByCode(skillcode);
-        List<Skill> subSkills = null;
-        for(SkillNode subSkillNode: skillNode.getSubSkills()){
-            var toSkill = mapper.fromNode(subSkillNode);
+        List<Skill> subSkills = new ArrayList<>();
+        for(SubskillsRelationship subSkillNode: skillNode.getSubSkills()){
+            var toSkill = mapper.fromNode(subSkillNode.skillNode());
             subSkills.add(toSkill);
         }
         Skill skill = new Skill(skillcode, skillNode.getName(), subSkills);
+        return skill;
+    }
+
+    @Override
+    public Skill findSkill(String skillcode) {
+        var skillNode = crud.findByCode(skillcode);
+        Skill skill = new Skill(skillcode, skillNode.getName(), new ArrayList<>());
         return skill;
     }
 

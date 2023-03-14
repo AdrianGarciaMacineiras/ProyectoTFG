@@ -1,11 +1,15 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.ParticipateRelationship;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import javax.management.InstanceNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -18,7 +22,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
     @Override
     public List<People> findAll() {
-        return mapper.map(crud.findAll());
+        return mapper.map(crud.findByDeletedIsFalse());
     }
 
     @Override
@@ -27,14 +31,25 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     }
 
     @Override
-    public People findByCode(String personcode) {
+    public People findByCode(Long personcode) {
         return mapper.fromNode(crud.findByCode(personcode));
     }
 
     @Override
-    public boolean deleteByCode(String personcode) {
+    public People findPeopleByCode(Long personcode) {
+        return mapper.fromNode(crud.findPeopleByCode(personcode));
+    }
+
+    @Override
+    public boolean deleteByCode(Long personcode) {
         var node = crud.findByCode(personcode);
-        crud.delete(node);
+        node.setDeleted(true);
+        crud.save(node);
         return true;
+    }
+
+    @Override
+    public List<People> findByDeletedIsFalse() {
+        return mapper.map(crud.findByDeletedIsFalse());
     }
 }

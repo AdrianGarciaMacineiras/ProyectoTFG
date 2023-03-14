@@ -4,6 +4,7 @@ import com.sngular.skilltree.api.OpportunityApi;
 import com.sngular.skilltree.api.model.OpportunityDTO;
 import com.sngular.skilltree.api.model.PatchedOpportunityDTO;
 import com.sngular.skilltree.application.OpportunityService;
+import com.sngular.skilltree.application.updater.OpportunityUpdater;
 import com.sngular.skilltree.contract.mapper.OpportunityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import java.util.List;
 public class OpportunityController implements OpportunityApi {
 
     private final OpportunityService opportunityService;
+
+    private final OpportunityUpdater opportunityUpdater;
 
     private final OpportunityMapper opportunityMapper;
 
@@ -44,14 +47,14 @@ public class OpportunityController implements OpportunityApi {
 
     @Override
     public ResponseEntity<Void> deleteOpportunity(String opportunitycode) {
-        var result = opportunityService.deleteBeCode(opportunitycode);
+        var result = opportunityService.deleteByCode(opportunitycode);
         return ResponseEntity.status(result? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @Override
     public ResponseEntity<OpportunityDTO> updateOpportunity(String opportunitycode, OpportunityDTO opportunityDTO) {
         return ResponseEntity.ok(opportunityMapper
-                .toOpportunityDTO(opportunityService
+                .toOpportunityDTO(opportunityUpdater
                         .update(opportunitycode, opportunityMapper
                                 .toOpportunity(opportunityDTO))));
     }
@@ -59,7 +62,7 @@ public class OpportunityController implements OpportunityApi {
     @Override
     public ResponseEntity<OpportunityDTO> patchOpportunity(String opportunitycode, PatchedOpportunityDTO patchedOpportunityDTO) {
         return ResponseEntity.ok(opportunityMapper
-                .toOpportunityDTO(opportunityService
+                .toOpportunityDTO(opportunityUpdater
                         .patch(opportunitycode, opportunityMapper
                                 .toOpportunity(patchedOpportunityDTO))));
     }

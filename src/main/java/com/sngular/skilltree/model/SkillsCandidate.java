@@ -1,4 +1,7 @@
 package com.sngular.skilltree.model;
 
-public record SkillsCandidate(String code, EnumLevel level, int experience) {
+import lombok.Builder;
+
+@Builder(toBuilder = true)
+public record SkillsCandidate(String code, EnumLevel level, Integer experience) {
 }

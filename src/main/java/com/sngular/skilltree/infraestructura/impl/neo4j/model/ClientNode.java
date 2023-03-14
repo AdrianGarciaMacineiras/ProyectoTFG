@@ -1,24 +1,21 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.util.List;
 
-@Node
 @Getter
 @Setter
+@Node("Client")
 @NoArgsConstructor
 public class ClientNode {
 
     @Id
-    private Long id;
-
-    private @Setter(AccessLevel.PROTECTED) String code;
+    private Long code;
 
     private String name;
 
@@ -28,8 +25,11 @@ public class ClientNode {
 
     private String principalOffice;
 
-    private String HQ;
+    private String hQ;
 
-    private List<Office> offices;
+    @Relationship(type="CLIENT", direction = Relationship.Direction.INCOMING)
+    private List<OfficeNode> offices;
+
+    private boolean deleted;
 
 }

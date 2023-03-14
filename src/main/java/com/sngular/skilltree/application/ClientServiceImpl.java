@@ -1,20 +1,21 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.contract.mapper.ClientMapper;
+import com.sngular.skilltree.common.exceptions.EntityFoundException;
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.ClientRepository;
 import com.sngular.skilltree.model.Client;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService{
 
     private final ClientRepository clientRepository;
-
-    private final ClientMapper mapper;
 
     @Override
     public List<Client> getAll() {
@@ -23,34 +24,36 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public Client create(Client client) {
-        validate(client);
+        validateExist(client.code());
         return clientRepository.save(client);
     }
 
     @Override
-    public Client findByCode(String clientcode) {
-        return clientRepository.findByCode(clientcode);
+    public Client findByCode(Long clientcode) {
+        var client = clientRepository.findByCode(clientcode);
+        if (Objects.isNull(client) || client.deleted())
+            throw new EntityNotFoundException("Client", clientcode);
+        return client;
     }
 
     @Override
-    public boolean deleteBeCode(String clientcode) {
+    public boolean deleteByCode(Long clientcode) {
+        validateDoesNotExist(clientcode);
         return clientRepository.deleteByCode(clientcode);
     }
 
-    @Override
-    public Client update(String clientcode, Client newClient) {
-        var oldClient = clientRepository.findByCode(clientcode);
-        mapper.update(oldClient, newClient);
-        return clientRepository.save(oldClient);
+
+    private void validateExist(Long code) {
+        var oldClient = clientRepository.findByCode(code);
+        if (!Objects.isNull(oldClient) && !oldClient.deleted()) {
+            throw new EntityFoundException("Client", code);
+        }
     }
 
-    @Override
-    public Client patch(String clientcode, Client patchedClient) {
-        var oldClient = clientRepository.findByCode(clientcode);
-        mapper.update(oldClient, patchedClient);
-        return clientRepository.save(oldClient);
-    }
-
-    private void validate(Client client) {
+    private void validateDoesNotExist(Long code) {
+        var oldClient = clientRepository.findByCode(code);
+        if (Objects.isNull(oldClient) || oldClient.deleted()) {
+            throw new EntityNotFoundException("Client", code);
+        }
     }
 }

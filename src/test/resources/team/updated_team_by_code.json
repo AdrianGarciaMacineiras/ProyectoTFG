@@ -1,0 +1,13 @@
+{
+  "code" : "t1120",
+  "tags": ["Develop","Frontend"],
+  "name": "TeamFrontend",
+  "description": "Team description",
+  "members":
+    [
+      {
+        "position": "DIRECTOR",
+        "peopleCode": 1
+      }
+    ]
+}

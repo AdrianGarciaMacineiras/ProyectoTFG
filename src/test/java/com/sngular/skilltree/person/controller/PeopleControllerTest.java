@@ -1,75 +1,160 @@
 package com.sngular.skilltree.person.controller;
 
-import static com.sngular.skilltree.person.fixtures.PersonFixtures.PEOPLE_BY_CODE;
-import static com.sngular.skilltree.person.fixtures.PersonFixtures.PESON_BY_CODE_JSON;
-import static org.mockito.ArgumentMatchers.anyString;
+import static com.sngular.skilltree.person.fixtures.PersonFixtures.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sngular.skilltree.application.PeopleService;
+import com.sngular.skilltree.application.*;
+import com.sngular.skilltree.application.updater.PeopleUpdater;
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.contract.PeopleController;
+import com.sngular.skilltree.contract.mapper.PeopleMapper;
+import com.sngular.skilltree.contract.mapper.SkillMapper;
+import com.sngular.skilltree.model.People;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.MOCK)
-@AutoConfigureMockMvc
+@Slf4j
+@WebMvcTest(controllers = PeopleController.class)
 class PeopleControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
 
-  @MockBean
-  private PeopleService peopleService;
+  @Autowired
+  private PeopleUpdater peopleUpdater;
 
-  private ObjectMapper mapper = new ObjectMapper();
+  @Autowired
+  private PeopleService peopleService;
 
   @Test
   void getPersonByCode() throws Exception {
-    when(peopleService.findByCode(anyString())).thenReturn(PEOPLE_BY_CODE);
+    when(peopleService.findByCode(anyLong())).thenReturn(PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                            .get("/people/pc1120")
+                            .get("/people/1")
                             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(content().json(PESON_BY_CODE_JSON));
+            .andExpect(content().json(PERSON_BY_CODE_JSON));
+  }
+
+  @Test
+  void shouldGetPersonByCodeFail() throws Exception {
+    when(peopleService.findByCode(anyLong())).thenThrow(new EntityNotFoundException("People", "5"));
+    mockMvc.perform(MockMvcRequestBuilders
+                    .get("/people/5")
+                    .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
   }
 
   @Test
   void shouldDeletePersonBySuccess() throws Exception{
-    when(peopleService.deleteByCode(anyString())).thenReturn(true);
+    when(peopleService.deleteByCode(anyLong())).thenReturn(true);
     mockMvc.perform(MockMvcRequestBuilders
-                            .delete("/people/pc1120")
+                            .delete("/people/1")
                             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().is2xxSuccessful());
   }
+
   @Test
   void shouldDeletePersonFail() throws Exception{
-    when(peopleService.findByCode(anyString())).thenReturn(null);
+    when(peopleService.deleteByCode(anyLong())).thenThrow(new EntityNotFoundException("People", "1"));
     mockMvc.perform(MockMvcRequestBuilders
-                            .delete("/people/pc1120")
+                            .delete("/people/1")
                             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
   }
 
   @Test
-  void updatePerson() {
+  void updatePerson() throws Exception {
+    when(peopleUpdater.update(anyLong(),any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
+    mockMvc.perform(MockMvcRequestBuilders
+                            .put("/people/1")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .content(PERSON_BY_CODE_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(UPDATED_PERSON_BY_CODE_JSON));
   }
 
   @Test
-  void patchPerson() {
+  void addPerson() throws Exception {
+    when(peopleService.create(any(People.class))).thenReturn(PEOPLE_BY_CODE);
+    mockMvc.perform(MockMvcRequestBuilders
+                            .post("/people")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .content(PERSON_BY_CODE_JSON))
+            .andExpect(content().json(PERSON_BY_CODE_JSON));
   }
 
   @Test
-  void getPeople() {
+  void patchPerson() throws Exception {
+    when(peopleUpdater.patch(anyLong(),any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
+    mockMvc.perform(MockMvcRequestBuilders
+                            .patch("/people/1")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .content(PATCH_PERSON_BY_CODE_JSON))
+            .andExpect(content().json(PATCH_PERSON_BY_CODE_JSON));
   }
 
   @Test
-  void addPerson() {
+  void getPeople() throws Exception {
+    when(peopleService.getAll()).thenReturn(PEOPLE_LIST);
+    mockMvc.perform(MockMvcRequestBuilders
+                            .get("/people")
+                            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(content().json(LIST_PERSON_JSON));
+  }
+
+  @TestConfiguration
+  static class ControllerTestConfiguration {
+    @Bean
+    public PeopleMapper getPeopleMapper() {
+      return Mappers.getMapper(PeopleMapper.class);
+    }
+
+    @Bean
+    public SkillMapper getSkillMapper() {
+      return Mappers.getMapper(SkillMapper.class);
+    }
+
+    @MockBean
+    PeopleUpdater peopleUpdater;
+
+    @MockBean
+    SkillService skillService;
+
+    @MockBean
+    OpportunityService opportunityService;
+
+    @MockBean
+    PeopleService peopleService;
+
+    @MockBean
+    ProjectService projectService;
+
+    @MockBean
+    OfficeService officeService;
+
+    @MockBean
+    ClientService clientService;
+
+    @Bean
+    ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService,
+                                  final PeopleService peopleService, final ProjectService projectService,
+                                  final OfficeService officeService, final ClientService clientService) {
+      return new ResolveService(skillService, opportunityService, peopleService, projectService, officeService, clientService);
+    }
   }
 }

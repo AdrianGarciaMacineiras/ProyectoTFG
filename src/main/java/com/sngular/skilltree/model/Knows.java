@@ -1,4 +1,7 @@
 package com.sngular.skilltree.model;
 
-public record Knows(String code, String level) {
+import lombok.Builder;
+
+@Builder(toBuilder = true)
+public record Knows(String code, Integer experience, String level, Boolean primary) {
 }

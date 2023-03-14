@@ -1,20 +1,21 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.contract.mapper.CandidateMapper;
+import com.sngular.skilltree.common.exceptions.EntityFoundException;
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.model.Candidate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.apache.commons.collections4.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class CandidateServiceImpl implements CandidateService{
 
     private final CandidateRepository candidateRepository;
-
-    private final CandidateMapper mapper;
 
     @Override
     public List<Candidate> getAll() {
@@ -23,34 +24,37 @@ public class CandidateServiceImpl implements CandidateService{
 
     @Override
     public Candidate create(Candidate candidate) {
-        validate(candidate);
+        validateExist(candidate.code());
         return candidateRepository.save(candidate);
     }
 
     @Override
-    public Candidate findByCode(String candidatenode) {
-        return candidateRepository.findByCode(candidatenode);
+    public Candidate findByCode(String candidatecode) {
+        var candidate = candidateRepository.findByCode(candidatecode);
+        if(Objects.isNull(candidate) || candidate.deleted()){
+            throw new EntityNotFoundException("Candidate", candidatecode);
+        }
+        return candidate;
     }
 
     @Override
-    public boolean deleteBeCode(String candidatenode) {
-        return candidateRepository.deleteByCode(candidatenode);
+    public boolean deleteByCode(String candidatecode) {
+        validateDoesNotExist(candidatecode);
+        return candidateRepository.deleteByCode(candidatecode);
     }
 
-    @Override
-    public Candidate update(String candidatenode, Candidate newCandidate) {
-        var oldCandidate = candidateRepository.findByCode(candidatenode);
-        mapper.update(oldCandidate, newCandidate);
-        return candidateRepository.save(oldCandidate);
+
+    private void validateExist(String code) {
+        var oldCandidate = candidateRepository.findByCode(code);
+        if (!Objects.isNull(oldCandidate) && !oldCandidate.deleted()) {
+            throw new EntityFoundException("Candidate", code);
+        }
     }
 
-    @Override
-    public Candidate patch(String candidatecode, Candidate patchedCandidate) {
-        var oldCandidate = candidateRepository.findByCode(candidatecode);
-        mapper.update(oldCandidate, patchedCandidate);
-        return candidateRepository.save(oldCandidate);
-    }
-
-    private void validate(Candidate candidate) {
+    private void validateDoesNotExist(String code) {
+        var oldCandidate = candidateRepository.findByCode(code);
+        if (Objects.isNull(oldCandidate) && oldCandidate.deleted()) {
+            throw new EntityNotFoundException("Candidate", code);
+        }
     }
 }

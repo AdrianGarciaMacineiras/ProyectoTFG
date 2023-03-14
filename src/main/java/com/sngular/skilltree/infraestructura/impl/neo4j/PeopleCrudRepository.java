@@ -2,8 +2,17 @@ package com.sngular.skilltree.infraestructura.impl.neo4j;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.neo4j.repository.query.Query;
 
-public interface PeopleCrudRepository extends Neo4jRepository<PeopleNode, Long> {
+import java.util.List;
 
-    PeopleNode findByCode(String personcode);
+public interface PeopleCrudRepository extends Neo4jRepository<PeopleNode, Long>, CustomPeopleRepository {
+
+
+    PeopleNode findByCode(Long personcode);
+
+    @Query("MATCH(n:People{code:$personcode}) RETURN n")
+    PeopleNode findPeopleByCode(Long personcode);
+
+    List<PeopleNode> findByDeletedIsFalse();
 }

@@ -15,7 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import static com.sngular.skilltree.person.service.PersonFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,14 +32,40 @@ public class PeopleServiceTest {
 
     @BeforeEach
     void setUp(){
-        peopleService = new PeopleServiceImpl(peopleRepository, mapper);
+        peopleService = new PeopleServiceImpl(peopleRepository);
     }
 
     @Test
     @DisplayName("Testing getAll the people")
     void testGetAll(){
-        when(peopleRepository.findAll()).thenReturn(List.of(PersonFixtures.PEOPLE_BY_CODE));
+        when(peopleRepository.findAll()).thenReturn(PEOPLE_LIST);
         List<People> result = peopleService.getAll();
-        assertThat(result).containsExactly(PersonFixtures.PEOPLE_BY_CODE);
+        assertThat(result).containsExactly(PEOPLE_BY_CODE, PEOPLE2_BY_CODE);
     }
+
+    @Test
+    @DisplayName("Testing save a person")
+    void testSave(){
+        when(peopleRepository.save(PEOPLE_BY_CODE)).thenReturn(PEOPLE_BY_CODE);
+        People result = peopleService.create(PEOPLE_BY_CODE);
+        assertThat(result).isEqualTo(PEOPLE_BY_CODE);
+    }
+
+    @Test
+    @DisplayName("Testing findByCode a person")
+    void testFindByCode(){
+        when(peopleRepository.findByCode(anyLong())).thenReturn(PEOPLE_BY_CODE);
+        People result = peopleService.findByCode(1L);
+        assertThat(result).isEqualTo(PEOPLE_BY_CODE);
+    }
+
+    @Test
+    @DisplayName("Testing deleteByCode")
+    void testDeleteByCode(){
+        when(peopleRepository.deleteByCode(anyLong())).thenReturn(true);
+        when(peopleRepository.findByCode(1L)).thenReturn(PEOPLE_BY_CODE);
+        boolean result = peopleService.deleteByCode(1L);
+        assertThat(result).isTrue();
+    }
+
 }
