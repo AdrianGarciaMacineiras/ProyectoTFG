@@ -111,7 +111,6 @@ public class CandidateFixtures {
                     .code("c1120")
                     .candidate(PEOPLE_BY_CODE)
                     .opportunity(OPPORTUNITY_BY_CODE)
-                    .skills(List.of(SKILLS_CANDIDATE))
                     .deleted(false)
                     .build();
 
@@ -120,7 +119,6 @@ public class CandidateFixtures {
                     .code("c1122")
                     .candidate(PEOPLE_BY_CODE)
                     .opportunity(OPPORTUNITY_BY_CODE)
-                    .skills(List.of(SKILLS_CANDIDATE))
                     .deleted(false)
                     .build();
 

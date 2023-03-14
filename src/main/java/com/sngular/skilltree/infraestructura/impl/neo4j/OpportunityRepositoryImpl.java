@@ -67,7 +67,6 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
               .candidate(people)
               .opportunity(mapper.fromNode(crud.findOpportunity(opportunity.code())))
               .deleted(false)
-              .skills(skillsCandidateList)
               .build();
         candidateCrud.save(candidateNodeMapper.toNode(candidate));
         skillsCandidateList.clear();

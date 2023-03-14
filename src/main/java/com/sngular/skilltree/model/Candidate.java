@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder(toBuilder = true)
-public record Candidate(String code, People candidate, String status, Opportunity opportunity, List<SkillsCandidate> skills, boolean deleted) {
+public record Candidate(String code, People candidate, String status, Opportunity opportunity, boolean deleted) {
 }

@@ -116,12 +116,21 @@ public class CandidateFixtures {
                     .birthDate(date)
                     .build();
 
+    public static final People PEOPLE_BY_CODE2 =
+            People.builder()
+                    .code(2L)
+                    .name("people")
+                    .surname("surname")
+                    .employeeId("employeeId")
+                    .title(EnumTitle.SENIOR)
+                    .birthDate(date)
+                    .build();
+
     public static final Candidate CANDIDATE_BY_CODE =
             Candidate.builder()
                     .code("c1120")
                     .candidate(PEOPLE_BY_CODE)
                     .opportunity(OPPORTUNITY_BY_CODE)
-                    .skills(List.of(SKILLS_CANDIDATE))
                     .build();
 
     public static final Candidate CANDIDATE2_BY_CODE =
@@ -129,15 +138,13 @@ public class CandidateFixtures {
                     .code("c1121")
                     .candidate(PEOPLE_BY_CODE)
                     .opportunity(OPPORTUNITY_BY_CODE)
-                    .skills(List.of(SKILLS_CANDIDATE))
                     .build();
 
     public static final Candidate UPDATED_CANDIDATE_BY_CODE =
             Candidate.builder()
                     .code("c1120")
-                    .candidate(PEOPLE_BY_CODE)
+                    .candidate(PEOPLE_BY_CODE2)
                     .opportunity(OPPORTUNITY_BY_CODE)
-                    .skills(List.of(UPDATED_SKILLS_CANDIDATE))
                     .build();
 
     public static final List<Candidate> CANDIDATE_LIST = new ArrayList<Candidate>(){{

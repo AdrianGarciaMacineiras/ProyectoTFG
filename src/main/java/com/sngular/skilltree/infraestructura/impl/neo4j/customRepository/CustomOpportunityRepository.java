@@ -1,4 +1,4 @@
-package com.sngular.skilltree.infraestructura.impl.neo4j;
+package com.sngular.skilltree.infraestructura.impl.neo4j.customRepository;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.OpportunityNode;
 import org.springframework.data.neo4j.repository.query.Query;

@@ -36,9 +36,6 @@ public interface CandidateMapper {
 
         Candidate candidate = candidateBuilder
                 .code(oldCandidate.code())
-                .candidate((newCandidate.candidate() == null) ? oldCandidate.candidate() : newCandidate.candidate())
-                .skills((newCandidate.skills() == null) ? oldCandidate.skills() : newCandidate.skills())
-                .opportunity((newCandidate.opportunity() == null) ? oldCandidate.opportunity() : newCandidate.opportunity())
                 .build();
 
         return candidate;

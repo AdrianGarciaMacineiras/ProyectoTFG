@@ -17,10 +17,8 @@ import java.util.List;
 public interface CandidateNodeMapper {
 
     @InheritInverseConfiguration
-    @Mapping(target = "skills", source = "skills", qualifiedByName = {"resolveServiceNode", "mapToSkillCandidateRelationship"})
     CandidateNode toNode(Candidate candidate);
 
-    @Mapping(target = "skills", source = "skills", qualifiedByName = {"resolveServiceNode", "mapToSkillCandidate"})
     Candidate fromNode(CandidateNode candidateNode);
 
     List<Candidate> map(List<CandidateNode> all);

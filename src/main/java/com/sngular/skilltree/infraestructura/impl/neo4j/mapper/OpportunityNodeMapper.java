@@ -2,7 +2,6 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.OpportunityNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.OpportunitySkillsRelationship;
-import com.sngular.skilltree.infraestructura.impl.neo4j.projections.OpportunityProjection;
 import com.sngular.skilltree.model.Opportunity;
 import com.sngular.skilltree.model.OpportunitySkill;
 import org.mapstruct.InheritInverseConfiguration;
@@ -18,10 +17,6 @@ public interface OpportunityNodeMapper {
   @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
   OpportunityNode toNode(Opportunity opportunity);
-
-  @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
-  @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
-  Opportunity fromNode(OpportunityProjection opportunityNode);
 
   @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
