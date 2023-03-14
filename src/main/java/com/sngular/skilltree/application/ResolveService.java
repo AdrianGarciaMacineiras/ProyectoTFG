@@ -82,7 +82,7 @@ public class ResolveService {
     }
 
     @Named("resolveCodeProject")
-    public Project resolveCodeProject(final Long projectCode) {return projectService.findByCode(projectCode);}
+    public Project resolveCodeProject(final Long projectCode) {return projectService.findProject(projectCode);}
 
     @Named("resolveCodeOffice")
     public Office resolveCodeOffice(final String officeCode) {return officeService.findByCode(officeCode);}

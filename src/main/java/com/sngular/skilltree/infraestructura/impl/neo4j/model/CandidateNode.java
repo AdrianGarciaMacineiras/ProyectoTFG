@@ -20,6 +20,8 @@ public class CandidateNode {
     @Id
     private String code;
 
+    private EnumStatus status;
+
     @Relationship(type = "CANDIDATE", direction = Relationship.Direction.OUTGOING)
     private PeopleNode candidate;
 

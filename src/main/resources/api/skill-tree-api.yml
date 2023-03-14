@@ -1386,7 +1386,8 @@ components:
           items:
             $ref: "#/components/schemas/opportunitySkill"
         managedBy:
-          type: string
+          type: integer
+          format: int64
 
     patchedOpportunity:
       type: object
@@ -1418,7 +1419,8 @@ components:
           items:
             $ref: "#/components/schemas/opportunitySkill"
         managedBy:
-          type: string
+          type: integer
+          format: int64
 
     mode:
       type: string
@@ -1637,8 +1639,8 @@ components:
                 type: string
               primary:
                 type: boolean
-              avoidable:
-                type: boolean
+              experience:
+                type: integer
         work_with:
           type: array
           items: 

@@ -9,6 +9,7 @@
   "mode": "REMOTE",
   "office": "itxhq",
   "role": "Leader",
+  "managedBy": 1,
   "skills": [{
     "skill": "Spring",
     "levelReq": "MANDATORY",

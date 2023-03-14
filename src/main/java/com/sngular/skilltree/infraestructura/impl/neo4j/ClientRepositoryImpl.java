@@ -17,7 +17,7 @@ public class ClientRepositoryImpl implements ClientRepository {
     private final ClientNodeMapper mapper;
 
     @Override
-    public List<Client> findAll() { return mapper.map(crud.findAll()); }
+    public List<Client> findAll() { return mapper.map(crud.findByDeletedIsFalse()); }
 
     @Override
     public Client save(Client client) {

@@ -112,6 +112,7 @@ public class CandidateFixtures {
                     .candidate(PEOPLE_BY_CODE)
                     .opportunity(OPPORTUNITY_BY_CODE)
                     .skills(List.of(SKILLS_CANDIDATE))
+                    .deleted(false)
                     .build();
 
     public static final Candidate CANDIDATE2_BY_CODE =
@@ -120,9 +121,10 @@ public class CandidateFixtures {
                     .candidate(PEOPLE_BY_CODE)
                     .opportunity(OPPORTUNITY_BY_CODE)
                     .skills(List.of(SKILLS_CANDIDATE))
+                    .deleted(false)
                     .build();
 
-    public static final List<Candidate> CANDIDATE_LIST = new ArrayList<Candidate>(){{
+    public static final List<Candidate> CANDIDATE_LIST = new ArrayList<>(){{
         add(CANDIDATE_BY_CODE);
         add(CANDIDATE2_BY_CODE);
     }};

@@ -14,4 +14,6 @@ public interface ProjectRepository {
     boolean deleteByCode(Long projectcode);
 
     List<Project> findByDeletedIsFalse();
+
+    Project findProject(Long projectcode);
 }

@@ -18,7 +18,7 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Override
     public List<People> getAll() {
-        return peopleRepository.findByDeletedIsFalse();
+        return peopleRepository.findAll();
     }
 
     @Override

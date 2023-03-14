@@ -17,7 +17,7 @@ public class TeamRepositoryImpl implements TeamRepository {
     private final TeamNodeMapper mapper;
 
     @Override
-    public List<Team> findAll() { return mapper.map(crud.findAll()); }
+    public List<Team> findAll() { return mapper.map(crud.findByDeletedIsFalse()); }
 
     @Override
     public Team save(Team team) { return mapper.fromNode(crud.save(mapper.toNode(team))); }

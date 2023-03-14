@@ -18,7 +18,7 @@ public class TeamServiceImpl implements TeamService{
 
     @Override
     public List<Team> getAll() {
-        return teamRepository.findByDeletedIsFalse();
+        return teamRepository.findAll();
     }
 
     @Override

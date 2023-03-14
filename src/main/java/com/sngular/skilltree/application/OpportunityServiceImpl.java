@@ -2,6 +2,9 @@ package com.sngular.skilltree.application;
 
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.infraestructura.CandidateRepository;
+import com.sngular.skilltree.infraestructura.PeopleRepository;
+import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.Opportunity;
 import com.sngular.skilltree.infraestructura.OpportunityRepository;
 import java.util.List;
@@ -18,7 +21,7 @@ public class OpportunityServiceImpl implements OpportunityService {
 
   @Override
   public List<Opportunity> getAll() {
-    return opportunityRepository.findByDeletedIsFalse();
+    return opportunityRepository.findAll();
   }
 
   @Override

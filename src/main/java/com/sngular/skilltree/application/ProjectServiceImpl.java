@@ -18,7 +18,7 @@ public class ProjectServiceImpl implements ProjectService{
 
     @Override
     public List<Project> getAll() {
-        return projectRepository.findByDeletedIsFalse();
+        return projectRepository.findAll();
     }
 
     @Override
@@ -40,6 +40,13 @@ public class ProjectServiceImpl implements ProjectService{
         validateDoesNotExist(projectcode);
         return projectRepository.deleteByCode(projectcode);
     }
+
+    @Override
+    public Project findProject(Long projectcode) {
+        var project = projectRepository.findProject(projectcode);
+        if (Objects.isNull(project) || project.deleted())
+            throw new EntityNotFoundException("Project", projectcode);
+        return project;    }
 
     private void validateExist(Long code) {
         var oldProject = projectRepository.findByCode(code);

@@ -68,6 +68,16 @@ public class OpportunityFixtures {
                     .skills(List.of(SKILL_BY_CODE))
                     .build();
 
+    public static final People PEOPLE_BY_CODE =
+            People.builder()
+                    .code(1L)
+                    .name("people")
+                    .surname("surname")
+                    .employeeId("employeeId")
+                    .title(EnumTitle.SENIOR)
+                    .birthDate(date)
+                    .build();
+
     public static final OpportunitySkill OPPORTUNITY_SKILL =
             OpportunitySkill.builder()
                     .skill(SKILL_BY_CODE)
@@ -88,6 +98,7 @@ public class OpportunityFixtures {
                     .openingDate(date)
                     .priority("HIGH")
                     .project(PROJECT_BY_CODE)
+                    .managedBy(PEOPLE_BY_CODE)
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 
@@ -103,6 +114,7 @@ public class OpportunityFixtures {
                     .openingDate(date)
                     .priority("MEDIUM")
                     .project(PROJECT_BY_CODE)
+                    .managedBy(PEOPLE_BY_CODE)
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 
@@ -118,6 +130,7 @@ public class OpportunityFixtures {
                     .openingDate(date)
                     .priority("HIGH")
                     .project(PROJECT_BY_CODE)
+                    .managedBy(PEOPLE_BY_CODE)
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 

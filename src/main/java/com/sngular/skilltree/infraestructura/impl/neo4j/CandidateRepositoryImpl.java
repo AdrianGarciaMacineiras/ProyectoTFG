@@ -18,7 +18,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
     @Override
     public List<Candidate> findAll() {
-        return mapper.map(crud.findAll());
+        return mapper.map(crud.findByDeletedIsFalse());
     }
 
     @Override

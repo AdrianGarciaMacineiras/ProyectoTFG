@@ -67,6 +67,16 @@ public class OpportunityFixtures {
                     .minLevel(EnumMinLevel.HIGH)
                     .build();
 
+    public static final People PEOPLE_BY_CODE =
+            People.builder()
+                    .code(1L)
+                    .name("people")
+                    .surname("surname")
+                    .employeeId("employeeId")
+                    .title(EnumTitle.SENIOR)
+                    .birthDate(date)
+                    .build();
+
     public static final Opportunity OPPORTUNITY_BY_CODE =
             Opportunity.builder()
                     .code("itxtl1")
@@ -79,6 +89,7 @@ public class OpportunityFixtures {
                     .openingDate(date)
                     .priority("HIGH")
                     .project(PROJECT_BY_CODE)
+                    .managedBy(PEOPLE_BY_CODE)
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 
@@ -94,6 +105,7 @@ public class OpportunityFixtures {
                     .openingDate(date)
                     .priority("HIGH")
                     .project(PROJECT_BY_CODE)
+                    .managedBy(PEOPLE_BY_CODE)
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 

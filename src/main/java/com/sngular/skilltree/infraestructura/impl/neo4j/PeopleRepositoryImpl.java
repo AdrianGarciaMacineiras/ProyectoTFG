@@ -22,7 +22,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
     @Override
     public List<People> findAll() {
-        return mapper.map(crud.findAll());
+        return mapper.map(crud.findByDeletedIsFalse());
     }
 
     @Override

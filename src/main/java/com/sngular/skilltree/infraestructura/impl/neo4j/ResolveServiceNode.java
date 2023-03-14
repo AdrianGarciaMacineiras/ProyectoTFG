@@ -120,7 +120,7 @@ public class ResolveServiceNode {
         for (var skillCandidateRelationship : skillsCandidateRelationshipList) {
             var skill = SkillsCandidate.builder()
                     .code(skillCandidateRelationship.skill().getCode())
-                    .experience(Integer.parseInt(skillCandidateRelationship.experience()))
+                    .experience(skillCandidateRelationship.experience())
                     .level(skillCandidateRelationship.level()).build();
             skillsCandidateList.add(skill);
         }
@@ -133,7 +133,7 @@ public class ResolveServiceNode {
         for (var skill : skillsCandidateList) {
             var skillNode = skillCrudRepository.findSkillByCode(skill.code());
             SkillsCandidateRelationship skillsCandidateRelationship = new SkillsCandidateRelationship(null, skillNode,
-                    skill.level(), String.valueOf(skill.experience()));
+                    skill.level(), skill.experience());
             skillsCandidateRelationshipList.add(skillsCandidateRelationship);
         }
         return skillsCandidateRelationshipList;

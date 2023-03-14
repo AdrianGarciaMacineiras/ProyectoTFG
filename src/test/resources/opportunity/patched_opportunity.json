@@ -7,5 +7,6 @@
   "priority": "MEDIUM",
   "mode": "REMOTE",
   "office": "itxhq",
-  "role": "Leader"
+  "role": "Leader",
+  "managedBy": 1
 }

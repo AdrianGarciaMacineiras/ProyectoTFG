@@ -14,4 +14,6 @@ public interface ProjectService {
 
     boolean deleteByCode(final Long projectcode);
 
+    Project findProject(final Long projectcode);
+
 }

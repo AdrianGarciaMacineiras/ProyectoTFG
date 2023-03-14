@@ -18,7 +18,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 
     @Override
     public List<Project> findAll() {
-        return mapper.map(crud.findAll());
+        return mapper.map(crud.findByDeletedIsFalse());
     }
 
     @Override
@@ -43,4 +43,11 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     public List<Project> findByDeletedIsFalse() {
         return mapper.map(crud.findByDeletedIsFalse());
     }
+
+    @Override
+    public Project findProject(Long projectcode) {
+        return mapper.fromNode(crud.findProject(projectcode));
+    }
+
+
 }

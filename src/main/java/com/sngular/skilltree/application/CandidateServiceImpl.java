@@ -19,7 +19,7 @@ public class CandidateServiceImpl implements CandidateService{
 
     @Override
     public List<Candidate> getAll() {
-        return candidateRepository.findByDeletedIsFalse();
+        return candidateRepository.findAll();
     }
 
     @Override
