@@ -25,4 +25,5 @@ public class CandidateUpdaterImpl implements CandidateUpdater{
         var client = mapper.update(oldCandidate, patchedCandidate);
         return candidateRepository.save(client);
     }
+
 }

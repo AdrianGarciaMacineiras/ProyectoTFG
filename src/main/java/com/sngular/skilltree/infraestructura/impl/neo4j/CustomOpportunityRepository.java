@@ -7,4 +7,7 @@ public interface CustomOpportunityRepository {
 
     @Query("MATCH(n:Opportunity{code:$opportunitycode}) RETURN n")
     OpportunityNode findOpportunity(String opportunitycode);
+
+    @Query("MATCH(n:Opportunity{code:opportunitycode}-[r]-(p:Candidate) DETACH DELETE n,p")
+    void detachDelete(String opportunitycode);
 }
