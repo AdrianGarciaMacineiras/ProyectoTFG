@@ -4,5 +4,5 @@ import com.sngular.skilltree.model.EnumLevel;
 import org.springframework.data.neo4j.core.schema.*;
 
 @RelationshipProperties
-public record KnowsRelationship(@RelationshipId Long id, Integer experience, EnumLevel level, String primary, @TargetNode SkillNode skillNode) {
+public record KnowsRelationship(@RelationshipId Long id, Integer experience, EnumLevel level, Boolean primary, @TargetNode SkillNode skillNode) {
 };

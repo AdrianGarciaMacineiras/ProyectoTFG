@@ -2,7 +2,6 @@ package com.sngular.skilltree.infraestructura.impl.neo4j;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.CandidateNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.CandidateNode;
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.EnumMinLevel;
 import com.sngular.skilltree.model.Opportunity;
@@ -40,38 +39,43 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
 
   @Override
   public Opportunity save(Opportunity opportunity) {
-    var opportunityNode = crud.save(mapper.toNode(opportunity));
-    List<PeopleNode> peopleNodeList = new ArrayList<>();
+    List<PeopleNode> peopleNodeList;
     List<SkillsCandidate> skillsCandidateList = new ArrayList<>();
     List<String> skillList = new ArrayList<>();
+    List<Candidate> candidateList = new ArrayList<>();
+    List<String> levelList = new ArrayList<>();
     for (var opportunitySkill : opportunity.skills()){
+      if (opportunitySkill.minLevel().equals(EnumMinLevel.LOW)){
+        levelList.add("LOW");
+        levelList.add("MEDIUM");
+        levelList.add("HIGH");
+      } else {
+        if (opportunitySkill.minLevel().equals(EnumMinLevel.MEDIUM)){
+          levelList.add("MEDIUM");
+          levelList.add("HIGH");
+        } else {
+          levelList.add("HIGH");
+        }
+      }
       if(!skillList.contains(opportunitySkill.skill().code()))
         skillList.add(opportunitySkill.skill().code());
     }
 
-    peopleNodeList = peopleCrud.findCandidatesSkillList(skillList);
-
+    peopleNodeList = peopleCrud.findCandidatesSkillList(skillList,levelList);
+    levelList.clear();
     for (var peopleNode : peopleNodeList){
-        for (var knows : peopleNode.getKnows()){
-          SkillsCandidate skillsCandidate = SkillsCandidate.builder()
-                  .level(knows.level())
-                  .experience(knows.experience())
-                  .code(knows.skillNode().getCode())
-                  .build();
-          skillsCandidateList.add(skillsCandidate);
-        }
         peopleNode.getKnows().clear();
         var people = peopleNodeMapper.fromNode(peopleNode);
         Candidate candidate = Candidate.builder()
-              .code(opportunityNode.getCode()+ "-" + peopleNode.getEmployeeId())
+              .code(opportunity.code()+ "-" + peopleNode.getEmployeeId())
               .candidate(people)
-              .opportunity(mapper.fromNode(crud.findOpportunity(opportunity.code())))
-              .deleted(false)
+              .opportunity(opportunity)
               .build();
-        candidateCrud.save(candidateNodeMapper.toNode(candidate));
+        candidateList.add(candidate);
         skillsCandidateList.clear();
     }
-    return mapper.fromNode(opportunityNode);
+    opportunity.candidates().addAll(candidateList);
+    return mapper.fromNode(crud.save(mapper.toNode(opportunity)));
   }
 
   @Override

@@ -13,5 +13,7 @@ public interface CandidateRepository {
 
     boolean deleteByCode(String candidatecode);
 
-    List<Candidate> findByDeletedIsFalse();
+    List<Candidate> findAllCandidates();
+
+    //List<Candidate> findByDeletedIsFalse();
 }

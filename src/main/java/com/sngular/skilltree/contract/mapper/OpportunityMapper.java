@@ -1,5 +1,6 @@
 package com.sngular.skilltree.contract.mapper;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -9,11 +10,11 @@ import com.sngular.skilltree.api.model.PatchedOpportunityDTO;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.model.Opportunity;
 import com.sngular.skilltree.model.OpportunitySkill;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
+import org.springframework.data.neo4j.core.schema.TargetNode;
 
-@Mapper(uses = {ClientMapper.class, SkillMapper.class, ResolveService.class, PeopleMapper.class, ProjectMapper.class, OfficeMapper.class}, componentModel = "spring")
+@Mapper(uses = {ClientMapper.class, SkillMapper.class, ResolveService.class, PeopleMapper.class, ProjectMapper.class,
+        OfficeMapper.class, CandidateMapper.class}, componentModel = "spring")
 public interface OpportunityMapper {
 
      @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")

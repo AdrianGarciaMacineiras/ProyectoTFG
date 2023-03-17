@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CandidateUpdaterImpl implements CandidateUpdater{
+
     private final CandidateRepository candidateRepository;
 
     private final CandidateMapper mapper;

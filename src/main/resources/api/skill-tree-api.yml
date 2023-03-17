@@ -1388,6 +1388,10 @@ components:
         managedBy:
           type: integer
           format: int64
+        candidates:
+          type: array
+          items:
+            $ref: "#/components/schemas/candidate"
 
     patchedOpportunity:
       type: object
@@ -1501,7 +1505,6 @@ components:
       required:
         - code
         - candidateCode
-        - opportunityCode
         - skills
       properties:
         code:
@@ -1566,6 +1569,8 @@ components:
         experience:
           type: integer
           format: int32
+        primary:
+          type: boolean
 
     opportunitySkill:
       type: object
@@ -1637,10 +1642,16 @@ components:
                 type: string
               level:
                 type: string
-              primary:
-                type: boolean
+                enum:
+                  - HIGH
+                  - MEDIUM
+                  - CONFIDENT
+                  - LOW
               experience:
                 type: integer
+                format: int32
+              primary:
+                type: boolean
         work_with:
           type: array
           items: 
@@ -1704,9 +1715,15 @@ components:
                 type: string
               level:
                 type: string
+                enum:
+                  - HIGH
+                  - MEDIUM
+                  - CONFIDENT
+                  - LOW
+              experience:
+                type: integer
+                format: int32
               primary:
-                type: boolean
-              avoidable:
                 type: boolean
         work_with:
           type: array

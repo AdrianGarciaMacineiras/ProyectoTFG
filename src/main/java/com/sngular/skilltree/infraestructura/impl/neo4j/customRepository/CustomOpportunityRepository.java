@@ -5,6 +5,7 @@ import org.springframework.data.neo4j.repository.query.Query;
 
 public interface CustomOpportunityRepository {
 
-    @Query("MATCH(n:Opportunity{code:$opportunitycode}) RETURN n")
-    OpportunityNode findOpportunity(String opportunitycode);
+    @Query("MATCH(n:Opportunity{code:$opportunityCode}) RETURN n")
+    OpportunityNode findOpportunity(String opportunityCode);
+
 }

@@ -10,7 +10,8 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {SkillNodeMapper.class, PeopleNodeMapper.class, OfficeNodeMapper.class, ProjectNodeMapper.class})
+@Mapper(componentModel = "spring", uses = {SkillNodeMapper.class, PeopleNodeMapper.class, OfficeNodeMapper.class,
+        ProjectNodeMapper.class, CandidateNodeMapper.class})
 public interface OpportunityNodeMapper {
 
   @InheritInverseConfiguration

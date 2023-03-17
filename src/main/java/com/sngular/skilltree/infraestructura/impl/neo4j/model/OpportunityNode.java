@@ -44,6 +44,9 @@ public class OpportunityNode {
     @Relationship(type="NEEDS", direction = Relationship.Direction.OUTGOING)
     private List<OpportunitySkillsRelationship> skills;
 
+    @Relationship(type = "CANDIDATE", direction = Relationship.Direction.OUTGOING)
+    private List<CandidateRelationship> candidates;
+
     private boolean deleted;
 
 }

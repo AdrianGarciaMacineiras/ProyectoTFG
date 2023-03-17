@@ -44,6 +44,8 @@ public interface PeopleNodeMapper {
     @Mapping(target = "code", source = "skillNode.code")
     Knows knowsRelationshipToKnows(KnowsRelationship knowsRelationship);
 
+    List<Knows> knowsRelationshipListToKnowsList(List<KnowsRelationship> list);
+
     @Mapping(target = "skillNode", source = "code", qualifiedByName={"resolveServiceNode", "resolveCodeToSkillNode"})
     KnowsRelationship knowsToKnowsRelationship(Knows knows);
 

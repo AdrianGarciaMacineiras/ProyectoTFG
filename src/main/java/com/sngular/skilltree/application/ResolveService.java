@@ -90,5 +90,4 @@ public class ResolveService {
     @Named("resolveCodeClient")
     public Client resolveCodeClient(final Long clientCode){return clientService.findByCode(clientCode);}
 
-
 }

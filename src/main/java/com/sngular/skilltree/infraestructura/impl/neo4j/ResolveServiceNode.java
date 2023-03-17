@@ -25,8 +25,6 @@ public class ResolveServiceNode {
 
     private final ProjectCrudRepository projectCrudRepository;
 
-    private final TeamCrudRepository teamCrudRepository;
-
     @Named("resolveCodeToOfficeNode")
     public OfficeNode resolveCodeOfficeNode(final String code) {
         return officeCrudRepository.findByCode(code);
@@ -138,6 +136,5 @@ public class ResolveServiceNode {
         }
         return skillsCandidateRelationshipList;
     }
-
 
 }

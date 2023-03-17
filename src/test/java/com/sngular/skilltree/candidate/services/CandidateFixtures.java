@@ -111,7 +111,7 @@ public class CandidateFixtures {
                     .code("c1120")
                     .candidate(PEOPLE_BY_CODE)
                     .opportunity(OPPORTUNITY_BY_CODE)
-                    .deleted(false)
+                    //.deleted(false)
                     .build();
 
     public static final Candidate CANDIDATE2_BY_CODE =
@@ -119,7 +119,7 @@ public class CandidateFixtures {
                     .code("c1122")
                     .candidate(PEOPLE_BY_CODE)
                     .opportunity(OPPORTUNITY_BY_CODE)
-                    .deleted(false)
+                    //.deleted(false)
                     .build();
 
     public static final List<Candidate> CANDIDATE_LIST = new ArrayList<>(){{
