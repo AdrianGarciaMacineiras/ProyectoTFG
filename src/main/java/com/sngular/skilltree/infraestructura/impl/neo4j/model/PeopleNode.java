@@ -1,5 +1,6 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
+import com.sngular.skilltree.model.EnumTitle;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,18 +1,12 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
-import com.sngular.skilltree.contract.mapper.OpportunityMapper;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.customRepository.CandidateRelationshipProjection;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.CandidateNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.OpportunityNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.CandidateRelationship;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
 import com.sngular.skilltree.model.*;
 import lombok.RequiredArgsConstructor;
-import org.neo4j.driver.AuthTokens;
-import org.neo4j.driver.Driver;
-import org.neo4j.driver.GraphDatabase;
 import org.neo4j.driver.types.TypeSystem;
 import org.neo4j.driver.Record;
 import org.springframework.stereotype.Repository;
@@ -135,8 +129,4 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         return new ArrayList<>(knowsMap.values());
     }
 
-//    @Override
-//    public List<Candidate> findByDeletedIsFalse() {
-//        return mapper.map(crud.findByDeletedIsFalse());
-//    }
 }

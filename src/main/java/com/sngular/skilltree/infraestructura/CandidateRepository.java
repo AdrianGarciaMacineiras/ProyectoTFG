@@ -15,5 +15,4 @@ public interface CandidateRepository {
 
     List<Candidate> findAllCandidates();
 
-    //List<Candidate> findByDeletedIsFalse();
 }
