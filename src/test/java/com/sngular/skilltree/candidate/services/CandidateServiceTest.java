@@ -36,14 +36,6 @@ public class CandidateServiceTest {
     void setUp() {candidateService = new CandidateServiceImpl(candidateRepository);}
 
     @Test
-    @DisplayName("Testing save a candidate")
-    void testSave(){
-        when(candidateRepository.save(CANDIDATE_BY_CODE)).thenReturn(CANDIDATE_BY_CODE);
-        Candidate result = candidateService.create(CANDIDATE_BY_CODE);
-        assertThat(result).isEqualTo(CANDIDATE_BY_CODE);
-    }
-
-    @Test
     @DisplayName("Testing getAll the candidates")
     void testGetAll(){
         when(candidateRepository.findAll()).thenReturn(CANDIDATE_LIST);

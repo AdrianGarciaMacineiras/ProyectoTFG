@@ -27,7 +27,9 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
     @Override
     public People save(People people) {
-        return mapper.fromNode(crud.save(mapper.toNode(people)));
+        var peopleNode = mapper.toNode(people);
+        peopleNode.setAssignable(false);
+        return mapper.fromNode(crud.save(peopleNode));
     }
 
     @Override

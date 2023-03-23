@@ -678,36 +678,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-    post:
-      summary: Adds a new candidate
-      description: Adds a new candidate
-      operationId: addCandidate
-      tags:
-        - candidate
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/candidate"
-      responses:
-        '201':
-          description: A candidate has been added
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/candidate"
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '500':
-          description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-
   /candidate/{candidatecode}:
     get:
       summary: Gets a candidate by the code
@@ -1515,9 +1485,12 @@ components:
         resolutionDate:
           type: string
           format: date
+        creationDate:
+          type: string
+          format: date
         status:
           type: string
-          enum: [INTERVIEWED, PRESENTED, OK, KO]
+          enum: [ASSIGNED, INTERVIEWED, PRESENTED, OK, KO]
         candidateCode:
           type: integer
           format: int64
@@ -1537,9 +1510,12 @@ components:
         resolutionDate:
           type: string
           format: date
+        creationDate:
+          type: string
+          format: date
         status:
           type: string
-          enum: [ INTERVIEWED, PRESENTED, OK, KO ]
+          enum: [ASSIGNED, INTERVIEWED, PRESENTED, OK, KO ]
         candidateCode:
           type: integer
           format: int64

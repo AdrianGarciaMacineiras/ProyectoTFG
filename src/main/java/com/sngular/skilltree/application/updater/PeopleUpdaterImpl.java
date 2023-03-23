@@ -1,19 +1,13 @@
 package com.sngular.skilltree.application.updater;
 
-import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.ParticipateRelationship;
-import com.sngular.skilltree.model.Participate;
 import com.sngular.skilltree.model.People;
-import com.sngular.skilltree.model.Roles;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Service

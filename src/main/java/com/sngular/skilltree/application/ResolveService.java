@@ -1,6 +1,5 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.OfficeNodeMapper;
 import com.sngular.skilltree.model.*;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;

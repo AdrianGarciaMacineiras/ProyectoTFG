@@ -1,12 +1,14 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
 
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.model.Project;
 import com.sngular.skilltree.infraestructura.ProjectRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.ProjectNodeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,7 +25,12 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 
     @Override
     public Project save(Project project) {
-        return mapper.fromNode(crud.save(mapper.toNode(project)));
+        var projectNode = mapper.toNode(project);
+        if (Objects.isNull(projectNode.getClient()) || projectNode.getClient().isDeleted()) {
+            throw new EntityNotFoundException("Client", projectNode.getClient().getCode());
+        }
+
+        return mapper.fromNode(crud.save(projectNode));
     }
 
     @Override

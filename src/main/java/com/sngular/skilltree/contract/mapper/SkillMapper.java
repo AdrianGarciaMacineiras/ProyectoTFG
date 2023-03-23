@@ -3,7 +3,6 @@ package com.sngular.skilltree.contract.mapper;
 import com.sngular.skilltree.api.model.SkillDTO;
 import com.sngular.skilltree.model.Skill;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,10 +18,4 @@ public interface SkillMapper {
     List<SkillDTO> toSkillsDTO (Collection<Skill> skills);
 
     List<Skill> toSkills (Collection<SkillDTO> skills);
-
-    default String skillToCode(Skill skill) {
-        return Objects.isNull(skill) ? "" : skill.code();
-    }
-
-
 }

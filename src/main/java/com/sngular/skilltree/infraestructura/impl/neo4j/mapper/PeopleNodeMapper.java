@@ -1,18 +1,13 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
-import com.sngular.skilltree.infraestructura.ProjectRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.ProjectCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveServiceNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.Role;
 import com.sngular.skilltree.model.*;
-import com.sngular.skilltree.model.Roles;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Mapper(componentModel = "spring", uses = {ResolveServiceNode.class, SkillNodeMapper.class})

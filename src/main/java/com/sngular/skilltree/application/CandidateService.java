@@ -8,8 +8,6 @@ public interface CandidateService {
 
     List<Candidate> getAll();
 
-    Candidate create(final Candidate candidate);
-
     Candidate findByCode(final String candidatecode);
 
     boolean deleteByCode(final String candidatecode);

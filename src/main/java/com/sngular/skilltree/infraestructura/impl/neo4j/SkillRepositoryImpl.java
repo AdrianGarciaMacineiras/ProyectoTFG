@@ -22,7 +22,7 @@ public class SkillRepositoryImpl implements SkillRepository {
     @Override
     public List<Skill> findAll() {
         var skillNodeList = crud.findAll();
-        List<Skill> subSkills = new ArrayList<>();
+        List<Skill> subSkills;
         List<Skill> skills = new ArrayList<>();
         for(SkillNode skillNode: skillNodeList){
             subSkills = new ArrayList<>();

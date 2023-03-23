@@ -23,38 +23,24 @@ public class CandidateServiceImpl implements CandidateService{
     }
 
     @Override
-    public Candidate create(Candidate candidate) {
-        //validateExist(candidate.code());
-        return candidateRepository.save(candidate);
-    }
-
-    @Override
     public Candidate findByCode(String candidatecode) {
         var candidate = candidateRepository.findByCode(candidatecode);
-        /*if(Objects.isNull(candidate) || candidate.deleted()){
+        if(Objects.isNull(candidate)){
             throw new EntityNotFoundException("Candidate", candidatecode);
-        }*/
+        }
         return candidate;
     }
 
     @Override
     public boolean deleteByCode(String candidatecode) {
-        //validateDoesNotExist(candidatecode);
+        validateDoesNotExist(candidatecode);
         return candidateRepository.deleteByCode(candidatecode);
-    }
-
-
-    /*private void validateExist(String code) {
-        var oldCandidate = candidateRepository.findByCode(code);
-        if (!Objects.isNull(oldCandidate) && !oldCandidate.deleted()) {
-            throw new EntityFoundException("Candidate", code);
-        }
     }
 
     private void validateDoesNotExist(String code) {
         var oldCandidate = candidateRepository.findByCode(code);
-        if (Objects.isNull(oldCandidate) && oldCandidate.deleted()) {
+        if (Objects.isNull(oldCandidate)) {
             throw new EntityNotFoundException("Candidate", code);
         }
-    }*/
+    }
 }

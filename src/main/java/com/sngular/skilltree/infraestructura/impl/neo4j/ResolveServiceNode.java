@@ -25,33 +25,11 @@ public class ResolveServiceNode {
 
     private final ProjectCrudRepository projectCrudRepository;
 
-    @Named("resolveCodeToOfficeNode")
-    public OfficeNode resolveCodeOfficeNode(final String code) {
-        return officeCrudRepository.findByCode(code);
-    }
-
-    @Named("resolveCodeOfficeNodeList")
-    public List<OfficeNode> resolveCodeOfficeNode(final List<String> codeList) {
-        final var officeNodeList = new ArrayList<OfficeNode>();
-        if (codeList != null) {
-            for (var code : codeList) {
-                officeNodeList.add(resolveCodeOfficeNode(code));
-            }
-        }
-        return officeNodeList;
-    }
-
-    @Named("resolveCodeToPeopleNode")
-    public PeopleNode resolveCodePeopleNode(final Long code) {
-        return peopleCrudRepository.findByCode(code);
-    }
-
     @Named("resolveCodeToSkillNode")
     public SkillNode resolveCodeToSkillNode(final String code) {
         var skillNode = skillCrudRepository.findSkillByCode(code);
         skillCrudRepository.deleteRequire(code);
         return skillNode;
-        //return skillCrudRepository.findSkillByCode(code);
     }
 
     @Named("mapToParticipate")

@@ -1,6 +1,5 @@
 package com.sngular.skilltree.contract.mapper;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.model.Opportunity;
 import com.sngular.skilltree.model.OpportunitySkill;
 import org.mapstruct.*;
-import org.springframework.data.neo4j.core.schema.TargetNode;
 
 @Mapper(uses = {ClientMapper.class, SkillMapper.class, ResolveService.class, PeopleMapper.class, ProjectMapper.class,
         OfficeMapper.class, CandidateMapper.class}, componentModel = "spring")

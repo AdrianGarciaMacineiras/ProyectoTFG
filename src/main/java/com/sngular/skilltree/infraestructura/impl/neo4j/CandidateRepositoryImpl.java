@@ -84,33 +84,9 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                 .fetchAs(Candidate.class)
                 .mappedBy((TypeSystem t, Record record) -> {
 
-                        var knows = Knows.builder()
-                                .code(record.get("k.name").asString())
-                                .experience(record.get("s").get("experience").asInt())
-                                .level(record.get("s").get("level").asString())
-                                .primary(record.get("s").get("primary").asBoolean())
-                                .build();
+                    Candidate.CandidateBuilder candidateBuilder = getCandidateBuilder(record);
 
-                            var candidateBuilder = Candidate.builder();
-                            candidateBuilder.code(record.get("r.code").asString());
-                            candidateBuilder.status((record.get("r.status").asString().equalsIgnoreCase("null")) ? EnumStatus.KO : EnumStatus.valueOf(record.get("r.status").asString()));
-                            candidateBuilder.introductionDate((record.get("r.introductionDate").asString() == "null") ? null : record.get("r.introductionDate").asLocalDate());
-                            candidateBuilder.resolutionDate((record.get("r.resolutionDate").asString() == "null") ? null : record.get("r.resolutionDate").asLocalDate());
-
-                            var peopleBuilder = People.builder()
-                                    .name(record.get("p").get("name").asString())
-                                    .surname(record.get("p").get("surname").asString())
-                                    .employeeId(record.get("p").get("employeeId").asString())
-                                    .birthDate(record.get("p").get("birthDate").asLocalDate())
-                                    .code(record.get("p").get("code").asLong())
-                                    .deleted(record.get("p").get("deleted").asBoolean())
-                                    .build();
-
-                            candidateBuilder.candidate(peopleBuilder);
-                            candidateBuilder.skills(List.of(knows));
-                            candidateBuilder.opportunity(opportunityNodeMapper.fromNode(opportunityCrudRepository.findOpportunity(record.get("n.code").asString())));
-
-                        return candidateBuilder.build();
+                    return candidateBuilder.build();
                 })
                 .all());
 
@@ -127,6 +103,43 @@ public class CandidateRepositoryImpl implements CandidateRepository {
             })
         );
         return new ArrayList<>(knowsMap.values());
+    }
+
+    private Candidate.CandidateBuilder getCandidateBuilder(Record record) {
+        Knows knows = getKnows(record);
+
+        var candidateBuilder = Candidate.builder();
+        candidateBuilder.code(record.get("r.code").asString());
+        candidateBuilder.status((record.get("r.status").asString().equalsIgnoreCase("null")) ? EnumStatus.KO : EnumStatus.valueOf(record.get("r.status").asString()));
+        candidateBuilder.introductionDate((record.get("r.introductionDate").asString() == "null") ? null : record.get("r.introductionDate").asLocalDate());
+        candidateBuilder.resolutionDate((record.get("r.resolutionDate").asString() == "null") ? null : record.get("r.resolutionDate").asLocalDate());
+
+        People peopleBuilder = getPeople(record);
+
+        candidateBuilder.candidate(peopleBuilder);
+        candidateBuilder.skills(List.of(knows));
+        candidateBuilder.opportunity(opportunityNodeMapper.fromNode(opportunityCrudRepository.findOpportunity(record.get("n.code").asString())));
+        return candidateBuilder;
+    }
+
+    private static People getPeople(Record record) {
+        return People.builder()
+                .name(record.get("p").get("name").asString())
+                .surname(record.get("p").get("surname").asString())
+                .employeeId(record.get("p").get("employeeId").asString())
+                .birthDate(record.get("p").get("birthDate").asLocalDate())
+                .code(record.get("p").get("code").asLong())
+                .deleted(record.get("p").get("deleted").asBoolean())
+                .build();
+    }
+
+    private static Knows getKnows(Record record) {
+        return Knows.builder()
+                .code(record.get("k.name").asString())
+                .experience(record.get("s").get("experience").asInt())
+                .level(record.get("s").get("level").asString())
+                .primary(record.get("s").get("primary").asBoolean())
+                .build();
     }
 
 }

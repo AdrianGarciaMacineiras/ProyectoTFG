@@ -1,14 +1,11 @@
 package com.sngular.skilltree.contract.mapper;
 
-
 import com.sngular.skilltree.api.model.PatchedProjectDTO;
 import com.sngular.skilltree.api.model.ProjectDTO;
 import com.sngular.skilltree.application.ResolveService;
-import com.sngular.skilltree.model.Opportunity;
 import com.sngular.skilltree.model.Project;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 import java.util.Collection;

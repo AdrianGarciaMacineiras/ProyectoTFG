@@ -1,18 +1,16 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.model.*;
 import com.sngular.skilltree.infraestructura.OpportunityRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.OpportunityNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -27,9 +25,6 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
 
   private final OpportunityNodeMapper mapper;
 
-  private final Neo4jClient client;
-
-
   @Override
   public List<Opportunity> findAll() {
     return mapper.map(crud.findByDeletedIsFalse());
@@ -37,12 +32,25 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
 
   @Override
   public Opportunity save(Opportunity opportunity) {
+
     List<PeopleNode> peopleNodeList = new ArrayList<>();
     List<Long> codeList = new ArrayList<>();
     boolean acceptCandidate = false;
-    List<SkillsCandidate> skillsCandidateList = new ArrayList<>();
     List<Candidate> candidateList = new ArrayList<>();
     List<String> levelList = new ArrayList<>();
+
+    var opportunityNode = crud.findByCode(opportunity.code());
+    if (Objects.isNull(opportunityNode.getClient()) || opportunityNode.getClient().isDeleted()) {
+      throw new EntityNotFoundException("Client", opportunityNode.getClient().getCode());
+    }
+
+    if (Objects.isNull(opportunityNode.getProject()) || opportunityNode.getProject().isDeleted()) {
+      throw new EntityNotFoundException("Project", opportunityNode.getProject().getCode());
+    }
+
+    if (Objects.isNull(opportunityNode.getOffice()) || opportunityNode.getOffice().isDeleted()) {
+      throw new EntityNotFoundException("Office", opportunityNode.getOffice().getCode());
+    }
 
     for (var opportunitySkill : opportunity.skills()){
       if (opportunitySkill.minLevel().equals(EnumMinLevel.LOW)){
@@ -61,10 +69,8 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
       //Busco aquellos People que tienen conocimientos en la skill y filtro por el nivel, pero solo recupero su codigo
       codeList.addAll(peopleCrud.findCandidatesSkillList(opportunitySkill.skill().code(), levelList));
       levelList.clear();
-
-//      if(!skillList.contains(opportunitySkill.skill().code()))
-//        skillList.add(opportunitySkill.skill().code());
     }
+
     //Limpio los repetidos de la lista
     Set<Long> set = new HashSet<>(codeList);
     codeList.clear();
@@ -99,6 +105,7 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
     }
 
     for (var peopleNode : peopleNodeList) {
+
       //Vacio las relaciones para que no se me dupliquen
       peopleNode.getKnows().clear();
       peopleNode.getParticipate().clear();
@@ -106,21 +113,23 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
       peopleNode.getMaster().clear();
       peopleNode.getInterest().clear();
       peopleNode.getWork_with().clear();
+
       //Lo paso de peopleNode a People
       var people = peopleNodeMapper.fromNode(peopleNode);
-      //Creo el objeto candidato, me falta saber que meter en los campos:
-      //  - status
-      //  - introductionDate
-      //  - resulutionDate
+
+      //Creo el objeto candidato
       Candidate candidate = Candidate.builder()
               .code(opportunity.code()+ "-" + peopleNode.getEmployeeId())
               .candidate(people)
               .opportunity(opportunity)
+              .status(EnumStatus.ASSIGNED)
+              .creationDate(LocalDate.now())
               .build();
+
       //Lo meto en la lista de candidatos
       candidateList.add(candidate);
-        //skillsCandidateList.clear();
     }
+
     //Meto la lista de candidatos en la oportunidad y la creo
     opportunity.candidates().addAll(candidateList);
     return mapper.fromNode(crud.save(mapper.toNode(opportunity)));
@@ -136,7 +145,6 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
     var node = crud.findByCode(opportunitycode);
     node.setDeleted(true);
     crud.save(node);
-    //crud.delete(node);
     return true;
   }
 

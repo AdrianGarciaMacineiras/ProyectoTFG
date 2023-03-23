@@ -1,5 +1,6 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
+import com.sngular.skilltree.model.EnumGuards;
 import lombok.*;
 import org.springframework.data.neo4j.core.schema.*;
 

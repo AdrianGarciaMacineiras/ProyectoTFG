@@ -86,19 +86,6 @@ class CandidateControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(UPDATED_CANDIDATE_BY_CODE_JSON));
     }
-
-    @Test
-    void addCandidate() throws Exception {
-        when(candidateService.create(any(Candidate.class))).thenReturn(CANDIDATE_BY_CODE);
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/candidate")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(CANDIDATE_BY_CODE_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(CANDIDATE_BY_CODE_JSON));
-    }
-
     @Test
     void patchCandidate() throws Exception{
         when(candidateUpdater.patch(anyString(),any(Candidate.class))).thenReturn(UPDATED_CANDIDATE_BY_CODE);

@@ -4,7 +4,6 @@ import com.sngular.skilltree.api.model.MembersDTO;
 import com.sngular.skilltree.api.model.PatchedTeamDTO;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.model.Member;
-import com.sngular.skilltree.model.Opportunity;
 import com.sngular.skilltree.model.Team;
 import com.sngular.skilltree.api.model.TeamDTO;
 import org.mapstruct.*;

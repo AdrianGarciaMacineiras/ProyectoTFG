@@ -7,5 +7,5 @@ import java.time.LocalDate;
 
 @RelationshipProperties
 public record CandidateRelationship(@RelationshipId Long id, String code, EnumStatus status, LocalDate introductionDate,
-                                    LocalDate resolutionDate, @TargetNode PeopleNode candidate) {
+                                    LocalDate resolutionDate, LocalDate creationDate, @TargetNode PeopleNode candidate) {
 }
