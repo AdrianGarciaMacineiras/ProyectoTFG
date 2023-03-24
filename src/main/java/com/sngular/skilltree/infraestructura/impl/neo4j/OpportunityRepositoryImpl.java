@@ -1,5 +1,7 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
+import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
+
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.model.*;
@@ -11,6 +13,8 @@ import java.time.LocalDate;
 import java.util.*;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.neo4j.core.Neo4jClient;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -25,6 +29,8 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
 
   private final OpportunityNodeMapper mapper;
 
+  private final Neo4jClient client;
+
   @Override
   public List<Opportunity> findAll() {
     return mapper.map(crud.findByDeletedIsFalse());
@@ -33,11 +39,8 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
   @Override
   public Opportunity save(Opportunity opportunity) {
 
-    List<PeopleNode> peopleNodeList = new ArrayList<>();
     List<Long> codeList = new ArrayList<>();
     boolean acceptCandidate = false;
-    List<Candidate> candidateList = new ArrayList<>();
-    List<String> levelList = new ArrayList<>();
 
     var opportunityNode = crud.findByCode(opportunity.code());
     if (Objects.isNull(opportunityNode.getClient()) || opportunityNode.getClient().isDeleted()) {
@@ -51,27 +54,54 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
     if (Objects.isNull(opportunityNode.getOffice()) || opportunityNode.getOffice().isDeleted()) {
       throw new EntityNotFoundException("Office", opportunityNode.getOffice().getCode());
     }
+    List<Pair<String, List<String>>> skillLevelList = new ArrayList<>();
 
     for (var opportunitySkill : opportunity.skills()){
-      if (opportunitySkill.minLevel().equals(EnumMinLevel.LOW)){
-        levelList.add("LOW");
-        levelList.add("MEDIUM");
-        levelList.add("HIGH");
-      } else {
-        if (opportunitySkill.minLevel().equals(EnumMinLevel.MEDIUM)){
+      var levelList = new ArrayList<String>();
+      if (MANDATORY.equals(opportunitySkill.levelReq())) {
+        if (opportunitySkill.minLevel().equals(EnumMinLevel.LOW)) {
+          levelList.add("LOW");
           levelList.add("MEDIUM");
           levelList.add("HIGH");
         } else {
-          levelList.add("HIGH");
+          if (opportunitySkill.minLevel().equals(EnumMinLevel.MEDIUM)) {
+            levelList.add("MEDIUM");
+            levelList.add("HIGH");
+          } else {
+            levelList.add("HIGH");
+          }
         }
+        skillLevelList.add(Pair.of(opportunitySkill.skill().code(), levelList));
       }
+    }
+    /**
+     * MATCH (p:People)-[r:knows]->(s:Skill)
+     * WHERE s.code IN ['code1', 'code2', 'code3', ..., 'codeN']
+     * WITH p, COLLECT(DISTINCT {code:s.code, level:r.level}) AS skills
+     * WHERE ALL(skill IN [{code:'code1', level:1}, {code:'code2', level:2}, {code:'code3', level:3}, ..., {code:'codeN', level:N}]
+     *       WHERE skill IN skills)
+     * RETURN p
+     */
 
-      //Busco aquellos People que tienen conocimientos en la skill y filtro por el nivel, pero solo recupero su codigo
-      codeList.addAll(peopleCrud.findCandidatesSkillList(opportunitySkill.skill().code(), levelList));
-      levelList.clear();
+    /**
+     *MATCH (p:People)-[r:knows]->(s:Skill)
+     * WHERE ALL(pair IN [{skillcode:'code1', knowslevel:['level1','level2','level3']},{skillcode:'code2', knowslevel:['level4']},....,{skillcode:'codeN', knowslevel:['level5',
+     'level6']}]
+     *           WHERE pair.skillcode = s.Code AND pair.knowslevel = r.Level)
+     * RETURN p
+     */
+    var filter = new StringBuilder();
+    for (var skilllevel : skillLevelList) {
+      filter.append(String.format("{skillcode:'%s', knowslevel:[%s]}), ", skilllevel.getFirst(), String.join(",", skilllevel.getSecond())));
     }
 
-    //Limpio los repetidos de la lista
+    var query = String.format("MATCH (p:People)-[r:knows]->(s:Skill) WHERE ALL(pair IN [%s] " +
+                "WHERE pair.skillcode = s.Code AND r.Level in pair.knowslevel) RETURN p,r,s", filter);
+
+    var peopleNodeList = client.query(query).fetchAs(PeopleNode.class).all();
+  //  codeList.addAll(peopleCrud.findCandidatesSkillList(opportunitySkill.skill().code(), levelList));
+
+  /*  //Limpio los repetidos de la lista
     Set<Long> set = new HashSet<>(codeList);
     codeList.clear();
     codeList.addAll(set);
@@ -81,7 +111,7 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
       var peopleNode = peopleCrud.findByCode(code);
       for (var skill : opportunity.skills()) {
         //Filtrar por MANDATORY
-        if (skill.levelReq().equals(EnumLevelReq.MANDATORY)) {
+        if (skill.levelReq().equals(MANDATORY)) {
           for (var know : peopleNode.getKnows()) {
             if (know.skillNode().getCode().equalsIgnoreCase(skill.skill().code())) {
               //Si tiene conocimiento de la Skill, no hace falta mirar mas
@@ -94,25 +124,18 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
         }
         //Si tras mirar por los Knows del peoplenode no tiene conocimiento de dicha skill se sale y ya no es apto
         // para ser candidato
-        if (!acceptCandidate)
+        if (!acceptCandidate) {
           break;
+        }
       }
       //Si al salir es true, es que tiene todas las skills mandatory y se mete como candidato en la lista
       if (acceptCandidate) {
         peopleNodeList.add(peopleNode);
         acceptCandidate = false;
       }
-    }
-
+    }*/
+    var candidateList = new ArrayList<Candidate>();
     for (var peopleNode : peopleNodeList) {
-
-      //Vacio las relaciones para que no se me dupliquen
-      peopleNode.getKnows().clear();
-      peopleNode.getParticipate().clear();
-      peopleNode.getCertificates().clear();
-      peopleNode.getMaster().clear();
-      peopleNode.getInterest().clear();
-      peopleNode.getWork_with().clear();
 
       //Lo paso de peopleNode a People
       var people = peopleNodeMapper.fromNode(peopleNode);
