@@ -115,17 +115,10 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
 
     var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
                 " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) AND ANY(lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair.skillcode})))" +
-                " RETURN DISTINCT p,r,s", filter);
+                " RETURN DISTINCT p", filter);
 
     var peopleList = client.query(query).fetchAs(People.class)
             .mappedBy((TypeSystem t, Record record) -> {
-
-              Knows knows = Knows.builder()
-                      .code(record.get("s").get("name").asString())
-                      .experience(record.get("r").get("experience").asInt())
-                      .level(record.get("r").get("level").asString())
-                      .primary(record.get("r").get("primary").asBoolean())
-                      .build();
 
               People people = People.builder()
                       .name(record.get("p").get("name").asString())
@@ -134,7 +127,6 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
                       .birthDate(record.get("p").get("birthDate").asLocalDate())
                       .code(record.get("p").get("code").asLong())
                       .deleted(record.get("p").get("deleted").asBoolean())
-                      .knows(List.of(knows))
                       .participate(new ArrayList<>())
                       .build();
 
