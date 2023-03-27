@@ -1,7 +1,7 @@
 package com.sngular.skilltree.project.service;
 
 import com.sngular.skilltree.application.ProjectService;
-import com.sngular.skilltree.application.ProjectServiceImpl;
+import com.sngular.skilltree.application.implement.ProjectServiceImpl;
 import com.sngular.skilltree.contract.mapper.ProjectMapper;
 import com.sngular.skilltree.infraestructura.ProjectRepository;
 import com.sngular.skilltree.model.Project;
@@ -19,7 +19,6 @@ import static com.sngular.skilltree.project.service.ProjectFixtures.*;
 import static com.sngular.skilltree.project.service.ProjectFixtures.PROJECT_BY_CODE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)

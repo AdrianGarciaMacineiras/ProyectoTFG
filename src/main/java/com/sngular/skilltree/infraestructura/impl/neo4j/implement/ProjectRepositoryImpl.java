@@ -1,7 +1,8 @@
-package com.sngular.skilltree.infraestructura.impl.neo4j;
+package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.infraestructura.impl.neo4j.ProjectCrudRepository;
 import com.sngular.skilltree.model.Project;
 import com.sngular.skilltree.infraestructura.ProjectRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.ProjectNodeMapper;

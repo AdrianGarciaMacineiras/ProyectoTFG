@@ -1,7 +1,7 @@
 package com.sngular.skilltree.team.service;
 
 import com.sngular.skilltree.application.TeamService;
-import com.sngular.skilltree.application.TeamServiceImpl;
+import com.sngular.skilltree.application.implement.TeamServiceImpl;
 import com.sngular.skilltree.contract.mapper.TeamMapper;
 import com.sngular.skilltree.infraestructura.TeamRepository;
 import com.sngular.skilltree.model.Team;

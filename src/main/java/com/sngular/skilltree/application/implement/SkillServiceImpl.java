@@ -1,5 +1,6 @@
-package com.sngular.skilltree.application;
+package com.sngular.skilltree.application.implement;
 
+import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.model.Skill;
 import com.sngular.skilltree.infraestructura.SkillRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.sngular.skilltree.opportunity.service;
 
 import com.sngular.skilltree.application.OpportunityService;
-import com.sngular.skilltree.application.OpportunityServiceImpl;
+import com.sngular.skilltree.application.implement.OpportunityServiceImpl;
 import com.sngular.skilltree.contract.mapper.OpportunityMapper;
 import com.sngular.skilltree.infraestructura.OpportunityRepository;
 import com.sngular.skilltree.model.Opportunity;

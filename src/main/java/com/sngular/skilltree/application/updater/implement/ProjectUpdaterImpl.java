@@ -1,5 +1,6 @@
-package com.sngular.skilltree.application.updater;
+package com.sngular.skilltree.application.updater.implement;
 
+import com.sngular.skilltree.application.updater.ProjectUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.ProjectMapper;
 import com.sngular.skilltree.infraestructura.ProjectRepository;
@@ -12,7 +13,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class ProjectUpdaterImpl implements ProjectUpdater{
+public class ProjectUpdaterImpl implements ProjectUpdater {
 
     private final ProjectRepository projectRepository;
 

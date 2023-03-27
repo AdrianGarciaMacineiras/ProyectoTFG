@@ -1,6 +1,7 @@
-package com.sngular.skilltree.infraestructura.impl.neo4j;
+package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.ParticipateRelationship;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;

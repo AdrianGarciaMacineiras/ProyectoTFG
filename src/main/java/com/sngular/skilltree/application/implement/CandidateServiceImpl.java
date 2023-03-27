@@ -1,5 +1,6 @@
-package com.sngular.skilltree.application;
+package com.sngular.skilltree.application.implement;
 
+import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
@@ -13,7 +14,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class CandidateServiceImpl implements CandidateService{
+public class CandidateServiceImpl implements CandidateService {
 
     private final CandidateRepository candidateRepository;
 

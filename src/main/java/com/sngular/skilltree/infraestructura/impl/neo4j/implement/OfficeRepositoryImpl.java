@@ -1,6 +1,7 @@
-package com.sngular.skilltree.infraestructura.impl.neo4j;
+package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import com.sngular.skilltree.infraestructura.OfficeRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.OfficeCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.OfficeNodeMapper;
 import com.sngular.skilltree.model.Office;
 import lombok.RequiredArgsConstructor;

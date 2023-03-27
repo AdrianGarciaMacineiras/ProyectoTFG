@@ -1,5 +1,6 @@
-package com.sngular.skilltree.infraestructura.impl.neo4j;
+package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import com.sngular.skilltree.infraestructura.impl.neo4j.SkillCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubskillsRelationship;
 import com.sngular.skilltree.model.Skill;
 import com.sngular.skilltree.infraestructura.SkillRepository;

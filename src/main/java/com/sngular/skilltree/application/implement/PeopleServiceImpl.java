@@ -1,5 +1,6 @@
-package com.sngular.skilltree.application;
+package com.sngular.skilltree.application.implement;
 
+import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.model.People;

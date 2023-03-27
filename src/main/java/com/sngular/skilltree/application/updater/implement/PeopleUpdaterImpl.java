@@ -1,5 +1,6 @@
-package com.sngular.skilltree.application.updater;
+package com.sngular.skilltree.application.updater.implement;
 
+import com.sngular.skilltree.application.updater.PeopleUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
@@ -12,7 +13,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class PeopleUpdaterImpl implements  PeopleUpdater{
+public class PeopleUpdaterImpl implements PeopleUpdater {
 
     private final PeopleRepository peopleRepository;
 

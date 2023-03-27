@@ -1,5 +1,6 @@
-package com.sngular.skilltree.application.updater;
+package com.sngular.skilltree.application.updater.implement;
 
+import com.sngular.skilltree.application.updater.TeamUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.TeamMapper;
 import com.sngular.skilltree.infraestructura.TeamRepository;
@@ -12,7 +13,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class TeamUpdaterImpl implements TeamUpdater{
+public class TeamUpdaterImpl implements TeamUpdater {
 
     private final TeamRepository teamRepository;
 
