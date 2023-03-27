@@ -1,7 +1,7 @@
 package com.sngular.skilltree.candidate.services;
 
 import com.sngular.skilltree.application.CandidateService;
-import com.sngular.skilltree.application.CandidateServiceImpl;
+import com.sngular.skilltree.application.implement.CandidateServiceImpl;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.model.Candidate;

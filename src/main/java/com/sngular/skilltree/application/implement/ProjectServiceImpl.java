@@ -1,5 +1,6 @@
-package com.sngular.skilltree.application;
+package com.sngular.skilltree.application.implement;
 
+import com.sngular.skilltree.application.ProjectService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.model.Project;
@@ -12,7 +13,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class ProjectServiceImpl implements ProjectService{
+public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
 

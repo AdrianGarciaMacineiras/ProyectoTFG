@@ -1,5 +1,6 @@
-package com.sngular.skilltree.application;
+package com.sngular.skilltree.application.implement;
 
+import com.sngular.skilltree.application.ClientService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.ClientRepository;
@@ -13,7 +14,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class ClientServiceImpl implements ClientService{
+public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
 

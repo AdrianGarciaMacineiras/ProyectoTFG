@@ -1,6 +1,7 @@
-package com.sngular.skilltree.infraestructura.impl.neo4j;
+package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import com.sngular.skilltree.infraestructura.ClientRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.ClientCrudRepository;
 import com.sngular.skilltree.model.Client;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.ClientNodeMapper;
 import lombok.RequiredArgsConstructor;

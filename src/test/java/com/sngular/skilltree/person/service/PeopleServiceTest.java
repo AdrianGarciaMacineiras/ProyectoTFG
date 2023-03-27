@@ -4,7 +4,7 @@ import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.application.PeopleService;
-import com.sngular.skilltree.application.PeopleServiceImpl;
+import com.sngular.skilltree.application.implement.PeopleServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.sngular.skilltree.infraestructura.impl.neo4j;
+package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
 
@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.util.*;
 
 import lombok.RequiredArgsConstructor;
+import org.neo4j.driver.Record;
+import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Repository;
@@ -26,6 +28,14 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
   private final List<String> HIGH_LEVEL_LIST = List.of("HIGH");
 
   private final OpportunityCrudRepository crud;
+
+  private final PeopleCrudRepository peopleCrud;
+
+  private final ProjectCrudRepository projectCrud;
+
+  private final ClientCrudRepository clientCrud;
+
+  private final OfficeCrudRepository officeCrud;
 
   private final PeopleNodeMapper peopleNodeMapper;
 
@@ -46,12 +56,14 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
       throw new EntityNotFoundException("Client", opportunityNode.getClient().getCode());
     }
 
-    if (Objects.isNull(opportunityNode.getProject()) || opportunityNode.getProject().isDeleted()) {
-      throw new EntityNotFoundException("Project", opportunityNode.getProject().getCode());
+    var projectNode = projectCrud.findByCode(opportunity.project().code());
+    if (Objects.isNull(projectNode) || projectNode.isDeleted()) {
+      throw new EntityNotFoundException("Project", projectNode.getCode());
     }
 
-    if (Objects.isNull(opportunityNode.getOffice()) || opportunityNode.getOffice().isDeleted()) {
-      throw new EntityNotFoundException("Office", opportunityNode.getOffice().getCode());
+    var officeNode = officeCrud.findByCode(opportunity.office().code());
+    if (Objects.isNull(officeNode) || officeNode.isDeleted()) {
+      throw new EntityNotFoundException("Office", officeNode.getCode());
     }
 
     final var filter = new StringBuilder();
@@ -65,7 +77,7 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
       }
     }
     /**
-     * MATCH (p:People)-[r:knows]->(s:Skill)
+     * MATCH (p:People)-[r:KNOWS]->(s:Skill)
      * WHERE s.code IN ['code1', 'code2', 'code3', ..., 'codeN']
      * WITH p, COLLECT(DISTINCT {code:s.code, level:r.level}) AS skills
      * WHERE ALL(skill IN [{code:'code1', level:1}, {code:'code2', level:2}, {code:'code3', level:3}, ..., {code:'codeN', level:N}]
@@ -81,11 +93,42 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
      * RETURN p
      */
 
-    var query = String.format("MATCH (p:People)-[r:knows]->(s:Skill) WHERE ALL(pair IN [%s] " +
-                "WHERE pair.skillcode = s.Code AND r.Level in pair.knowslevel) RETURN p,r,s", filter);
+    var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
+                " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) AND ANY(lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair.skillcode})))" +
+                " RETURN DISTINCT p", filter);
 
-    var peopleNodeList = client.query(query).fetchAs(PeopleNode.class).all();
-  //  codeList.addAll(peopleCrud.findCandidatesSkillList(opportunitySkill.skill().code(), levelList));
+    var peopleList = client.query(query).fetchAs(People.class)
+                           .mappedBy((TypeSystem t, Record record) -> {
+
+                             People people = People.builder()
+                                                   .name(record.get("p").get("name").asString())
+                                                   .surname(record.get("p").get("surname").asString())
+                                                   .employeeId(record.get("p").get("employeeId").asString())
+                                                   .birthDate(record.get("p").get("birthDate").asLocalDate())
+                                                   .code(record.get("p").get("code").asLong())
+                                                   .deleted(record.get("p").get("deleted").asBoolean())
+                                                   .participate(new ArrayList<>())
+                                                   .build();
+
+                             return people;
+
+                           })
+                           .all();
+
+    Map<Long, People> knowsMap = new HashMap<>();
+
+    peopleList.forEach(people ->
+                         knowsMap.compute(people.code(), (code, aggPeople) -> {
+                           if(Objects.isNull(aggPeople)){
+                             return people;
+                           } else {
+                             var knowList = new ArrayList<>(aggPeople.knows());
+                             knowList.addAll(people.knows());
+                             aggPeople = aggPeople.toBuilder().knows(knowList).build();
+                           }
+                           return aggPeople;
+                         })
+    );  //  codeList.addAll(peopleCrud.findCandidatesSkillList(opportunitySkill.skill().code(), levelList));
 
   /*  //Limpio los repetidos de la lista
     Set<Long> set = new HashSet<>(codeList);
@@ -120,15 +163,16 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
         acceptCandidate = false;
       }
     }*/
+
     var candidateList = new ArrayList<Candidate>();
-    for (var peopleNode : peopleNodeList) {
+    for (var people : peopleList) {
 
       //Lo paso de peopleNode a People
-      var people = peopleNodeMapper.fromNode(peopleNode);
+      //var people = peopleNodeMapper.fromNode(peopleNode);
 
       //Creo el objeto candidato
       Candidate candidate = Candidate.builder()
-              .code(opportunity.code()+ "-" + peopleNode.getEmployeeId())
+              .code(opportunity.code()+ "-" + people.employeeId())
               .candidate(people)
               .opportunity(opportunity)
               .status(EnumStatus.ASSIGNED)

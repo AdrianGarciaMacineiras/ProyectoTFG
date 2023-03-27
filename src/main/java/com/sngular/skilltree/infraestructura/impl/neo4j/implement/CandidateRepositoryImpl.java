@@ -1,6 +1,8 @@
-package com.sngular.skilltree.infraestructura.impl.neo4j;
+package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import com.sngular.skilltree.infraestructura.CandidateRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.CandidateCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.OpportunityCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.CandidateNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.OpportunityNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;

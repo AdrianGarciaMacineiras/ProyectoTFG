@@ -1,7 +1,9 @@
-package com.sngular.skilltree.infraestructura.impl.neo4j;
+package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.TeamRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.TeamCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.TeamNodeMapper;
 import com.sngular.skilltree.model.Team;
 import lombok.RequiredArgsConstructor;

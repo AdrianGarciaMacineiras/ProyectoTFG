@@ -1,5 +1,6 @@
-package com.sngular.skilltree.application.updater;
+package com.sngular.skilltree.application.updater.implement;
 
+import com.sngular.skilltree.application.updater.CandidateUpdater;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.model.Candidate;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CandidateUpdaterImpl implements CandidateUpdater{
+public class CandidateUpdaterImpl implements CandidateUpdater {
 
     private final CandidateRepository candidateRepository;
 
