@@ -21,9 +21,11 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class OpportunityRepositoryImpl implements OpportunityRepository {
 
-  private final OpportunityCrudRepository crud;
+  private final List<String> LOW_LEVEL_LIST = List.of("LOW", "MEDIUM", "HIGH");
+  private final List<String> MID_LEVEL_LIST = List.of( "MEDIUM", "HIGH");
+  private final List<String> HIGH_LEVEL_LIST = List.of("HIGH");
 
-  private final PeopleCrudRepository peopleCrud;
+  private final OpportunityCrudRepository crud;
 
   private final PeopleNodeMapper peopleNodeMapper;
 
@@ -39,9 +41,6 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
   @Override
   public Opportunity save(Opportunity opportunity) {
 
-    List<Long> codeList = new ArrayList<>();
-    boolean acceptCandidate = false;
-
     var opportunityNode = crud.findByCode(opportunity.code());
     if (Objects.isNull(opportunityNode.getClient()) || opportunityNode.getClient().isDeleted()) {
       throw new EntityNotFoundException("Client", opportunityNode.getClient().getCode());
@@ -54,24 +53,15 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
     if (Objects.isNull(opportunityNode.getOffice()) || opportunityNode.getOffice().isDeleted()) {
       throw new EntityNotFoundException("Office", opportunityNode.getOffice().getCode());
     }
-    List<Pair<String, List<String>>> skillLevelList = new ArrayList<>();
 
+    final var filter = new StringBuilder();
     for (var opportunitySkill : opportunity.skills()){
-      var levelList = new ArrayList<String>();
       if (MANDATORY.equals(opportunitySkill.levelReq())) {
-        if (opportunitySkill.minLevel().equals(EnumMinLevel.LOW)) {
-          levelList.add("LOW");
-          levelList.add("MEDIUM");
-          levelList.add("HIGH");
-        } else {
-          if (opportunitySkill.minLevel().equals(EnumMinLevel.MEDIUM)) {
-            levelList.add("MEDIUM");
-            levelList.add("HIGH");
-          } else {
-            levelList.add("HIGH");
-          }
+        switch (opportunitySkill.minLevel()) {
+          case LOW -> fillFilterBuilder(filter, opportunitySkill.skill().code(), LOW_LEVEL_LIST);
+          case MEDIUM -> fillFilterBuilder(filter, opportunitySkill.skill().code(), MID_LEVEL_LIST);
+          default -> fillFilterBuilder(filter, opportunitySkill.skill().code(),  HIGH_LEVEL_LIST);
         }
-        skillLevelList.add(Pair.of(opportunitySkill.skill().code(), levelList));
       }
     }
     /**
@@ -90,10 +80,6 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
      *           WHERE pair.skillcode = s.Code AND pair.knowslevel = r.Level)
      * RETURN p
      */
-    var filter = new StringBuilder();
-    for (var skilllevel : skillLevelList) {
-      filter.append(String.format("{skillcode:'%s', knowslevel:[%s]}), ", skilllevel.getFirst(), String.join(",", skilllevel.getSecond())));
-    }
 
     var query = String.format("MATCH (p:People)-[r:knows]->(s:Skill) WHERE ALL(pair IN [%s] " +
                 "WHERE pair.skillcode = s.Code AND r.Level in pair.knowslevel) RETURN p,r,s", filter);
@@ -156,6 +142,10 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
     //Meto la lista de candidatos en la oportunidad y la creo
     opportunity.candidates().addAll(candidateList);
     return mapper.fromNode(crud.save(mapper.toNode(opportunity)));
+  }
+
+  private void fillFilterBuilder(final StringBuilder filter, final String skillCode, final List<String> levelList) {
+    filter.append(String.format("{skillcode:'%s', knowslevel:[%s]}), ", skillCode, String.join(",", levelList)));
   }
 
   @Override
