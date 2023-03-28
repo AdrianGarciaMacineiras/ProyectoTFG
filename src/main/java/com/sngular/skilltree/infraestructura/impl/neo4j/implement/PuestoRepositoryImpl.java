@@ -65,25 +65,15 @@ public class PuestoRepositoryImpl implements PuestoRepository {
       throw new EntityNotFoundException("Office", officeNode.getCode());
     }
 
-    final var filter = new StringBuilder();
-    var count = 0;
-    for (var opportunitySkill : puesto.skills()){
-      if (MANDATORY.equals(opportunitySkill.levelReq())) {
-        if (count == puesto.skills().size() - 1) {
-          switch (opportunitySkill.minLevel()) {
-            case LOW -> fillFilterBuilder(filter, opportunitySkill.skill().code(), LOW_LEVEL_LIST, true);
-            case MEDIUM -> fillFilterBuilder(filter, opportunitySkill.skill().code(), MID_LEVEL_LIST, true);
-            default -> fillFilterBuilder(filter, opportunitySkill.skill().code(), HIGH_LEVEL_LIST, true);
-          }
-        } else{
-          switch (opportunitySkill.minLevel()) {
-            case LOW -> fillFilterBuilder(filter, opportunitySkill.skill().code(), LOW_LEVEL_LIST, false);
-            case MEDIUM -> fillFilterBuilder(filter, opportunitySkill.skill().code(), MID_LEVEL_LIST, false);
-            default -> fillFilterBuilder(filter, opportunitySkill.skill().code(), HIGH_LEVEL_LIST, false);
-          }
+    final var filter = new ArrayList<String>();
+    for (var puestoSkill : puesto.skills()){
+      if (MANDATORY.equals(puestoSkill.levelReq())) {
+        switch (puestoSkill.minLevel()) {
+          case LOW -> filter.add(fillFilterBuilder(puestoSkill.skill().code(), LOW_LEVEL_LIST));
+          case MEDIUM -> filter.add(fillFilterBuilder(puestoSkill.skill().code(), MID_LEVEL_LIST));
+          default -> filter.add(fillFilterBuilder(puestoSkill.skill().code(), HIGH_LEVEL_LIST));
         }
       }
-      count++;
     }
     /**
      * MATCH (p:People)-[r:KNOWS]->(s:Skill)
@@ -103,46 +93,47 @@ public class PuestoRepositoryImpl implements PuestoRepository {
      */
 
     var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
-                " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) AND ANY(lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair.skillcode})))" +
-                " RETURN DISTINCT p", filter);
+            " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) AND ANY(lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair" +
+            ".skillcode})))" +
+            " RETURN DISTINCT p", String.join(",", filter));
 
     var peopleList = client.query(query).fetchAs(People.class)
-                           .mappedBy((TypeSystem t, Record record) -> {
+            .mappedBy((TypeSystem t, Record record) -> {
 
-                             People people = People.builder()
-                                                   .name(record.get("p").get("name").asString())
-                                                   .surname(record.get("p").get("surname").asString())
-                                                   .employeeId(record.get("p").get("employeeId").asString())
-                                                   .birthDate(record.get("p").get("birthDate").asLocalDate())
-                                                   .code(record.get("p").get("code").asLong())
-                                                   .deleted(record.get("p").get("deleted").asBoolean())
-                                                   .build();
+              People people = People.builder()
+                      .name(record.get("p").get("name").asString())
+                      .surname(record.get("p").get("surname").asString())
+                      .employeeId(record.get("p").get("employeeId").asString())
+                      .birthDate(record.get("p").get("birthDate").asLocalDate())
+                      .code(record.get("p").get("code").asLong())
+                      .deleted(record.get("p").get("deleted").asBoolean())
+                      .build();
 
-                             return people;
+              return people;
 
-                           })
-                           .all();
+            })
+            .all();
 
     Map<Long, People> knowsMap = new HashMap<>();
 
     peopleList.forEach(people ->
-                         knowsMap.compute(people.code(), (code, aggPeople) -> {
-                           if(Objects.isNull(aggPeople)){
-                             return people;
-                           } else {
-                             var knowList = new ArrayList<>(aggPeople.knows());
-                             knowList.addAll(people.knows());
-                             aggPeople = aggPeople.toBuilder().knows(knowList).build();
-                           }
-                           return aggPeople;
-                         })
+            knowsMap.compute(people.code(), (code, aggPeople) -> {
+              if(Objects.isNull(aggPeople)){
+                return people;
+              } else {
+                var knowList = new ArrayList<>(aggPeople.knows());
+                knowList.addAll(people.knows());
+                aggPeople = aggPeople.toBuilder().knows(knowList).build();
+              }
+              return aggPeople;
+            })
     );
 
     var candidateList = new ArrayList<Candidate>();
     for (var people : peopleList) {
 
       Candidate candidate = Candidate.builder()
-              .code(puesto.code()+ "-" + people.employeeId())
+              .code(people.code()+ "-" + people.employeeId())
               .candidate(people)
               .puesto(puesto)
               .status(EnumStatus.ASSIGNED)
@@ -156,11 +147,8 @@ public class PuestoRepositoryImpl implements PuestoRepository {
     return mapper.fromNode(crud.save(mapper.toNode(puesto)));
   }
 
-  private void fillFilterBuilder(final StringBuilder filter, final String skillCode, final List<String> levelList, boolean last) {
-    if(!last)
-      filter.append(String.format("{skillcode:'%s', knowslevel:[%s]}, ", skillCode, String.join(",", levelList)));
-    else
-      filter.append(String.format("{skillcode:'%s', knowslevel:[%s]}", skillCode, String.join(",", levelList)));
+  private String fillFilterBuilder(final String skillCode, final List<String> levelList) {
+    return String.format("{skillcode:'%s', knowslevel:[%s]}", skillCode, String.join(",", levelList));
   }
 
   @Override
