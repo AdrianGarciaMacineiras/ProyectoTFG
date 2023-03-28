@@ -2,31 +2,41 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
 
-import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
-import com.sngular.skilltree.infraestructura.impl.neo4j.*;
-import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
-import com.sngular.skilltree.model.*;
-import com.sngular.skilltree.infraestructura.OpportunityRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.OpportunityNodeMapper;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
-
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.infraestructura.OpportunityRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.ClientCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.OfficeCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.OpportunityCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.ProjectCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.OpportunityNodeMapper;
+import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
+import com.sngular.skilltree.model.Candidate;
+import com.sngular.skilltree.model.EnumStatus;
+import com.sngular.skilltree.model.Opportunity;
+import com.sngular.skilltree.model.People;
 import lombok.RequiredArgsConstructor;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
 public class OpportunityRepositoryImpl implements OpportunityRepository {
 
-  private final List<String> LOW_LEVEL_LIST = List.of("'LOW'", "'MEDIUM'", "'HIGH'");
-  private final List<String> MID_LEVEL_LIST = List.of( "'MEDIUM'", "'HIGH'");
-  private final List<String> HIGH_LEVEL_LIST = List.of("'HIGH'");
+  private final static List<String> LOW_LEVEL_LIST = List.of("'LOW'", "'MEDIUM'", "'HIGH'");
+
+  private final static List<String> MID_LEVEL_LIST = List.of("'MEDIUM'", "'HIGH'");
+
+  private final static List<String> HIGH_LEVEL_LIST = List.of("'HIGH'");
 
   private final OpportunityCrudRepository crud;
 
@@ -67,25 +77,15 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
       throw new EntityNotFoundException("Office", officeNode.getCode());
     }
 
-    final var filter = new StringBuilder();
-    var count = 0;
+    final var filter = new ArrayList<String>();
     for (var opportunitySkill : opportunity.skills()){
       if (MANDATORY.equals(opportunitySkill.levelReq())) {
-        if (count == opportunity.skills().size() - 1) {
-          switch (opportunitySkill.minLevel()) {
-            case LOW -> fillFilterBuilder(filter, opportunitySkill.skill().code(), LOW_LEVEL_LIST, true);
-            case MEDIUM -> fillFilterBuilder(filter, opportunitySkill.skill().code(), MID_LEVEL_LIST, true);
-            default -> fillFilterBuilder(filter, opportunitySkill.skill().code(), HIGH_LEVEL_LIST, true);
-          }
-        } else{
-          switch (opportunitySkill.minLevel()) {
-            case LOW -> fillFilterBuilder(filter, opportunitySkill.skill().code(), LOW_LEVEL_LIST, false);
-            case MEDIUM -> fillFilterBuilder(filter, opportunitySkill.skill().code(), MID_LEVEL_LIST, false);
-            default -> fillFilterBuilder(filter, opportunitySkill.skill().code(), HIGH_LEVEL_LIST, false);
-          }
+        switch (opportunitySkill.minLevel()) {
+          case LOW -> filter.add(fillFilterBuilder(opportunitySkill.skill().code(), LOW_LEVEL_LIST));
+          case MEDIUM -> filter.add(fillFilterBuilder(opportunitySkill.skill().code(), MID_LEVEL_LIST));
+          default -> filter.add(fillFilterBuilder(opportunitySkill.skill().code(), HIGH_LEVEL_LIST));
         }
       }
-      count++;
     }
     /**
      * MATCH (p:People)-[r:KNOWS]->(s:Skill)
@@ -105,8 +105,9 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
      */
 
     var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
-                " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) AND ANY(lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair.skillcode})))" +
-                " RETURN DISTINCT p", filter);
+                              " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) AND ANY(lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair" +
+                              ".skillcode})))" +
+                              " RETURN DISTINCT p", String.join(",", filter));
 
     var peopleList = client.query(query).fetchAs(People.class)
                            .mappedBy((TypeSystem t, Record record) -> {
@@ -145,12 +146,12 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
     for (var people : peopleList) {
 
       Candidate candidate = Candidate.builder()
-              .code(opportunity.code()+ "-" + people.employeeId())
-              .candidate(people)
-              .opportunity(opportunity)
-              .status(EnumStatus.ASSIGNED)
-              .creationDate(LocalDate.now())
-              .build();
+                                     .code(opportunity.code()+ "-" + people.employeeId())
+                                     .candidate(people)
+                                     .opportunity(opportunity)
+                                     .status(EnumStatus.ASSIGNED)
+                                     .creationDate(LocalDate.now())
+                                     .build();
 
       candidateList.add(candidate);
     }
@@ -159,11 +160,8 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
     return mapper.fromNode(crud.save(mapper.toNode(opportunity)));
   }
 
-  private void fillFilterBuilder(final StringBuilder filter, final String skillCode, final List<String> levelList, boolean last) {
-    if(!last)
-      filter.append(String.format("{skillcode:'%s', knowslevel:[%s]}, ", skillCode, String.join(",", levelList)));
-    else
-      filter.append(String.format("{skillcode:'%s', knowslevel:[%s]}", skillCode, String.join(",", levelList)));
+  private String fillFilterBuilder(final String skillCode, final List<String> levelList) {
+    return String.format("{skillcode:'%s', knowslevel:[%s]}", skillCode, String.join(",", levelList));
   }
 
   @Override
