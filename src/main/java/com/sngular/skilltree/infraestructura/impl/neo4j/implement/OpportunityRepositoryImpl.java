@@ -3,6 +3,7 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
 
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.infraestructura.impl.neo4j.*;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.model.*;
 import com.sngular.skilltree.infraestructura.OpportunityRepository;
@@ -23,9 +24,9 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class OpportunityRepositoryImpl implements OpportunityRepository {
 
-  private final List<String> LOW_LEVEL_LIST = List.of("LOW", "MEDIUM", "HIGH");
-  private final List<String> MID_LEVEL_LIST = List.of( "MEDIUM", "HIGH");
-  private final List<String> HIGH_LEVEL_LIST = List.of("HIGH");
+  private final List<String> LOW_LEVEL_LIST = List.of("'LOW'", "'MEDIUM'", "'HIGH'");
+  private final List<String> MID_LEVEL_LIST = List.of( "'MEDIUM'", "'HIGH'");
+  private final List<String> HIGH_LEVEL_LIST = List.of("'HIGH'");
 
   private final OpportunityCrudRepository crud;
 
@@ -51,9 +52,9 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
   @Override
   public Opportunity save(Opportunity opportunity) {
 
-    var opportunityNode = crud.findByCode(opportunity.code());
-    if (Objects.isNull(opportunityNode.getClient()) || opportunityNode.getClient().isDeleted()) {
-      throw new EntityNotFoundException("Client", opportunityNode.getClient().getCode());
+    var clientNode = clientCrud.findByCode(opportunity.client().code());
+    if (Objects.isNull(clientNode) || clientNode.isDeleted()) {
+      throw new EntityNotFoundException("Client", clientNode.getCode());
     }
 
     var projectNode = projectCrud.findByCode(opportunity.project().code());
@@ -67,14 +68,24 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
     }
 
     final var filter = new StringBuilder();
+    var count = 0;
     for (var opportunitySkill : opportunity.skills()){
       if (MANDATORY.equals(opportunitySkill.levelReq())) {
-        switch (opportunitySkill.minLevel()) {
-          case LOW -> fillFilterBuilder(filter, opportunitySkill.skill().code(), LOW_LEVEL_LIST);
-          case MEDIUM -> fillFilterBuilder(filter, opportunitySkill.skill().code(), MID_LEVEL_LIST);
-          default -> fillFilterBuilder(filter, opportunitySkill.skill().code(),  HIGH_LEVEL_LIST);
+        if (count == opportunity.skills().size() - 1) {
+          switch (opportunitySkill.minLevel()) {
+            case LOW -> fillFilterBuilder(filter, opportunitySkill.skill().code(), LOW_LEVEL_LIST, true);
+            case MEDIUM -> fillFilterBuilder(filter, opportunitySkill.skill().code(), MID_LEVEL_LIST, true);
+            default -> fillFilterBuilder(filter, opportunitySkill.skill().code(), HIGH_LEVEL_LIST, true);
+          }
+        } else{
+          switch (opportunitySkill.minLevel()) {
+            case LOW -> fillFilterBuilder(filter, opportunitySkill.skill().code(), LOW_LEVEL_LIST, false);
+            case MEDIUM -> fillFilterBuilder(filter, opportunitySkill.skill().code(), MID_LEVEL_LIST, false);
+            default -> fillFilterBuilder(filter, opportunitySkill.skill().code(), HIGH_LEVEL_LIST, false);
+          }
         }
       }
+      count++;
     }
     /**
      * MATCH (p:People)-[r:KNOWS]->(s:Skill)
@@ -128,49 +139,11 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
                            }
                            return aggPeople;
                          })
-    );  //  codeList.addAll(peopleCrud.findCandidatesSkillList(opportunitySkill.skill().code(), levelList));
-
-  /*  //Limpio los repetidos de la lista
-    Set<Long> set = new HashSet<>(codeList);
-    codeList.clear();
-    codeList.addAll(set);
-
-    for (var code : codeList) {
-      //Busco la persona para poder recorrer por la relacion de Knows
-      var peopleNode = peopleCrud.findByCode(code);
-      for (var skill : opportunity.skills()) {
-        //Filtrar por MANDATORY
-        if (skill.levelReq().equals(MANDATORY)) {
-          for (var know : peopleNode.getKnows()) {
-            if (know.skillNode().getCode().equalsIgnoreCase(skill.skill().code())) {
-              //Si tiene conocimiento de la Skill, no hace falta mirar mas
-              acceptCandidate = true;
-              break;
-            } else {
-              acceptCandidate = false;
-            }
-          }
-        }
-        //Si tras mirar por los Knows del peoplenode no tiene conocimiento de dicha skill se sale y ya no es apto
-        // para ser candidato
-        if (!acceptCandidate) {
-          break;
-        }
-      }
-      //Si al salir es true, es que tiene todas las skills mandatory y se mete como candidato en la lista
-      if (acceptCandidate) {
-        peopleNodeList.add(peopleNode);
-        acceptCandidate = false;
-      }
-    }*/
+    );
 
     var candidateList = new ArrayList<Candidate>();
     for (var people : peopleList) {
 
-      //Lo paso de peopleNode a People
-      //var people = peopleNodeMapper.fromNode(peopleNode);
-
-      //Creo el objeto candidato
       Candidate candidate = Candidate.builder()
               .code(opportunity.code()+ "-" + people.employeeId())
               .candidate(people)
@@ -179,17 +152,18 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
               .creationDate(LocalDate.now())
               .build();
 
-      //Lo meto en la lista de candidatos
       candidateList.add(candidate);
     }
 
-    //Meto la lista de candidatos en la oportunidad y la creo
     opportunity.candidates().addAll(candidateList);
     return mapper.fromNode(crud.save(mapper.toNode(opportunity)));
   }
 
-  private void fillFilterBuilder(final StringBuilder filter, final String skillCode, final List<String> levelList) {
-    filter.append(String.format("{skillcode:'%s', knowslevel:[%s]}), ", skillCode, String.join(",", levelList)));
+  private void fillFilterBuilder(final StringBuilder filter, final String skillCode, final List<String> levelList, boolean last) {
+    if(!last)
+      filter.append(String.format("{skillcode:'%s', knowslevel:[%s]}, ", skillCode, String.join(",", levelList)));
+    else
+      filter.append(String.format("{skillcode:'%s', knowslevel:[%s]}", skillCode, String.join(",", levelList)));
   }
 
   @Override
