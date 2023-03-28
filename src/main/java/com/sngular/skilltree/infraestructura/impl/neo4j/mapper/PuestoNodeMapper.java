@@ -1,9 +1,9 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.OpportunityNode;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.OpportunitySkillsRelationship;
-import com.sngular.skilltree.model.Opportunity;
-import com.sngular.skilltree.model.OpportunitySkill;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.PuestoNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.PuestoSkillsRelationship;
+import com.sngular.skilltree.model.Puesto;
+import com.sngular.skilltree.model.PuestoSkill;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,24 +12,24 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {SkillNodeMapper.class, PeopleNodeMapper.class, OfficeNodeMapper.class,
         ProjectNodeMapper.class, CandidateNodeMapper.class})
-public interface OpportunityNodeMapper {
+public interface PuestoNodeMapper {
 
   @InheritInverseConfiguration
   @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
-  OpportunityNode toNode(Opportunity opportunity);
+  PuestoNode toNode(Puesto puesto);
 
   @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
-  Opportunity fromNode(OpportunityNode opportunityNode);
+  Puesto fromNode(PuestoNode puestoNode);
 
   @Mapping(target = "min_exp", source = "minExp")
   @Mapping(target = "min_level", source = "minLevel")
   @Mapping(target = "req_level", source = "levelReq")
-  OpportunitySkillsRelationship toOpportunitySkillsRelationship(OpportunitySkill opportunitySkill);
+  PuestoSkillsRelationship toOpportunitySkillsRelationship(PuestoSkill puestoSkill);
 
   @InheritInverseConfiguration
-  OpportunitySkill toOpportunitySkill(OpportunitySkillsRelationship opportunitySkillsRelationship);
+  PuestoSkill toOpportunitySkill(PuestoSkillsRelationship puestoSkillsRelationship);
 
-  List<Opportunity> map(List<OpportunityNode> all);
+  List<Puesto> map(List<PuestoNode> all);
 }

@@ -134,7 +134,7 @@ class ProjectControllerTest {
         SkillService skillService;
 
         @MockBean
-        OpportunityService opportunityService;
+        PuestoService puestoService;
 
         @MockBean
         PeopleService peopleService;
@@ -146,10 +146,10 @@ class ProjectControllerTest {
         ClientService clientService;
 
         @Bean
-        ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService,
+        ResolveService resolveService(final SkillService skillService, final PuestoService puestoService,
                                       final PeopleService peopleService, final ProjectService projectService,
                                       final OfficeService officeService, final ClientService clientService) {
-            return new ResolveService(skillService, opportunityService, peopleService, projectService, officeService, clientService);
+            return new ResolveService(skillService, puestoService, peopleService, projectService, officeService, clientService);
         }
     }
 }

@@ -1,16 +1,12 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
-import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.ParticipateRelationship;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import javax.management.InstanceNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -29,7 +25,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     @Override
     public People save(People people) {
         var peopleNode = mapper.toNode(people);
-        peopleNode.setAssignable(false);
+        peopleNode.setAssignable(true);
         return mapper.fromNode(crud.save(peopleNode));
     }
 

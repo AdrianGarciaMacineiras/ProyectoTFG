@@ -48,9 +48,6 @@ public class PeopleNode {
     @Relationship(type="MASTER", direction = Relationship.Direction.OUTGOING)
     private List<SkillNode> master;
 
-    @Relationship(type="PARTICIPATE", direction = Relationship.Direction.OUTGOING)
-    private List<ParticipateRelationship> participate;
-
     @Relationship(type="IS_INTERESTED", direction = Relationship.Direction.OUTGOING)
     private List<SkillNode> interest;
 

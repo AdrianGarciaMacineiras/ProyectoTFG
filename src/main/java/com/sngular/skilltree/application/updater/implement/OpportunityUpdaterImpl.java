@@ -1,9 +1,9 @@
 package com.sngular.skilltree.application.updater.implement;
 
 import com.sngular.skilltree.application.updater.OpportunityUpdater;
-import com.sngular.skilltree.contract.mapper.OpportunityMapper;
-import com.sngular.skilltree.infraestructura.OpportunityRepository;
-import com.sngular.skilltree.model.Opportunity;
+import com.sngular.skilltree.contract.mapper.PuestoMapper;
+import com.sngular.skilltree.infraestructura.PuestoRepository;
+import com.sngular.skilltree.model.Puesto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,22 +11,22 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OpportunityUpdaterImpl implements OpportunityUpdater {
 
-    private final OpportunityRepository opportunityRepository;
+    private final PuestoRepository puestoRepository;
 
-    private final OpportunityMapper mapper;
+    private final PuestoMapper mapper;
 
     @Override
-    public Opportunity update(final String opportunitycode, final Opportunity newOpportunity) {
-        var oldOpportunity = opportunityRepository.findByCode(opportunitycode);
+    public Puesto update(final String opportunitycode, final Puesto newPuesto) {
+        var oldOpportunity = puestoRepository.findByCode(opportunitycode);
         //mapper.update(oldOpportunity, newOpportunity);
-        return opportunityRepository.save(newOpportunity);
+        return puestoRepository.save(newPuesto);
     }
 
     @Override
-    public Opportunity patch(final String opportunitycode, final Opportunity patchedOpportunity) {
-        var oldOpportunity = opportunityRepository.findByCode(opportunitycode);
-        var opportunity = mapper.update(patchedOpportunity, oldOpportunity);
-        return opportunityRepository.save(opportunity);
+    public Puesto patch(final String opportunitycode, final Puesto patchedPuesto) {
+        var oldOpportunity = puestoRepository.findByCode(opportunitycode);
+        var opportunity = mapper.update(patchedPuesto, oldOpportunity);
+        return puestoRepository.save(opportunity);
     }
 
 }

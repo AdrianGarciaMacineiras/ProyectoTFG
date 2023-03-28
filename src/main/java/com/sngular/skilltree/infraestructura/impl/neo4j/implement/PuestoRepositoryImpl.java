@@ -5,10 +5,9 @@ import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.impl.neo4j.*;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
+import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PuestoNodeMapper;
 import com.sngular.skilltree.model.*;
-import com.sngular.skilltree.infraestructura.OpportunityRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.OpportunityNodeMapper;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
+import com.sngular.skilltree.infraestructura.PuestoRepository;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -17,18 +16,17 @@ import lombok.RequiredArgsConstructor;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class OpportunityRepositoryImpl implements OpportunityRepository {
+public class PuestoRepositoryImpl implements PuestoRepository {
 
   private final List<String> LOW_LEVEL_LIST = List.of("'LOW'", "'MEDIUM'", "'HIGH'");
   private final List<String> MID_LEVEL_LIST = List.of( "'MEDIUM'", "'HIGH'");
   private final List<String> HIGH_LEVEL_LIST = List.of("'HIGH'");
 
-  private final OpportunityCrudRepository crud;
+  private final PuestoCrudRepository crud;
 
   private final PeopleCrudRepository peopleCrud;
 
@@ -40,38 +38,38 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
 
   private final PeopleNodeMapper peopleNodeMapper;
 
-  private final OpportunityNodeMapper mapper;
+  private final PuestoNodeMapper mapper;
 
   private final Neo4jClient client;
 
   @Override
-  public List<Opportunity> findAll() {
+  public List<Puesto> findAll() {
     return mapper.map(crud.findByDeletedIsFalse());
   }
 
   @Override
-  public Opportunity save(Opportunity opportunity) {
+  public Puesto save(Puesto puesto) {
 
-    var clientNode = clientCrud.findByCode(opportunity.client().code());
+    var clientNode = clientCrud.findByCode(puesto.client().code());
     if (Objects.isNull(clientNode) || clientNode.isDeleted()) {
       throw new EntityNotFoundException("Client", clientNode.getCode());
     }
 
-    var projectNode = projectCrud.findByCode(opportunity.project().code());
+    var projectNode = projectCrud.findByCode(puesto.project().code());
     if (Objects.isNull(projectNode) || projectNode.isDeleted()) {
       throw new EntityNotFoundException("Project", projectNode.getCode());
     }
 
-    var officeNode = officeCrud.findByCode(opportunity.office().code());
+    var officeNode = officeCrud.findByCode(puesto.office().code());
     if (Objects.isNull(officeNode) || officeNode.isDeleted()) {
       throw new EntityNotFoundException("Office", officeNode.getCode());
     }
 
     final var filter = new StringBuilder();
     var count = 0;
-    for (var opportunitySkill : opportunity.skills()){
+    for (var opportunitySkill : puesto.skills()){
       if (MANDATORY.equals(opportunitySkill.levelReq())) {
-        if (count == opportunity.skills().size() - 1) {
+        if (count == puesto.skills().size() - 1) {
           switch (opportunitySkill.minLevel()) {
             case LOW -> fillFilterBuilder(filter, opportunitySkill.skill().code(), LOW_LEVEL_LIST, true);
             case MEDIUM -> fillFilterBuilder(filter, opportunitySkill.skill().code(), MID_LEVEL_LIST, true);
@@ -118,7 +116,6 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
                                                    .birthDate(record.get("p").get("birthDate").asLocalDate())
                                                    .code(record.get("p").get("code").asLong())
                                                    .deleted(record.get("p").get("deleted").asBoolean())
-                                                   .participate(new ArrayList<>())
                                                    .build();
 
                              return people;
@@ -145,9 +142,9 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
     for (var people : peopleList) {
 
       Candidate candidate = Candidate.builder()
-              .code(opportunity.code()+ "-" + people.employeeId())
+              .code(puesto.code()+ "-" + people.employeeId())
               .candidate(people)
-              .opportunity(opportunity)
+              .puesto(puesto)
               .status(EnumStatus.ASSIGNED)
               .creationDate(LocalDate.now())
               .build();
@@ -155,8 +152,8 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
       candidateList.add(candidate);
     }
 
-    opportunity.candidates().addAll(candidateList);
-    return mapper.fromNode(crud.save(mapper.toNode(opportunity)));
+    puesto.candidates().addAll(candidateList);
+    return mapper.fromNode(crud.save(mapper.toNode(puesto)));
   }
 
   private void fillFilterBuilder(final StringBuilder filter, final String skillCode, final List<String> levelList, boolean last) {
@@ -167,7 +164,7 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
   }
 
   @Override
-  public Opportunity findByCode(String opportunitycode) {
+  public Puesto findByCode(String opportunitycode) {
     return mapper.fromNode(crud.findByCode(opportunitycode));
   }
 
@@ -180,7 +177,7 @@ public class OpportunityRepositoryImpl implements OpportunityRepository {
   }
 
   @Override
-  public List<Opportunity> findByDeletedIsFalse() {
+  public List<Puesto> findByDeletedIsFalse() {
     return mapper.map(crud.findByDeletedIsFalse());
   }
 

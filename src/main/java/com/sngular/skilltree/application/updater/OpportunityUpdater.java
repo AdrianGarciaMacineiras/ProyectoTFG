@@ -1,10 +1,10 @@
 package com.sngular.skilltree.application.updater;
 
-import com.sngular.skilltree.model.Opportunity;
+import com.sngular.skilltree.model.Puesto;
 
 public interface OpportunityUpdater {
 
-    Opportunity update(final String opportunitycode, final Opportunity newOpportunity);
+    Puesto update(final String opportunitycode, final Puesto newPuesto);
 
-    Opportunity patch(final String opportunitycode, final Opportunity patchedOpportunity);
+    Puesto patch(final String opportunitycode, final Puesto patchedPuesto);
 }

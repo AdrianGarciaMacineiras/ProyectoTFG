@@ -2,9 +2,9 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.CandidateCrudRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.OpportunityCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.PuestoCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.CandidateNodeMapper;
-import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.OpportunityNodeMapper;
+import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PuestoNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.CandidateRelationship;
 import com.sngular.skilltree.model.*;
@@ -23,9 +23,9 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
     private final CandidateCrudRepository crud;
 
-    private final OpportunityCrudRepository opportunityCrudRepository;
+    private final PuestoCrudRepository opportunityCrudRepository;
 
-    private final OpportunityNodeMapper opportunityNodeMapper;
+    private final PuestoNodeMapper puestoNodeMapper;
 
     private final PeopleNodeMapper peopleNodeMapper;
 
@@ -41,7 +41,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
         for (var opportunityNode : opportunityNodeList){
             candidateRelationshipList.addAll(opportunityNode.getCandidates());
-            candidateBuilder.opportunity(opportunityNodeMapper.fromNode(opportunityCrudRepository.findByCode(opportunityNode.getCode())));
+            candidateBuilder.puesto(puestoNodeMapper.fromNode(opportunityCrudRepository.findByCode(opportunityNode.getCode())));
         }
         for (var candidateRelationship : candidateRelationshipList){
             candidateBuilder.code(candidateRelationship.code());
@@ -120,7 +120,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
         candidateBuilder.candidate(peopleBuilder);
         candidateBuilder.skills(List.of(knows));
-        candidateBuilder.opportunity(opportunityNodeMapper.fromNode(opportunityCrudRepository.findOpportunity(record.get("n.code").asString())));
+        candidateBuilder.puesto(puestoNodeMapper.fromNode(opportunityCrudRepository.findOpportunity(record.get("n.code").asString())));
         return candidateBuilder;
     }
 

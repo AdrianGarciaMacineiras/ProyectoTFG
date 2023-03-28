@@ -2,13 +2,11 @@ package com.sngular.skilltree.infraestructura.impl.neo4j;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
 import com.sngular.skilltree.model.*;
-import com.sngular.skilltree.model.Roles;
+import com.sngular.skilltree.model.Assigns;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -33,12 +31,12 @@ public class ResolveServiceNode {
     }
 
     @Named("mapToParticipate")
-    public List<Participate> mapToParticipate(List<ParticipateRelationship> participateRelationshipList) {
-        final List<Participate> participateList = new ArrayList<>();
-        var participateMap = new HashMap<String, List<Roles>>();
-        for (var participateRelationship : participateRelationshipList) {
+    public List<Assignments> mapToParticipate(List<AssignedRelationship> assignedRelationshipList) {
+        final List<Assignments> assignmentsList = new ArrayList<>();
+        var participateMap = new HashMap<String, List<Assigns>>();
+        for (var participateRelationship : assignedRelationshipList) {
             participateMap.compute(participateRelationship.project().getName(), (code, roleList) -> {
-                var rol = Roles.builder()
+                var rol = Assigns.builder()
                             .role(participateRelationship.role())
                             .initDate(participateRelationship.initDate())
                             .endDate(participateRelationship.endDate())
@@ -50,14 +48,14 @@ public class ResolveServiceNode {
                 return roleList;
             });
         }
-        participateMap.forEach((code, roleList) -> participateList.add(Participate.builder().name(code).roles(roleList).build()));
-        return participateList;
+        participateMap.forEach((code, roleList) -> assignmentsList.add(Assignments.builder().name(code).roles(roleList).build()));
+        return assignmentsList;
     }
 
     @Named("mapToParticipateRelationship")
-    public List<ParticipateRelationship> mapToParticipateRelationship(List<Participate> participateList) {
-        final List<ParticipateRelationship> participateRelationshipList = new ArrayList<>();
-        for (var participate : participateList) {
+    public List<AssignedRelationship> mapToParticipateRelationship(List<Assignments> assignmentsList) {
+        final List<AssignedRelationship> assignedRelationshipList = new ArrayList<>();
+        for (var participate : assignmentsList) {
             LocalDate endDate = null;
             LocalDate initDate = null;
             String role = null;
@@ -66,11 +64,11 @@ public class ResolveServiceNode {
                 endDate = rol.endDate();
                 initDate = rol.initDate();
                 role = rol.role();
-                ParticipateRelationship participateRelationship = new ParticipateRelationship(null, project, endDate, initDate, role);
-                participateRelationshipList.add(participateRelationship);
+                AssignedRelationship assignedRelationship = new AssignedRelationship(null, project, endDate, initDate, role);
+                assignedRelationshipList.add(assignedRelationship);
             }
         }
-        return participateRelationshipList;
+        return assignedRelationshipList;
     }
 
     @Named("mapToSubskill")

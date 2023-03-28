@@ -1,4 +1,4 @@
-package com.sngular.skilltree.opportunity.fixtures;
+package com.sngular.skilltree.puesto.fixtures;
 
 import com.sngular.skilltree.model.*;
 import com.sngular.skilltree.testutil.FileHelper;
@@ -7,17 +7,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class OpportunityFixtures {
+public class PuestoFixtures {
 
     public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
-    public static final String OPPORTUNITY_BY_CODE_JSON = FileHelper.getContent("/opportunity/opportunity_by_code.json");
+    public static final String OPPORTUNITY_BY_CODE_JSON = FileHelper.getContent("/puesto/puesto_by_code.json");
 
-    public static final String UPDATED_OPPORTUNITY_BY_CODE_JSON = FileHelper.getContent("/opportunity/updated_opportunity_by_code.json");
+    public static final String UPDATED_OPPORTUNITY_BY_CODE_JSON = FileHelper.getContent("/puesto/updated_puesto_by_code.json");
 
-    public static final String PATCH_OPPORTUNITY_BY_CODE_JSON = FileHelper.getContent("/opportunity/patched_opportunity.json");
+    public static final String PATCH_OPPORTUNITY_BY_CODE_JSON = FileHelper.getContent("/puesto/patched_puesto.json");
 
-    public static final String LIST_OPPORTUNITY_JSON = FileHelper.getContent("/opportunity/list_opportunity.json");
+    public static final String LIST_OPPORTUNITY_JSON = FileHelper.getContent("/puesto/list_puesto.json");
 
     public static final Office OFFICE =
             Office.builder()
@@ -78,16 +78,16 @@ public class OpportunityFixtures {
                     .birthDate(date)
                     .build();
 
-    public static final OpportunitySkill OPPORTUNITY_SKILL =
-            OpportunitySkill.builder()
+    public static final PuestoSkill OPPORTUNITY_SKILL =
+            PuestoSkill.builder()
                     .skill(SKILL_BY_CODE)
                     .levelReq(EnumLevelReq.MANDATORY)
                     .minExp(7)
                     .minLevel(EnumMinLevel.HIGH)
                     .build();
 
-    public static final Opportunity OPPORTUNITY_BY_CODE =
-            Opportunity.builder()
+    public static final Puesto PUESTO_BY_CODE =
+            Puesto.builder()
                     .code("itxtl1")
                     .office(OFFICE)
                     .role("Team Leader")
@@ -102,8 +102,8 @@ public class OpportunityFixtures {
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 
-    public static final Opportunity UPDATED_OPPORTUNITY_BY_CODE =
-            Opportunity.builder()
+    public static final Puesto UPDATED_PUESTO_BY_CODE =
+            Puesto.builder()
                     .code("itxtl1")
                     .office(OFFICE)
                     .role("Leader")
@@ -118,8 +118,8 @@ public class OpportunityFixtures {
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 
-    public static final Opportunity OPPORTUNITY2_BY_CODE =
-            Opportunity.builder()
+    public static final Puesto PUESTO_2_BY_CODE =
+            Puesto.builder()
                     .code("itxtl2")
                     .office(OFFICE)
                     .role("Team Leader")
@@ -134,5 +134,5 @@ public class OpportunityFixtures {
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 
-    public static final List<Opportunity> OPPORTUNITY_LIST = List.of(OPPORTUNITY_BY_CODE, OPPORTUNITY2_BY_CODE);
+    public static final List<Puesto> PUESTO_LIST = List.of(PUESTO_BY_CODE, PUESTO_2_BY_CODE);
 }

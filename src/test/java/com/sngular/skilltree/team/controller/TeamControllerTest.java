@@ -4,10 +4,8 @@ import com.sngular.skilltree.application.*;
 import com.sngular.skilltree.application.updater.TeamUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.TeamController;
-import com.sngular.skilltree.contract.mapper.OpportunityMapper;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import com.sngular.skilltree.contract.mapper.TeamMapper;
-import com.sngular.skilltree.model.Opportunity;
 import com.sngular.skilltree.model.Team;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -136,7 +134,7 @@ public class TeamControllerTest {
         SkillService skillService;
 
         @MockBean
-        OpportunityService opportunityService;
+        PuestoService puestoService;
 
         @MockBean
         PeopleService peopleService;
@@ -150,10 +148,10 @@ public class TeamControllerTest {
         ClientService clientService;
 
         @Bean
-        ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService,
+        ResolveService resolveService(final SkillService skillService, final PuestoService puestoService,
                                       final PeopleService peopleService, final ProjectService projectService,
                                       final OfficeService officeService, final ClientService clientService) {
-            return new ResolveService(skillService, opportunityService, peopleService, projectService, officeService, clientService);
+            return new ResolveService(skillService, puestoService, peopleService, projectService, officeService, clientService);
         }
     }
 }

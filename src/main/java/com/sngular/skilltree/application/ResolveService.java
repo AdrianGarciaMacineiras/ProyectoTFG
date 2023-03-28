@@ -15,7 +15,7 @@ public class ResolveService {
 
     private final SkillService skillService;
 
-    private final OpportunityService opportunityService;
+    private final PuestoService puestoService;
 
     private final PeopleService peopleService;
 
@@ -59,17 +59,17 @@ public class ResolveService {
         return skillList;
     }
 
-    @Named("resolveCodeOpportunity")
-    public Opportunity resolveCodeOpportunity(final String code) {
-        return opportunityService.findByCode(code);
+    @Named("resolveCodePuesto")
+    public Puesto resolveCodePuesto(final String code) {
+        return puestoService.findByCode(code);
     }
 
-    @Named("resolveCodeOpportunityList")
-    public List<Opportunity> resolveCodeOpportunityList(final List<String> codeList) {
-        final var opportunityList = new ArrayList<Opportunity>();
+    @Named("resolveCodePuestoList")
+    public List<Puesto> resolveCodePuestoList(final List<String> codeList) {
+        final var opportunityList = new ArrayList<Puesto>();
         if (codeList != null) {
             for (var code : codeList) {
-                opportunityList.add(resolveCodeOpportunity(code));
+                opportunityList.add(resolveCodePuesto(code));
             }
         }
         return opportunityList;

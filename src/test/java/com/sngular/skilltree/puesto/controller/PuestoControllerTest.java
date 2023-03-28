@@ -1,13 +1,13 @@
-package com.sngular.skilltree.opportunity.controller;
+package com.sngular.skilltree.puesto.controller;
 
 import com.sngular.skilltree.application.*;
 import com.sngular.skilltree.application.updater.OpportunityUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
-import com.sngular.skilltree.contract.OpportunityController;
-import com.sngular.skilltree.contract.mapper.OpportunityMapper;
+import com.sngular.skilltree.contract.PuestoController;
+import com.sngular.skilltree.contract.mapper.PuestoMapper;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
-import com.sngular.skilltree.model.Opportunity;
+import com.sngular.skilltree.model.Puesto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -20,8 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static com.sngular.skilltree.opportunity.fixtures.OpportunityFixtures.*;
-import static com.sngular.skilltree.opportunity.fixtures.OpportunityFixtures.OPPORTUNITY_BY_CODE;
+import static com.sngular.skilltree.puesto.fixtures.PuestoFixtures.*;
+import static com.sngular.skilltree.puesto.fixtures.PuestoFixtures.PUESTO_BY_CODE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -29,8 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @Slf4j
-@WebMvcTest(controllers = OpportunityController.class)
-class OpportunityControllerTest {
+@WebMvcTest(controllers = PuestoController.class)
+class PuestoControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,13 +39,13 @@ class OpportunityControllerTest {
     private OpportunityUpdater opportunityUpdater;
 
     @Autowired
-    private OpportunityService opportunityService;
+    private PuestoService puestoService;
 
     @Test
     void getOpportunityByCode() throws Exception{
-        when(opportunityService.findByCode(anyString())).thenReturn(OPPORTUNITY_BY_CODE);
+        when(puestoService.findByCode(anyString())).thenReturn(PUESTO_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                                .get("/opportunity/itxtl1")
+                                .get("/puesto/itxtl1")
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(OPPORTUNITY_BY_CODE_JSON));
@@ -53,27 +53,27 @@ class OpportunityControllerTest {
 
     @Test
     void shouldDeleteOpportunityBySuccess() throws Exception{
-        when(opportunityService.deleteByCode(anyString())).thenReturn(true);
+        when(puestoService.deleteByCode(anyString())).thenReturn(true);
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/opportunity/itxtl1")
+                        .delete("/puesto/itxtl1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     void shouldDeleteOpportunityFail() throws Exception{
-        when(opportunityService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("Opportunity", "itxtl1"));
+        when(puestoService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("Opportunity", "itxtl1"));
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/opportunity/itxtl1")
+                        .delete("/puesto/itxtl1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
    @Test
     void updateOpportunity() throws Exception {
-        when(opportunityUpdater.update(anyString(),any(Opportunity.class))).thenReturn(UPDATED_OPPORTUNITY_BY_CODE);
+        when(opportunityUpdater.update(anyString(),any(Puesto.class))).thenReturn(UPDATED_PUESTO_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/opportunity/itxtl1")
+                        .put("/puesto/itxtl1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(UPDATED_OPPORTUNITY_BY_CODE_JSON))
@@ -83,9 +83,9 @@ class OpportunityControllerTest {
 
     @Test
     void addOpportunity() throws Exception {
-        when(opportunityService.create(any(Opportunity.class))).thenReturn(OPPORTUNITY_BY_CODE);
+        when(puestoService.create(any(Puesto.class))).thenReturn(PUESTO_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/opportunity")
+                        .post("/puesto")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(OPPORTUNITY_BY_CODE_JSON))
@@ -95,9 +95,9 @@ class OpportunityControllerTest {
 
     @Test
     void patchOpportunity() throws Exception {
-        when(opportunityUpdater.patch(anyString(),any(Opportunity.class))).thenReturn(UPDATED_OPPORTUNITY_BY_CODE);
+        when(opportunityUpdater.patch(anyString(),any(Puesto.class))).thenReturn(UPDATED_PUESTO_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch("/opportunity/itxtl1")
+                        .patch("/puesto/itxtl1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(PATCH_OPPORTUNITY_BY_CODE_JSON))
@@ -106,9 +106,9 @@ class OpportunityControllerTest {
 
     @Test
     void getOpportunities() throws Exception {
-        when(opportunityService.getAll()).thenReturn(OPPORTUNITY_LIST);
+        when(puestoService.getAll()).thenReturn(PUESTO_LIST);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/opportunity")
+                        .get("/puesto")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(LIST_OPPORTUNITY_JSON));
     }
@@ -117,8 +117,8 @@ class OpportunityControllerTest {
     static class OpportunityControllerTestConfiguration {
 
         @Bean
-        OpportunityMapper opportunityMapper() {
-            return Mappers.getMapper(OpportunityMapper.class);
+        PuestoMapper opportunityMapper() {
+            return Mappers.getMapper(PuestoMapper.class);
         }
 
         @Bean
@@ -136,7 +136,7 @@ class OpportunityControllerTest {
         SkillService skillService;
 
         @MockBean
-        OpportunityService opportunityService;
+        PuestoService puestoService;
 
         @MockBean
         PeopleService peopleService;
@@ -151,10 +151,10 @@ class OpportunityControllerTest {
         ClientService clientService;
 
         @Bean
-        ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService,
+        ResolveService resolveService(final SkillService skillService, final PuestoService puestoService,
                                       final PeopleService peopleService, final ProjectService projectService,
                                       final OfficeService officeService, final ClientService clientService) {
-            return new ResolveService(skillService, opportunityService, peopleService, projectService, officeService, clientService);
+            return new ResolveService(skillService, puestoService, peopleService, projectService, officeService, clientService);
         }
     }
 }

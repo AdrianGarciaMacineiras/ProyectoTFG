@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Node("Opportunity")
-public class OpportunityNode {
+public class PuestoNode {
 
     @Id
     private String code;
@@ -43,10 +43,13 @@ public class OpportunityNode {
     private String role;
 
     @Relationship(type="NEEDS", direction = Relationship.Direction.OUTGOING)
-    private List<OpportunitySkillsRelationship> skills;
+    private List<PuestoSkillsRelationship> skills;
 
     @Relationship(type = "CANDIDATE", direction = Relationship.Direction.OUTGOING)
     private List<CandidateRelationship> candidates;
+
+    @Relationship(type="ASSIGNED", direction = Relationship.Direction.OUTGOING)
+    private List<AssignedRelationship> participate;
 
     private boolean deleted;
 

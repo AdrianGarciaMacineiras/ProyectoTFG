@@ -204,23 +204,23 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /opportunity:
-    summary: Company opportunities
-    description: Returns a list of all opportunities
+  /puesto:
+    summary: Company jobs
+    description: Returns a list of all jobs
     get:
-      summary: List all available opportunities
-      operationId: getOpportunities
+      summary: List all available jobs
+      operationId: getPuestos
       tags:
-        - opportunity
+        - puesto
       responses:
         '200':
-          description: A paged array of opportunities
+          description: A paged array of jobs
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/opportunities"
+                  $ref: "#/components/schemas/puestos"
         '400':
           description: Bad Request
         '404':
@@ -233,24 +233,24 @@ paths:
                 $ref: "#/components/schemas/error"
 
     post:
-      summary: Adds a new opportunity
-      description: Adds a new opportunity
-      operationId: addOpportunity
+      summary: Adds a new job
+      description: Adds a new job
+      operationId: addPuesto
       tags:
-        - opportunity
+        - puesto
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/opportunity"
+              $ref: "#/components/schemas/puesto"
       responses:
         '201':
-          description: An opportunity has been added
+          description: A job has been added
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/opportunity"
+                $ref: "#/components/schemas/puesto"
         '400':
           description: Bad Request
         '404':
@@ -262,27 +262,27 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /opportunity/{opportunitycode}:
+  /puesto/{puestocode}:
     get:
-      summary: Gets an opportunity by the code
-      description: Returns an individual opportunity, identified by a code
-      operationId: getOpportunityByCode
+      summary: Gets a job by the code
+      description: Returns an individual job, identified by a code
+      operationId: getPuestoByCode
       parameters:
-        - name: opportunitycode
+        - name: puestocode
           in: path
           required: true
           schema:
             type: string
-          description: String that represents the code of an opportunity
+          description: String that represents the code of a job
       tags:
-        - opportunity
+        - puesto
       responses:
         '200':
-          description: An opportunity
+          description: A job
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/opportunity"
+                $ref: "#/components/schemas/puesto"
         '400':
           description: Bad Request
         '404':
@@ -295,31 +295,31 @@ paths:
                 $ref: "#/components/schemas/error"
 
     put:
-      summary: Updates the given opportunity
-      description: Updates the entirety of an opportunity
-      operationId: updateOpportunity
+      summary: Updates the given job
+      description: Updates the entirety of a job
+      operationId: updatePuesto
       parameters:
-        - name: opportunitycode
+        - name: puestocode
           in: path
           required: true
           schema:
             type: string
-          description: String that represents the code of an opportunity
+          description: String that represents the code of a puesto
       tags:
-        - opportunity
+        - puesto
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/opportunity"
+              $ref: "#/components/schemas/puesto"
       responses:
         '200':
-          description: An opportunity has been updated
+          description: A puesto has been updated
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/opportunity"
+                $ref: "#/components/schemas/puesto"
         '400':
           description: Bad Request
         '404':
@@ -332,31 +332,31 @@ paths:
                 $ref: "#/components/schemas/error"
 
     patch:
-      summary: Updates some of the information of an opportunity
-      description: Updates part of an opportunity
+      summary: Updates some of the information of a job
+      description: Updates part of a job
       parameters:
-        - name: opportunitycode
+        - name: puestocode
           in: path
           required: true
           schema:
             type: string
-          description: String that represents the code of an opportunity
-      operationId: patchOpportunity
+          description: String that represents the code of a puesto
+      operationId: patchPuesto
       tags:
-        - opportunity
+        - puesto
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/patchedOpportunity"
+              $ref: "#/components/schemas/patchedPuesto"
       responses:
         '200':
-          description: An opportunity has been updated
+          description: A job has been updated
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/opportunity"
+                $ref: "#/components/schemas/puesto"
         '400':
           description: Bad Request
         '404':
@@ -369,21 +369,21 @@ paths:
                 $ref: "#/components/schemas/error"
 
     delete:
-      summary: Deletes the given opportunity
-      description: Deletes the opportunity
+      summary: Deletes the given job
+      description: Deletes the job
       parameters:
-        - name: opportunitycode
+        - name: puestocode
           in: path
           required: true
           schema:
             type: string
-          description: String that represents the code of an opportunity
-      operationId: deleteOpportunity
+          description: String that represents the code of a job
+      operationId: deletePuesto
       tags:
-        - opportunity
+        - puesto
       responses:
         '200':
-          description: An opportunity has been deleted
+          description: A job has been deleted
         '400':
           description: Bad Request
         '404':
@@ -1314,12 +1314,12 @@ components:
           items:
             $ref: "#/components/schemas/skill"
 
-    opportunities:
+    puestos:
       type: array
       items:
-        $ref: "#/components/schemas/opportunity"
+        $ref: "#/components/schemas/puesto"
 
-    opportunity:
+    puesto:
       type: object
       required:
         - code
@@ -1354,7 +1354,7 @@ components:
         skills:
           type: array
           items:
-            $ref: "#/components/schemas/opportunitySkill"
+            $ref: "#/components/schemas/puestoSkill"
         managedBy:
           type: integer
           format: int64
@@ -1363,7 +1363,7 @@ components:
           items:
             $ref: "#/components/schemas/candidate"
 
-    patchedOpportunity:
+    patchedPuesto:
       type: object
       properties:
         name:
@@ -1391,7 +1391,7 @@ components:
         skills:
           type: array
           items:
-            $ref: "#/components/schemas/opportunitySkill"
+            $ref: "#/components/schemas/puestoSkill"
         managedBy:
           type: integer
           format: int64
@@ -1494,7 +1494,7 @@ components:
         candidateCode:
           type: integer
           format: int64
-        opportunityCode:
+        puestoCode:
           type: string
         skills:
           type: array
@@ -1519,7 +1519,7 @@ components:
         candidateCode:
           type: integer
           format: int64
-        opportunityCode:
+        puestoCode:
           type: string
         skills:
           type: array
@@ -1548,7 +1548,7 @@ components:
         primary:
           type: boolean
 
-    opportunitySkill:
+    puestoSkill:
       type: object
       required:
         - skill
