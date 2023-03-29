@@ -49,7 +49,7 @@ public class PuestoNode {
     private List<CandidateRelationship> candidates;
 
     @Relationship(type="ASSIGNED", direction = Relationship.Direction.OUTGOING)
-    private List<AssignedRelationship> participate;
+    private List<AssignedRelationship> assignments;
 
     private boolean deleted;
 

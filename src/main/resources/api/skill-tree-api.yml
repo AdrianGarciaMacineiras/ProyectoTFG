@@ -1636,7 +1636,7 @@ components:
           type: array
           items: 
             type: string
-        participate:
+        assignments:
           type: array
           items:
             type: object
@@ -1646,7 +1646,7 @@ components:
               roles:
                 type: array
                 items:
-                  $ref: "#/components/schemas/role"
+                  $ref: "#/components/schemas/assigns"
         interest:
           type: array
           items:
@@ -1709,7 +1709,7 @@ components:
           type: array
           items:
             type: string
-        participate:
+        assignments:
           type: array
           items:
             type: object
@@ -1719,7 +1719,7 @@ components:
               roles:
                 type: array
                 items:
-                  $ref: "#/components/schemas/role"
+                  $ref: "#/components/schemas/assigns"
         interest:
           type: array
           items:
@@ -1751,7 +1751,7 @@ components:
         - DEVELOPER
         - JUNIOR
 
-    role:
+    assigns:
       type: object
       properties:
         role:
@@ -1760,6 +1760,9 @@ components:
           type: string
           format: date
         endDate:
+          type: string
+          format: date
+        assignDate:
           type: string
           format: date
 

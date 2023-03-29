@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder(toBuilder = true)
-public record Assignments(String name, List<Assigns> roles) {
+public record Assignments(String name, List<Assigns> assignments) {
 }

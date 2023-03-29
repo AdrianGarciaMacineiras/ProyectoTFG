@@ -1,5 +1,6 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
+import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveServiceNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PuestoNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PuestoSkillsRelationship;
 import com.sngular.skilltree.model.Puesto;
@@ -11,12 +12,13 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {SkillNodeMapper.class, PeopleNodeMapper.class, OfficeNodeMapper.class,
-        ProjectNodeMapper.class, CandidateNodeMapper.class})
+        ProjectNodeMapper.class, CandidateNodeMapper.class, ResolveServiceNode.class})
 public interface PuestoNodeMapper {
 
   @InheritInverseConfiguration
   @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
+  @Mapping(target = "assign", source = "assigns", qualifiedByName = {"resolveServiceNode", "mapToParticipateRelationship"})
   PuestoNode toNode(Puesto puesto);
 
   @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")

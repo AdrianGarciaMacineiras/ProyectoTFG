@@ -30,12 +30,12 @@ public class ResolveServiceNode {
         return skillNode;
     }
 
-    @Named("mapToParticipate")
-    public List<Assignments> mapToParticipate(List<AssignedRelationship> assignedRelationshipList) {
+    @Named("mapToAssignment")
+    public List<Assignments> mapToAssignment(List<AssignedRelationship> assignedRelationshipList) {
         final List<Assignments> assignmentsList = new ArrayList<>();
-        var participateMap = new HashMap<String, List<Assigns>>();
-        for (var participateRelationship : assignedRelationshipList) {
-            participateMap.compute(participateRelationship.project().getName(), (code, roleList) -> {
+        var assignmentMap = new HashMap<String, List<Assigns>>();
+        for (var assignRelationship : assignedRelationshipList) {
+            assignmentMap.compute(participateRelationship.project().getName(), (code, roleList) -> {
                 var rol = Assigns.builder()
                             .role(participateRelationship.role())
                             .initDate(participateRelationship.initDate())

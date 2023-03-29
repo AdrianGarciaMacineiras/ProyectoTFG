@@ -15,7 +15,6 @@ public interface PeopleNodeMapper {
 
     @InheritInverseConfiguration
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
-    @Mapping(target = "participate", source = "participate", qualifiedByName = {"resolveServiceNode", "mapToParticipateRelationship"})
     PeopleNode toNode(People People);
 
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
