@@ -2,9 +2,9 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.CandidateCrudRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.PuestoCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.PositionCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.CandidateNodeMapper;
-import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PuestoNodeMapper;
+import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PositionNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.CandidateRelationship;
 import com.sngular.skilltree.model.*;
@@ -23,9 +23,9 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
     private final CandidateCrudRepository crud;
 
-    private final PuestoCrudRepository opportunityCrudRepository;
+    private final PositionCrudRepository positionCrudRepository;
 
-    private final PuestoNodeMapper puestoNodeMapper;
+    private final PositionNodeMapper positionNodeMapper;
 
     private final PeopleNodeMapper peopleNodeMapper;
 
@@ -35,13 +35,13 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
     @Override
     public List<Candidate> findAll() {
-        var opportunityNodeList = opportunityCrudRepository.findAll();
+        var positionNodeList = positionCrudRepository.findAll();
         List<CandidateRelationship> candidateRelationshipList = new ArrayList<>();
         Candidate.CandidateBuilder candidateBuilder = Candidate.builder();
 
-        for (var opportunityNode : opportunityNodeList){
-            candidateRelationshipList.addAll(opportunityNode.getCandidates());
-            candidateBuilder.puesto(puestoNodeMapper.fromNode(opportunityCrudRepository.findByCode(opportunityNode.getCode())));
+        for (var positionNode : positionNodeList){
+            candidateRelationshipList.addAll(positionNode.getCandidates());
+            candidateBuilder.position(positionNodeMapper.fromNode(positionCrudRepository.findByCode(positionNode.getCode())));
         }
         for (var candidateRelationship : candidateRelationshipList){
             candidateBuilder.code(candidateRelationship.code());
@@ -69,7 +69,6 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     @Override
     public boolean deleteByCode(String candidatecode) {
         var node = crud.findByCode(candidatecode);
-        //node.setDeleted(true);
         crud.save(node);
         crud.delete(node);
         return true;
@@ -120,7 +119,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
         candidateBuilder.candidate(peopleBuilder);
         candidateBuilder.skills(List.of(knows));
-        candidateBuilder.puesto(puestoNodeMapper.fromNode(opportunityCrudRepository.findOpportunity(record.get("n.code").asString())));
+        candidateBuilder.position(positionNodeMapper.fromNode(positionCrudRepository.findPosition(record.get("n.code").asString())));
         return candidateBuilder;
     }
 

@@ -53,4 +53,7 @@ public class PeopleNode {
 
     @Relationship(type="HAS_CERTIFICATE", direction = Relationship.Direction.OUTGOING)
     private List<CertificateRelationship> certificates;
+
+    @Relationship(type="ASSIGNED", direction = Relationship.Direction.INCOMING)
+    private List<AssignedRelationship> assignments;
 }

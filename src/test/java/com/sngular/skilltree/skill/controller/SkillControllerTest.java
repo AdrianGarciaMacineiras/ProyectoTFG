@@ -60,7 +60,7 @@ public class SkillControllerTest {
         SkillService skillService;
 
         @MockBean
-        PuestoService puestoService;
+        PositionService positionService;
 
         @MockBean
         PeopleService peopleService;
@@ -75,10 +75,10 @@ public class SkillControllerTest {
         ClientService clientService;
 
         @Bean
-        ResolveService resolveService(final SkillService skillService, final PuestoService puestoService,
+        ResolveService resolveService(final SkillService skillService, final PositionService positionService,
                                       final PeopleService peopleService, final ProjectService projectService,
                                       final OfficeService officeService, final ClientService clientService) {
-            return new ResolveService(skillService, puestoService, peopleService, projectService, officeService, clientService);
+            return new ResolveService(skillService, positionService, peopleService, projectService, officeService, clientService);
         }
     }
 }

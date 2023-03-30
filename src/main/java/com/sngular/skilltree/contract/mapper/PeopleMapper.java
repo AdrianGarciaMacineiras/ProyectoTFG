@@ -36,11 +36,11 @@ public interface PeopleMapper {
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
-    Assigns roleDTOToRoles(RoleDTO roleDTO);
+    Assigns assignsDTOToAssigns(AssignsDTO assignsDTO);
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
-    RoleDTO rolesToRoleDTO(Assigns assigns);
+    AssignsDTO assignsToAssignsDTO(Assigns assigns);
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
     Role rolesDTOToRole(RolesDTO rolesDTO);
@@ -66,7 +66,6 @@ public interface PeopleMapper {
                 .interest((newPeople.interest() == null) ? oldPeople.interest() : newPeople.interest())
                 .knows((newPeople.knows() == null) ? oldPeople.knows() : newPeople.knows())
                 .master((newPeople.master() == null) ? oldPeople.master() : newPeople.master())
-                .participate((newPeople.assignments() == null) ? oldPeople.assignments() : newPeople.assignments())
                 .work_with((newPeople.work_with() == null) ? oldPeople.work_with() : newPeople.work_with())
                 .roles((newPeople.roles() == null) ? oldPeople.roles() : newPeople.roles())
                 .build();

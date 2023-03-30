@@ -4,10 +4,9 @@ import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
 
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.impl.neo4j.*;
-import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
-import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PuestoNodeMapper;
+import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PositionNodeMapper;
 import com.sngular.skilltree.model.*;
-import com.sngular.skilltree.infraestructura.PuestoRepository;
+import com.sngular.skilltree.infraestructura.PositionRepository;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -20,15 +19,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class PuestoRepositoryImpl implements PuestoRepository {
+public class PositionRepositoryImpl implements PositionRepository {
 
   private final List<String> LOW_LEVEL_LIST = List.of("'LOW'", "'MEDIUM'", "'HIGH'");
   private final List<String> MID_LEVEL_LIST = List.of( "'MEDIUM'", "'HIGH'");
   private final List<String> HIGH_LEVEL_LIST = List.of("'HIGH'");
 
-  private final PuestoCrudRepository crud;
-
-  private final PeopleCrudRepository peopleCrud;
+  private final PositionCrudRepository crud;
 
   private final ProjectCrudRepository projectCrud;
 
@@ -36,37 +33,35 @@ public class PuestoRepositoryImpl implements PuestoRepository {
 
   private final OfficeCrudRepository officeCrud;
 
-  private final PeopleNodeMapper peopleNodeMapper;
-
-  private final PuestoNodeMapper mapper;
+  private final PositionNodeMapper mapper;
 
   private final Neo4jClient client;
 
   @Override
-  public List<Puesto> findAll() {
+  public List<Position> findAll() {
     return mapper.map(crud.findByDeletedIsFalse());
   }
 
   @Override
-  public Puesto save(Puesto puesto) {
+  public Position save(Position position) {
 
-    var clientNode = clientCrud.findByCode(puesto.client().code());
+    var clientNode = clientCrud.findByCode(position.client().code());
     if (Objects.isNull(clientNode) || clientNode.isDeleted()) {
       throw new EntityNotFoundException("Client", clientNode.getCode());
     }
 
-    var projectNode = projectCrud.findByCode(puesto.project().code());
+    var projectNode = projectCrud.findByCode(position.project().code());
     if (Objects.isNull(projectNode) || projectNode.isDeleted()) {
       throw new EntityNotFoundException("Project", projectNode.getCode());
     }
 
-    var officeNode = officeCrud.findByCode(puesto.office().code());
+    var officeNode = officeCrud.findByCode(position.office().code());
     if (Objects.isNull(officeNode) || officeNode.isDeleted()) {
       throw new EntityNotFoundException("Office", officeNode.getCode());
     }
 
     final var filter = new ArrayList<String>();
-    for (var puestoSkill : puesto.skills()){
+    for (var puestoSkill : position.skills()){
       if (MANDATORY.equals(puestoSkill.levelReq())) {
         switch (puestoSkill.minLevel()) {
           case LOW -> filter.add(fillFilterBuilder(puestoSkill.skill().code(), LOW_LEVEL_LIST));
@@ -135,7 +130,7 @@ public class PuestoRepositoryImpl implements PuestoRepository {
       Candidate candidate = Candidate.builder()
               .code(people.code()+ "-" + people.employeeId())
               .candidate(people)
-              .puesto(puesto)
+              .position(position)
               .status(EnumStatus.ASSIGNED)
               .creationDate(LocalDate.now())
               .build();
@@ -143,8 +138,8 @@ public class PuestoRepositoryImpl implements PuestoRepository {
       candidateList.add(candidate);
     }
 
-    puesto.candidates().addAll(candidateList);
-    return mapper.fromNode(crud.save(mapper.toNode(puesto)));
+    position.candidates().addAll(candidateList);
+    return mapper.fromNode(crud.save(mapper.toNode(position)));
   }
 
   private String fillFilterBuilder(final String skillCode, final List<String> levelList) {
@@ -152,20 +147,20 @@ public class PuestoRepositoryImpl implements PuestoRepository {
   }
 
   @Override
-  public Puesto findByCode(String opportunitycode) {
-    return mapper.fromNode(crud.findByCode(opportunitycode));
+  public Position findByCode(String positioncode) {
+    return mapper.fromNode(crud.findByCode(positioncode));
   }
 
   @Override
-  public boolean deleteByCode(String opportunitycode) {
-    var node = crud.findByCode(opportunitycode);
+  public boolean deleteByCode(String positioncode) {
+    var node = crud.findByCode(positioncode);
     node.setDeleted(true);
     crud.save(node);
     return true;
   }
 
   @Override
-  public List<Puesto> findByDeletedIsFalse() {
+  public List<Position> findByDeletedIsFalse() {
     return mapper.map(crud.findByDeletedIsFalse());
   }
 

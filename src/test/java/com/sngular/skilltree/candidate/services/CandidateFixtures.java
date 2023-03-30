@@ -59,16 +59,16 @@ public class CandidateFixtures {
                     .skills(List.of(SKILL_BY_CODE))
                     .build();
 
-    public static final PuestoSkill OPPORTUNITY_SKILL =
-            PuestoSkill.builder()
+    public static final PositionSkill OPPORTUNITY_SKILL =
+            PositionSkill.builder()
                     .skill(SKILL_BY_CODE)
                     .levelReq(EnumLevelReq.MANDATORY)
                     .minExp(7)
                     .minLevel(EnumMinLevel.HIGH)
                     .build();
 
-    public static final Puesto PUESTO_BY_CODE =
-            Puesto.builder()
+    public static final Position POSITION_BY_CODE =
+            Position.builder()
                     .code("itxtl1")
                     .office(OFFICE)
                     .role("Team Leader")
@@ -110,14 +110,14 @@ public class CandidateFixtures {
             Candidate.builder()
                     .code("c1120")
                     .candidate(PEOPLE_BY_CODE)
-                    .puesto(PUESTO_BY_CODE)
+                    .position(POSITION_BY_CODE)
                     .build();
 
     public static final Candidate CANDIDATE2_BY_CODE =
             Candidate.builder()
                     .code("c1122")
                     .candidate(PEOPLE_BY_CODE)
-                    .puesto(PUESTO_BY_CODE)
+                    .position(POSITION_BY_CODE)
                     .build();
 
     public static final List<Candidate> CANDIDATE_LIST = new ArrayList<>(){{

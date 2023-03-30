@@ -11,14 +11,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring", uses = {ResolveService.class, PuestoMapper.class, PeopleMapper.class})
+@Mapper(componentModel = "spring", uses = {ResolveService.class, PositionMapper.class, PeopleMapper.class})
 public interface CandidateMapper {
 
     @Mapping(source = "candidate.code", target = "candidateCode")
-    @Mapping(source = "puesto.code", target = "puestoCode")
+    @Mapping(source = "position.code", target = "positionCode")
     CandidateDTO toCandidateDTO(Candidate candidate);
 
-    @Mapping(source = "puestoCode", target = "puesto", qualifiedByName = {"resolveService", "resolveCodePuesto"})
+    @Mapping(source = "positionCode", target = "position", qualifiedByName = {"resolveService", "resolveCodePosition"})
     @Mapping(source = "candidateCode", target = "candidate", qualifiedByName = {"resolveService", "resolveCodePeople"})
     Candidate toCandidate(CandidateDTO candidateDTO);
 

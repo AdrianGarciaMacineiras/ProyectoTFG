@@ -204,23 +204,23 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /puesto:
-    summary: Company jobs
-    description: Returns a list of all jobs
+  /position:
+    summary: Company positions
+    description: Returns a list of all positions
     get:
-      summary: List all available jobs
-      operationId: getPuestos
+      summary: List all available positions
+      operationId: getPositions
       tags:
-        - puesto
+        - position
       responses:
         '200':
-          description: A paged array of jobs
+          description: A paged array of positions
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/puestos"
+                  $ref: "#/components/schemas/positions"
         '400':
           description: Bad Request
         '404':
@@ -233,24 +233,24 @@ paths:
                 $ref: "#/components/schemas/error"
 
     post:
-      summary: Adds a new job
-      description: Adds a new job
-      operationId: addPuesto
+      summary: Adds a new position
+      description: Adds a new position
+      operationId: addPosition
       tags:
-        - puesto
+        - position
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/puesto"
+              $ref: "#/components/schemas/position"
       responses:
         '201':
-          description: A job has been added
+          description: A position has been added
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/puesto"
+                $ref: "#/components/schemas/position"
         '400':
           description: Bad Request
         '404':
@@ -262,27 +262,27 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /puesto/{puestocode}:
+  /position/{positioncode}:
     get:
-      summary: Gets a job by the code
-      description: Returns an individual job, identified by a code
-      operationId: getPuestoByCode
+      summary: Gets a position by the code
+      description: Returns an individual position, identified by a code
+      operationId: getPositionByCode
       parameters:
-        - name: puestocode
+        - name: positioncode
           in: path
           required: true
           schema:
             type: string
-          description: String that represents the code of a job
+          description: String that represents the code of a position
       tags:
-        - puesto
+        - position
       responses:
         '200':
-          description: A job
+          description: A position
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/puesto"
+                $ref: "#/components/schemas/position"
         '400':
           description: Bad Request
         '404':
@@ -295,31 +295,31 @@ paths:
                 $ref: "#/components/schemas/error"
 
     put:
-      summary: Updates the given job
-      description: Updates the entirety of a job
-      operationId: updatePuesto
+      summary: Updates the given position
+      description: Updates the entirety of a position
+      operationId: updatePosition
       parameters:
-        - name: puestocode
+        - name: positioncode
           in: path
           required: true
           schema:
             type: string
-          description: String that represents the code of a puesto
+          description: String that represents the code of a position
       tags:
-        - puesto
+        - position
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/puesto"
+              $ref: "#/components/schemas/position"
       responses:
         '200':
-          description: A puesto has been updated
+          description: A position has been updated
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/puesto"
+                $ref: "#/components/schemas/position"
         '400':
           description: Bad Request
         '404':
@@ -332,31 +332,31 @@ paths:
                 $ref: "#/components/schemas/error"
 
     patch:
-      summary: Updates some of the information of a job
-      description: Updates part of a job
+      summary: Updates some of the information of a position
+      description: Updates part of a position
       parameters:
-        - name: puestocode
+        - name: positioncode
           in: path
           required: true
           schema:
             type: string
-          description: String that represents the code of a puesto
-      operationId: patchPuesto
+          description: String that represents the code of a position
+      operationId: patchPosition
       tags:
-        - puesto
+        - position
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/patchedPuesto"
+              $ref: "#/components/schemas/patchedPosition"
       responses:
         '200':
-          description: A job has been updated
+          description: A position has been updated
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/puesto"
+                $ref: "#/components/schemas/position"
         '400':
           description: Bad Request
         '404':
@@ -369,21 +369,21 @@ paths:
                 $ref: "#/components/schemas/error"
 
     delete:
-      summary: Deletes the given job
-      description: Deletes the job
+      summary: Deletes the given position
+      description: Deletes the position
       parameters:
-        - name: puestocode
+        - name: positioncode
           in: path
           required: true
           schema:
             type: string
-          description: String that represents the code of a job
-      operationId: deletePuesto
+          description: String that represents the code of a position
+      operationId: deletePosition
       tags:
-        - puesto
+        - position
       responses:
         '200':
-          description: A job has been deleted
+          description: A position has been deleted
         '400':
           description: Bad Request
         '404':
@@ -1314,12 +1314,12 @@ components:
           items:
             $ref: "#/components/schemas/skill"
 
-    puestos:
+    positions:
       type: array
       items:
-        $ref: "#/components/schemas/puesto"
+        $ref: "#/components/schemas/position"
 
-    puesto:
+    position:
       type: object
       required:
         - code
@@ -1354,7 +1354,7 @@ components:
         skills:
           type: array
           items:
-            $ref: "#/components/schemas/puestoSkill"
+            $ref: "#/components/schemas/positionSkill"
         managedBy:
           type: integer
           format: int64
@@ -1363,7 +1363,7 @@ components:
           items:
             $ref: "#/components/schemas/candidate"
 
-    patchedPuesto:
+    patchedPosition:
       type: object
       properties:
         name:
@@ -1391,7 +1391,7 @@ components:
         skills:
           type: array
           items:
-            $ref: "#/components/schemas/puestoSkill"
+            $ref: "#/components/schemas/positionSkill"
         managedBy:
           type: integer
           format: int64
@@ -1494,7 +1494,7 @@ components:
         candidateCode:
           type: integer
           format: int64
-        puestoCode:
+        positionCode:
           type: string
         skills:
           type: array
@@ -1519,7 +1519,7 @@ components:
         candidateCode:
           type: integer
           format: int64
-        puestoCode:
+        positionCode:
           type: string
         skills:
           type: array
@@ -1548,7 +1548,7 @@ components:
         primary:
           type: boolean
 
-    puestoSkill:
+    positionSkill:
       type: object
       required:
         - skill

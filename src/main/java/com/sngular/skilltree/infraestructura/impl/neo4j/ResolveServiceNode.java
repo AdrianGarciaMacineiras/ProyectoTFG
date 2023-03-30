@@ -23,6 +23,9 @@ public class ResolveServiceNode {
 
     private final ProjectCrudRepository projectCrudRepository;
 
+    private final PositionCrudRepository positionCrudRepository;
+
+
     @Named("resolveCodeToSkillNode")
     public SkillNode resolveCodeToSkillNode(final String code) {
         var skillNode = skillCrudRepository.findSkillByCode(code);
@@ -35,36 +38,36 @@ public class ResolveServiceNode {
         final List<Assignments> assignmentsList = new ArrayList<>();
         var assignmentMap = new HashMap<String, List<Assigns>>();
         for (var assignRelationship : assignedRelationshipList) {
-            assignmentMap.compute(participateRelationship.project().getName(), (code, roleList) -> {
-                var rol = Assigns.builder()
-                            .role(participateRelationship.role())
-                            .initDate(participateRelationship.initDate())
-                            .endDate(participateRelationship.endDate())
+            assignmentMap.compute(assignRelationship.positionNode().getProject().getName(), (code, assignsList) -> {
+                var assign = Assigns.builder()
+                            .role(assignRelationship.role())
+                            .initDate(assignRelationship.initDate())
+                            .endDate(assignRelationship.endDate())
                             .build();
-                if (Objects.isNull(roleList)) {
-                    roleList = new ArrayList<>();
+                if (Objects.isNull(assignsList)) {
+                    assignsList = new ArrayList<>();
                 }
-                roleList.add(rol);
-                return roleList;
+                assignsList.add(assign);
+                return assignsList;
             });
         }
-        participateMap.forEach((code, roleList) -> assignmentsList.add(Assignments.builder().name(code).roles(roleList).build()));
+        assignmentMap.forEach((code, roleList) -> assignmentsList.add(Assignments.builder().name(code).assignments(roleList).build()));
         return assignmentsList;
     }
 
-    @Named("mapToParticipateRelationship")
-    public List<AssignedRelationship> mapToParticipateRelationship(List<Assignments> assignmentsList) {
+    @Named("mapToAssignedRelationship")
+    public List<AssignedRelationship> mapToAssignedRelationship(List<Assignments> assignmentsList) {
         final List<AssignedRelationship> assignedRelationshipList = new ArrayList<>();
-        for (var participate : assignmentsList) {
+        for (var assignment : assignmentsList) {
             LocalDate endDate = null;
             LocalDate initDate = null;
             String role = null;
-            var project = projectCrudRepository.findByName(participate.name());
-            for (var rol : participate.roles()) {
-                endDate = rol.endDate();
-                initDate = rol.initDate();
-                role = rol.role();
-                AssignedRelationship assignedRelationship = new AssignedRelationship(null, project, endDate, initDate, role);
+            var position = positionCrudRepository.findPositionByProject(assignment.name());
+            for (var assign : assignment.assignments()) {
+                endDate = assign.endDate();
+                initDate = assign.initDate();
+                role = assign.role();
+                AssignedRelationship assignedRelationship = new AssignedRelationship(null, position, endDate, null, initDate, role);
                 assignedRelationshipList.add(assignedRelationship);
             }
         }

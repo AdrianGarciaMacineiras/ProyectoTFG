@@ -1,13 +1,13 @@
-package com.sngular.skilltree.puesto.controller;
+package com.sngular.skilltree.position.controller;
 
 import com.sngular.skilltree.application.*;
-import com.sngular.skilltree.application.updater.OpportunityUpdater;
+import com.sngular.skilltree.application.updater.PositionUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
-import com.sngular.skilltree.contract.PuestoController;
-import com.sngular.skilltree.contract.mapper.PuestoMapper;
+import com.sngular.skilltree.contract.PositionController;
+import com.sngular.skilltree.contract.mapper.PositionMapper;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
-import com.sngular.skilltree.model.Puesto;
+import com.sngular.skilltree.model.Position;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -20,8 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static com.sngular.skilltree.puesto.fixtures.PuestoFixtures.*;
-import static com.sngular.skilltree.puesto.fixtures.PuestoFixtures.PUESTO_BY_CODE;
+import static com.sngular.skilltree.position.fixtures.PositionFixtures.*;
+import static com.sngular.skilltree.position.fixtures.PositionFixtures.POSITION_BY_CODE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -29,96 +29,96 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @Slf4j
-@WebMvcTest(controllers = PuestoController.class)
-class PuestoControllerTest {
+@WebMvcTest(controllers = PositionController.class)
+class PositionControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private OpportunityUpdater opportunityUpdater;
+    private PositionUpdater positionUpdater;
 
     @Autowired
-    private PuestoService puestoService;
+    private PositionService positionService;
 
     @Test
     void getOpportunityByCode() throws Exception{
-        when(puestoService.findByCode(anyString())).thenReturn(PUESTO_BY_CODE);
+        when(positionService.findByCode(anyString())).thenReturn(POSITION_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                                .get("/puesto/itxtl1")
+                                .get("/position/itxtl1")
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(content().json(OPPORTUNITY_BY_CODE_JSON));
+                .andExpect(content().json(POSITION_BY_CODE_JSON));
     }
 
     @Test
     void shouldDeleteOpportunityBySuccess() throws Exception{
-        when(puestoService.deleteByCode(anyString())).thenReturn(true);
+        when(positionService.deleteByCode(anyString())).thenReturn(true);
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/puesto/itxtl1")
+                        .delete("/position/itxtl1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     void shouldDeleteOpportunityFail() throws Exception{
-        when(puestoService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("Opportunity", "itxtl1"));
+        when(positionService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("Opportunity", "itxtl1"));
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/puesto/itxtl1")
+                        .delete("/position/itxtl1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
    @Test
     void updateOpportunity() throws Exception {
-        when(opportunityUpdater.update(anyString(),any(Puesto.class))).thenReturn(UPDATED_PUESTO_BY_CODE);
+        when(positionUpdater.update(anyString(),any(Position.class))).thenReturn(UPDATED_POSITION_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/puesto/itxtl1")
+                        .put("/position/itxtl1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(UPDATED_OPPORTUNITY_BY_CODE_JSON))
+                        .content(UPDATED_POSITION_BY_CODE_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(UPDATED_OPPORTUNITY_BY_CODE_JSON));
+                .andExpect(content().json(UPDATED_POSITION_BY_CODE_JSON));
     }
 
     @Test
     void addOpportunity() throws Exception {
-        when(puestoService.create(any(Puesto.class))).thenReturn(PUESTO_BY_CODE);
+        when(positionService.create(any(Position.class))).thenReturn(POSITION_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/puesto")
+                        .post("/position")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(OPPORTUNITY_BY_CODE_JSON))
+                        .content(POSITION_BY_CODE_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(OPPORTUNITY_BY_CODE_JSON));
+                .andExpect(content().json(POSITION_BY_CODE_JSON));
     }
 
     @Test
     void patchOpportunity() throws Exception {
-        when(opportunityUpdater.patch(anyString(),any(Puesto.class))).thenReturn(UPDATED_PUESTO_BY_CODE);
+        when(positionUpdater.patch(anyString(),any(Position.class))).thenReturn(UPDATED_POSITION_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch("/puesto/itxtl1")
+                        .patch("/position/itxtl1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(PATCH_OPPORTUNITY_BY_CODE_JSON))
-                .andExpect(content().json(PATCH_OPPORTUNITY_BY_CODE_JSON));
+                        .content(PATCH_POSITION_BY_CODE_JSON))
+                .andExpect(content().json(PATCH_POSITION_BY_CODE_JSON));
     }
 
     @Test
     void getOpportunities() throws Exception {
-        when(puestoService.getAll()).thenReturn(PUESTO_LIST);
+        when(positionService.getAll()).thenReturn(POSITION_LIST);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/puesto")
+                        .get("/position")
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(LIST_OPPORTUNITY_JSON));
+                .andExpect(content().json(LIST_POSITION_JSON));
     }
 
     @TestConfiguration
     static class OpportunityControllerTestConfiguration {
 
         @Bean
-        PuestoMapper opportunityMapper() {
-            return Mappers.getMapper(PuestoMapper.class);
+        PositionMapper opportunityMapper() {
+            return Mappers.getMapper(PositionMapper.class);
         }
 
         @Bean
@@ -130,13 +130,13 @@ class PuestoControllerTest {
         PeopleMapper peopleMapper(){return Mappers.getMapper(PeopleMapper.class);}
 
         @MockBean
-        OpportunityUpdater opportunityUpdater;
+        PositionUpdater positionUpdater;
 
         @MockBean
         SkillService skillService;
 
         @MockBean
-        PuestoService puestoService;
+        PositionService positionService;
 
         @MockBean
         PeopleService peopleService;
@@ -151,10 +151,10 @@ class PuestoControllerTest {
         ClientService clientService;
 
         @Bean
-        ResolveService resolveService(final SkillService skillService, final PuestoService puestoService,
+        ResolveService resolveService(final SkillService skillService, final PositionService positionService,
                                       final PeopleService peopleService, final ProjectService projectService,
                                       final OfficeService officeService, final ClientService clientService) {
-            return new ResolveService(skillService, puestoService, peopleService, projectService, officeService, clientService);
+            return new ResolveService(skillService, positionService, peopleService, projectService, officeService, clientService);
         }
     }
 }
