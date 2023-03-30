@@ -678,6 +678,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+
   /candidate/{candidatecode}:
     get:
       summary: Gets a candidate by the code
@@ -800,6 +801,40 @@ paths:
       responses:
         '200':
           description: A candidate has been deleted
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /candidate/{positioncode}:
+    post:
+      summary: Generate new candidates for a position
+      description: Generate candidates
+      parameters:
+        - name: positioncode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a candidate
+      operationId: generateCandidates
+      tags:
+        - candidate
+      responses:
+        '200':
+          description: A paged array with the generated candidates of a position
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/candidate"
         '400':
           description: Bad Request
         '404':
@@ -1794,7 +1829,7 @@ components:
               peopleCode:
                 type: integer
                 format: int64
-              position:
+              charge:
                 type: string
                 enum:
                   - DIRECTOR

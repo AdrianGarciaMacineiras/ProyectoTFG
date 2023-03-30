@@ -1,6 +1,6 @@
 package com.sngular.skilltree.model;
 
-public enum EnumPosition {
+public enum EnumCharge {
     DIRECTOR,
     HEAD
 }

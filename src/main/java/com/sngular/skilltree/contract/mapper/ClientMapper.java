@@ -10,6 +10,7 @@ import org.mapstruct.Named;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
@@ -27,16 +28,15 @@ public interface ClientMapper {
     default Client update(Client newClient, Client oldClient) {
         Client.ClientBuilder clientBuilder = oldClient.toBuilder();
 
-        Client client = clientBuilder
+        return clientBuilder
                 .code(oldClient.code())
-                .industry((newClient.industry() == null) ? oldClient.industry() : newClient.industry())
-                .country((newClient.country() == null) ? oldClient.country() : newClient.country())
-                .HQ((newClient.HQ() == null) ? oldClient.HQ() : newClient.HQ())
-                .offices((newClient.offices() == null) ? oldClient.offices() : newClient.offices())
-                .principalOffice((newClient.principalOffice() == null) ? oldClient.principalOffice() : newClient.principalOffice())
-                .name((newClient.name() == null) ? oldClient.name() : newClient.name())
+                .industry((Objects.isNull(newClient.industry())) ? oldClient.industry() : newClient.industry())
+                .country((Objects.isNull(newClient.country())) ? oldClient.country() : newClient.country())
+                .HQ((Objects.isNull(newClient.HQ())) ? oldClient.HQ() : newClient.HQ())
+                .offices((Objects.isNull(newClient.offices())) ? oldClient.offices() : newClient.offices())
+                .principalOffice((Objects.isNull(newClient.principalOffice())) ? oldClient.principalOffice() : newClient.principalOffice())
+                .name((Objects.isNull(newClient.name())) ? oldClient.name() : newClient.name())
                 .build();
 
-        return client;
     };
 }

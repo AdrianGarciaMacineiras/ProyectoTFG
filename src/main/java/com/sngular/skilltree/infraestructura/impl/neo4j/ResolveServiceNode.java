@@ -58,17 +58,19 @@ public class ResolveServiceNode {
     @Named("mapToAssignedRelationship")
     public List<AssignedRelationship> mapToAssignedRelationship(List<Assignments> assignmentsList) {
         final List<AssignedRelationship> assignedRelationshipList = new ArrayList<>();
-        for (var assignment : assignmentsList) {
-            LocalDate endDate = null;
-            LocalDate initDate = null;
-            String role = null;
-            var position = positionCrudRepository.findPositionByProject(assignment.name());
-            for (var assign : assignment.assignments()) {
-                endDate = assign.endDate();
-                initDate = assign.initDate();
-                role = assign.role();
-                AssignedRelationship assignedRelationship = new AssignedRelationship(null, position, endDate, null, initDate, role);
-                assignedRelationshipList.add(assignedRelationship);
+        if(!Objects.isNull(assignmentsList)) {
+            for (var assignment : assignmentsList) {
+                LocalDate endDate = null;
+                LocalDate initDate = null;
+                String role = null;
+                var position = positionCrudRepository.findPositionByProject(assignment.name());
+                for (var assign : assignment.assignments()) {
+                    endDate = assign.endDate();
+                    initDate = assign.initDate();
+                    role = assign.role();
+                    AssignedRelationship assignedRelationship = new AssignedRelationship(null, position, endDate, null, initDate, role);
+                    assignedRelationshipList.add(assignedRelationship);
+                }
             }
         }
         return assignedRelationshipList;

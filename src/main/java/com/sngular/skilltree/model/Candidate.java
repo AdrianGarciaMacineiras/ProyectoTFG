@@ -7,5 +7,5 @@ import java.util.List;
 
 @Builder(toBuilder = true)
 public record Candidate(Long id, String code, People candidate, EnumStatus status, LocalDate introductionDate,
-                        LocalDate resolutionDate, LocalDate creationDate, Position position, List<Knows> skills) {
+                        LocalDate resolutionDate, LocalDate creationDate, LocalDate interviewDate, Position position, List<Knows> skills) {
 }

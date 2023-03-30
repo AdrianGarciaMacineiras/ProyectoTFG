@@ -4,7 +4,6 @@ public enum EnumStatus {
     ASSIGNED,
     INTERVIEWED,
     PRESENTED,
-
     OK,
     KO
 }

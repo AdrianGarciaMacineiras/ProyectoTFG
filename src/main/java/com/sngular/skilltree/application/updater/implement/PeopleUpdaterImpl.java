@@ -31,8 +31,8 @@ public class PeopleUpdaterImpl implements PeopleUpdater {
     @Override
     public People patch(Long personcode, People patchedPeople) {
         validate(personcode);
-        var oldperson = peopleRepository.findByCode(personcode);
-        var person = mapper.update(patchedPeople, oldperson);
+        var oldPerson = peopleRepository.findByCode(personcode);
+        var person = mapper.update(patchedPeople, oldPerson);
         return peopleRepository.save(person);
     }
 

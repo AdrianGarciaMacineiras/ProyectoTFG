@@ -2,6 +2,7 @@ package com.sngular.skilltree.contract.mapper;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedCandidateDTO;
@@ -30,12 +31,12 @@ public interface CandidateMapper {
     default Candidate update(Candidate newCandidate, Candidate oldCandidate) {
         Candidate.CandidateBuilder candidateBuilder = oldCandidate.toBuilder();
 
-        Candidate candidate = candidateBuilder
-                .status((newCandidate.status() == null) ? oldCandidate.status() : newCandidate.status())
-                .resolutionDate((newCandidate.resolutionDate() == null) ? oldCandidate.resolutionDate() : newCandidate.resolutionDate())
-                .introductionDate((newCandidate.introductionDate() == null) ? oldCandidate.introductionDate() : newCandidate.introductionDate())
+        return candidateBuilder
+                .status((Objects.isNull(newCandidate.status())) ? oldCandidate.status() : newCandidate.status())
+                .resolutionDate((Objects.isNull(newCandidate.resolutionDate())) ? oldCandidate.resolutionDate() : newCandidate.resolutionDate())
+                .introductionDate((Objects.isNull(newCandidate.introductionDate())) ? oldCandidate.introductionDate() : newCandidate.introductionDate())
+                .interviewDate((Objects.isNull(newCandidate.interviewDate())) ? oldCandidate.interviewDate() : newCandidate.interviewDate())
                 .build();
 
-        return candidate;
     };
 }

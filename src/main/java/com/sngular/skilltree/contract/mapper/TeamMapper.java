@@ -10,6 +10,7 @@ import org.mapstruct.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Mapper(componentModel = "spring", uses = {PeopleMapper.class, ResolveService.class})
 public interface TeamMapper {
@@ -39,14 +40,13 @@ public interface TeamMapper {
     default Team update(Team newTeam, Team oldTeam) {
         Team.TeamBuilder teamBuilder = oldTeam.toBuilder();
 
-        Team team = teamBuilder
+        return teamBuilder
                 .code(oldTeam.code())
-                .members((newTeam.members() == null) ? oldTeam.members() : newTeam.members())
-                .description((newTeam.description() == null) ? oldTeam.description() : newTeam.description())
-                .name((newTeam.name() == null) ? oldTeam.name() : newTeam.name())
-                .tags((newTeam == null) ? oldTeam.tags() : newTeam.tags())
+                .members((Objects.isNull(newTeam.members())) ? oldTeam.members() : newTeam.members())
+                .description((Objects.isNull(newTeam.description())) ? oldTeam.description() : newTeam.description())
+                .name((Objects.isNull(newTeam.name())) ? oldTeam.name() : newTeam.name())
+                .tags((Objects.isNull(newTeam.tags())) ? oldTeam.tags() : newTeam.tags())
                 .build();
 
-        return team;
     };
 }

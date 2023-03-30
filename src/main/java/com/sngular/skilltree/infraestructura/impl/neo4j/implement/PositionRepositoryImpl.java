@@ -10,6 +10,7 @@ import com.sngular.skilltree.infraestructura.PositionRepository;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.BiFunction;
 
 import lombok.RequiredArgsConstructor;
 import org.neo4j.driver.Record;
@@ -61,31 +62,15 @@ public class PositionRepositoryImpl implements PositionRepository {
     }
 
     final var filter = new ArrayList<String>();
-    for (var puestoSkill : position.skills()){
-      if (MANDATORY.equals(puestoSkill.levelReq())) {
-        switch (puestoSkill.minLevel()) {
-          case LOW -> filter.add(fillFilterBuilder(puestoSkill.skill().code(), LOW_LEVEL_LIST));
-          case MEDIUM -> filter.add(fillFilterBuilder(puestoSkill.skill().code(), MID_LEVEL_LIST));
-          default -> filter.add(fillFilterBuilder(puestoSkill.skill().code(), HIGH_LEVEL_LIST));
+    for (var positionSkill : position.skills()){
+      if (MANDATORY.equals(positionSkill.levelReq())) {
+        switch (positionSkill.minLevel()) {
+          case LOW -> filter.add(fillFilterBuilder(positionSkill.skill().code(), LOW_LEVEL_LIST));
+          case MEDIUM -> filter.add(fillFilterBuilder(positionSkill.skill().code(), MID_LEVEL_LIST));
+          default -> filter.add(fillFilterBuilder(positionSkill.skill().code(), HIGH_LEVEL_LIST));
         }
       }
     }
-    /**
-     * MATCH (p:People)-[r:KNOWS]->(s:Skill)
-     * WHERE s.code IN ['code1', 'code2', 'code3', ..., 'codeN']
-     * WITH p, COLLECT(DISTINCT {code:s.code, level:r.level}) AS skills
-     * WHERE ALL(skill IN [{code:'code1', level:1}, {code:'code2', level:2}, {code:'code3', level:3}, ..., {code:'codeN', level:N}]
-     *       WHERE skill IN skills)
-     * RETURN p
-     */
-
-    /**
-     *MATCH (p:People)-[r:knows]->(s:Skill)
-     * WHERE ALL(pair IN [{skillcode:'code1', knowslevel:['level1','level2','level3']},{skillcode:'code2', knowslevel:['level4']},....,{skillcode:'codeN', knowslevel:['level5',
-     'level6']}]
-     *           WHERE pair.skillcode = s.Code AND pair.knowslevel = r.Level)
-     * RETURN p
-     */
 
     var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
             " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) AND ANY(lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair" +
@@ -93,20 +78,7 @@ public class PositionRepositoryImpl implements PositionRepository {
             " RETURN DISTINCT p", String.join(",", filter));
 
     var peopleList = client.query(query).fetchAs(People.class)
-            .mappedBy((TypeSystem t, Record record) -> {
-
-              People people = People.builder()
-                      .name(record.get("p").get("name").asString())
-                      .surname(record.get("p").get("surname").asString())
-                      .employeeId(record.get("p").get("employeeId").asString())
-                      .birthDate(record.get("p").get("birthDate").asLocalDate())
-                      .code(record.get("p").get("code").asLong())
-                      .deleted(record.get("p").get("deleted").asBoolean())
-                      .build();
-
-              return people;
-
-            })
+            .mappedBy(getTypeSystemRecordPeopleBiFunction())
             .all();
 
     Map<Long, People> knowsMap = new HashMap<>();
@@ -140,6 +112,18 @@ public class PositionRepositoryImpl implements PositionRepository {
 
     position.candidates().addAll(candidateList);
     return mapper.fromNode(crud.save(mapper.toNode(position)));
+  }
+
+  private static BiFunction<TypeSystem, Record, People> getTypeSystemRecordPeopleBiFunction() {
+    return (TypeSystem t, Record record) ->
+       People.builder()
+              .name(record.get("p").get("name").asString())
+              .surname(record.get("p").get("surname").asString())
+              .employeeId(record.get("p").get("employeeId").asString())
+              .birthDate(record.get("p").get("birthDate").asLocalDate())
+              .code(record.get("p").get("code").asLong())
+              .deleted(record.get("p").get("deleted").asBoolean())
+              .build();
   }
 
   private String fillFilterBuilder(final String skillCode, final List<String> levelList) {

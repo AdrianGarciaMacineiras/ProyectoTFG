@@ -18,7 +18,7 @@ public class PositionUpdaterImpl implements PositionUpdater {
     @Override
     public Position update(final String positioncode, final Position newPosition) {
         var oldPosition = positionRepository.findByCode(positioncode);
-        //mapper.update(oldOpportunity, newOpportunity);
+        newPosition.candidates().addAll(oldPosition.candidates());
         return positionRepository.save(newPosition);
     }
 

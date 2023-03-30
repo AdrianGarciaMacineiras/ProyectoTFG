@@ -10,6 +10,7 @@ import org.mapstruct.Named;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Mapper(componentModel = "spring", uses = {SkillMapper.class, ResolveService.class})
 public interface ProjectMapper {
@@ -35,23 +36,22 @@ public interface ProjectMapper {
     default Project update(Project newProject, Project oldProject) {
         Project.ProjectBuilder projectBuilder = oldProject.toBuilder();
 
-        Project project = projectBuilder
+        return projectBuilder
                 .code(oldProject.code())
-                .duration((newProject.duration() == null) ? oldProject.duration() : newProject.duration())
-                .initDate((newProject.initDate() == null) ? oldProject.initDate() : newProject.initDate())
-                .tag((newProject.tag() == null) ? oldProject.tag() : newProject.tag())
-                .skills((newProject.skills() == null) ? oldProject.skills() : newProject.skills())
-                .name((newProject.name() == null) ? oldProject.name() : newProject.name())
-                .roles((newProject.roles() == null) ? oldProject.roles() : newProject.roles())
-                .area((newProject.area() == null) ? oldProject.area() : newProject.area())
-                .historic((newProject.historic() == null) ? oldProject.historic() : newProject.historic())
-                .endDate((newProject.endDate() == null) ? oldProject.endDate() : newProject.endDate())
-                .domain((newProject.domain() == null) ? oldProject.domain() : newProject.domain())
-                .client((newProject.client() == null) ? oldProject.client() : newProject.client())
-                .desc((newProject.desc() == null) ? oldProject.desc() : newProject.desc())
-                .guards((newProject.guards() == null) ? oldProject.guards() : newProject.guards())
+                .duration((Objects.isNull(newProject.duration())) ? oldProject.duration() : newProject.duration())
+                .initDate((Objects.isNull(newProject.initDate())) ? oldProject.initDate() : newProject.initDate())
+                .tag((Objects.isNull(newProject.tag())) ? oldProject.tag() : newProject.tag())
+                .skills((Objects.isNull(newProject.skills())) ? oldProject.skills() : newProject.skills())
+                .name((Objects.isNull(newProject.name())) ? oldProject.name() : newProject.name())
+                .roles((Objects.isNull(newProject.roles())) ? oldProject.roles() : newProject.roles())
+                .area((Objects.isNull(newProject.area())) ? oldProject.area() : newProject.area())
+                .historic((Objects.isNull(newProject.historic())) ? oldProject.historic() : newProject.historic())
+                .endDate((Objects.isNull(newProject.endDate())) ? oldProject.endDate() : newProject.endDate())
+                .domain((Objects.isNull(newProject.domain())) ? oldProject.domain() : newProject.domain())
+                .client((Objects.isNull(newProject.client())) ? oldProject.client() : newProject.client())
+                .desc((Objects.isNull(newProject.desc())) ? oldProject.desc() : newProject.desc())
+                .guards((Objects.isNull(newProject.guards())) ? oldProject.guards() : newProject.guards())
                 .build();
 
-        return project;
     };
 }

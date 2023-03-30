@@ -4,6 +4,7 @@ import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.application.implement.CandidateServiceImpl;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
+import com.sngular.skilltree.infraestructura.PositionRepository;
 import com.sngular.skilltree.model.Candidate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,12 +29,15 @@ public class CandidateServiceTest {
     @Mock
     private CandidateRepository candidateRepository;
 
+    @Mock
+    private PositionRepository positionRepository;
+
     private CandidateService candidateService;
 
     private CandidateMapper mapper = Mappers.getMapper(CandidateMapper.class);
 
     @BeforeEach
-    void setUp() {candidateService = new CandidateServiceImpl(candidateRepository);}
+    void setUp() {candidateService = new CandidateServiceImpl(candidateRepository, positionRepository);}
 
     @Test
     @DisplayName("Testing getAll the candidates")

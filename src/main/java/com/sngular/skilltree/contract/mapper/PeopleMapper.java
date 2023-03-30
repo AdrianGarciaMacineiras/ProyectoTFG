@@ -7,6 +7,7 @@ import org.mapstruct.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Mapper(componentModel = "spring", uses = {SkillMapper.class, ResolveService.class})
 public interface PeopleMapper {
@@ -55,22 +56,23 @@ public interface PeopleMapper {
     default People update(People newPeople, People oldPeople) {
         People.PeopleBuilder peopleBuilder = oldPeople.toBuilder();
 
-        People people = peopleBuilder
+        return peopleBuilder
                 .code(oldPeople.code())
-                .employeeId((newPeople.employeeId() == null) ? oldPeople.employeeId() : newPeople.employeeId())
-                .birthDate((newPeople.birthDate() == null) ? oldPeople.birthDate() : newPeople.birthDate())
-                .name((newPeople.name() == null) ? oldPeople.name() : newPeople.name())
-                .surname((newPeople.surname() == null) ? oldPeople.surname() : newPeople.surname())
-                .title((newPeople.title() == null) ? oldPeople.title() : newPeople.title())
-                .certificates((newPeople.certificates() == null) ? oldPeople.certificates() : newPeople.certificates())
-                .interest((newPeople.interest() == null) ? oldPeople.interest() : newPeople.interest())
-                .knows((newPeople.knows() == null) ? oldPeople.knows() : newPeople.knows())
-                .master((newPeople.master() == null) ? oldPeople.master() : newPeople.master())
-                .work_with((newPeople.work_with() == null) ? oldPeople.work_with() : newPeople.work_with())
-                .roles((newPeople.roles() == null) ? oldPeople.roles() : newPeople.roles())
+                .employeeId((Objects.isNull(newPeople.employeeId())) ? oldPeople.employeeId() : newPeople.employeeId())
+                .birthDate((Objects.isNull(newPeople.birthDate())) ? oldPeople.birthDate() : newPeople.birthDate())
+                .name((Objects.isNull(newPeople.name())) ? oldPeople.name() : newPeople.name())
+                .surname((Objects.isNull(newPeople.surname())) ? oldPeople.surname() : newPeople.surname())
+                .title((Objects.isNull(newPeople.title())) ? oldPeople.title() : newPeople.title())
+                .certificates((Objects.isNull(newPeople.certificates())) ? oldPeople.certificates() : newPeople.certificates())
+                .interest((Objects.isNull(newPeople.interest())) ? oldPeople.interest() : newPeople.interest())
+                .knows((Objects.isNull(newPeople.knows())) ? oldPeople.knows() : newPeople.knows())
+                .master((Objects.isNull(newPeople.master())) ? oldPeople.master() : newPeople.master())
+                .work_with((Objects.isNull(newPeople.work_with())) ? oldPeople.work_with() : newPeople.work_with())
+                .roles((Objects.isNull(newPeople.roles())) ? oldPeople.roles() : newPeople.roles())
+                .assignable((Objects.isNull(newPeople.assignable())) ? oldPeople.assignable() :  newPeople.assignable())
+                .assignments((Objects.isNull(newPeople.assignments())) ? oldPeople.assignments() : newPeople.assignments())
                 .build();
 
-        return people;
     };
 
     default Long toPeopleCode(final People people) {

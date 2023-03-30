@@ -6,5 +6,5 @@ import java.time.LocalDate;
 
 @RelationshipProperties
 public record AssignedRelationship(@RelationshipId Long id, @TargetNode PositionNode positionNode,
-                                   LocalDate endDate, LocalDate initDate, LocalDate assignedDate, String role) {
+                                   LocalDate endDate, LocalDate initDate, LocalDate assignedDate ,String role) {
 }

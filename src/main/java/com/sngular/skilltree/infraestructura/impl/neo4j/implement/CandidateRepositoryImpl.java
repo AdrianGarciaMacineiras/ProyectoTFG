@@ -7,6 +7,7 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.CandidateNodeMapp
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PositionNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.CandidateRelationship;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
 import com.sngular.skilltree.model.*;
 import lombok.RequiredArgsConstructor;
 import org.neo4j.driver.types.TypeSystem;
@@ -15,11 +16,20 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.neo4j.core.Neo4jClient;
 
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.function.BiFunction;
+
+import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
+
 
 @Repository
 @RequiredArgsConstructor
 public class CandidateRepositoryImpl implements CandidateRepository {
+
+    private final List<String> LOW_LEVEL_LIST = List.of("'LOW'", "'MEDIUM'", "'HIGH'");
+    private final List<String> MID_LEVEL_LIST = List.of( "'MEDIUM'", "'HIGH'");
+    private final List<String> HIGH_LEVEL_LIST = List.of("'HIGH'");
 
     private final CandidateCrudRepository crud;
 
@@ -106,6 +116,73 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         return new ArrayList<>(knowsMap.values());
     }
 
+    @Override
+    public List<Candidate> generateCandidates(Position position) {
+
+        final var filter = new ArrayList<String>();
+        for (var positionSkill : position.skills()){
+            if (MANDATORY.equals(positionSkill.levelReq())) {
+                switch (positionSkill.minLevel()) {
+                    case LOW -> filter.add(fillFilterBuilder(positionSkill.skill().code(), LOW_LEVEL_LIST));
+                    case MEDIUM -> filter.add(fillFilterBuilder(positionSkill.skill().code(), MID_LEVEL_LIST));
+                    default -> filter.add(fillFilterBuilder(positionSkill.skill().code(), HIGH_LEVEL_LIST));
+                }
+            }
+        }
+
+        var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
+                " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) AND ANY(lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair" +
+                ".skillcode})))" +
+                " RETURN DISTINCT p", String.join(",", filter));
+
+        var peopleList = client.query(query).fetchAs(People.class)
+                .mappedBy(getTypeSystemRecordPeopleBiFunction())
+                .all();
+
+        Map<Long, People> knowsMap = new HashMap<>();
+
+        peopleList.forEach(people ->
+                knowsMap.compute(people.code(), (code, aggPeople) -> {
+                    if(Objects.isNull(aggPeople)){
+                        return people;
+                    } else {
+                        var knowList = new ArrayList<>(aggPeople.knows());
+                        knowList.addAll(people.knows());
+                        aggPeople = aggPeople.toBuilder().knows(knowList).build();
+                    }
+                    return aggPeople;
+                })
+        );
+
+        var candidateList = new ArrayList<Candidate>();
+        for (var people : peopleList) {
+
+
+            Candidate candidate = Candidate.builder()
+                    .code(people.code()+ "-" + people.employeeId())
+                    .candidate(people)
+                    .position(position)
+                    .status(EnumStatus.ASSIGNED)
+                    .creationDate(LocalDate.now())
+                    .build();
+
+            candidateList.add(candidate);
+        }
+
+        for (var candidate : candidateList){
+            for (var existingCandidate: position.candidates()){
+                if(existingCandidate.candidate().code().equals(candidate.candidate().code()))
+                    candidateList.remove(candidate);
+            }
+        }
+
+        positionCrudRepository.delete(positionNodeMapper.toNode(position));
+        position.candidates().addAll(candidateList);
+        positionCrudRepository.save(positionNodeMapper.toNode(position));
+
+        return position.candidates();
+    }
+
     private Candidate.CandidateBuilder getCandidateBuilder(Record record) {
         Knows knows = getKnows(record);
 
@@ -141,6 +218,23 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                 .level(record.get("s").get("level").asString())
                 .primary(record.get("s").get("primary").asBoolean())
                 .build();
+    }
+
+    private String fillFilterBuilder(final String skillCode, final List<String> levelList) {
+        return String.format("{skillcode:'%s', knowslevel:[%s]}", skillCode, String.join(",", levelList));
+    }
+
+    private static BiFunction<TypeSystem, Record, People> getTypeSystemRecordPeopleBiFunction() {
+        return (TypeSystem t, Record record) ->
+
+                People.builder()
+                        .name(record.get("p").get("name").asString())
+                        .surname(record.get("p").get("surname").asString())
+                        .employeeId(record.get("p").get("employeeId").asString())
+                        .birthDate(record.get("p").get("birthDate").asLocalDate())
+                        .code(record.get("p").get("code").asLong())
+                        .deleted(record.get("p").get("deleted").asBoolean())
+                        .build();
     }
 
 }
