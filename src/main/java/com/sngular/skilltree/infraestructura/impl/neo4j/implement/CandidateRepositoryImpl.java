@@ -157,7 +157,6 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         var candidateList = new ArrayList<Candidate>();
         for (var people : peopleList) {
 
-
             Candidate candidate = Candidate.builder()
                     .code(people.code()+ "-" + people.employeeId())
                     .candidate(people)
@@ -169,14 +168,15 @@ public class CandidateRepositoryImpl implements CandidateRepository {
             candidateList.add(candidate);
         }
 
+        var aux = new ArrayList<>();
         for (var candidate : candidateList){
             for (var existingCandidate: position.candidates()){
                 if(existingCandidate.candidate().code().equals(candidate.candidate().code()))
-                    candidateList.remove(candidate);
+                    aux.add(candidate);
             }
         }
+        candidateList.removeAll(aux);
 
-        positionCrudRepository.delete(positionNodeMapper.toNode(position));
         position.candidates().addAll(candidateList);
         positionCrudRepository.save(positionNodeMapper.toNode(position));
 

@@ -44,7 +44,8 @@ public class CandidateServiceImpl implements CandidateService {
         var position = positionRepository.findByCode(positioncode);
         if (Objects.isNull(position)) {
             throw new EntityNotFoundException("Position", positioncode);
-        }        return candidateRepository.generateCandidates(position);
+        }
+        return candidateRepository.generateCandidates(position);
     }
 
     private void validateDoesNotExist(String code) {

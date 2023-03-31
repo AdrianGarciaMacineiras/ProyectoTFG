@@ -15,4 +15,6 @@ public interface PositionRepository {
   boolean deleteByCode(String positioncode);
 
   List<Position> findByDeletedIsFalse();
+
+  Position findPositionCandidates(String positioncode);
 }
