@@ -2,7 +2,7 @@ package com.sngular.skilltree.infraestructura.impl.neo4j;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
 import com.sngular.skilltree.model.*;
-import com.sngular.skilltree.model.Assigns;
+import com.sngular.skilltree.model.Assignment;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
@@ -36,10 +36,11 @@ public class ResolveServiceNode {
     @Named("mapToAssignment")
     public List<Assignments> mapToAssignment(List<AssignedRelationship> assignedRelationshipList) {
         final List<Assignments> assignmentsList = new ArrayList<>();
-        var assignmentMap = new HashMap<String, List<Assigns>>();
+        var assignmentMap = new HashMap<String, List<Assignment>>();
         for (var assignRelationship : assignedRelationshipList) {
-            assignmentMap.compute(assignRelationship.positionNode().getProject().getName(), (code, assignsList) -> {
-                var assign = Assigns.builder()
+            var positioNode = positionCrudRepository.findByCode(assignRelationship.positionNode().getCode());
+            assignmentMap.compute(positioNode.getProject().getName(), (code, assignsList) -> {
+                var assign = Assignment.builder()
                             .role(assignRelationship.role())
                             .initDate(assignRelationship.initDate())
                             .endDate(assignRelationship.endDate())
@@ -62,13 +63,15 @@ public class ResolveServiceNode {
             for (var assignment : assignmentsList) {
                 LocalDate endDate = null;
                 LocalDate initDate = null;
+                LocalDate assignDate = null;
                 String role = null;
                 var position = positionCrudRepository.findPositionByProject(assignment.name());
                 for (var assign : assignment.assignments()) {
                     endDate = assign.endDate();
                     initDate = assign.initDate();
+                    assignDate = assign.assignDate();
                     role = assign.role();
-                    AssignedRelationship assignedRelationship = new AssignedRelationship(null, position, endDate, null, initDate, role);
+                    AssignedRelationship assignedRelationship = new AssignedRelationship(null, position, endDate, initDate, assignDate, role);
                     assignedRelationshipList.add(assignedRelationship);
                 }
             }

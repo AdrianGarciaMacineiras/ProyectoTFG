@@ -1671,17 +1671,17 @@ components:
           type: array
           items: 
             type: string
-        assignments:
+        assigns:
           type: array
           items:
             type: object
             properties:
               name:
                 type: string
-              roles:
+              assignments:
                 type: array
                 items:
-                  $ref: "#/components/schemas/assigns"
+                  $ref: "#/components/schemas/assignment"
         interest:
           type: array
           items:
@@ -1744,17 +1744,17 @@ components:
           type: array
           items:
             type: string
-        assignments:
+        assigns:
           type: array
           items:
             type: object
             properties:
               name:
                 type: string
-              roles:
+              assignments:
                 type: array
                 items:
-                  $ref: "#/components/schemas/assigns"
+                  $ref: "#/components/schemas/assignment"
         interest:
           type: array
           items:
@@ -1786,7 +1786,7 @@ components:
         - DEVELOPER
         - JUNIOR
 
-    assigns:
+    assignment:
       type: object
       properties:
         role:

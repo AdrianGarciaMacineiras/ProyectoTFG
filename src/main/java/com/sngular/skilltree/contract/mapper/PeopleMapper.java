@@ -37,11 +37,13 @@ public interface PeopleMapper {
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
-    Assigns assignsDTOToAssigns(AssignsDTO assignsDTO);
+    @Mapping(target = "assignDate", dateFormat = "dd-MM-yyyy")
+    Assignment assignmentDTOToAssignment(AssignmentDTO assignmentDTO);
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
-    AssignsDTO assignsToAssignsDTO(Assigns assigns);
+    @Mapping(target = "assignDate", dateFormat = "dd-MM-yyyy")
+    AssignmentDTO assignmentToAssignmentDTO(Assignment assignment);
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
     Role rolesDTOToRole(RolesDTO rolesDTO);
@@ -70,7 +72,7 @@ public interface PeopleMapper {
                 .work_with((Objects.isNull(newPeople.work_with())) ? oldPeople.work_with() : newPeople.work_with())
                 .roles((Objects.isNull(newPeople.roles())) ? oldPeople.roles() : newPeople.roles())
                 .assignable((Objects.isNull(newPeople.assignable())) ? oldPeople.assignable() :  newPeople.assignable())
-                .assignments((Objects.isNull(newPeople.assignments())) ? oldPeople.assignments() : newPeople.assignments())
+                .assigns((Objects.isNull(newPeople.assigns())) ? oldPeople.assigns() : newPeople.assigns())
                 .build();
 
     };

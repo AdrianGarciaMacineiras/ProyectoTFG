@@ -54,5 +54,5 @@ public class PeopleNode {
     private List<CertificateRelationship> certificates;
 
     @Relationship(type="ASSIGNED", direction = Relationship.Direction.INCOMING)
-    private List<AssignedRelationship> assignments;
+    private List<AssignedRelationship> assigns;
 }
