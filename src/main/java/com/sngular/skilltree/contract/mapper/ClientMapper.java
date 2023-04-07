@@ -24,8 +24,8 @@ public interface ClientMapper {
 
     Client toClient(PatchedClientDTO patchedClientDTO);
 
-    @Named("update")
-    default Client update(Client newClient, Client oldClient) {
+    @Named("patch")
+    default Client patch(Client newClient, Client oldClient) {
         Client.ClientBuilder clientBuilder = oldClient.toBuilder();
 
         return clientBuilder

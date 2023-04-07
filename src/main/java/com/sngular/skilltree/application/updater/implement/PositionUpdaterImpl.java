@@ -25,7 +25,7 @@ public class PositionUpdaterImpl implements PositionUpdater {
     @Override
     public Position patch(final String positioncode, final Position patchedPosition) {
         var oldPosition = positionRepository.findByCode(positioncode);
-        var position = mapper.update(patchedPosition, oldPosition);
+        var position = mapper.patch(patchedPosition, oldPosition);
         return positionRepository.save(position);
     }
 

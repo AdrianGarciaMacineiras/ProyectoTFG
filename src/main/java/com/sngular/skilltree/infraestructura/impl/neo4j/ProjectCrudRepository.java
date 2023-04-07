@@ -10,7 +10,5 @@ public interface ProjectCrudRepository extends Neo4jRepository<ProjectNode, Long
 
     ProjectNode findByCode(Long projectcode);
 
-    ProjectNode findByName(String name);
-
     List<ProjectNode> findByDeletedIsFalse();
 }

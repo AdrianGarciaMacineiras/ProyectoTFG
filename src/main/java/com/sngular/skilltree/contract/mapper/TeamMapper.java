@@ -36,8 +36,8 @@ public interface TeamMapper {
 
     Team toTeam(PatchedTeamDTO patchedTeamDTO);
 
-    @Named("update")
-    default Team update(Team newTeam, Team oldTeam) {
+    @Named("patch")
+    default Team patch(Team newTeam, Team oldTeam) {
         Team.TeamBuilder teamBuilder = oldTeam.toBuilder();
 
         return teamBuilder

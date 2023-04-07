@@ -57,7 +57,14 @@ public class ResolveServiceNode {
             for (var assignment : assignmentsList) {
                 var position = positionCrudRepository.findPositionByProject(assignment.name());
                 for (var assign : assignment.assignments()) {
-                    AssignedRelationship assignedRelationship = new AssignedRelationship(assign.id(), position, assign.endDate(), assign.initDate(), assign.assignDate(), assign.role());
+                    AssignedRelationship assignedRelationship = AssignedRelationship.builder()
+                            .assignDate(assign.assignDate())
+                            .positionNode(position)
+                            .endDate(assign.endDate())
+                            .initDate(assign.initDate())
+                            .id(assign.id())
+                            .role(assign.role())
+                            .build();
                     assignedRelationshipList.add(assignedRelationship);
                 }
             }

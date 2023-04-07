@@ -47,8 +47,8 @@ public interface PositionMapper {
      @Mapping(target = "managedBy", source = "managedBy", qualifiedByName = {"resolveService", "resolveCodePeople"})
      Position toPosition(PatchedPositionDTO patchedPuestoDTO);
 
-     @Named("update")
-     default Position update(Position newPosition, Position oldPosition) {
+     @Named("patch")
+     default Position patch(Position newPosition, Position oldPosition) {
           Position.PositionBuilder positionBuilder = oldPosition.toBuilder();
 
           return positionBuilder

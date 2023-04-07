@@ -32,8 +32,8 @@ public interface ProjectMapper {
     @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
     Project toProject(PatchedProjectDTO patchedProjectDTO);
 
-    @Named("update")
-    default Project update(Project newProject, Project oldProject) {
+    @Named("patch")
+    default Project patch(Project newProject, Project oldProject) {
         Project.ProjectBuilder projectBuilder = oldProject.toBuilder();
 
         return projectBuilder
