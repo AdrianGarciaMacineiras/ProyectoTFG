@@ -24,7 +24,6 @@ public class ClientUpdaterImpl implements ClientUpdater {
     @Override
     public Client update(Long clientcode, Client newClient) {
         validate(clientcode);
-        crud.detachDelete(clientcode);
         return clientRepository.save(newClient);
     }
 

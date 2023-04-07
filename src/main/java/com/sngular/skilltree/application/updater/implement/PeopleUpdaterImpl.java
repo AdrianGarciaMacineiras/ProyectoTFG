@@ -24,7 +24,7 @@ public class PeopleUpdaterImpl implements PeopleUpdater {
     @Override
     public People update(Long personcode, People newPeople) {
         validate(personcode);
-        crud.detachDelete(personcode);
+        var oldPerson = peopleRepository.findByCode(personcode);
         return peopleRepository.save(newPeople);
     }
 
@@ -32,7 +32,7 @@ public class PeopleUpdaterImpl implements PeopleUpdater {
     public People patch(Long personcode, People patchedPeople) {
         validate(personcode);
         var oldPerson = peopleRepository.findByCode(personcode);
-        var person = mapper.update(patchedPeople, oldPerson);
+        var person = mapper.patch(patchedPeople, oldPerson);
         return peopleRepository.save(person);
     }
 

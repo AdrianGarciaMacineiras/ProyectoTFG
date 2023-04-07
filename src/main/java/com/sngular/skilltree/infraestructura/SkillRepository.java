@@ -10,4 +10,6 @@ public interface SkillRepository {
     Skill findByCode(String skillcode);
 
     Skill findSkill(String skillcode);
+
+    Skill findByName(String skillname);
 }

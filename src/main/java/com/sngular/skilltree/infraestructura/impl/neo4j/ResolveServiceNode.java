@@ -15,16 +15,9 @@ import java.util.*;
 @Named("resolveServiceNode")
 public class ResolveServiceNode {
 
-    private final OfficeCrudRepository officeCrudRepository;
-
-    private final PeopleCrudRepository peopleCrudRepository;
-
     private final SkillCrudRepository skillCrudRepository;
 
-    private final ProjectCrudRepository projectCrudRepository;
-
     private final PositionCrudRepository positionCrudRepository;
-
 
     @Named("resolveCodeToSkillNode")
     public SkillNode resolveCodeToSkillNode(final String code) {
@@ -38,9 +31,10 @@ public class ResolveServiceNode {
         final List<Assignments> assignmentsList = new ArrayList<>();
         var assignmentMap = new HashMap<String, List<Assignment>>();
         for (var assignRelationship : assignedRelationshipList) {
-            var positioNode = positionCrudRepository.findByCode(assignRelationship.positionNode().getCode());
-            assignmentMap.compute(positioNode.getProject().getName(), (code, assignsList) -> {
+            var positionNode = positionCrudRepository.findByCode(assignRelationship.positionNode().getCode());
+            assignmentMap.compute(positionNode.getProject().getName(), (code, assignsList) -> {
                 var assign = Assignment.builder()
+                            .id(assignRelationship.id())
                             .role(assignRelationship.role())
                             .initDate(assignRelationship.initDate())
                             .endDate(assignRelationship.endDate())
@@ -61,17 +55,9 @@ public class ResolveServiceNode {
         final List<AssignedRelationship> assignedRelationshipList = new ArrayList<>();
         if(!Objects.isNull(assignmentsList)) {
             for (var assignment : assignmentsList) {
-                LocalDate endDate = null;
-                LocalDate initDate = null;
-                LocalDate assignDate = null;
-                String role = null;
                 var position = positionCrudRepository.findPositionByProject(assignment.name());
                 for (var assign : assignment.assignments()) {
-                    endDate = assign.endDate();
-                    initDate = assign.initDate();
-                    assignDate = assign.assignDate();
-                    role = assign.role();
-                    AssignedRelationship assignedRelationship = new AssignedRelationship(null, position, endDate, initDate, assignDate, role);
+                    AssignedRelationship assignedRelationship = new AssignedRelationship(assign.id(), position, assign.endDate(), assign.initDate(), assign.assignDate(), assign.role());
                     assignedRelationshipList.add(assignedRelationship);
                 }
             }

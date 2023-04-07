@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface CustomPeopleRepository {
 
-    @Query("MATCH(n:People{code: $peopleCode}) DETACH DELETE n")
-    void detachDelete(Long peopleCode);
+    @Query("MATCH(n:People{code: $peopleCode})-[r:ASSIGNED]-() DELETE r")
+    void deleteAssigns(Long peopleCode);
 
     @Query("MATCH(n:People{code:$personcode}) RETURN n")
     PeopleNode findPeopleByCode(Long personcode);

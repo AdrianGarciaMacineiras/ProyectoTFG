@@ -49,4 +49,6 @@ public class PositionNode {
 
     private boolean deleted;
 
+    private boolean open;
+
 }

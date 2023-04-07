@@ -12,15 +12,15 @@ import java.util.Objects;
 @Mapper(componentModel = "spring", uses = {SkillMapper.class, ResolveService.class})
 public interface PeopleMapper {
 
-    @Mapping(target = "work_with", source = "work_with", qualifiedByName = {"resolveService", "resolveSkillCodeList"})
-    @Mapping(target = "master", source = "master", qualifiedByName = {"resolveService", "resolveSkillCodeList"})
-    @Mapping(target = "interest", source = "interest", qualifiedByName = {"resolveService", "resolveSkillCodeList"})
+    @Mapping(target = "work_with", source = "work_with", qualifiedByName = {"resolveService", "resolveSkillNameList"})
+    @Mapping(target = "master", source = "master", qualifiedByName = {"resolveService", "resolveSkillNameList"})
+    @Mapping(target = "interest", source = "interest", qualifiedByName = {"resolveService", "resolveSkillNameList"})
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
     PeopleDTO toPersonDTO(People people);
 
-    @Mapping(source = "work_with", target = "work_with", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
-    @Mapping(source = "master", target = "master", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
-    @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
+    @Mapping(source = "work_with", target = "work_with", qualifiedByName = {"resolveService", "resolveNameSkillList"})
+    @Mapping(source = "master", target = "master", qualifiedByName = {"resolveService", "resolveNameSkillList"})
+    @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveService", "resolveNameSkillList"})
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
     People toPerson(PeopleDTO peopleDTO);
 
@@ -54,8 +54,9 @@ public interface PeopleMapper {
     @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
     Certificate certificateDTOToCertificate(CertificateDTO certificateDTO);
 
-    @Named("update")
-    default People update(People newPeople, People oldPeople) {
+    @Named("patch")
+    default People patch(People newPeople, People oldPeople) {
+
         People.PeopleBuilder peopleBuilder = oldPeople.toBuilder();
 
         return peopleBuilder

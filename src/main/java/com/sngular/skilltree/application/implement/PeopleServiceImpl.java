@@ -25,7 +25,9 @@ public class PeopleServiceImpl implements PeopleService {
     @Override
     public People create(People people) {
         validateExist(people.code());
-        return peopleRepository.save(people);
+        People.PeopleBuilder builder = people.toBuilder();
+        People aux = builder.assignable(true).build();
+        return peopleRepository.save(aux);
     }
 
     @Override

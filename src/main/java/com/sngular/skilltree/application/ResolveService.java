@@ -25,6 +25,22 @@ public class ResolveService {
 
     private final ClientService clientService;
 
+    @Named("resolveSkillName")
+    public String resolveSkillToName(final Skill skill) {
+        return skill.name();
+    }
+
+    @Named("resolveSkillNameList")
+    public List<String> resolveSkillToName(final List<Skill> skillList){
+        final var nameList = new ArrayList<String>();
+        if (skillList != null) {
+            for (var skill : skillList) {
+                nameList.add(resolveSkillToName(skill));
+            }
+        }
+        return nameList;
+    }
+
     @Named("resolveSkillCode")
     public String resolveSkillToCode(final Skill skill) {
         return skill.name();
@@ -52,6 +68,24 @@ public class ResolveService {
         if (codeList != null) {
             for (var code : codeList) {
                 skillList.add(resolveCodeSkill(code));
+            }
+        } else {
+            skillList = null;
+        }
+        return skillList;
+    }
+
+    @Named("resolveNameToSkill")
+    public Skill resolveNameSkill(final String name) {
+        return skillService.findByName(name);
+    }
+
+    @Named("resolveNameSkillList")
+    public List<Skill> resolveNameSkill(final List<String> nameList) {
+        var skillList = new ArrayList<Skill>();
+        if (nameList != null) {
+            for (var name : nameList) {
+                skillList.add(resolveNameSkill(name));
             }
         } else {
             skillList = null;
