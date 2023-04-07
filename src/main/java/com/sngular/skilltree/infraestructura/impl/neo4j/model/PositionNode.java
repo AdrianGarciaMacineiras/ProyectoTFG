@@ -1,6 +1,5 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
-import com.sngular.skilltree.model.EnumMode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,8 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Node("Opportunity")
-public class OpportunityNode {
+@Node("Position")
+public class PositionNode {
 
     @Id
     private String code;
@@ -43,11 +42,13 @@ public class OpportunityNode {
     private String role;
 
     @Relationship(type="NEEDS", direction = Relationship.Direction.OUTGOING)
-    private List<OpportunitySkillsRelationship> skills;
+    private List<PositionSkillsRelationship> skills;
 
     @Relationship(type = "CANDIDATE", direction = Relationship.Direction.OUTGOING)
     private List<CandidateRelationship> candidates;
 
     private boolean deleted;
+
+    private boolean open;
 
 }

@@ -15,7 +15,7 @@ public class ResolveService {
 
     private final SkillService skillService;
 
-    private final OpportunityService opportunityService;
+    private final PositionService positionService;
 
     private final PeopleService peopleService;
 
@@ -24,6 +24,22 @@ public class ResolveService {
     private final OfficeService officeService;
 
     private final ClientService clientService;
+
+    @Named("resolveSkillName")
+    public String resolveSkillToName(final Skill skill) {
+        return skill.name();
+    }
+
+    @Named("resolveSkillNameList")
+    public List<String> resolveSkillToName(final List<Skill> skillList){
+        final var nameList = new ArrayList<String>();
+        if (skillList != null) {
+            for (var skill : skillList) {
+                nameList.add(resolveSkillToName(skill));
+            }
+        }
+        return nameList;
+    }
 
     @Named("resolveSkillCode")
     public String resolveSkillToCode(final Skill skill) {
@@ -59,20 +75,38 @@ public class ResolveService {
         return skillList;
     }
 
-    @Named("resolveCodeOpportunity")
-    public Opportunity resolveCodeOpportunity(final String code) {
-        return opportunityService.findByCode(code);
+    @Named("resolveNameToSkill")
+    public Skill resolveNameSkill(final String name) {
+        return skillService.findByName(name);
     }
 
-    @Named("resolveCodeOpportunityList")
-    public List<Opportunity> resolveCodeOpportunityList(final List<String> codeList) {
-        final var opportunityList = new ArrayList<Opportunity>();
+    @Named("resolveNameSkillList")
+    public List<Skill> resolveNameSkill(final List<String> nameList) {
+        var skillList = new ArrayList<Skill>();
+        if (nameList != null) {
+            for (var name : nameList) {
+                skillList.add(resolveNameSkill(name));
+            }
+        } else {
+            skillList = null;
+        }
+        return skillList;
+    }
+
+    @Named("resolveCodePosition")
+    public Position resolveCodePosition(final String code) {
+        return positionService.findByCode(code);
+    }
+
+    @Named("resolveCodePositionList")
+    public List<Position> resolveCodePositionList(final List<String> codeList) {
+        final var positionList = new ArrayList<Position>();
         if (codeList != null) {
             for (var code : codeList) {
-                opportunityList.add(resolveCodeOpportunity(code));
+                positionList.add(resolveCodePosition(code));
             }
         }
-        return opportunityList;
+        return positionList;
     }
 
     @Named("resolveCodePeople")

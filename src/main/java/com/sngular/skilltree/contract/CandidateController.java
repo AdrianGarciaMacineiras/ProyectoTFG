@@ -57,4 +57,9 @@ public class CandidateController implements CandidateApi {
                         .patch(candidatecode, candidateMapper
                                 .toCandidate(patchedCandidateDTO))));
     }
+
+    @Override
+    public ResponseEntity<List<CandidateDTO>> generateCandidates(String positioncode){
+        return ResponseEntity.ok(candidateMapper.toCandidatesDTO(candidateService.generateCandidates(positioncode)));
+    }
 }

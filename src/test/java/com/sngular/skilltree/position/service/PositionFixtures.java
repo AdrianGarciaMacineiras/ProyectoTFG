@@ -1,23 +1,14 @@
-package com.sngular.skilltree.opportunity.fixtures;
+package com.sngular.skilltree.position.service;
 
 import com.sngular.skilltree.model.*;
-import com.sngular.skilltree.testutil.FileHelper;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class OpportunityFixtures {
+public class PositionFixtures {
 
     public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-
-    public static final String OPPORTUNITY_BY_CODE_JSON = FileHelper.getContent("/opportunity/opportunity_by_code.json");
-
-    public static final String UPDATED_OPPORTUNITY_BY_CODE_JSON = FileHelper.getContent("/opportunity/updated_opportunity_by_code.json");
-
-    public static final String PATCH_OPPORTUNITY_BY_CODE_JSON = FileHelper.getContent("/opportunity/patched_opportunity.json");
-
-    public static final String LIST_OPPORTUNITY_JSON = FileHelper.getContent("/opportunity/list_opportunity.json");
 
     public static final Office OFFICE =
             Office.builder()
@@ -68,6 +59,14 @@ public class OpportunityFixtures {
                     .skills(List.of(SKILL_BY_CODE))
                     .build();
 
+    public static final PositionSkill OPPORTUNITY_SKILL =
+            PositionSkill.builder()
+                    .skill(SKILL_BY_CODE)
+                    .levelReq(EnumLevelReq.MANDATORY)
+                    .minExp(7)
+                    .minLevel(EnumMinLevel.HIGH)
+                    .build();
+
     public static final People PEOPLE_BY_CODE =
             People.builder()
                     .code(1L)
@@ -78,16 +77,8 @@ public class OpportunityFixtures {
                     .birthDate(date)
                     .build();
 
-    public static final OpportunitySkill OPPORTUNITY_SKILL =
-            OpportunitySkill.builder()
-                    .skill(SKILL_BY_CODE)
-                    .levelReq(EnumLevelReq.MANDATORY)
-                    .minExp(7)
-                    .minLevel(EnumMinLevel.HIGH)
-                    .build();
-
-    public static final Opportunity OPPORTUNITY_BY_CODE =
-            Opportunity.builder()
+    public static final Position POSITION_BY_CODE =
+            Position.builder()
                     .code("itxtl1")
                     .office(OFFICE)
                     .role("Team Leader")
@@ -102,24 +93,8 @@ public class OpportunityFixtures {
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 
-    public static final Opportunity UPDATED_OPPORTUNITY_BY_CODE =
-            Opportunity.builder()
-                    .code("itxtl1")
-                    .office(OFFICE)
-                    .role("Leader")
-                    .name("Leader at INDITEX")
-                    .client(CLIENT_BY_CODE)
-                    .closingDate(date)
-                    .mode(EnumMode.REMOTE)
-                    .openingDate(date)
-                    .priority("MEDIUM")
-                    .project(PROJECT_BY_CODE)
-                    .managedBy(PEOPLE_BY_CODE)
-                    .skills(List.of(OPPORTUNITY_SKILL))
-                    .build();
-
-    public static final Opportunity OPPORTUNITY2_BY_CODE =
-            Opportunity.builder()
+    public static final Position POSITION_2_BY_CODE =
+            Position.builder()
                     .code("itxtl2")
                     .office(OFFICE)
                     .role("Team Leader")
@@ -134,5 +109,8 @@ public class OpportunityFixtures {
                     .skills(List.of(OPPORTUNITY_SKILL))
                     .build();
 
-    public static final List<Opportunity> OPPORTUNITY_LIST = List.of(OPPORTUNITY_BY_CODE, OPPORTUNITY2_BY_CODE);
+    public static final List<Position> POSITION_LIST = new ArrayList<Position>(){{
+       add(POSITION_BY_CODE);
+       add(POSITION_2_BY_CODE);
+    }};
 }

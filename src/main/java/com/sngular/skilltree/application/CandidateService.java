@@ -11,4 +11,6 @@ public interface CandidateService {
     Candidate findByCode(final String candidatecode);
 
     boolean deleteByCode(final String candidatecode);
+
+    List<Candidate> generateCandidates(String positioncode);
 }

@@ -19,12 +19,9 @@ public class TeamUpdaterImpl implements TeamUpdater {
 
     private final TeamMapper mapper;
 
-    private final TeamCrudRepository crud;
-
     @Override
     public Team update(String teamcode, Team newTeam) {
         validate(teamcode);
-        crud.detachDelete(teamcode);
         return teamRepository.save(newTeam);
     }
 
@@ -32,8 +29,7 @@ public class TeamUpdaterImpl implements TeamUpdater {
     public Team patch(String teamcode, Team patchedTeam) {
         validate(teamcode);
         var oldTeam = teamRepository.findByCode(teamcode);
-        var team = mapper.update(patchedTeam, oldTeam);
-        crud.detachDelete(teamcode);
+        var team = mapper.patch(patchedTeam, oldTeam);
         return teamRepository.save(team);
     }
 

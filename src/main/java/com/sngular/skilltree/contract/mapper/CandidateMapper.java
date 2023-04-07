@@ -2,6 +2,7 @@ package com.sngular.skilltree.contract.mapper;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedCandidateDTO;
@@ -11,14 +12,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring", uses = {ResolveService.class, OpportunityMapper.class, PeopleMapper.class})
+@Mapper(componentModel = "spring", uses = {ResolveService.class, PositionMapper.class, PeopleMapper.class})
 public interface CandidateMapper {
 
     @Mapping(source = "candidate.code", target = "candidateCode")
-    @Mapping(source = "opportunity.code", target = "opportunityCode")
+    @Mapping(source = "position.code", target = "positionCode")
     CandidateDTO toCandidateDTO(Candidate candidate);
 
-    @Mapping(source = "opportunityCode", target = "opportunity", qualifiedByName = {"resolveService", "resolveCodeOpportunity"})
+    @Mapping(source = "positionCode", target = "position", qualifiedByName = {"resolveService", "resolveCodePosition"})
     @Mapping(source = "candidateCode", target = "candidate", qualifiedByName = {"resolveService", "resolveCodePeople"})
     Candidate toCandidate(CandidateDTO candidateDTO);
 
@@ -30,12 +31,12 @@ public interface CandidateMapper {
     default Candidate update(Candidate newCandidate, Candidate oldCandidate) {
         Candidate.CandidateBuilder candidateBuilder = oldCandidate.toBuilder();
 
-        Candidate candidate = candidateBuilder
-                .status((newCandidate.status() == null) ? oldCandidate.status() : newCandidate.status())
-                .resolutionDate((newCandidate.resolutionDate() == null) ? oldCandidate.resolutionDate() : newCandidate.resolutionDate())
-                .introductionDate((newCandidate.introductionDate() == null) ? oldCandidate.introductionDate() : newCandidate.introductionDate())
+        return candidateBuilder
+                .status((Objects.isNull(newCandidate.status())) ? oldCandidate.status() : newCandidate.status())
+                .resolutionDate((Objects.isNull(newCandidate.resolutionDate())) ? oldCandidate.resolutionDate() : newCandidate.resolutionDate())
+                .introductionDate((Objects.isNull(newCandidate.introductionDate())) ? oldCandidate.introductionDate() : newCandidate.introductionDate())
+                .interviewDate((Objects.isNull(newCandidate.interviewDate())) ? oldCandidate.interviewDate() : newCandidate.interviewDate())
                 .build();
 
-        return candidate;
     };
 }

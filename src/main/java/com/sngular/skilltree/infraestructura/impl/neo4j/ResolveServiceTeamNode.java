@@ -22,7 +22,7 @@ public class ResolveServiceTeamNode {
         final List<Member> memberList = new ArrayList<>();
         for (var memberRelationship : memberRelationshipList){
             var people = mapper.fromNode(memberRelationship.peopleNode());
-            var member = Member.builder().people(people).build();
+            var member = Member.builder().people(people).charge(memberRelationship.charge()).build();
             memberList.add(member);
         }
         return memberList;
@@ -33,7 +33,7 @@ public class ResolveServiceTeamNode {
         final List<MemberRelationship> memberRelationshipList = new ArrayList<>();
         for (var member : memberList){
             var peopleNode = mapper.toNode(member.people());
-            MemberRelationship memberRelationship = new MemberRelationship(null, peopleNode);
+            MemberRelationship memberRelationship = new MemberRelationship(null, peopleNode, member.charge());
             memberRelationshipList.add(memberRelationship);
         }
         return memberRelationshipList;

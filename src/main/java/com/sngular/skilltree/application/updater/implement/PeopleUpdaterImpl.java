@@ -1,6 +1,7 @@
 package com.sngular.skilltree.application.updater.implement;
 
 import com.sngular.skilltree.application.updater.PeopleUpdater;
+import com.sngular.skilltree.common.exceptions.AssignUnableException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
@@ -24,15 +25,18 @@ public class PeopleUpdaterImpl implements PeopleUpdater {
     @Override
     public People update(Long personcode, People newPeople) {
         validate(personcode);
-        crud.detachDelete(personcode);
+        var oldPerson = peopleRepository.findByCode(personcode);
         return peopleRepository.save(newPeople);
     }
 
     @Override
     public People patch(Long personcode, People patchedPeople) {
         validate(personcode);
-        var oldperson = peopleRepository.findByCode(personcode);
-        var person = mapper.update(patchedPeople, oldperson);
+        var oldPerson = peopleRepository.findByCode(personcode);
+        if (!oldPerson.assignable() && !Objects.isNull(patchedPeople.assigns())){
+            throw new AssignUnableException("People", oldPerson.code());
+        }
+        var person = mapper.patch(patchedPeople, oldPerson);
         return peopleRepository.save(person);
     }
 

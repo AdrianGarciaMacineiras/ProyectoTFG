@@ -13,8 +13,12 @@ ProjectNode:
     - initDate
     - endDate
 
-Brick? Topic?
-
-SkillNode include relationship?
-
 Completar campos obligatorios skill-tree-api
+
+
+
+TODO check people no asignable para positions
+
+TODO builder para los records
+
+

@@ -24,7 +24,6 @@ public class ClientUpdaterImpl implements ClientUpdater {
     @Override
     public Client update(Long clientcode, Client newClient) {
         validate(clientcode);
-        crud.detachDelete(clientcode);
         return clientRepository.save(newClient);
     }
 
@@ -32,8 +31,7 @@ public class ClientUpdaterImpl implements ClientUpdater {
         public Client patch(Long clientcode, Client patchedClient) {
         validate(clientcode);
         var oldClient = clientRepository.findByCode(clientcode);
-        var client = mapper.update(patchedClient, oldClient);
-        crud.detachDelete(clientcode);
+        var client = mapper.patch(patchedClient, oldClient);
         return clientRepository.save(client);
     }
 

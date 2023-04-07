@@ -1,9 +1,10 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.OpportunityNode;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.OpportunitySkillsRelationship;
-import com.sngular.skilltree.model.Opportunity;
-import com.sngular.skilltree.model.OpportunitySkill;
+import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveServiceNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.PositionNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.PositionSkillsRelationship;
+import com.sngular.skilltree.model.Position;
+import com.sngular.skilltree.model.PositionSkill;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,25 +12,25 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {SkillNodeMapper.class, PeopleNodeMapper.class, OfficeNodeMapper.class,
-        ProjectNodeMapper.class, CandidateNodeMapper.class})
-public interface OpportunityNodeMapper {
+        ProjectNodeMapper.class, CandidateNodeMapper.class, ResolveServiceNode.class})
+public interface PositionNodeMapper {
 
   @InheritInverseConfiguration
   @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
-  OpportunityNode toNode(Opportunity opportunity);
+  PositionNode toNode(Position position);
 
   @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
-  Opportunity fromNode(OpportunityNode opportunityNode);
+  Position fromNode(PositionNode positionNode);
 
   @Mapping(target = "min_exp", source = "minExp")
   @Mapping(target = "min_level", source = "minLevel")
   @Mapping(target = "req_level", source = "levelReq")
-  OpportunitySkillsRelationship toOpportunitySkillsRelationship(OpportunitySkill opportunitySkill);
+  PositionSkillsRelationship toPositionSkillsRelationship(PositionSkill positionSkill);
 
   @InheritInverseConfiguration
-  OpportunitySkill toOpportunitySkill(OpportunitySkillsRelationship opportunitySkillsRelationship);
+  PositionSkill toPositionSkill(PositionSkillsRelationship positionSkillsRelationship);
 
-  List<Opportunity> map(List<OpportunityNode> all);
+  List<Position> map(List<PositionNode> all);
 }

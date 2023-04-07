@@ -11,4 +11,6 @@ public interface SkillService {
 
     Skill findSkill(String skillcode);
 
+    Skill findByName(String name);
+
 }
