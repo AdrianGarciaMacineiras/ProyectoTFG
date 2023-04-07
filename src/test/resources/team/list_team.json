@@ -7,7 +7,7 @@
     "members":
       [
         {
-          "position": "DIRECTOR",
+          "charge": "DIRECTOR",
           "peopleCode": 1
         }
       ]
@@ -20,7 +20,7 @@
     "members":
     [
       {
-        "position": "DIRECTOR",
+        "charge": "DIRECTOR",
         "peopleCode": 1
       }
     ]

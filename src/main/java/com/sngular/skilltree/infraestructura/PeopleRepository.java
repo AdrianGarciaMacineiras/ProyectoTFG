@@ -16,4 +16,5 @@ public interface PeopleRepository {
     boolean deleteByCode(Long personcode);
 
     List<People> findByDeletedIsFalse();
+
 }

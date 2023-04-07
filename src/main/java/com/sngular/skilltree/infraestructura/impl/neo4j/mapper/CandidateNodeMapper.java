@@ -1,27 +1,20 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveServiceNode;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.CandidateNode;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.CertificateRelationship;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.Role;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.CandidateRelationship;
 import com.sngular.skilltree.model.Candidate;
-import com.sngular.skilltree.model.Certificate;
-import org.mapstruct.InheritInverseConfiguration;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {ResolveServiceNode.class, OpportunityNodeMapper.class, PeopleNodeMapper.class,
+@Mapper(componentModel = "spring", uses = {ResolveServiceNode.class, PositionNodeMapper.class, PeopleNodeMapper.class,
         SkillNodeMapper.class})
 public interface CandidateNodeMapper {
 
     @InheritInverseConfiguration
-    @Mapping(target = "skills", source = "skills", qualifiedByName = {"resolveServiceNode", "mapToSkillCandidateRelationship"})
-    CandidateNode toNode(Candidate candidate);
+    CandidateRelationship toNode(Candidate candidate);
 
-    @Mapping(target = "skills", source = "skills", qualifiedByName = {"resolveServiceNode", "mapToSkillCandidate"})
-    Candidate fromNode(CandidateNode candidateNode);
+    Candidate fromNode(CandidateRelationship candidateRelationship);
 
-    List<Candidate> map(List<CandidateNode> all);
+    List<Candidate> map(List<CandidateRelationship> all);
 }

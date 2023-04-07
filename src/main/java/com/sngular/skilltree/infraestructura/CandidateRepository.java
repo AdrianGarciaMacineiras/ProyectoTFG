@@ -1,6 +1,8 @@
 package com.sngular.skilltree.infraestructura;
 
 import com.sngular.skilltree.model.Candidate;
+import com.sngular.skilltree.model.Position;
+
 import java.util.List;
 
 public interface CandidateRepository {
@@ -13,5 +15,8 @@ public interface CandidateRepository {
 
     boolean deleteByCode(String candidatecode);
 
-    List<Candidate> findByDeletedIsFalse();
+    List<Candidate> findAllCandidates();
+
+    List<Candidate> generateCandidates(Position position);
+
 }

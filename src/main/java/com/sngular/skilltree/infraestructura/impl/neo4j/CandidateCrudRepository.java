@@ -1,13 +1,10 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.CandidateNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.CandidateRelationship;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 
-import java.util.List;
+public interface CandidateCrudRepository extends Neo4jRepository<CandidateRelationship, Long>{
 
-public interface CandidateCrudRepository extends Neo4jRepository<CandidateNode, String>{
+    CandidateRelationship findByCode(String candidatecode);
 
-    CandidateNode findByCode(String candidatecode);
-
-    List<CandidateNode> findByDeletedIsFalse();
 }

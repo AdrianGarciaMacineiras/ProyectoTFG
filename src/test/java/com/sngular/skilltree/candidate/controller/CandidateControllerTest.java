@@ -86,19 +86,6 @@ class CandidateControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(UPDATED_CANDIDATE_BY_CODE_JSON));
     }
-
-    @Test
-    void addCandidate() throws Exception {
-        when(candidateService.create(any(Candidate.class))).thenReturn(CANDIDATE_BY_CODE);
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/candidate")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(CANDIDATE_BY_CODE_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(CANDIDATE_BY_CODE_JSON));
-    }
-
     @Test
     void patchCandidate() throws Exception{
         when(candidateUpdater.patch(anyString(),any(Candidate.class))).thenReturn(UPDATED_CANDIDATE_BY_CODE);
@@ -137,7 +124,7 @@ class CandidateControllerTest {
         SkillService skillService;
 
         @MockBean
-        OpportunityService opportunityService;
+        PositionService positionService;
 
         @MockBean
         PeopleService peopleService;
@@ -152,10 +139,10 @@ class CandidateControllerTest {
         ClientService clientService;
 
         @Bean
-        ResolveService resolveService(final SkillService skillService, final OpportunityService opportunityService,
+        ResolveService resolveService(final SkillService skillService, final PositionService positionService,
                                       final PeopleService peopleService, final ProjectService projectService,
                                       final OfficeService officeService, final ClientService clientService) {
-            return new ResolveService(skillService, opportunityService, peopleService, projectService, officeService, clientService);
+            return new ResolveService(skillService, positionService, peopleService, projectService, officeService, clientService);
         }
     }
 }

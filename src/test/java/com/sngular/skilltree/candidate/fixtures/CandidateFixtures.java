@@ -69,16 +69,16 @@ public class CandidateFixtures {
                     .skills(List.of(SKILL_BY_CODE))
                     .build();
 
-    public static final OpportunitySkill OPPORTUNITY_SKILL =
-            OpportunitySkill.builder()
+    public static final PositionSkill OPPORTUNITY_SKILL =
+            PositionSkill.builder()
                     .skill(SKILL_BY_CODE)
                     .levelReq(EnumLevelReq.MANDATORY)
                     .minExp(7)
                     .minLevel(EnumMinLevel.HIGH)
                     .build();
 
-    public static final Opportunity OPPORTUNITY_BY_CODE =
-            Opportunity.builder()
+    public static final Position POSITION_BY_CODE =
+            Position.builder()
                     .code("itxtl1")
                     .office(OFFICE)
                     .role("Team Leader")
@@ -116,28 +116,35 @@ public class CandidateFixtures {
                     .birthDate(date)
                     .build();
 
+    public static final People PEOPLE_BY_CODE2 =
+            People.builder()
+                    .code(2L)
+                    .name("people")
+                    .surname("surname")
+                    .employeeId("employeeId")
+                    .title(EnumTitle.SENIOR)
+                    .birthDate(date)
+                    .build();
+
     public static final Candidate CANDIDATE_BY_CODE =
             Candidate.builder()
                     .code("c1120")
                     .candidate(PEOPLE_BY_CODE)
-                    .opportunity(OPPORTUNITY_BY_CODE)
-                    .skills(List.of(SKILLS_CANDIDATE))
+                    .position(POSITION_BY_CODE)
                     .build();
 
     public static final Candidate CANDIDATE2_BY_CODE =
             Candidate.builder()
                     .code("c1121")
                     .candidate(PEOPLE_BY_CODE)
-                    .opportunity(OPPORTUNITY_BY_CODE)
-                    .skills(List.of(SKILLS_CANDIDATE))
+                    .position(POSITION_BY_CODE)
                     .build();
 
     public static final Candidate UPDATED_CANDIDATE_BY_CODE =
             Candidate.builder()
                     .code("c1120")
-                    .candidate(PEOPLE_BY_CODE)
-                    .opportunity(OPPORTUNITY_BY_CODE)
-                    .skills(List.of(UPDATED_SKILLS_CANDIDATE))
+                    .candidate(PEOPLE_BY_CODE2)
+                    .position(POSITION_BY_CODE)
                     .build();
 
     public static final List<Candidate> CANDIDATE_LIST = new ArrayList<Candidate>(){{

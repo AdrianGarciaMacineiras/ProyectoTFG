@@ -30,14 +30,6 @@ public class CandidateController implements CandidateApi {
     }
 
     @Override
-    public ResponseEntity<CandidateDTO> addCandidate(CandidateDTO candidateDTO) {
-        return ResponseEntity.ok(candidateMapper
-                .toCandidateDTO(candidateService
-                        .create(candidateMapper
-                                .toCandidate(candidateDTO))));
-    }
-
-    @Override
     public ResponseEntity<CandidateDTO> getCandidateByCode(String candidatecode) {
         return ResponseEntity.ok(candidateMapper
                 .toCandidateDTO(candidateService
@@ -64,5 +56,10 @@ public class CandidateController implements CandidateApi {
                 .toCandidateDTO(candidateUpdater
                         .patch(candidatecode, candidateMapper
                                 .toCandidate(patchedCandidateDTO))));
+    }
+
+    @Override
+    public ResponseEntity<List<CandidateDTO>> generateCandidates(String positioncode){
+        return ResponseEntity.ok(candidateMapper.toCandidatesDTO(candidateService.generateCandidates(positioncode)));
     }
 }

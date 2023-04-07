@@ -1,18 +1,13 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
-import com.sngular.skilltree.infraestructura.ProjectRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.ProjectCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveServiceNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.Role;
 import com.sngular.skilltree.model.*;
-import com.sngular.skilltree.model.Roles;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Mapper(componentModel = "spring", uses = {ResolveServiceNode.class, SkillNodeMapper.class})
@@ -20,11 +15,11 @@ public interface PeopleNodeMapper {
 
     @InheritInverseConfiguration
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
-    @Mapping(target = "participate", source = "participate", qualifiedByName = {"resolveServiceNode", "mapToParticipateRelationship"})
+    @Mapping(target = "assigns", source = "assigns", qualifiedByName = {"resolveServiceNode", "mapToAssignedRelationship"})
     PeopleNode toNode(People People);
 
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
-    @Mapping(target = "participate", source = "participate", qualifiedByName = {"resolveServiceNode", "mapToParticipate"})
+    @Mapping(target = "assigns", source = "assigns", qualifiedByName = {"resolveServiceNode", "mapToAssignment"})
     People fromNode(PeopleNode peopleNode);
 
     @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
@@ -43,6 +38,8 @@ public interface PeopleNodeMapper {
 
     @Mapping(target = "code", source = "skillNode.code")
     Knows knowsRelationshipToKnows(KnowsRelationship knowsRelationship);
+
+    List<Knows> knowsRelationshipListToKnowsList(List<KnowsRelationship> list);
 
     @Mapping(target = "skillNode", source = "code", qualifiedByName={"resolveServiceNode", "resolveCodeToSkillNode"})
     KnowsRelationship knowsToKnowsRelationship(Knows knows);

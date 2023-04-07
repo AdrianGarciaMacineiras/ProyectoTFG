@@ -1,10 +1,5 @@
 {
   "code": "c1120",
-  "candidateCode": 1,
-  "opportunityCode": "itxtl1",
-  "skills": [{
-    "code": "sc1120",
-    "experience": 3,
-    "level": "HIGH"
-  }]
+  "candidateCode": 2,
+  "positionCode": "itxtl1"
 }

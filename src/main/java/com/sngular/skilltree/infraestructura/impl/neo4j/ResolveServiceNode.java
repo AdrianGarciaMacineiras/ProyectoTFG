@@ -2,13 +2,11 @@ package com.sngular.skilltree.infraestructura.impl.neo4j;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
 import com.sngular.skilltree.model.*;
-import com.sngular.skilltree.model.Roles;
+import com.sngular.skilltree.model.Assignment;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -17,84 +15,61 @@ import java.util.*;
 @Named("resolveServiceNode")
 public class ResolveServiceNode {
 
-    private final OfficeCrudRepository officeCrudRepository;
-
-    private final PeopleCrudRepository peopleCrudRepository;
-
     private final SkillCrudRepository skillCrudRepository;
 
-    private final ProjectCrudRepository projectCrudRepository;
-
-    private final TeamCrudRepository teamCrudRepository;
-
-    @Named("resolveCodeToOfficeNode")
-    public OfficeNode resolveCodeOfficeNode(final String code) {
-        return officeCrudRepository.findByCode(code);
-    }
-
-    @Named("resolveCodeOfficeNodeList")
-    public List<OfficeNode> resolveCodeOfficeNode(final List<String> codeList) {
-        final var officeNodeList = new ArrayList<OfficeNode>();
-        if (codeList != null) {
-            for (var code : codeList) {
-                officeNodeList.add(resolveCodeOfficeNode(code));
-            }
-        }
-        return officeNodeList;
-    }
-
-    @Named("resolveCodeToPeopleNode")
-    public PeopleNode resolveCodePeopleNode(final Long code) {
-        return peopleCrudRepository.findByCode(code);
-    }
+    private final PositionCrudRepository positionCrudRepository;
 
     @Named("resolveCodeToSkillNode")
     public SkillNode resolveCodeToSkillNode(final String code) {
         var skillNode = skillCrudRepository.findSkillByCode(code);
         skillCrudRepository.deleteRequire(code);
         return skillNode;
-        //return skillCrudRepository.findSkillByCode(code);
     }
 
-    @Named("mapToParticipate")
-    public List<Participate> mapToParticipate(List<ParticipateRelationship> participateRelationshipList) {
-        final List<Participate> participateList = new ArrayList<>();
-        var participateMap = new HashMap<String, List<Roles>>();
-        for (var participateRelationship : participateRelationshipList) {
-            participateMap.compute(participateRelationship.project().getName(), (code, roleList) -> {
-                var rol = Roles.builder()
-                            .role(participateRelationship.role())
-                            .initDate(participateRelationship.initDate())
-                            .endDate(participateRelationship.endDate())
+    @Named("mapToAssignment")
+    public List<Assignments> mapToAssignment(List<AssignedRelationship> assignedRelationshipList) {
+        final List<Assignments> assignmentsList = new ArrayList<>();
+        var assignmentMap = new HashMap<String, List<Assignment>>();
+        for (var assignRelationship : assignedRelationshipList) {
+            var positionNode = positionCrudRepository.findByCode(assignRelationship.positionNode().getCode());
+            assignmentMap.compute(positionNode.getProject().getName(), (code, assignsList) -> {
+                var assign = Assignment.builder()
+                            .id(assignRelationship.id())
+                            .role(assignRelationship.role())
+                            .initDate(assignRelationship.initDate())
+                            .endDate(assignRelationship.endDate())
                             .build();
-                if (Objects.isNull(roleList)) {
-                    roleList = new ArrayList<>();
+                if (Objects.isNull(assignsList)) {
+                    assignsList = new ArrayList<>();
                 }
-                roleList.add(rol);
-                return roleList;
+                assignsList.add(assign);
+                return assignsList;
             });
         }
-        participateMap.forEach((code, roleList) -> participateList.add(Participate.builder().name(code).roles(roleList).build()));
-        return participateList;
+        assignmentMap.forEach((code, roleList) -> assignmentsList.add(Assignments.builder().name(code).assignments(roleList).build()));
+        return assignmentsList;
     }
 
-    @Named("mapToParticipateRelationship")
-    public List<ParticipateRelationship> mapToParticipateRelationship(List<Participate> participateList) {
-        final List<ParticipateRelationship> participateRelationshipList = new ArrayList<>();
-        for (var participate : participateList) {
-            LocalDate endDate = null;
-            LocalDate initDate = null;
-            String role = null;
-            var project = projectCrudRepository.findByName(participate.name());
-            for (var rol : participate.roles()) {
-                endDate = rol.endDate();
-                initDate = rol.initDate();
-                role = rol.role();
-                ParticipateRelationship participateRelationship = new ParticipateRelationship(null, project, endDate, initDate, role);
-                participateRelationshipList.add(participateRelationship);
+    @Named("mapToAssignedRelationship")
+    public List<AssignedRelationship> mapToAssignedRelationship(List<Assignments> assignmentsList) {
+        final List<AssignedRelationship> assignedRelationshipList = new ArrayList<>();
+        if(!Objects.isNull(assignmentsList)) {
+            for (var assignment : assignmentsList) {
+                var position = positionCrudRepository.findPositionByProject(assignment.name());
+                for (var assign : assignment.assignments()) {
+                    AssignedRelationship assignedRelationship = AssignedRelationship.builder()
+                            .assignDate(assign.assignDate())
+                            .positionNode(position)
+                            .endDate(assign.endDate())
+                            .initDate(assign.initDate())
+                            .id(assign.id())
+                            .role(assign.role())
+                            .build();
+                    assignedRelationshipList.add(assignedRelationship);
+                }
             }
         }
-        return participateRelationshipList;
+        return assignedRelationshipList;
     }
 
     @Named("mapToSubskill")
@@ -138,6 +113,5 @@ public class ResolveServiceNode {
         }
         return skillsCandidateRelationshipList;
     }
-
 
 }

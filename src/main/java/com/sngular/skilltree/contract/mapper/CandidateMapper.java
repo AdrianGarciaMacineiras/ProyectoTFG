@@ -8,21 +8,18 @@ import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedCandidateDTO;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.model.Candidate;
-import com.sngular.skilltree.model.Client;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
-import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring", uses = {ResolveService.class, OpportunityMapper.class, PeopleMapper.class})
+@Mapper(componentModel = "spring", uses = {ResolveService.class, PositionMapper.class, PeopleMapper.class})
 public interface CandidateMapper {
 
     @Mapping(source = "candidate.code", target = "candidateCode")
-    @Mapping(source = "opportunity.code", target = "opportunityCode")
+    @Mapping(source = "position.code", target = "positionCode")
     CandidateDTO toCandidateDTO(Candidate candidate);
 
-    @Mapping(source = "opportunityCode", target = "opportunity", qualifiedByName = {"resolveService", "resolveCodeOpportunity"})
+    @Mapping(source = "positionCode", target = "position", qualifiedByName = {"resolveService", "resolveCodePosition"})
     @Mapping(source = "candidateCode", target = "candidate", qualifiedByName = {"resolveService", "resolveCodePeople"})
     Candidate toCandidate(CandidateDTO candidateDTO);
 
@@ -34,10 +31,12 @@ public interface CandidateMapper {
     default Candidate update(Candidate newCandidate, Candidate oldCandidate) {
         Candidate.CandidateBuilder candidateBuilder = oldCandidate.toBuilder();
 
-        Candidate candidate = candidateBuilder
-                .code(oldCandidate.code())
+        return candidateBuilder
+                .status((Objects.isNull(newCandidate.status())) ? oldCandidate.status() : newCandidate.status())
+                .resolutionDate((Objects.isNull(newCandidate.resolutionDate())) ? oldCandidate.resolutionDate() : newCandidate.resolutionDate())
+                .introductionDate((Objects.isNull(newCandidate.introductionDate())) ? oldCandidate.introductionDate() : newCandidate.introductionDate())
+                .interviewDate((Objects.isNull(newCandidate.interviewDate())) ? oldCandidate.interviewDate() : newCandidate.interviewDate())
                 .build();
 
-        return candidate;
     };
 }

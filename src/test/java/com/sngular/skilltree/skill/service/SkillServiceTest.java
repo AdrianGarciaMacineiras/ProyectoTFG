@@ -1,7 +1,7 @@
 package com.sngular.skilltree.skill.service;
 
 import com.sngular.skilltree.application.SkillService;
-import com.sngular.skilltree.application.SkillServiceImpl;
+import com.sngular.skilltree.application.implement.SkillServiceImpl;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import com.sngular.skilltree.infraestructura.SkillRepository;
 import com.sngular.skilltree.model.Skill;

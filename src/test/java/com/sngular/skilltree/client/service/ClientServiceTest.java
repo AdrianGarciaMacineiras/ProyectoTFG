@@ -1,7 +1,7 @@
 package com.sngular.skilltree.client.service;
 
 import com.sngular.skilltree.application.ClientService;
-import com.sngular.skilltree.application.ClientServiceImpl;
+import com.sngular.skilltree.application.implement.ClientServiceImpl;
 import com.sngular.skilltree.contract.mapper.ClientMapper;
 import com.sngular.skilltree.infraestructura.ClientRepository;
 import com.sngular.skilltree.model.Client;

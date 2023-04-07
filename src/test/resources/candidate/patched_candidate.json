@@ -1,7 +1,3 @@
 {
-  "skills": [{
-    "code": "sc1120",
-    "experience": 3,
-    "level": "HIGH"
-  }]
+  "candidateCode": 2
 }

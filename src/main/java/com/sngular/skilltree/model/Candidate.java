@@ -2,8 +2,10 @@ package com.sngular.skilltree.model;
 
 import lombok.Builder;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Builder(toBuilder = true)
-public record Candidate(String code, People candidate, String status, Opportunity opportunity, List<SkillsCandidate> skills, boolean deleted) {
+public record Candidate(Long id, String code, People candidate, EnumStatus status, LocalDate introductionDate,
+                        LocalDate resolutionDate, LocalDate creationDate, LocalDate interviewDate, Position position, List<Knows> skills) {
 }

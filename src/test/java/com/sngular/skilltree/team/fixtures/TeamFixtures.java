@@ -5,9 +5,6 @@ import com.sngular.skilltree.testutil.FileHelper;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class TeamFixtures {
@@ -34,7 +31,7 @@ public class TeamFixtures {
 
     public final static Member MEMBER1 =
             Member.builder()
-                    .position(EnumPosition.DIRECTOR)
+                    .charge(EnumCharge.DIRECTOR)
                     .people(PEOPLE_BY_CODE)
                     .build();
 
