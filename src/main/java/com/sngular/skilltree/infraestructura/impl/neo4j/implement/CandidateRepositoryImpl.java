@@ -117,10 +117,10 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     }
 
     @Override
-    public List<Candidate> generateCandidates(Position position) {
+    public List<Candidate> generateCandidates(String positionCode, List<PositionSkill> positionSkills) {
 
         final var filter = new ArrayList<String>();
-        for (var positionSkill : position.skills()){
+        for (var positionSkill : positionSkills){
             if (MANDATORY.equals(positionSkill.levelReq())) {
                 switch (positionSkill.minLevel()) {
                     case LOW -> filter.add(fillFilterBuilder(positionSkill.skill().code(), LOW_LEVEL_LIST));
@@ -155,6 +155,28 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         );
 
         var candidateList = new ArrayList<Candidate>();
+
+        for (var people: peopleList) {
+            var candidateQuery = String.format("MATCH(p:People{code:%d}),(n:Position{code:'%s'})" +
+                    "CREATE (n)-[r:CANDIDATE{code:'%s',status:'%s',creationDate:date('%s')}]->(p)" +
+                    "RETURN p,r,n", people.code(), positionCode,people.code()+ "-" + people.employeeId(),EnumStatus.OPENED,LocalDate.now().toString());
+
+            var candidate = client.query(candidateQuery).fetchAs(Candidate.class)
+                    .mappedBy((TypeSystem t, Record record) ->{
+
+                        Candidate.CandidateBuilder candidateBuilder = getCandidateBuilder(record);
+
+                        return candidateBuilder.build();
+                    })
+                    .one();
+
+            candidateList.add(candidate.get());
+        }
+
+        //TODO HACER MATCH
+
+
+/*
         for (var people : peopleList) {
 
             Candidate candidate = Candidate.builder()
@@ -168,23 +190,14 @@ public class CandidateRepositoryImpl implements CandidateRepository {
             candidateList.add(candidate);
         }
 
-        var aux = new ArrayList<>();
-        for (var candidate : candidateList){
-            for (var existingCandidate: position.candidates()){
-                if(existingCandidate.candidate().code().equals(candidate.candidate().code()))
-                    aux.add(candidate);
-            }
-        }
-        candidateList.removeAll(aux);
+        position.candidates().addAll(candidateList);*/
 
-        position.candidates().addAll(candidateList);
-        positionCrudRepository.save(positionNodeMapper.toNode(position));
+        //positionCrudRepository.save(positionNodeMapper.toNode(position));
 
-        return position.candidates();
+        return candidateList;
     }
 
     private Candidate.CandidateBuilder getCandidateBuilder(Record record) {
-        Knows knows = getKnows(record);
 
         var candidateBuilder = Candidate.builder();
         candidateBuilder.code(record.get("r.code").asString());
@@ -195,7 +208,6 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         People peopleBuilder = getPeople(record);
 
         candidateBuilder.candidate(peopleBuilder);
-        candidateBuilder.skills(List.of(knows));
         candidateBuilder.position(positionNodeMapper.fromNode(positionCrudRepository.findPosition(record.get("n.code").asString())));
         return candidateBuilder;
     }

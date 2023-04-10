@@ -4,6 +4,7 @@ import com.sngular.skilltree.api.CandidateApi;
 import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedCandidateDTO;
 import com.sngular.skilltree.application.CandidateService;
+import com.sngular.skilltree.application.PositionService;
 import com.sngular.skilltree.application.updater.CandidateUpdater;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ public class CandidateController implements CandidateApi {
     private final CandidateUpdater candidateUpdater;
 
     private final CandidateMapper candidateMapper;
+
+    private final PositionService positionService;
 
     @Override
     public ResponseEntity<List<CandidateDTO>> getCandidates() {
@@ -56,10 +59,5 @@ public class CandidateController implements CandidateApi {
                 .toCandidateDTO(candidateUpdater
                         .patch(candidatecode, candidateMapper
                                 .toCandidate(patchedCandidateDTO))));
-    }
-
-    @Override
-    public ResponseEntity<List<CandidateDTO>> generateCandidates(String positioncode){
-        return ResponseEntity.ok(candidateMapper.toCandidatesDTO(candidateService.generateCandidates(positioncode)));
     }
 }

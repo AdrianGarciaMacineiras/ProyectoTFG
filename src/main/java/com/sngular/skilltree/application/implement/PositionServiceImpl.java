@@ -1,5 +1,6 @@
 package com.sngular.skilltree.application.implement;
 
+import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.application.PositionService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
@@ -17,6 +18,8 @@ public class PositionServiceImpl implements PositionService {
 
   private final PositionRepository positionRepository;
 
+  private final CandidateService candidateService;
+
   @Override
   public List<Position> getAll() {
     return positionRepository.findAll();
@@ -25,7 +28,10 @@ public class PositionServiceImpl implements PositionService {
   @Override
   public Position create(final Position position) {
     validateExist(position.code());
-    return positionRepository.save(position);
+    positionRepository.save(position);
+    candidateService.generateCandidates(position.code(), position.skills());
+    var newPosition = positionRepository.findByCode(position.code());
+    return newPosition;
   }
 
   @Override
@@ -41,6 +47,17 @@ public class PositionServiceImpl implements PositionService {
   public boolean deleteByCode(final String positioncode) {
     validateDoesNotExist(positioncode);
     return positionRepository.deleteByCode(positioncode);
+  }
+
+  @Override
+  public Position generateCandidates(String positionCode) {
+    var position = positionRepository.findByCode(positionCode);
+    if (Objects.isNull(position) || position.deleted()) {
+      throw new EntityNotFoundException("Position", positionCode);
+    }
+    candidateService.generateCandidates(position.code(), position.skills());
+    var newPosition = positionRepository.findByCode(positionCode);
+    return newPosition;
   }
 
 

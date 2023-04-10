@@ -3,6 +3,7 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
 
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.*;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PositionNodeMapper;
 import com.sngular.skilltree.model.*;
@@ -22,11 +23,9 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class PositionRepositoryImpl implements PositionRepository {
 
-  private final List<String> LOW_LEVEL_LIST = List.of("'LOW'", "'MEDIUM'", "'HIGH'");
-  private final List<String> MID_LEVEL_LIST = List.of( "'MEDIUM'", "'HIGH'");
-  private final List<String> HIGH_LEVEL_LIST = List.of("'HIGH'");
-
   private final PositionCrudRepository crud;
+
+  private final CandidateRepository candidateRepository;
 
   private final ProjectCrudRepository projectCrud;
 
@@ -61,73 +60,9 @@ public class PositionRepositoryImpl implements PositionRepository {
       throw new EntityNotFoundException("Office", officeNode.getCode());
     }
 
-    final var filter = new ArrayList<String>();
-    for (var positionSkill : position.skills()){
-      if (MANDATORY.equals(positionSkill.levelReq())) {
-        switch (positionSkill.minLevel()) {
-          case LOW -> filter.add(fillFilterBuilder(positionSkill.skill().code(), LOW_LEVEL_LIST));
-          case MEDIUM -> filter.add(fillFilterBuilder(positionSkill.skill().code(), MID_LEVEL_LIST));
-          default -> filter.add(fillFilterBuilder(positionSkill.skill().code(), HIGH_LEVEL_LIST));
-        }
-      }
-    }
+    var positionNode = crud.save(mapper.toNode(position));
 
-    var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
-            " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) AND ANY(lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair" +
-            ".skillcode})))" +
-            " RETURN DISTINCT p", String.join(",", filter));
-
-    var peopleList = client.query(query).fetchAs(People.class)
-            .mappedBy(getTypeSystemRecordPeopleBiFunction())
-            .all();
-
-    Map<Long, People> knowsMap = new HashMap<>();
-
-    peopleList.forEach(people ->
-            knowsMap.compute(people.code(), (code, aggPeople) -> {
-              if(Objects.isNull(aggPeople)){
-                return people;
-              } else {
-                var knowList = new ArrayList<>(aggPeople.knows());
-                knowList.addAll(people.knows());
-                aggPeople = aggPeople.toBuilder().knows(knowList).build();
-              }
-              return aggPeople;
-            })
-    );
-
-    var candidateList = new ArrayList<Candidate>();
-    for (var people : peopleList) {
-
-      Candidate candidate = Candidate.builder()
-              .code(people.code()+ "-" + people.employeeId())
-              .candidate(people)
-              .position(position)
-              .status(EnumStatus.ASSIGNED)
-              .creationDate(LocalDate.now())
-              .build();
-
-      candidateList.add(candidate);
-    }
-
-    position.candidates().addAll(candidateList);
-    return mapper.fromNode(crud.save(mapper.toNode(position)));
-  }
-
-  private static BiFunction<TypeSystem, Record, People> getTypeSystemRecordPeopleBiFunction() {
-    return (TypeSystem t, Record record) ->
-       People.builder()
-              .name(record.get("p").get("name").asString())
-              .surname(record.get("p").get("surname").asString())
-              .employeeId(record.get("p").get("employeeId").asString())
-              .birthDate(record.get("p").get("birthDate").asLocalDate())
-              .code(record.get("p").get("code").asLong())
-              .deleted(record.get("p").get("deleted").asBoolean())
-              .build();
-  }
-
-  private String fillFilterBuilder(final String skillCode, final List<String> levelList) {
-    return String.format("{skillcode:'%s', knowslevel:[%s]}", skillCode, String.join(",", levelList));
+    return mapper.fromNode(positionNode);
   }
 
   @Override

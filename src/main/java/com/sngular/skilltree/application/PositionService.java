@@ -10,7 +10,9 @@ public interface PositionService {
 
   Position create(final Position toPosition);
 
-  Position findByCode(final String opportunitycode);
+  Position findByCode(final String positionCode);
 
-  boolean deleteByCode(final String opportunitycode);
+  boolean deleteByCode(final String positionCode);
+
+  Position generateCandidates(final String positionCode);
 }

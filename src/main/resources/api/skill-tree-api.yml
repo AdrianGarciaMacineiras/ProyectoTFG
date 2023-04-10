@@ -395,6 +395,38 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /position/{positioncode}/candidates:
+    post:
+      summary: Generate new candidates for a position
+      description: Generate candidates
+      parameters:
+        - name: positioncode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a position
+      operationId: generateCandidates
+      tags:
+        - position
+      responses:
+        '200':
+          description: The position with the list of candidates regenerated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/position"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
   /people:
     summary: Company people
     description: Returns a list of all people in the company
@@ -801,40 +833,6 @@ paths:
       responses:
         '200':
           description: A candidate has been deleted
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '500':
-          description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-
-  /candidate/{positioncode}:
-    post:
-      summary: Generate new candidates for a position
-      description: Generate candidates
-      parameters:
-        - name: positioncode
-          in: path
-          required: true
-          schema:
-            type: string
-          description: String that represents the code of a candidate
-      operationId: generateCandidates
-      tags:
-        - candidate
-      responses:
-        '200':
-          description: A paged array with the generated candidates of a position
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/candidate"
         '400':
           description: Bad Request
         '404':
@@ -1525,7 +1523,7 @@ components:
           format: date
         status:
           type: string
-          enum: [ASSIGNED, INTERVIEWED, PRESENTED, OK, KO]
+          enum: [OPENED, ASSIGNED, INTERVIEWED, PRESENTED, OK, KO]
         candidateCode:
           type: integer
           format: int64
@@ -1550,7 +1548,7 @@ components:
           format: date
         status:
           type: string
-          enum: [ASSIGNED, INTERVIEWED, PRESENTED, OK, KO ]
+          enum: [OPENED, ASSIGNED, INTERVIEWED, PRESENTED, OK, KO ]
         candidateCode:
           type: integer
           format: int64

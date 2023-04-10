@@ -1,6 +1,7 @@
 package com.sngular.skilltree.application;
 
 import com.sngular.skilltree.model.Candidate;
+import com.sngular.skilltree.model.PositionSkill;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ public interface CandidateService {
 
     boolean deleteByCode(final String candidatecode);
 
-    List<Candidate> generateCandidates(String positioncode);
+    List<Candidate> generateCandidates(String positioncode, List<PositionSkill> positionSkills);
 }

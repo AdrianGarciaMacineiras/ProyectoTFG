@@ -1,12 +1,14 @@
 package com.sngular.skilltree.contract;
 
 import com.sngular.skilltree.api.PositionApi;
+import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedPositionDTO;
 import com.sngular.skilltree.api.model.PositionDTO;
 import com.sngular.skilltree.api.model.PositionSkillDTO;
 import com.sngular.skilltree.application.PositionService;
 import com.sngular.skilltree.application.updater.PositionUpdater;
 import com.sngular.skilltree.contract.mapper.PositionMapper;
+import com.sngular.skilltree.model.Position;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,4 +69,11 @@ public class PositionController implements PositionApi {
                         .patch(positioncode, positionMapper
                                 .toPosition(patchedPositionDTO))));
     }
+
+    @Override
+    public ResponseEntity<PositionDTO> generateCandidates(String positionCode){
+        return ResponseEntity.ok(positionMapper
+                .toPositionDTO(positionService.generateCandidates(positionCode)));
+    }
+
 }

@@ -5,6 +5,8 @@ import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.PositionRepository;
 import com.sngular.skilltree.model.Candidate;
+import com.sngular.skilltree.model.Position;
+import com.sngular.skilltree.model.PositionSkill;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,12 +42,12 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public List<Candidate> generateCandidates(String positioncode) {
+    public List<Candidate> generateCandidates(String positioncode, List<PositionSkill> positionSkills) {
         var position = positionRepository.findByCode(positioncode);
         if (Objects.isNull(position)) {
             throw new EntityNotFoundException("Position", positioncode);
         }
-        return candidateRepository.generateCandidates(position);
+        return candidateRepository.generateCandidates(positioncode, positionSkills);
     }
 
     private void validateDoesNotExist(String code) {

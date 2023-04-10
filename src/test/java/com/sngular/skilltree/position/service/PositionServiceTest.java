@@ -1,5 +1,6 @@
 package com.sngular.skilltree.position.service;
 
+import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.application.PositionService;
 import com.sngular.skilltree.application.implement.PositionServiceImpl;
 import com.sngular.skilltree.contract.mapper.PositionMapper;
@@ -30,11 +31,13 @@ public class PositionServiceTest {
 
     private PositionService positionService;
 
+    private CandidateService candidateService;
+
     private PositionMapper mapper = Mappers.getMapper(PositionMapper.class);
 
     @BeforeEach
     void setUp() {
-        positionService = new PositionServiceImpl(puestoRepository);}
+        positionService = new PositionServiceImpl(puestoRepository, candidateService);}
 
     @Test
     @DisplayName("Testing save opportunity")
