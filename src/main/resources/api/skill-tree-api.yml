@@ -411,7 +411,46 @@ paths:
         - position
       responses:
         '200':
-          description: The position with the list of candidates regenerated
+          description: The list of candidates regenerated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/position"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /position/{positioncode}/people/{peoplecode}:
+    post:
+      summary: Assign a candidate to a position
+      description: Assign a candidate
+      parameters:
+        - name: positioncode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a position
+        - name: peoplecode
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Number that represents the code of a person that is a candidate of the position
+      operationId: assignCandidate
+      tags:
+        - position
+      responses:
+        '200':
+          description: The position with the candidate assigned
           content:
             application/json:
               schema:
@@ -611,6 +650,45 @@ paths:
       responses:
         '200':
           description: A person has been deleted
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /people/{peoplecode}/position/{positioncode}:
+    post:
+      summary: Assign a candidate to a position
+      description: Assign a candidate
+      parameters:
+        - name: peoplecode
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Number that represents the code of a person that is a candidate of the position
+        - name: positioncode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a position
+      operationId: assignCandidate
+      tags:
+        - position
+      responses:
+        '200':
+          description: The candidate assigned to the position
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/people"
         '400':
           description: Bad Request
         '404':

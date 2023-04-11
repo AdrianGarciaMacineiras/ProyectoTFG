@@ -1,5 +1,6 @@
 package com.sngular.skilltree.application.implement;
 
+import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
@@ -16,6 +17,8 @@ import java.util.Objects;
 public class PeopleServiceImpl implements PeopleService {
 
     private final PeopleRepository peopleRepository;
+
+    private final CandidateService candidateService;
 
     @Override
     public List<People> getAll() {
@@ -49,6 +52,13 @@ public class PeopleServiceImpl implements PeopleService {
     public boolean deleteByCode(Long personCode) {
         validateDoesNotExist(personCode);
         return peopleRepository.deleteByCode(personCode);
+    }
+
+    @Override
+    public People assignCandidate(Long peopleCode, String positionCode) {
+        validateDoesNotExist(peopleCode);
+        candidateService.assignCandidate(positionCode, peopleCode);
+        return peopleRepository.findByCode(peopleCode);
     }
 
     private void validateExist(Long code) {

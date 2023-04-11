@@ -60,6 +60,13 @@ public class PositionServiceImpl implements PositionService {
     return newPosition;
   }
 
+  @Override
+  public Position assignCandidate(String positionCode, Long peopleCode) {
+    validateDoesNotExist(positionCode);
+    candidateService.assignCandidate(positionCode, peopleCode);
+    return positionRepository.findByCode(positionCode);
+  }
+
 
   private void validateExist(String code) {
     var oldPosition = positionRepository.findByCode(code);

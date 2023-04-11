@@ -1,7 +1,9 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import com.sngular.skilltree.common.exceptions.AssignUnableException;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.CandidateCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PositionCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.CandidateNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PositionNodeMapper;
@@ -21,6 +23,7 @@ import java.util.*;
 import java.util.function.BiFunction;
 
 import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
+import static com.sngular.skilltree.model.EnumStatus.*;
 
 
 @Repository
@@ -34,6 +37,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     private final CandidateCrudRepository crud;
 
     private final PositionCrudRepository positionCrudRepository;
+
+    private final PeopleCrudRepository peopleCrudRepository;
 
     private final PositionNodeMapper positionNodeMapper;
 
@@ -53,6 +58,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
             candidateRelationshipList.addAll(positionNode.getCandidates());
             candidateBuilder.position(positionNodeMapper.fromNode(positionCrudRepository.findByCode(positionNode.getCode())));
         }
+
         for (var candidateRelationship : candidateRelationshipList){
             candidateBuilder.code(candidateRelationship.code());
             candidateBuilder.id(candidateRelationship.id());
@@ -63,6 +69,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
             candidateBuilder.skills(peopleNodeMapper.knowsRelationshipListToKnowsList(candidateRelationship.candidate().getKnows()));
             candidateBuilder.build();
         }
+
         return mapper.map(candidateRelationshipList);
     }
 
@@ -173,35 +180,59 @@ public class CandidateRepositoryImpl implements CandidateRepository {
             candidateList.add(candidate.get());
         }
 
-        //TODO HACER MATCH
+        return candidateList;
+    }
 
+    @Override
+    public List<Candidate> findByPeopleandPosition(String positionCode, Long peopleCode) {
 
-/*
-        for (var people : peopleList) {
+        var query = String.format("MATCH(p:People{code:%d})-[r:CANDIDATE]-(n:Position{code:'%s'}) " +
+                "RETURN p,r.code, r.status, r.introductionDate, r.resolutionDate, n",peopleCode,positionCode);
 
-            Candidate candidate = Candidate.builder()
-                    .code(people.code()+ "-" + people.employeeId())
-                    .candidate(people)
-                    .position(position)
-                    .status(EnumStatus.ASSIGNED)
-                    .creationDate(LocalDate.now())
-                    .build();
+        return new ArrayList<>(client
+                .query(query)
+                .fetchAs(Candidate.class)
+                .mappedBy((TypeSystem t, Record record)->{
 
-            candidateList.add(candidate);
+                    Candidate.CandidateBuilder candidateBuilder = getCandidateBuilder(record);
+
+                    return candidateBuilder.build();
+                })
+                .all()
+        );
+    }
+
+    @Override
+    public void assignCandidate(String positionCode, Long peopleCode, List<Candidate> candidates) {
+
+        var position = positionCrudRepository.findByCode(positionCode);
+        var people = peopleCrudRepository.findByCode(peopleCode);
+
+        //boolean found = false;
+        Candidate openCandidate = null;
+        for (var candidate: candidates){
+            if(candidate.status() == OPENED || candidate.status() == INTERVIEWED || candidate.status() == ASSIGNED){
+                openCandidate = candidate;
+                //found = true;
+                break;
+            }
+        }
+        if (Objects.isNull(openCandidate)){
+           throw new AssignUnableException("Candidate");
         }
 
-        position.candidates().addAll(candidateList);*/
+       var query = String.format("MATCH(p:People{code:%d}),(s:Position{code:'%s'})" +
+                       "CREATE(s)-[r:ASSIGN{assignDate:date('%s'), role:'%s'}]->(p)"
+               , peopleCode, positionCode, LocalDate.now().toString(), position.getRole());
 
-        //positionCrudRepository.save(positionNodeMapper.toNode(position));
-
-        return candidateList;
+        client.query(query).run();
     }
 
     private Candidate.CandidateBuilder getCandidateBuilder(Record record) {
 
         var candidateBuilder = Candidate.builder();
         candidateBuilder.code(record.get("r.code").asString());
-        candidateBuilder.status((record.get("r.status").asString().equalsIgnoreCase("null")) ? EnumStatus.KO : EnumStatus.valueOf(record.get("r.status").asString()));
+        candidateBuilder.status((record.get("r.status").asString().equalsIgnoreCase("null")) ? KO : EnumStatus.valueOf(record.get("r.status").asString()));
         candidateBuilder.introductionDate((record.get("r.introductionDate").asString() == "null") ? null : record.get("r.introductionDate").asLocalDate());
         candidateBuilder.resolutionDate((record.get("r.resolutionDate").asString() == "null") ? null : record.get("r.resolutionDate").asLocalDate());
 
@@ -220,15 +251,6 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                 .birthDate(record.get("p").get("birthDate").asLocalDate())
                 .code(record.get("p").get("code").asLong())
                 .deleted(record.get("p").get("deleted").asBoolean())
-                .build();
-    }
-
-    private static Knows getKnows(Record record) {
-        return Knows.builder()
-                .code(record.get("k.name").asString())
-                .experience(record.get("s").get("experience").asInt())
-                .level(record.get("s").get("level").asString())
-                .primary(record.get("s").get("primary").asBoolean())
                 .build();
     }
 

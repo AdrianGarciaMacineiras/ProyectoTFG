@@ -64,4 +64,11 @@ public class PeopleController implements PeopleApi {
                         .create(peopleMapper
                                 .toPerson(peopleDTO))));
     }
+
+    @Override
+    public ResponseEntity<PeopleDTO> assignCandidate(Long peopleCode, String positionCode){
+        return ResponseEntity.ok(peopleMapper
+                .toPersonDTO(peopleService
+                        .assignCandidate(peopleCode,positionCode)));
+    }
 }

@@ -73,7 +73,14 @@ public class PositionController implements PositionApi {
     @Override
     public ResponseEntity<PositionDTO> generateCandidates(String positionCode){
         return ResponseEntity.ok(positionMapper
-                .toPositionDTO(positionService.generateCandidates(positionCode)));
+                .toPositionDTO(positionService
+                        .generateCandidates(positionCode)));
     }
 
+    @Override
+    public ResponseEntity<PositionDTO> assignCandidate(String positionCode, Long peopleCode){
+        return ResponseEntity.ok(positionMapper
+                .toPositionDTO(positionService
+                        .assignCandidate(positionCode, peopleCode)));
+    }
 }

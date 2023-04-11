@@ -14,4 +14,6 @@ public interface CandidateService {
     boolean deleteByCode(final String candidatecode);
 
     List<Candidate> generateCandidates(String positioncode, List<PositionSkill> positionSkills);
+
+    void assignCandidate(final String positionCode, final Long peopleCode);
 }

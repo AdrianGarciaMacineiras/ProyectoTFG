@@ -33,9 +33,6 @@ public class PeopleUpdaterImpl implements PeopleUpdater {
     public People patch(Long personcode, People patchedPeople) {
         validate(personcode);
         var oldPerson = peopleRepository.findByCode(personcode);
-        if (!oldPerson.assignable() && !Objects.isNull(patchedPeople.assigns())){
-            throw new AssignUnableException("People", oldPerson.code());
-        }
         var person = mapper.patch(patchedPeople, oldPerson);
         return peopleRepository.save(person);
     }

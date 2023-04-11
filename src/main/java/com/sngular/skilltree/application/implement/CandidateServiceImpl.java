@@ -43,11 +43,16 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public List<Candidate> generateCandidates(String positioncode, List<PositionSkill> positionSkills) {
-        var position = positionRepository.findByCode(positioncode);
-        if (Objects.isNull(position)) {
-            throw new EntityNotFoundException("Position", positioncode);
-        }
         return candidateRepository.generateCandidates(positioncode, positionSkills);
+    }
+
+    @Override
+    public void assignCandidate(String positionCode, Long peopleCode) {
+        var candidates = candidateRepository.findByPeopleandPosition(positionCode, peopleCode);
+        if (Objects.isNull(candidates) || candidates.isEmpty()){
+            throw new EntityNotFoundException("Candidate", positionCode, peopleCode);
+        }
+        candidateRepository.assignCandidate(positionCode, peopleCode, candidates);
     }
 
     private void validateDoesNotExist(String code) {

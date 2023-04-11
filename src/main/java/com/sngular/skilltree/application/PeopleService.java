@@ -16,4 +16,5 @@ public interface PeopleService {
 
     boolean deleteByCode(final Long personcode);
 
+    People assignCandidate(final Long peopleCode, final String positionCode);
 }

@@ -20,4 +20,7 @@ public interface CandidateRepository {
 
     List<Candidate> generateCandidates(String positionCode, List<PositionSkill> positionSkills);
 
+    List<Candidate> findByPeopleandPosition(String positionCode, Long peopleCode);
+
+    void assignCandidate(String positionCode, Long peopleCandidate, List<Candidate> candidates);
 }

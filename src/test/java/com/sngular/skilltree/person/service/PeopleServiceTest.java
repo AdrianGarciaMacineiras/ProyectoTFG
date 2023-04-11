@@ -1,5 +1,6 @@
 package com.sngular.skilltree.person.service;
 
+import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
@@ -28,11 +29,13 @@ public class PeopleServiceTest {
 
     private PeopleMapper mapper = Mappers.getMapper(PeopleMapper.class);
 
+    private CandidateService candidateService;
+
     private PeopleService peopleService;
 
     @BeforeEach
     void setUp(){
-        peopleService = new PeopleServiceImpl(peopleRepository);
+        peopleService = new PeopleServiceImpl(peopleRepository, candidateService);
     }
 
     @Test

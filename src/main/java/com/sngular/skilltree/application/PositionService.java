@@ -15,4 +15,6 @@ public interface PositionService {
   boolean deleteByCode(final String positionCode);
 
   Position generateCandidates(final String positionCode);
+
+  Position assignCandidate(final String positionCode, final Long peopleCode);
 }
