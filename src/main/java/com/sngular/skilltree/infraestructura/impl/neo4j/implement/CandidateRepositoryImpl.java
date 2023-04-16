@@ -39,8 +39,6 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
     private final PositionCrudRepository positionCrudRepository;
 
-    private final PeopleCrudRepository peopleCrudRepository;
-
     private final PositionNodeMapper positionNodeMapper;
 
     private final PeopleNodeMapper peopleNodeMapper;
@@ -126,6 +124,10 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
     @Override
     public List<Candidate> generateCandidates(String positionCode, List<PositionSkill> positionSkills) {
+
+        var queryStatusKO = String.format("MATCH(p:People)-[r:CANDIDATE]-(n:Position{code:'%s'}) " +
+                "WHERE NOT r.status = 'KO' AND NOT r.status = 'OK' SET r.status = 'KO'",positionCode);
+        client.query(queryStatusKO).run();
 
         final var filter = new ArrayList<String>();
         for (var positionSkill : positionSkills){
@@ -230,7 +232,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
        var query = String.format("MATCH(p:People),(s:Position)" +
                        "WHERE p.code=%d AND s.code='%s'" +
-                       "CREATE(s)-[r:ASSIGN{assignDate:date('%s'), role:'%s'}]->(p)"
+                       "CREATE(s)-[r:ASSIGN{assignDate:date('%s'), role:'%s', dedication:'100/100'}]->(p)"
                , peopleCode, positionCode, LocalDate.now().toString(), position.getRole());
         client.query(query).run();
 

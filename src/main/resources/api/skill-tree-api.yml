@@ -427,6 +427,31 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+    get:
+      summary: List all candidates of the position
+      operationId: getPositionCandidates
+      tags:
+        - candidate
+      responses:
+        '200':
+          description: A paged array of candidates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/candidate"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
   /position/{positioncode}/people/{peoplecode}:
     post:
       summary: Assign a candidate to a position
@@ -1888,6 +1913,8 @@ components:
         assignDate:
           type: string
           format: date
+        dedication:
+          type: string
 
     teams:
       type: array

@@ -8,5 +8,5 @@ import java.time.LocalDate;
 @RelationshipProperties
 @Builder(toBuilder = true)
 public record AssignedRelationship(@RelationshipId Long id, @TargetNode PositionNode positionNode,
-                                   LocalDate endDate, LocalDate initDate, LocalDate assignDate ,String role) {
+                                   LocalDate endDate, LocalDate initDate, LocalDate assignDate ,String role, String dedication) {
 }

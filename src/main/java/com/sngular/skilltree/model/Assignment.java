@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 @Builder(toBuilder = true)
-public record Assignment(Long id, String role, LocalDate initDate, LocalDate endDate, LocalDate assignDate) {
+public record Assignment(Long id, String role, LocalDate initDate, LocalDate endDate, LocalDate assignDate, String dedication) {
 }
