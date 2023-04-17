@@ -1,10 +1,12 @@
 package com.sngular.skilltree.contract;
 
 import com.sngular.skilltree.api.PeopleApi;
+import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedPeopleDTO;
 import com.sngular.skilltree.api.model.PeopleDTO;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.updater.PeopleUpdater;
+import com.sngular.skilltree.contract.mapper.CandidateMapper;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,8 @@ public class PeopleController implements PeopleApi {
     private final PeopleUpdater peopleUpdater;
 
     private final PeopleMapper peopleMapper;
+
+    private final CandidateMapper candidateMapper;
 
     @Override
     public ResponseEntity<PeopleDTO> getPersonByCode(Long peoplecode) {
@@ -70,5 +74,12 @@ public class PeopleController implements PeopleApi {
         return ResponseEntity.ok(peopleMapper
                 .toPersonDTO(peopleService
                         .assignCandidate(peopleCode,positionCode)));
+    }
+
+    @Override
+    public ResponseEntity<List<CandidateDTO>> getPeopleCandidates(Long peopleCode){
+        return ResponseEntity.ok(candidateMapper
+                .toCandidatesDTO(peopleService
+                        .getCandidates(peopleCode)));
     }
 }

@@ -11,7 +11,6 @@ public interface CustomPositionRepository {
     @Query("MATCH(n:Position)-[r]-(p:Project{name:$projectcode}) RETURN n")
     PositionNode findPositionByProject(String projectcode);
 
-
-    @Query("MATCH(n:Position{code:$positionCode})-[r:CANDIDATE]-(p:People) RETURN n,r,p")
-    PositionNode findPositionCandidates(String positionCode);
+    @Query("MATCH(p:Position)-[r:CANDIDATE{code:$candidateCode}]-() RETURN p")
+    PositionNode findPositionByCandidate(String candidateCode);
 }

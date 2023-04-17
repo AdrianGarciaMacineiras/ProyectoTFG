@@ -1,5 +1,6 @@
 package com.sngular.skilltree.application;
 
+import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.People;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface PeopleService {
     boolean deleteByCode(final Long personcode);
 
     People assignCandidate(final Long peopleCode, final String positionCode);
+
+    List<Candidate> getCandidates(final Long peopleCode);
 }

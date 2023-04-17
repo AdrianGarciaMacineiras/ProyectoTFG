@@ -4,6 +4,7 @@ import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,12 @@ public class PeopleServiceImpl implements PeopleService {
         validateDoesNotExist(peopleCode);
         candidateService.assignCandidate(positionCode, peopleCode);
         return peopleRepository.findByCode(peopleCode);
+    }
+
+    @Override
+    public List<Candidate> getCandidates(Long peopleCode) {
+        validateDoesNotExist(peopleCode);
+        return candidateService.getCandidates(peopleCode);
     }
 
     private void validateExist(Long code) {

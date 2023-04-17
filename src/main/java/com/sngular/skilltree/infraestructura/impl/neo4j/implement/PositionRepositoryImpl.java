@@ -83,10 +83,4 @@ public class PositionRepositoryImpl implements PositionRepository {
     return mapper.map(crud.findByDeletedIsFalse());
   }
 
-  @Override
-  public Position findPositionCandidates(String positioncode) {
-    return mapper.fromNode(crud.findPositionCandidates(positioncode));
-  }
-
-
 }

@@ -1,5 +1,6 @@
 package com.sngular.skilltree.application;
 
+import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.Position;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface PositionService {
   Position generateCandidates(final String positionCode);
 
   Position assignCandidate(final String positionCode, final Long peopleCode);
+
+  List<Candidate> getCandidates(final String positionCode);
 }

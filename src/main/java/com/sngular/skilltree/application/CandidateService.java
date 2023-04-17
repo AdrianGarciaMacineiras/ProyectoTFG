@@ -16,4 +16,9 @@ public interface CandidateService {
     List<Candidate> generateCandidates(String positioncode, List<PositionSkill> positionSkills);
 
     void assignCandidate(final String positionCode, final Long peopleCode);
+
+    List<Candidate> getCandidates(final String positionCode);
+
+    List<Candidate> getCandidates(final Long peopleCode);
+
 }

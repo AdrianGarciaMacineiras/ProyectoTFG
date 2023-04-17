@@ -96,8 +96,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         Map<String, Candidate> knowsMap = new HashMap<>();
 
         var candidateList = new ArrayList<>(client
-                .query("MATCH (o:Skill)-[m:NEEDS]-(n:Opportunity)-[r:CANDIDATE]-(p)-[s:KNOWS]-(k:Skill) " +
-                        "WHERE o.code=k.code RETURN n.code, r.code, r.status, r.introductionDate, r.resolutionDate, p,s,k.name")
+                .query("MATCH (o:Skill)-[m:NEEDS]-(n:Position)-[r:CANDIDATE]-(p)-[s:KNOWS]-(k:Skill) " +
+                        "WHERE o.code=k.code RETURN n.code, r.code, r.status, r.creationDate, r.introductionDate, r.resolutionDate, p,s,k.name")
                 .fetchAs(Candidate.class)
                 .mappedBy((TypeSystem t, Record record) -> {
 
@@ -189,9 +189,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     @Override
     public List<Candidate> findByPeopleandPosition(String positionCode, Long peopleCode) {
 
-        //Añadir a la query r.introductionDate y r.resulotionDate
         var query = String.format("MATCH(p:People{code:%d})-[r:CANDIDATE]-(n:Position{code:'%s'}) " +
-                "WHERE r.status IN %s RETURN p,r.code, r.status, ID(r), n",
+                "WHERE r.status IN %s RETURN p,r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n",
                 peopleCode, positionCode, CANDIDATE_OPEN_STATUS);
 
         var candidateList = new ArrayList<>(client
@@ -206,8 +205,6 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                 .all()
         );
 
-
-
         return candidateList;
     }
 
@@ -215,14 +212,11 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     public void assignCandidate(String positionCode, Long peopleCode, List<Candidate> candidates) {
 
         var position = positionCrudRepository.findByCode(positionCode);
-        //var people = peopleCrudRepository.findByCode(peopleCode);
 
-        //boolean found = false;
         Candidate openCandidate = null;
         for (var candidate: candidates){
             if(candidate.status() == OPENED || candidate.status() == INTERVIEWED || candidate.status() == ASSIGNED){
                 openCandidate = candidate;
-                //found = true;
                 break;
             }
         }
@@ -246,14 +240,51 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
     }
 
+    @Override
+    public List<Candidate> getCandidates(String positionCode) {
+        var query = String.format("MATCH(n:Position{code:'%s'})-[r:CANDIDATE]-(p:People) " +
+                        "RETURN p, r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n",
+                positionCode);
+
+        return new ArrayList<>(client
+                .query(query)
+                .fetchAs(Candidate.class)
+                .mappedBy((TypeSystem t, Record record)->{
+
+                    Candidate.CandidateBuilder candidateBuilder = getCandidateBuilder(record);
+
+                    return candidateBuilder.build();
+                })
+                .all());
+    }
+
+    @Override
+    public List<Candidate> getCandidates(Long peopleCode) {
+        var query = String.format("MATCH(n:Position)-[r:CANDIDATE]-(p:People{code:%d}) " +
+                        "RETURN p, r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n",
+                peopleCode);
+
+        return new ArrayList<>(client
+                .query(query)
+                .fetchAs(Candidate.class)
+                .mappedBy((TypeSystem t, Record record)->{
+
+                    Candidate.CandidateBuilder candidateBuilder = getCandidateBuilder(record);
+
+                    return candidateBuilder.build();
+                })
+                .all());
+    }
+
     private Candidate.CandidateBuilder getCandidateBuilder(Record record) {
 
         var candidateBuilder = Candidate.builder();
         candidateBuilder.id(record.get("ID(r)").asLong());
         candidateBuilder.code(record.get("r.code").asString());
-        candidateBuilder.status((record.get("r.status").asString().equalsIgnoreCase("null")) ? KO : EnumStatus.valueOf(record.get("r.status").asString()));
+        candidateBuilder.status(EnumStatus.valueOf(record.get("r.status").asString()));
         candidateBuilder.introductionDate((record.get("r.introductionDate").asString() == "null") ? null : record.get("r.introductionDate").asLocalDate());
         candidateBuilder.resolutionDate((record.get("r.resolutionDate").asString() == "null") ? null : record.get("r.resolutionDate").asLocalDate());
+        candidateBuilder.creationDate(record.get("r.creationDate").asLocalDate());
 
         People peopleBuilder = getPeople(record);
 

@@ -429,9 +429,16 @@ paths:
 
     get:
       summary: List all candidates of the position
+      parameters:
+        - name: positioncode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a position
       operationId: getPositionCandidates
       tags:
-        - candidate
+        - position
       responses:
         '200':
           description: A paged array of candidates
@@ -724,6 +731,41 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
+
+  /people/{peoplecode}/candidates:
+    get:
+      summary: List all candidacies of the person
+      parameters:
+        - name: peoplecode
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Long that represents the code of a person
+      operationId: getPeopleCandidates
+      tags:
+        - people
+      responses:
+        '200':
+          description: A paged array of candidates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/candidate"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
 
   /skills:
     summary: Skills on the skill tree

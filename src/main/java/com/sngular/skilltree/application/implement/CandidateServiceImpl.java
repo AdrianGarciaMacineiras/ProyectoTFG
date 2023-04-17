@@ -55,6 +55,16 @@ public class CandidateServiceImpl implements CandidateService {
         candidateRepository.assignCandidate(positionCode, peopleCode, candidates);
     }
 
+    @Override
+    public List<Candidate> getCandidates(String positionCode) {
+        return candidateRepository.getCandidates(positionCode);
+    }
+
+    @Override
+    public List<Candidate> getCandidates(Long peopleCode) {
+        return candidateRepository.getCandidates(peopleCode);
+    }
+
     private void validateDoesNotExist(String code) {
         var oldCandidate = candidateRepository.findByCode(code);
         if (Objects.isNull(oldCandidate)) {

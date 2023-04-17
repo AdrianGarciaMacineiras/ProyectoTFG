@@ -4,6 +4,7 @@ import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.application.PositionService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.infraestructura.PositionRepository;
 import java.util.List;
@@ -65,6 +66,12 @@ public class PositionServiceImpl implements PositionService {
     validateDoesNotExist(positionCode);
     candidateService.assignCandidate(positionCode, peopleCode);
     return positionRepository.findByCode(positionCode);
+  }
+
+  @Override
+  public List<Candidate> getCandidates(String positionCode) {
+    validateDoesNotExist(positionCode);
+    return candidateService.getCandidates(positionCode);
   }
 
 

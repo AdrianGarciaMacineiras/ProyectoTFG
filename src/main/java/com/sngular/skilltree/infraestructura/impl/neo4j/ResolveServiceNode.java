@@ -3,6 +3,7 @@ package com.sngular.skilltree.infraestructura.impl.neo4j;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
 import com.sngular.skilltree.model.*;
 import com.sngular.skilltree.model.Assignment;
+import com.sngular.skilltree.model.EnumMode;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class ResolveServiceNode {
     private final SkillCrudRepository skillCrudRepository;
 
     private final PositionCrudRepository positionCrudRepository;
+
 
     @Named("resolveCodeToSkillNode")
     public SkillNode resolveCodeToSkillNode(final String code) {
@@ -113,5 +115,4 @@ public class ResolveServiceNode {
         }
         return skillsCandidateRelationshipList;
     }
-
 }
