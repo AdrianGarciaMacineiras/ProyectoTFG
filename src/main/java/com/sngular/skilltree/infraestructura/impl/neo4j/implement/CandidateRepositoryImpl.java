@@ -243,7 +243,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     @Override
     public List<Candidate> getCandidates(String positionCode) {
         var query = String.format("MATCH(n:Position{code:'%s'})-[r:CANDIDATE]-(p:People) " +
-                        "RETURN p, r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n",
+                        "RETURN p, r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n.code",
                 positionCode);
 
         return new ArrayList<>(client
@@ -261,7 +261,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     @Override
     public List<Candidate> getCandidates(Long peopleCode) {
         var query = String.format("MATCH(n:Position)-[r:CANDIDATE]-(p:People{code:%d}) " +
-                        "RETURN p, r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n",
+                        "RETURN p, r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n.code",
                 peopleCode);
 
         return new ArrayList<>(client

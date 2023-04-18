@@ -115,4 +115,5 @@ public class ResolveServiceNode {
         }
         return skillsCandidateRelationshipList;
     }
+
 }
