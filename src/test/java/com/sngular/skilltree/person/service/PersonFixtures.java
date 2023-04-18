@@ -1,25 +1,27 @@
 package com.sngular.skilltree.person.service;
 
-import com.sngular.skilltree.model.EnumTitle;
-import com.sngular.skilltree.model.People;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.sngular.skilltree.model.EnumTitle;
+import com.sngular.skilltree.model.People;
 
 public final class PersonFixtures {
 
   public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
   public static final People PEOPLE_BY_CODE =
-          People.builder()
-                  .code(1L)
-                  .name("people")
-                  .surname("surname")
-                  .employeeId("employeeId")
-                  .title(EnumTitle.SENIOR)
-                  .birthDate(date)
-                  .build();
+    People.builder()
+          .code(1L)
+          .name("people")
+          .surname("surname")
+          .employeeId("employeeId")
+          .title(EnumTitle.SENIOR)
+          .birthDate(date)
+          .assignable(true)
+          .build();
 
   public static final People PEOPLE2_BY_CODE =
           People.builder()

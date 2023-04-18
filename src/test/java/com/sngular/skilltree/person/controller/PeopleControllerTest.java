@@ -1,15 +1,29 @@
 package com.sngular.skilltree.person.controller;
 
-import static com.sngular.skilltree.person.fixtures.PersonFixtures.*;
-import static org.mockito.ArgumentMatchers.*;
+import static com.sngular.skilltree.person.fixtures.PersonFixtures.LIST_PERSON_JSON;
+import static com.sngular.skilltree.person.fixtures.PersonFixtures.PATCH_PERSON_BY_CODE_JSON;
+import static com.sngular.skilltree.person.fixtures.PersonFixtures.PEOPLE_BY_CODE;
+import static com.sngular.skilltree.person.fixtures.PersonFixtures.PEOPLE_LIST;
+import static com.sngular.skilltree.person.fixtures.PersonFixtures.PERSON_BY_CODE_JSON;
+import static com.sngular.skilltree.person.fixtures.PersonFixtures.UPDATED_PEOPLE_BY_CODE;
+import static com.sngular.skilltree.person.fixtures.PersonFixtures.UPDATED_PERSON_BY_CODE_JSON;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.sngular.skilltree.application.*;
+import com.sngular.skilltree.application.ClientService;
+import com.sngular.skilltree.application.OfficeService;
+import com.sngular.skilltree.application.PeopleService;
+import com.sngular.skilltree.application.PositionService;
+import com.sngular.skilltree.application.ProjectService;
+import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.application.updater.PeopleUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.PeopleController;
+import com.sngular.skilltree.contract.mapper.CandidateMapper;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import com.sngular.skilltree.model.People;
@@ -76,14 +90,14 @@ class PeopleControllerTest {
 
   @Test
   void updatePerson() throws Exception {
-    when(peopleUpdater.update(anyLong(),any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
+    when(peopleUpdater.update(anyLong(), any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                            .put("/people/1")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .accept(MediaType.APPLICATION_JSON)
-                            .content(PERSON_BY_CODE_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().json(UPDATED_PERSON_BY_CODE_JSON));
+                      .put("/people/1")
+                      .contentType(MediaType.APPLICATION_JSON)
+                      .accept(MediaType.APPLICATION_JSON)
+                      .content(PERSON_BY_CODE_JSON))
+           .andExpect(status().isOk())
+           .andExpect(content().json(UPDATED_PERSON_BY_CODE_JSON));
   }
 
   @Test
@@ -119,6 +133,7 @@ class PeopleControllerTest {
 
   @TestConfiguration
   static class ControllerTestConfiguration {
+
     @Bean
     public PeopleMapper getPeopleMapper() {
       return Mappers.getMapper(PeopleMapper.class);
@@ -127,6 +142,11 @@ class PeopleControllerTest {
     @Bean
     public SkillMapper getSkillMapper() {
       return Mappers.getMapper(SkillMapper.class);
+    }
+
+    @Bean
+    public CandidateMapper candidateMapper() {
+      return Mappers.getMapper(CandidateMapper.class);
     }
 
     @MockBean

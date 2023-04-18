@@ -37,5 +37,5 @@ public interface CandidateMapper {
                 .introductionDate((Objects.isNull(newCandidate.introductionDate())) ? oldCandidate.introductionDate() : newCandidate.introductionDate())
                 .interviewDate((Objects.isNull(newCandidate.interviewDate())) ? oldCandidate.interviewDate() : newCandidate.interviewDate())
                 .build();
-    };
+    }
 }

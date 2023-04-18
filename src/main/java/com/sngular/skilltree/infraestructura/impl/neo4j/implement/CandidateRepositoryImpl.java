@@ -1,39 +1,51 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
+import static com.sngular.skilltree.model.EnumStatus.ASSIGNED;
+import static com.sngular.skilltree.model.EnumStatus.INTERVIEWED;
+import static com.sngular.skilltree.model.EnumStatus.OPENED;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.BiFunction;
+
 import com.sngular.skilltree.common.exceptions.AssignUnableException;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.CandidateCrudRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PositionCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.CandidateNodeMapper;
-import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PositionNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
+import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PositionNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.CandidateRelationship;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
-import com.sngular.skilltree.model.*;
+import com.sngular.skilltree.model.Candidate;
+import com.sngular.skilltree.model.EnumStatus;
+import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.PositionSkill;
 import lombok.RequiredArgsConstructor;
-import org.neo4j.driver.types.TypeSystem;
 import org.neo4j.driver.Record;
-import org.springframework.stereotype.Repository;
+import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
-
-
-import java.time.LocalDate;
-import java.util.*;
-import java.util.function.BiFunction;
-
-import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
-import static com.sngular.skilltree.model.EnumStatus.*;
-
+import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
 public class CandidateRepositoryImpl implements CandidateRepository {
 
-    private final List<String> LOW_LEVEL_LIST = List.of("'LOW'", "'MEDIUM'", "'HIGH'");
-    private final List<String> MID_LEVEL_LIST = List.of( "'MEDIUM'", "'HIGH'");
-    private final List<String> HIGH_LEVEL_LIST = List.of("'HIGH'");
-    private final List<String> CANDIDATE_OPEN_STATUS = List.of("'OPENED'", "'ASSIGNED'", "'INTERVIEWED'");
+    public static final String HIGH = "'HIGH'";
+
+    private static final List<String> LOW_LEVEL_LIST = List.of("'LOW'", "'MEDIUM'", HIGH);
+
+    private static final List<String> MID_LEVEL_LIST = List.of("'MEDIUM'", HIGH);
+
+    private static final List<String> HIGH_LEVEL_LIST = List.of(HIGH);
+
+    private static final List<String> CANDIDATE_OPEN_STATUS = List.of("'OPENED'", "'ASSIGNED'", "'INTERVIEWED'");
+
+    public static final String NULL = "null";
 
     private final CandidateCrudRepository crud;
 
@@ -96,15 +108,10 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         Map<String, Candidate> knowsMap = new HashMap<>();
 
         var candidateList = new ArrayList<>(client
-                .query("MATCH (o:Skill)-[m:NEEDS]-(n:Position)-[r:CANDIDATE]-(p)-[s:KNOWS]-(k:Skill) " +
-                        "WHERE o.code=k.code RETURN n.code, r.code, r.status, r.creationDate, r.introductionDate, r.resolutionDate, p,s,k.name")
-                .fetchAs(Candidate.class)
-                .mappedBy((TypeSystem t, Record record) -> {
-
-                    Candidate.CandidateBuilder candidateBuilder = getCandidateBuilder(record);
-
-                    return candidateBuilder.build();
-                })
+                                              .query("MATCH (o:Skill)-[m:NEEDS]-(n:Position)-[r:CANDIDATE]-(p)-[s:KNOWS]-(k:Skill) " +
+                                                     "WHERE o.code=k.code RETURN n.code, r.code, r.status, r.creationDate, r.introductionDate, r.resolutionDate, p,s,k.name")
+                                              .fetchAs(Candidate.class)
+                                              .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
                 .all());
 
         candidateList.forEach(candidate ->
@@ -168,19 +175,14 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
         for (var people: peopleList) {
             var candidateQuery = String.format("MATCH(p:People{code:%d}),(n:Position{code:'%s'})" +
-                    "CREATE (n)-[r:CANDIDATE{code:'%s',status:'%s',creationDate:date('%s')}]->(p)" +
-                    "RETURN p,r,n", people.code(), positionCode,people.code()+ "-" + people.employeeId(),EnumStatus.OPENED,LocalDate.now().toString());
+                                               "CREATE (n)-[r:CANDIDATE{code:'%s',status:'%s',creationDate:date('%s')}]->(p)" +
+                                               "RETURN p,r,n", people.code(), positionCode, people.code() + "-" + people.employeeId(), OPENED, LocalDate.now());
 
             var candidate = client.query(candidateQuery).fetchAs(Candidate.class)
-                    .mappedBy((TypeSystem t, Record record) ->{
+                                  .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
+                                  .one();
 
-                        Candidate.CandidateBuilder candidateBuilder = getCandidateBuilder(record);
-
-                        return candidateBuilder.build();
-                    })
-                    .one();
-
-            candidateList.add(candidate.get());
+            candidate.ifPresent(candidateList::add);
         }
 
         return candidateList;
@@ -190,22 +192,16 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     public List<Candidate> findByPeopleandPosition(String positionCode, Long peopleCode) {
 
         var query = String.format("MATCH(p:People{code:%d})-[r:CANDIDATE]-(n:Position{code:'%s'}) " +
-                "WHERE r.status IN %s RETURN p,r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n",
-                peopleCode, positionCode, CANDIDATE_OPEN_STATUS);
+                                  "WHERE r.status IN %s RETURN p,r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n",
+                                  peopleCode, positionCode, CANDIDATE_OPEN_STATUS);
 
-        var candidateList = new ArrayList<>(client
-                .query(query)
-                .fetchAs(Candidate.class)
-                .mappedBy((TypeSystem t, Record record)->{
-
-                    Candidate.CandidateBuilder candidateBuilder = getCandidateBuilder(record);
-
-                    return candidateBuilder.build();
-                })
-                .all()
+        return new ArrayList<>(client
+                                 .query(query)
+                                 .fetchAs(Candidate.class)
+                                 .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
+                                 .all()
         );
 
-        return candidateList;
     }
 
     @Override
@@ -247,14 +243,9 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                 positionCode);
 
         return new ArrayList<>(client
-                .query(query)
-                .fetchAs(Candidate.class)
-                .mappedBy((TypeSystem t, Record record)->{
-
-                    Candidate.CandidateBuilder candidateBuilder = getCandidateBuilder(record);
-
-                    return candidateBuilder.build();
-                })
+                                 .query(query)
+                                 .fetchAs(Candidate.class)
+                                 .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
                 .all());
     }
 
@@ -265,43 +256,39 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                 peopleCode);
 
         return new ArrayList<>(client
-                .query(query)
-                .fetchAs(Candidate.class)
-                .mappedBy((TypeSystem t, Record record)->{
-
-                    Candidate.CandidateBuilder candidateBuilder = getCandidateBuilder(record);
-
-                    return candidateBuilder.build();
-                })
+                                 .query(query)
+                                 .fetchAs(Candidate.class)
+                                 .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
                 .all());
     }
 
-    private Candidate.CandidateBuilder getCandidateBuilder(Record record) {
+    private Candidate.CandidateBuilder getCandidateBuilder(Record result) {
 
         var candidateBuilder = Candidate.builder();
-        candidateBuilder.id(record.get("ID(r)").asLong());
-        candidateBuilder.code(record.get("r.code").asString());
-        candidateBuilder.status(EnumStatus.valueOf(record.get("r.status").asString()));
-        candidateBuilder.introductionDate((record.get("r.introductionDate").asString() == "null") ? null : record.get("r.introductionDate").asLocalDate());
-        candidateBuilder.resolutionDate((record.get("r.resolutionDate").asString() == "null") ? null : record.get("r.resolutionDate").asLocalDate());
-        candidateBuilder.creationDate(record.get("r.creationDate").asLocalDate());
+        candidateBuilder.id(result.get("ID(r)").asLong());
+        candidateBuilder.code(result.get("r.code").asString());
+        candidateBuilder.status(EnumStatus.valueOf(result.get("r.status").asString()));
+        candidateBuilder.introductionDate(NULL.equalsIgnoreCase(result.get("r.introductionDate").asString()) ? null : result.get("r.introductionDate").asLocalDate());
+        candidateBuilder.resolutionDate(NULL.equalsIgnoreCase(result.get("r.resolutionDate").asString()) ? null : result.get("r.resolutionDate").asLocalDate());
+        candidateBuilder.creationDate(result.get("r.creationDate").asLocalDate());
 
-        People peopleBuilder = getPeople(record);
+        People peopleBuilder = getPeople(result);
 
         candidateBuilder.candidate(peopleBuilder);
-        candidateBuilder.position(positionNodeMapper.fromNode(positionCrudRepository.findPosition(record.get("n.code").asString())));
+        candidateBuilder.position(positionNodeMapper.fromNode(positionCrudRepository.findPosition(result.get("n.code").asString())));
         return candidateBuilder;
     }
 
-    private static People getPeople(Record record) {
+    private static People getPeople(Record result) {
+        var people = result.get("p");
         return People.builder()
-                .name(record.get("p").get("name").asString())
-                .surname(record.get("p").get("surname").asString())
-                .employeeId(record.get("p").get("employeeId").asString())
-                .birthDate(record.get("p").get("birthDate").asLocalDate())
-                .code(record.get("p").get("code").asLong())
-                .deleted(record.get("p").get("deleted").asBoolean())
-                .build();
+                     .name(people.get("name").asString())
+                     .surname(people.get("surname").asString())
+                     .employeeId(people.get("employeeId").asString())
+                     .birthDate(people.get("birthDate").asLocalDate())
+                     .code(people.get("code").asLong())
+                     .deleted(people.get("deleted").asBoolean())
+                     .build();
     }
 
     private String fillFilterBuilder(final String skillCode, final List<String> levelList) {
@@ -309,16 +296,17 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     }
 
     private static BiFunction<TypeSystem, Record, People> getTypeSystemRecordPeopleBiFunction() {
-        return (TypeSystem t, Record record) ->
-
-                People.builder()
-                        .name(record.get("p").get("name").asString())
-                        .surname(record.get("p").get("surname").asString())
-                        .employeeId(record.get("p").get("employeeId").asString())
-                        .birthDate(record.get("p").get("birthDate").asLocalDate())
-                        .code(record.get("p").get("code").asLong())
-                        .deleted(record.get("p").get("deleted").asBoolean())
-                        .build();
+        return (TypeSystem t, Record result) -> {
+            var people = result.get("p");
+            return People.builder()
+                         .name(people.get("name").asString())
+                         .surname(people.get("surname").asString())
+                         .employeeId(people.get("employeeId").asString())
+                         .birthDate(people.get("birthDate").asLocalDate())
+                         .code(people.get("code").asLong())
+                         .deleted(people.get("deleted").asBoolean())
+                         .build();
+        };
     }
 
 }
