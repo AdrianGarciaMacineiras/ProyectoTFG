@@ -175,8 +175,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
         for (var people: peopleList) {
             var candidateQuery = String.format("MATCH(p:People{code:%d}),(n:Position{code:'%s'})" +
-                                               "CREATE (n)-[r:CANDIDATE{code:'%s',status:'%s',creationDate:date('%s')}]->(p)" +
-                                               "RETURN p,r,n", people.code(), positionCode, people.code() + "-" + people.employeeId(), OPENED, LocalDate.now());
+                    "CREATE (n)-[r:CANDIDATE{code:'%s',status:'%s',creationDate:date('%s')}]->(p)" +
+                    "RETURN p,r.code,r.status,r.creationDate,n,ID(r)", people.code(), positionCode,people.code()+ "-" + people.employeeId(),EnumStatus.OPENED,LocalDate.now().toString());
 
             var candidate = client.query(candidateQuery).fetchAs(Candidate.class)
                                   .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
@@ -265,6 +265,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     private Candidate.CandidateBuilder getCandidateBuilder(Record result) {
 
         var candidateBuilder = Candidate.builder();
+        if (!Objects.isNull(result.get("ID(r)")))
+            candidateBuilder.id(result.get("ID(r)").asLong());
         candidateBuilder.id(result.get("ID(r)").asLong());
         candidateBuilder.code(result.get("r.code").asString());
         candidateBuilder.status(EnumStatus.valueOf(result.get("r.status").asString()));
