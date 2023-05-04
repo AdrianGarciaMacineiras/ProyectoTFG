@@ -103,23 +103,6 @@
 
 	<build>
 		<plugins>
-			<!--<plugin>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-contract-maven-plugin</artifactId>
-				<version>3.1.5</version>
-				<extensions>true</extensions>
-				<configuration>
-					<testFramework>JUNIT5</testFramework>
-					<contractsDirectory>${project.basedir}/src/main/resources/api</contractsDirectory>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>net.coru</groupId>
-						<artifactId>scc-multiapi-converter</artifactId>
-						<version>3.3.0</version>
-					</dependency>
-				</dependencies>
-			</plugin>-->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -180,6 +163,28 @@
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/classes/public</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.basedir}/frontend/build</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
