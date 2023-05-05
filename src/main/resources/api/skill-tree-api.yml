@@ -25,7 +25,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/projects"
+                  $ref: "#/components/schemas/project"
         '400':
           description: Bad Request
         '404':
@@ -220,7 +220,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/positions"
+                  $ref: "#/components/schemas/position"
         '400':
           description: Bad Request
         '404':
@@ -514,7 +514,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/peopleList"
+                  $ref: "#/components/schemas/people"
         '400':
           description: Bad Request
         '404':
@@ -1005,7 +1005,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/clients"
+                  $ref: "#/components/schemas/client"
         '400':
           description: Bad Request
         '404':
@@ -1200,7 +1200,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/teams"
+                  $ref: "#/components/schemas/team"
         '400':
           description: Bad Request
         '404':
@@ -1377,11 +1377,6 @@ paths:
 
 components:
   schemas:
-    projects:
-      type: array
-      items:
-        $ref: "#/components/schemas/project"
-
     project:
       type: object
       required:
@@ -1492,11 +1487,6 @@ components:
           items:
             $ref: "#/components/schemas/skill"
 
-    positions:
-      type: array
-      items:
-        $ref: "#/components/schemas/position"
-
     position:
       type: object
       required:
@@ -1581,11 +1571,6 @@ components:
         - PRESENTIAL
         - MIX
 
-    clients:
-      type: array
-      items:
-        $ref: "#/components/schemas/client"
-
     client:
       type: object
       required:
@@ -1642,11 +1627,6 @@ components:
           type: string
         geolocation:
           type: string
-
-    candidates:
-      type: array
-      items:
-        $ref: "#/components/schemas/candidate"
 
     candidate:
       type: object
@@ -1750,11 +1730,6 @@ components:
         minExp:
           type: integer
           format: int32
-
-    peopleList:
-      type: array
-      items:
-          $ref: "#/components/schemas/people"
 
     people:
       type: object
@@ -1957,11 +1932,6 @@ components:
           format: date
         dedication:
           type: string
-
-    teams:
-      type: array
-      items:
-        $ref: "#/components/schemas/team"
 
     team:
       type: object

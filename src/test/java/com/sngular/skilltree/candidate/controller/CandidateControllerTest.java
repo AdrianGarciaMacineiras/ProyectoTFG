@@ -1,15 +1,41 @@
 package com.sngular.skilltree.candidate.controller;
 
-import com.sngular.skilltree.application.*;
+import static com.sngular.skilltree.candidate.fixtures.CandidateFixtures.CANDIDATE_BY_CODE;
+import static com.sngular.skilltree.candidate.fixtures.CandidateFixtures.CANDIDATE_BY_CODE_JSON;
+import static com.sngular.skilltree.candidate.fixtures.CandidateFixtures.CANDIDATE_LIST;
+import static com.sngular.skilltree.candidate.fixtures.CandidateFixtures.LIST_CANDIDATE_JSON;
+import static com.sngular.skilltree.candidate.fixtures.CandidateFixtures.PATCH_CANDIDATE_BY_CODE_JSON;
+import static com.sngular.skilltree.candidate.fixtures.CandidateFixtures.UPDATED_CANDIDATE_BY_CODE;
+import static com.sngular.skilltree.candidate.fixtures.CandidateFixtures.UPDATED_CANDIDATE_BY_CODE_JSON;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.format.DateTimeFormatter;
+
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.sngular.skilltree.application.CandidateService;
+import com.sngular.skilltree.application.ClientService;
+import com.sngular.skilltree.application.OfficeService;
+import com.sngular.skilltree.application.PeopleService;
+import com.sngular.skilltree.application.PositionService;
+import com.sngular.skilltree.application.ProjectService;
+import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.application.updater.CandidateUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.CandidateController;
-import com.sngular.skilltree.contract.mapper.*;
+import com.sngular.skilltree.contract.mapper.CandidateMapper;
 import com.sngular.skilltree.model.Candidate;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,13 +43,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import static com.sngular.skilltree.candidate.fixtures.CandidateFixtures.*;
-import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @Slf4j
 @WebMvcTest(controllers = CandidateController.class)
@@ -109,6 +128,8 @@ class CandidateControllerTest {
     @TestConfiguration
     static class CandidateControllerTestConfiguration {
 
+        private static final String DATE_FORMAT = "dd-MM-yyyy";
+
         @Bean
         CandidateMapper candidateMapper() {
             return Mappers.getMapper(CandidateMapper.class);
@@ -139,10 +160,21 @@ class CandidateControllerTest {
         ClientService clientService;
 
         @Bean
-        ResolveService resolveService(final SkillService skillService, final PositionService positionService,
-                                      final PeopleService peopleService, final ProjectService projectService,
-                                      final OfficeService officeService, final ClientService clientService) {
+        ResolveService resolveService(
+          final SkillService skillService, final PositionService positionService,
+          final PeopleService peopleService, final ProjectService projectService,
+          final OfficeService officeService, final ClientService clientService) {
             return new ResolveService(skillService, positionService, peopleService, projectService, officeService, clientService);
+        }
+
+        @Bean
+        public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
+            return builder -> {
+                builder.simpleDateFormat(DATE_FORMAT);
+                builder.serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(DATE_FORMAT)));
+                builder.deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern(DATE_FORMAT)));
+                builder.modulesToInstall(new JavaTimeModule());
+            };
         }
     }
 }

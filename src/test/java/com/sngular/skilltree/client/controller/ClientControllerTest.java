@@ -1,6 +1,25 @@
 package com.sngular.skilltree.client.controller;
 
-import com.sngular.skilltree.application.*;
+import static com.sngular.skilltree.client.fixtures.ClientFixtures.CLIENT_BY_CODE;
+import static com.sngular.skilltree.client.fixtures.ClientFixtures.CLIENT_BY_CODE_JSON;
+import static com.sngular.skilltree.client.fixtures.ClientFixtures.CLIENT_LIST;
+import static com.sngular.skilltree.client.fixtures.ClientFixtures.LIST_CLIENT_JSON;
+import static com.sngular.skilltree.client.fixtures.ClientFixtures.PATCH_CLIENT_BY_CODE_JSON;
+import static com.sngular.skilltree.client.fixtures.ClientFixtures.UPDATED_CLIENT_BY_CODE;
+import static com.sngular.skilltree.client.fixtures.ClientFixtures.UPDATED_CLIENT_BY_CODE_JSON;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.sngular.skilltree.application.ClientService;
+import com.sngular.skilltree.application.OfficeService;
+import com.sngular.skilltree.application.PeopleService;
+import com.sngular.skilltree.application.PositionService;
+import com.sngular.skilltree.application.ProjectService;
+import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.application.updater.ClientUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.ClientController;
@@ -18,12 +37,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import static com.sngular.skilltree.client.fixtures.ClientFixtures.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @WebMvcTest(controllers = ClientController.class)
