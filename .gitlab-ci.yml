@@ -1,0 +1,50 @@
+default:
+  image: maven:3.9.1-eclipse-temurin-17-alpine
+
+stages:
+- build
+- test
+- package
+- docker
+
+build:
+  stage: build
+  tags:
+    - maven
+  script:
+  - echo "Building..."
+  - mvn $MAVEN_REMOTE_OPTS clean install -DskipTests
+  - echo "Building ended"
+  artifacts:
+    paths:
+    - target/*.jar
+
+test:
+  stage: test
+  tags:
+    - maven
+  script:
+  - echo "Testing..."
+  - mvn $MAVEN_REMOTE_OPTS test
+  - echo "Testing ended"
+
+package:
+  stage: package
+  tags:
+    - maven
+  script:
+  - echo "Packaging..."
+  - mvn $MAVEN_REMOTE_OPTS package -DskipTests
+  - echo "Packaging ended"
+  artifacts:
+    paths:
+    - target/*.jar
+
+docker:
+  stage: docker
+  tags:
+    -  maven
+  script:
+  - echo "Packaging..."
+  - mvn $MAVEN_REMOTE_OPTS spring-boot:build-image -DskipTests
+  - echo "Packaging ended"   
