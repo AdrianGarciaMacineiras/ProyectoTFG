@@ -53,6 +53,8 @@ docker:
     -  maven
   dependencies:
     - package
+  variables:
+    DOCKER_HOST: tcp://192.168.252.88:2376
   script:
   - echo "Packaging..."
   - mvn $MAVEN_REMOTE_OPTS spring-boot:build-image -DskipTests
