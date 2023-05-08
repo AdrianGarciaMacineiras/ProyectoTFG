@@ -1,14 +1,13 @@
 package com.sngular.skilltree.contract.mapper;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.sngular.skilltree.api.model.SkillDTO;
 import com.sngular.skilltree.model.Skill;
 import org.mapstruct.Mapper;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-
-@Mapper(componentModel = "spring")
+@Mapper()
 public interface SkillMapper {
 
     SkillDTO toSkillDTO(Skill skill);
