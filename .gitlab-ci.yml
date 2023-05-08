@@ -56,6 +56,6 @@ docker:
   variables:
     DOCKER_HOST: tcp://192.168.252.88:2375
   script:
-  - echo "Packaging..."
-  - mvn $MAVEN_REMOTE_OPTS spring-boot:build-image -DskipTests -Ddocker.publishRegistry.url=192.168.252.88 -Dspring-boot.build-image.publish=true
-  - echo "Packaging ended"   
+  - echo "Building start"
+  - mvn $MAVEN_REMOTE_OPTS spring-boot:build-image -DskipTests -Ddocker.publishRegistry.url=192.168.252.88 -Dspring-boot.build-image.publish=true -Dspring-boot.build-image.imageName=192.168.252.88/library/ubikservice:v1
+  - echo "Building end"   
