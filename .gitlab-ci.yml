@@ -56,13 +56,13 @@ docker:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: "/certs"
   services:
-        - name: docker:20.10.23-dind
-          alias: docker
-          command: ["--insecure-registry", "192.168.252.88:5000"]
+    - name: docker:20.10.23-dind
+      alias: docker
+      command: ["--insecure-registry", "192.168.252.88:5000"]
 
   script:
   - echo "Building start"
-  - echo "${DOCKER_REGISTRY_PASSWD:?}" | docker login "http://192.168.252.88:5000" --password-stdin -u "${DOCKER_REGISTRY_USERNAME:?}" 
+  - echo "${DOCKER_REGISTRY_PASSWD:?}" | docker login "192.168.252.88:5000" --password-stdin -u "${DOCKER_REGISTRY_USERNAME:?}" 
   - docker build -f infra/Dockerfile --tag=ubikservice:latest
   - docker push ubikservice:latest
   - echo "Building end"   
