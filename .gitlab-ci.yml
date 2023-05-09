@@ -61,7 +61,7 @@ docker:
 
   script:
   - echo "Building start"
-  - docker login 192.168.252.88 --username $DOCKER_REGISTRY_USERNAME --password $DOCKER_REGISTRY_PASSWD
+  - docker login "192.168.252.88" -u "$DOCKER_REGISTRY_USERNAME" -p "$DOCKER_REGISTRY_PASSWD" 
   - docker build -f infra/Dockerfile --tag=ubikservice:latest
   - docker push ubikservice:latest
   - echo "Building end"   
