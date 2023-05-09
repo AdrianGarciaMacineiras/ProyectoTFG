@@ -13,7 +13,7 @@ build:
   - echo "Building ended"
   artifacts:
     paths:
-    - target/*.jar
+    - target
 
 test:
   stage: test
