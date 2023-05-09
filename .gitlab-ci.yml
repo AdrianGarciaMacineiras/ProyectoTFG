@@ -39,7 +39,6 @@ docker:
 
   script:
   - echo "Building start"
-  - ls target/
   - ls .
   - docker build -t 192.168.252.88:5000/os3/ubikservice:latest ./infra
   - docker push ubikservice:latest
