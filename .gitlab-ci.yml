@@ -12,9 +12,7 @@ build:
   - echo "Building..."
   - mvn $MAVEN_REMOTE_OPTS clean install -DskipTests
   - echo "Building ended"
-  artifacts:
-    paths:
-    - target
+
 
 test:
   stage: test
@@ -22,9 +20,6 @@ test:
     - maven
   dependencies:
     - build
-  artifacts:
-    paths:
-    - target
   script:
   - echo "Testing..."
   - mvn $MAVEN_REMOTE_OPTS test
@@ -38,7 +33,7 @@ package:
     - test
   artifacts:
     paths:
-    - target
+    - target/*.jar
   script:
   - echo "Packaging..."
   - mvn $MAVEN_REMOTE_OPTS package -DskipTests
@@ -52,9 +47,10 @@ docker:
   - package
   variables:
     GIT_STRATEGY: none
-    DOCKER_HOST: tcp://192.168.252.88:2375
+    DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_TLS_CERTDIR: ""
+
   services:
     - name: docker:20.10.23-dind
       alias: docker
@@ -63,6 +59,6 @@ docker:
   script:
   - echo "Building start"
   - echo "${DOCKER_REGISTRY_PASSWD:?}" | docker login "192.168.252.88:5000" --password-stdin -u "${DOCKER_REGISTRY_USERNAME:?}" 
-  - docker build -f infra/Dockerfile --tag=ubikservice:latest
+  - docker build -f infra/Dockerfile --tag=ubikservice:latest -t 192.168.252.88:5000/os3/ubikservice:latest
   - docker push ubikservice:latest
   - echo "Building end"   
