@@ -53,7 +53,7 @@ docker:
   variables:
     DOCKER_HOST: tcp://192.168.252.88:2375
     DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_CERTDIR: "/certs"
 
   script:
   - echo "Building start"
