@@ -12,7 +12,7 @@ build:
   - echo "Building ended"
   artifacts:
     paths:
-    - target
+    - target/*.jar
 
 docker:
   stage: docker
@@ -25,7 +25,7 @@ docker:
 
   script:
   - echo "Building start"
-  - ls .
+  - ls target
   - docker build -t 192.168.252.88:5000/os3/ubikservice:latest ./infra
   - docker push ubikservice:latest
   - echo "Building end"   
