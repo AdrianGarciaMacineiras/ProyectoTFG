@@ -27,5 +27,5 @@ docker:
   - echo "Building start"
   - ls target
   - docker build -t 192.168.252.88:5000/os3/ubik/ubikservice:latest -f ./infra/Dockerfile .
-  - docker push 192.168.252.88:5000/os3/ubik/ubikservice:latest
+  - docker push --insecure-registry 192.168.252.88:5000/os3/ubik/ubikservice:latest
   - echo "Building end"   
