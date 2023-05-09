@@ -124,14 +124,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<image>
-						<env>
-							<SERVICE_BINDING_ROOT>/bindings</SERVICE_BINDING_ROOT>
-						</env>
-						<bindings>
-							<binding>${project.basedir}/src/main/bindings/ca-certificates:/bindings/ca-certificates</binding>
-						</bindings>
-					</image>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
