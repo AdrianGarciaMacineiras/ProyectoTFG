@@ -22,27 +22,10 @@ test:
     - maven
   dependencies:
     - build
-  artifacts:
-    paths:
-    - target
   script:
   - echo "Testing..."
   - mvn $MAVEN_REMOTE_OPTS test
   - echo "Testing ended"
-
-package:
-  stage: package
-  tags:
-    - maven
-  dependencies:
-    - test
-  artifacts:
-    paths:
-    - target
-  script:
-  - echo "Packaging..."
-  - mvn $MAVEN_REMOTE_OPTS package -DskipTests
-  - echo "Packaging ended"
 
 docker:
   stage: docker
