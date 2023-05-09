@@ -54,7 +54,7 @@ docker:
     GIT_STRATEGY: none
     DOCKER_HOST: tcp://192.168.252.88:2375
     DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_TLS_CERTDIR: ""
 
   script:
   - echo "Building start"
