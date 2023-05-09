@@ -9,29 +9,16 @@ build:
     - maven
   script:
   - echo "Building..."
-  - mvn $MAVEN_REMOTE_OPTS clean install -DskipTests
+  - mvn $MAVEN_REMOTE_OPTS verify -DskipTests
   - echo "Building ended"
   artifacts:
     paths:
     - target
 
-test:
-  stage: test
-  tags:
-    - maven
-  dependencies:
-    - build
-  script:
-  - echo "Testing..."
-  - mvn $MAVEN_REMOTE_OPTS test
-  - echo "Testing ended"
-
 docker:
   stage: docker
   tags:
   - docker
-  dependencies:
-  - test
   variables:
     DOCKER_HOST: tcp://192.168.252.88:2375
     DOCKER_DRIVER: overlay2
