@@ -39,6 +39,6 @@ docker:
 
   script:
   - echo "Building start"
-  - docker build -f infra/Dockerfile --tag=ubikservice:latest
+  - docker build -t 192.168.252.88:5000/os3/ubikservice:latest ./infra
   - docker push ubikservice:latest
   - echo "Building end"   
