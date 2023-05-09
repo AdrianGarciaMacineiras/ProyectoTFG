@@ -31,7 +31,7 @@ docker:
   tags:
   - docker
   dependencies:
-  - build
+  - test
   variables:
     DOCKER_HOST: tcp://192.168.252.88:2375
     DOCKER_DRIVER: overlay2
