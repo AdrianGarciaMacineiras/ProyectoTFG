@@ -51,6 +51,7 @@ docker:
   dependencies:
   - package
   variables:
+    GIT_STRATEGY: none
     DOCKER_HOST: tcp://docker-registry.sngdev.com:2375
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: "/certs"
