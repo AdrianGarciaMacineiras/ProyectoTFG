@@ -51,13 +51,13 @@ docker:
   dependencies:
   - package
   variables:
-    DOCKER_HOST: tcp://192.168.252.88:2375
+    DOCKER_HOST: tcp://docker-registry.sngdev.com:2375
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: "/certs"
 
   script:
   - echo "Building start"
-  - echo "${DOCKER_REGISTRY_PASSWD:?}" | docker login "192.168.252.88" --password-stdin -u "${DOCKER_REGISTRY_USERNAME:?}" 
+  - echo "${DOCKER_REGISTRY_PASSWD:?}" | docker login "docker-registry.sngdev.com" --password-stdin -u "${DOCKER_REGISTRY_USERNAME:?}" 
   - docker build -f infra/Dockerfile --tag=ubikservice:latest
   - docker push ubikservice:latest
   - echo "Building end"   
