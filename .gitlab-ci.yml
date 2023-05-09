@@ -1,5 +1,5 @@
 default:
-  image: maven:3.9.1-eclipse-temurin-20-alpine
+  image: maven:3.9.1-eclipse-temurin-17-alpine
 
 stages:
 - build
