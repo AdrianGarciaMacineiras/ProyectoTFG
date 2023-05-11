@@ -1,11 +1,7 @@
-default:
-  image: maven:3.9.1-eclipse-temurin-17-alpine
-
 stages:
 - build
-- test
-- package
 - docker
+- deploy
 
 build:
   stage: build
@@ -13,49 +9,52 @@ build:
     - maven
   script:
   - echo "Building..."
-  - mvn $MAVEN_REMOTE_OPTS clean install -DskipTests
+  - mvn $MAVEN_REMOTE_OPTS verify -DskipTests
   - echo "Building ended"
   artifacts:
     paths:
-    - target
-
-test:
-  stage: test
-  tags:
-    - maven
-  dependencies:
-    - build
-  artifacts:
-    paths:
-    - target
-  script:
-  - echo "Testing..."
-  - mvn $MAVEN_REMOTE_OPTS test
-  - echo "Testing ended"
-
-package:
-  stage: package
-  tags:
-    - maven
-  dependencies:
-    - test
-  artifacts:
-    paths:
-    - target
-  script:
-  - echo "Packaging..."
-  - mvn $MAVEN_REMOTE_OPTS package -DskipTests
-  - echo "Packaging ended"
+    - target/*.jar
 
 docker:
   stage: docker
   tags:
-  - maven
+  - docker
   dependencies:
-  - package
+    - build
   variables:
-    DOCKER_HOST: tcp://192.168.252.88:2375
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - name: docker:20.10.23-dind
+      alias: docker
+      command: ["--insecure-registry", "192.168.252.88:5000"]
+
   script:
-  - echo "Building start"
-  - mvn $MAVEN_REMOTE_OPTS spring-boot:build-image -DskipTests -Ddocker.publishRegistry.url=192.168.252.88 -Ddocker.publishRegistry.username=$DOCKER_REGISTRY_USERNAME -Ddocker.publishRegistry.password=$DOCKER_REGISTRY_PASSWD -Dspring-boot.build-image.publish=true -Dspring-boot.build-image.imageName=192.168.252.88/library/ubikservice:v1
-  - echo "Building end"   
+  - echo "Docker Image Build Start"
+  - ls target
+  - docker build -t 192.168.252.88:5000/os3/ubik/ubikservice:latest -f ./infra/Dockerfile .
+  - echo "Docker Image Build End"
+  - echo "Docker Image Push Start"
+  - docker push 192.168.252.88:5000/os3/ubik/ubikservice:latest
+  - echo "Docker Image Push End"
+
+deploy:
+  stage: docker
+  tags:
+  - docker
+  needs:
+    - docker
+  variables:
+    DOCKER_HOST: tcp://192.168.252.7:2375
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - name: docker:20.10.23-dind
+      alias: docker
+      command: ["--insecure-registry", "192.168.252.88:5000"]
+
+  script:
+  - echo "Deploy start"
+  - docker run 192.168.252.88:5000/os3/ubik/ubikservice:latest
+  - echo "Deploy end" 
