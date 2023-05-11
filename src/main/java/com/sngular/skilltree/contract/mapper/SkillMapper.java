@@ -7,7 +7,7 @@ import com.sngular.skilltree.api.model.SkillDTO;
 import com.sngular.skilltree.model.Skill;
 import org.mapstruct.Mapper;
 
-@Mapper()
+@Mapper(componentModel = "spring")
 public interface SkillMapper {
 
     SkillDTO toSkillDTO(Skill skill);
