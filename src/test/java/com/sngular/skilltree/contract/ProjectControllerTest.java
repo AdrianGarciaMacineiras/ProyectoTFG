@@ -24,6 +24,7 @@ import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.application.updater.ProjectUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.ProjectMapper;
+import com.sngular.skilltree.contract.mapper.ProjectMapperImpl;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import com.sngular.skilltree.model.Project;
 import lombok.extern.slf4j.Slf4j;
@@ -127,8 +128,8 @@ class ProjectControllerTest {
     static class ControllerTestConfiguration {
 
         @Bean
-        public ProjectMapper getProjectMapper() {
-            return Mappers.getMapper(ProjectMapper.class);
+        public ProjectMapper getProjectMapper(final ResolveService resolveService) {
+            return new ProjectMapperImpl(resolveService);
         }
 
         @Bean

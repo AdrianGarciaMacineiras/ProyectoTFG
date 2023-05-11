@@ -24,8 +24,11 @@ import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.application.updater.PositionUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
+import com.sngular.skilltree.contract.mapper.CandidateMapperImpl;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
+import com.sngular.skilltree.contract.mapper.PeopleMapperImpl;
 import com.sngular.skilltree.contract.mapper.PositionMapper;
+import com.sngular.skilltree.contract.mapper.PositionMapperImpl;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import com.sngular.skilltree.model.Position;
 import lombok.extern.slf4j.Slf4j;
@@ -152,8 +155,8 @@ class PositionControllerTest {
     ClientService clientService;
 
     @Bean
-    PositionMapper opportunityMapper() {
-      return Mappers.getMapper(PositionMapper.class);
+    PositionMapper opportunityMapper(final ResolveService resolveService, final PeopleMapper peopleMapper, final CandidateMapper candidateMapper) {
+      return new PositionMapperImpl(resolveService, peopleMapper, candidateMapper);
     }
 
     @Bean
@@ -162,13 +165,13 @@ class PositionControllerTest {
     }
 
     @Bean
-    PeopleMapper peopleMapper() {
-      return Mappers.getMapper(PeopleMapper.class);
+    PeopleMapper peopleMapper(final ResolveService resolveService) {
+      return new PeopleMapperImpl(resolveService);
     }
 
     @Bean
-    CandidateMapper candidateMapper() {
-      return Mappers.getMapper(CandidateMapper.class);
+    CandidateMapper candidateMapper(final ResolveService resolveService) {
+      return new CandidateMapperImpl(resolveService);
     }
 
     @Bean

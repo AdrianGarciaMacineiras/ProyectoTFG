@@ -24,7 +24,9 @@ import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.application.updater.PeopleUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
+import com.sngular.skilltree.contract.mapper.CandidateMapperImpl;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
+import com.sngular.skilltree.contract.mapper.PeopleMapperImpl;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import com.sngular.skilltree.model.People;
 import lombok.extern.slf4j.Slf4j;
@@ -137,18 +139,18 @@ class PeopleControllerTest {
   static class ControllerTestConfiguration {
 
     @Bean
-    public PeopleMapper getPeopleMapper() {
-      return Mappers.getMapper(PeopleMapper.class);
+    public PeopleMapper getPeopleMapper(final ResolveService resolveService) {
+      return new PeopleMapperImpl(resolveService);
     }
 
     @Bean
-    public SkillMapper getSkillMapper() {
+    public SkillMapper getSkillMapper(final ResolveService resolveService) {
       return Mappers.getMapper(SkillMapper.class);
     }
 
     @Bean
-    public CandidateMapper candidateMapper() {
-      return Mappers.getMapper(CandidateMapper.class);
+    public CandidateMapper candidateMapper(final ResolveService resolveService) {
+      return new CandidateMapperImpl(resolveService);
     }
 
     @MockBean

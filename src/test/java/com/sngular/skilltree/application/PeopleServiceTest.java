@@ -10,14 +10,12 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 
 import com.sngular.skilltree.application.implement.PeopleServiceImpl;
-import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.model.People;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -27,8 +25,7 @@ class PeopleServiceTest {
     @Mock
     private PeopleRepository peopleRepository;
 
-    private PeopleMapper mapper = Mappers.getMapper(PeopleMapper.class);
-
+    @Mock
     private CandidateService candidateService;
 
     private PeopleService peopleService;

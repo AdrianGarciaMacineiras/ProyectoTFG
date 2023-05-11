@@ -7,20 +7,21 @@ import java.util.Objects;
 import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedCandidateDTO;
 import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Candidate;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring", uses = {ResolveService.class, PositionMapper.class, PeopleMapper.class})
+@Mapper(config = CommonMapperConfiguration.class, uses = {ResolveService.class, PositionMapper.class, PeopleMapper.class})
 public interface CandidateMapper {
 
     @Mapping(source = "candidate.code", target = "candidateCode")
     @Mapping(source = "position.code", target = "positionCode")
     CandidateDTO toCandidateDTO(Candidate candidate);
 
-    @Mapping(source = "positionCode", target = "position", qualifiedByName = {"resolveService", "resolveCodePosition"})
-    @Mapping(source = "candidateCode", target = "candidate", qualifiedByName = {"resolveService", "resolveCodePeople"})
+    @Mapping(source = "positionCode", target = "position", qualifiedByName = {"resolveCodePosition"})
+    @Mapping(source = "candidateCode", target = "candidate", qualifiedByName = {"resolveCodePeople"})
     Candidate toCandidate(CandidateDTO candidateDTO);
 
     List<CandidateDTO> toCandidatesDTO(Collection<Candidate> candidates);

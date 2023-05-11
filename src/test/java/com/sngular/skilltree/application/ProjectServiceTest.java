@@ -10,14 +10,12 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 
 import com.sngular.skilltree.application.implement.ProjectServiceImpl;
-import com.sngular.skilltree.contract.mapper.ProjectMapper;
 import com.sngular.skilltree.infraestructura.ProjectRepository;
 import com.sngular.skilltree.model.Project;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -28,8 +26,6 @@ class ProjectServiceTest {
     private ProjectRepository projectRepository;
 
     private ProjectService projectService;
-
-    private ProjectMapper mapper = Mappers.getMapper(ProjectMapper.class);
 
     @BeforeEach
     void setUp() {projectService = new ProjectServiceImpl(projectRepository);}
