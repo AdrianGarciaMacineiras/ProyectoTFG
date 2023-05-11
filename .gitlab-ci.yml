@@ -19,6 +19,8 @@ docker:
   stage: docker
   tags:
   - docker
+  dependencies:
+    - build
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
@@ -41,6 +43,8 @@ deploy:
   stage: docker
   tags:
   - docker
+  dependencies:
+    - docker
   variables:
     DOCKER_HOST: tcp://192.168.252.7:2375
     DOCKER_DRIVER: overlay2
