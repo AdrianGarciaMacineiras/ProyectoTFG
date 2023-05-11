@@ -56,5 +56,5 @@ deploy:
 
   script:
   - echo "Deploy start"
-  - docker run 192.168.252.88:5000/os3/ubik/ubikservice:latest
+  - docker run -e "SPRING_PROFILES_ACTIVE=testing" 192.168.252.88:5000/os3/ubik/ubikservice:latest 
   - echo "Deploy end" 
