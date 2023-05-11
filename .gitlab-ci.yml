@@ -43,7 +43,7 @@ deploy:
   stage: docker
   tags:
   - docker
-  dependencies:
+  needs:
     - docker
   variables:
     DOCKER_HOST: tcp://192.168.252.7:2375
