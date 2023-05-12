@@ -1,20 +1,18 @@
 docker-compose -f dockercompose.yaml up
 
+------------------------------------------------------------------------------------------------------------------------
 
-ClientNode:
-    - principalOffice
-    - HQ
+PETICIONES EXCEL
 
-PeopleNode:
-    - birthDate
-    - enumTitle
+Skill estrategico: relacion strategic team
+SKill no estrategico: relacion USE y no strategic team
+Skill en estado critico: ??
+Dependencia del team a proyecto o cliente: ??
+Promocion interna: ??
+Entrevistas: ??
 
-ProjectNode:
-    - initDate
-    - endDate
 
-Completar campos obligatorios skill-tree-api
-
+------------------------------------------------------------------------------------------------------------------------
 
 RELACIONES
 
@@ -32,6 +30,8 @@ Client en la imagen aparece BELONG de oficina a cliente, nosotros tenemos una re
 Knows en la imagen aparece experience como un enumerado nosotros un entero
                             level como un numero y nosotros un enumerado
        no tenemos avoidable
+
+------------------------------------------------------------------------------------------------------------------------
 
 PROPIEDADES
 
@@ -51,3 +51,5 @@ Client
 
 Office
         no aparece en la imagen adress, phone
+
+------------------------------------------------------------------------------------------------------------------------
