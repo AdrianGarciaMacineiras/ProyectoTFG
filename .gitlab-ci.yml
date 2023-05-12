@@ -36,7 +36,7 @@ docker:
   - docker build -t 192.168.252.88:5000/os3/ubik/ubikservice:latest -f ./infra/Dockerfile .
   - echo "Docker Image Build End"
   - echo "Docker Image Push Start"
-  - docker push -f 192.168.252.88:5000/os3/ubik/ubikservice
+  - docker push 192.168.252.88:5000/os3/ubik/ubikservice:latest
   - echo "Docker Image Push End"
 
 deploy:
