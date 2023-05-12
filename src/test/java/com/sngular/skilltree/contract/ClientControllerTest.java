@@ -23,7 +23,6 @@ import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.application.updater.ClientUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.ClientMapper;
-import com.sngular.skilltree.contract.mapper.SkillMapper;
 import com.sngular.skilltree.model.Client;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -127,11 +126,6 @@ class ClientControllerTest {
         @Bean
         ClientMapper clientMapper() {
             return Mappers.getMapper(ClientMapper.class);
-        }
-
-        @Bean
-        SkillMapper skillMapper() {
-            return Mappers.getMapper(SkillMapper.class);
         }
 
         @MockBean

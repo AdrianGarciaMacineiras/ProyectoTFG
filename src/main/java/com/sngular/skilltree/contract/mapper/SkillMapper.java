@@ -4,11 +4,9 @@ import java.util.Collection;
 import java.util.List;
 
 import com.sngular.skilltree.api.model.SkillDTO;
-import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Skill;
-import org.mapstruct.Mapper;
 
-@Mapper(config = CommonMapperConfiguration.class)
+//@Mapper(config = CommonMapperConfiguration.class)
 public interface SkillMapper {
 
     SkillDTO toSkillDTO(Skill skill);

@@ -8,9 +8,8 @@ import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+//@RestController
 @RequiredArgsConstructor
 public class SkillController implements SkillsApi {
 
