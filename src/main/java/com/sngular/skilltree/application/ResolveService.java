@@ -1,16 +1,20 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.model.*;
-import lombok.RequiredArgsConstructor;
-import org.mapstruct.Named;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+import com.sngular.skilltree.model.Client;
+import com.sngular.skilltree.model.Office;
+import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.Position;
+import com.sngular.skilltree.model.Project;
+import com.sngular.skilltree.model.Skill;
+import lombok.RequiredArgsConstructor;
+import org.mapstruct.Named;
+import org.springframework.stereotype.Component;
+
+@Component
 @RequiredArgsConstructor
-@Named("resolveService")
 public class ResolveService {
 
     private final SkillService skillService;

@@ -1,35 +1,36 @@
 package com.sngular.skilltree.contract.mapper;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+
 import com.sngular.skilltree.api.model.PatchedProjectDTO;
 import com.sngular.skilltree.api.model.ProjectDTO;
 import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Project;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-
-@Mapper(componentModel = "spring", uses = {SkillMapper.class, ResolveService.class})
+@Mapper(config = CommonMapperConfiguration.class, uses = {SkillMapper.class, ResolveService.class})
 public interface ProjectMapper {
 
     @Mapping(source = "client.code", target = "clientCode")
-    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveSkillCodeList"})
+    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveSkillCodeList"})
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
     ProjectDTO toProjectDTO(Project project);
 
-    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
+    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveCodeSkillList"})
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
-    @Mapping(target = "client", source = "clientCode", qualifiedByName = {"resolveService", "resolveCodeClient"})
+    @Mapping(target = "client", source = "clientCode", qualifiedByName = {"resolveCodeClient"})
     Project toProject(ProjectDTO projectDTO);
 
     List<ProjectDTO> toProjectsDTO(Collection<Project> projects);
 
-    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
+    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveCodeSkillList"})
     Project toProject(PatchedProjectDTO patchedProjectDTO);
 
     @Named("patch")
@@ -53,5 +54,5 @@ public interface ProjectMapper {
                 .guards((Objects.isNull(newProject.guards())) ? oldProject.guards() : newProject.guards())
                 .build();
 
-    };
+    }
 }

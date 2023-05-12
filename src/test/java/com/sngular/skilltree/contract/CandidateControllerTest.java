@@ -25,10 +25,10 @@ import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.application.updater.CandidateUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
+import com.sngular.skilltree.contract.mapper.CandidateMapperImpl;
 import com.sngular.skilltree.model.Candidate;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -125,8 +125,8 @@ class CandidateControllerTest {
     static class CandidateControllerTestConfiguration {
 
         @Bean
-        CandidateMapper candidateMapper() {
-            return Mappers.getMapper(CandidateMapper.class);
+        CandidateMapper candidateMapper(final ResolveService resolveService) {
+            return new CandidateMapperImpl(resolveService);
         }
 
         @MockBean

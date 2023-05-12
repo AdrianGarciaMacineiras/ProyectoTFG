@@ -1,61 +1,71 @@
 package com.sngular.skilltree.contract.mapper;
 
-import com.sngular.skilltree.api.model.*;
-import com.sngular.skilltree.application.ResolveService;
-import com.sngular.skilltree.model.*;
-import org.mapstruct.*;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-@Mapper(componentModel = "spring", uses = {SkillMapper.class, ResolveService.class})
+import com.sngular.skilltree.api.model.AssignmentDTO;
+import com.sngular.skilltree.api.model.CertificateDTO;
+import com.sngular.skilltree.api.model.PatchedPeopleDTO;
+import com.sngular.skilltree.api.model.PeopleDTO;
+import com.sngular.skilltree.api.model.RolesDTO;
+import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.common.config.CommonMapperConfiguration;
+import com.sngular.skilltree.model.Assignment;
+import com.sngular.skilltree.model.Certificate;
+import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.Role;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+
+@Mapper(config = CommonMapperConfiguration.class, uses = {SkillMapper.class, ResolveService.class})
 public interface PeopleMapper {
 
-    @Mapping(target = "work_with", source = "work_with", qualifiedByName = {"resolveService", "resolveSkillNameList"})
-    @Mapping(target = "master", source = "master", qualifiedByName = {"resolveService", "resolveSkillNameList"})
-    @Mapping(target = "interest", source = "interest", qualifiedByName = {"resolveService", "resolveSkillNameList"})
-    @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
-    PeopleDTO toPersonDTO(People people);
+  @Mapping(target = "work_with", source = "work_with", qualifiedByName = {"resolveSkillNameList"})
+  @Mapping(target = "master", source = "master", qualifiedByName = {"resolveSkillNameList"})
+  @Mapping(target = "interest", source = "interest", qualifiedByName = {"resolveSkillNameList"})
+  @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
+  PeopleDTO toPersonDTO(People people);
 
-    @Mapping(source = "work_with", target = "work_with", qualifiedByName = {"resolveService", "resolveNameSkillList"})
-    @Mapping(source = "master", target = "master", qualifiedByName = {"resolveService", "resolveNameSkillList"})
-    @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveService", "resolveNameSkillList"})
-    @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
-    People toPerson(PeopleDTO peopleDTO);
+  @Mapping(source = "work_with", target = "work_with", qualifiedByName = {"resolveNameSkillList"})
+  @Mapping(source = "master", target = "master", qualifiedByName = {"resolveNameSkillList"})
+  @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveNameSkillList"})
+  @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
+  People toPerson(PeopleDTO peopleDTO);
 
-    List<PeopleDTO> toPeopleDto(Collection<People> people);
+  List<PeopleDTO> toPeopleDto(Collection<People> people);
 
-    @Mapping(source = "work_with", target = "work_with", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
-    @Mapping(source = "master", target = "master", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
-    @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveService", "resolveCodeSkillList"})
-    @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
-    People toPeople (PatchedPeopleDTO patchedPersonDTO);
+  @Mapping(source = "work_with", target = "work_with", qualifiedByName = {"resolveCodeSkillList"})
+  @Mapping(source = "master", target = "master", qualifiedByName = {"resolveCodeSkillList"})
+  @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveCodeSkillList"})
+  @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
+  People toPeople(PatchedPeopleDTO patchedPersonDTO);
 
-    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
-    RolesDTO roleToRolesDTO(Role role);
+  @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+  RolesDTO roleToRolesDTO(Role role);
 
-    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
-    @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
-    @Mapping(target = "assignDate", dateFormat = "dd-MM-yyyy")
-    Assignment assignmentDTOToAssignment(AssignmentDTO assignmentDTO);
+  @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+  @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
+  @Mapping(target = "assignDate", dateFormat = "dd-MM-yyyy")
+  Assignment assignmentDTOToAssignment(AssignmentDTO assignmentDTO);
 
-    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
-    @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
-    @Mapping(target = "assignDate", dateFormat = "dd-MM-yyyy")
-    AssignmentDTO assignmentToAssignmentDTO(Assignment assignment);
+  @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+  @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
+  @Mapping(target = "assignDate", dateFormat = "dd-MM-yyyy")
+  AssignmentDTO assignmentToAssignmentDTO(Assignment assignment);
 
-    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
-    Role rolesDTOToRole(RolesDTO rolesDTO);
+  @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+  Role rolesDTOToRole(RolesDTO rolesDTO);
 
-    @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
-    CertificateDTO certificateToCertificateDTO(Certificate certificate);
+  @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
+  CertificateDTO certificateToCertificateDTO(Certificate certificate);
 
-    @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
-    Certificate certificateDTOToCertificate(CertificateDTO certificateDTO);
+  @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
+  Certificate certificateDTOToCertificate(CertificateDTO certificateDTO);
 
-    @Named("patch")
-    default People patch(People newPeople, People oldPeople) {
+  @Named("patch")
+  default People patch(People newPeople, People oldPeople) {
 
         People.PeopleBuilder peopleBuilder = oldPeople.toBuilder();
 
@@ -76,7 +86,7 @@ public interface PeopleMapper {
                 .assigns((Objects.isNull(newPeople.assigns())) ? oldPeople.assigns() : newPeople.assigns())
                 .build();
 
-    };
+  }
 
     default Long toPeopleCode(final People people) {
         return people.code();

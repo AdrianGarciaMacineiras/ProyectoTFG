@@ -1,18 +1,18 @@
 package com.sngular.skilltree.contract.mapper;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 import com.sngular.skilltree.api.model.ClientDTO;
 import com.sngular.skilltree.api.model.PatchedClientDTO;
+import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Client;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-
-@Mapper(componentModel = "spring")
+@Mapper(config = CommonMapperConfiguration.class)
 public interface ClientMapper {
 
     @Mapping(source="HQ", target="hQ")
@@ -38,5 +38,5 @@ public interface ClientMapper {
                 .name((Objects.isNull(newClient.name())) ? oldClient.name() : newClient.name())
                 .build();
 
-    };
+    }
 }

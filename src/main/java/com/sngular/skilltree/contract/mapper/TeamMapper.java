@@ -1,18 +1,23 @@
 package com.sngular.skilltree.contract.mapper;
 
-import com.sngular.skilltree.api.model.MembersDTO;
-import com.sngular.skilltree.api.model.PatchedTeamDTO;
-import com.sngular.skilltree.application.ResolveService;
-import com.sngular.skilltree.model.Member;
-import com.sngular.skilltree.model.Team;
-import com.sngular.skilltree.api.model.TeamDTO;
-import org.mapstruct.*;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-@Mapper(componentModel = "spring", uses = {PeopleMapper.class, ResolveService.class})
+import com.sngular.skilltree.api.model.MembersDTO;
+import com.sngular.skilltree.api.model.PatchedTeamDTO;
+import com.sngular.skilltree.api.model.TeamDTO;
+import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.common.config.CommonMapperConfiguration;
+import com.sngular.skilltree.model.Member;
+import com.sngular.skilltree.model.Team;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
+
+@Mapper(config = CommonMapperConfiguration.class, uses = {PeopleMapper.class, ResolveService.class})
 public interface TeamMapper {
 
     TeamDTO toTeamDTO(Team team);
@@ -27,7 +32,7 @@ public interface TeamMapper {
     @Mapping(source="people.code", target = "peopleCode")
     MembersDTO toMemberDTO(Member members);
 
-    @Mapping(target = "people", source = "peopleCode", qualifiedByName = {"resolveService", "resolveCodePeople"})
+    @Mapping(target = "people", source = "peopleCode", qualifiedByName = {"resolveCodePeople"})
     Member toMember(MembersDTO membersDTO);
 
     Team toTeam(TeamDTO teamDTO);
@@ -48,5 +53,5 @@ public interface TeamMapper {
                 .tags((Objects.isNull(newTeam.tags())) ? oldTeam.tags() : newTeam.tags())
                 .build();
 
-    };
+    }
 }
