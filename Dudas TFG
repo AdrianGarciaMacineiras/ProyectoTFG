@@ -16,11 +16,38 @@ ProjectNode:
 Completar campos obligatorios skill-tree-api
 
 
+RELACIONES
 
-TODO check people no asignable para positions
+People relaciones ASSIGN,EVOLVED  no aparecen en la imagen
+        no aparece nodo ROLES
+        no tenemos MANAGE, PARTICIPATE (lo tuvimos en algun momento)
 
-TODO builder para los records
+Project REQUIRE se le cambio el nombre por conflicto con otra relacion con el mismo nombre
+        no aparece REQUIRE ni los PROJECT ROLES
 
-TODO desdde position y people traer candidaturas
+Position no aparece nada en la imagen de las relaciones
 
+Client en la imagen aparece BELONG de oficina a cliente, nosotros tenemos una relacion CLIENT de oficina a cliente que es una lista de oficinas
 
+Knows en la imagen aparece experience como un enumerado nosotros un entero
+                            level como un numero y nosotros un enumerado
+       no tenemos avoidable
+
+PROPIEDADES
+
+Skill no tenemos namespace,classifier
+
+People no tenemos email
+        en la imagen no aparece birthDate, assignable, title
+
+Project
+        no aparece en la imagen tag
+
+Position no tenemos descripcion, duration
+        no aparece en la imagen open, priority, mode, role
+
+Client
+        no aparece en la imagen principalOffice, hQ
+
+Office
+        no aparece en la imagen adress, phone
