@@ -5,9 +5,9 @@ import org.springframework.data.neo4j.repository.query.Query;
 
 import java.util.List;
 
-public interface CustomPeopleRepository {
+public interface CustomTeamRepository {
 
-    @Query("MATCH(n:People{code:$personcode}) RETURN n")
-    PeopleNode findPeopleByCode(Long personcode);
+    @Query("MATCH(t:Team{code:$teamcode})-[r]-(p:People) RETURN p.code")
+    List<Long> findMembersByTeamCode(String teamcode);
 
 }

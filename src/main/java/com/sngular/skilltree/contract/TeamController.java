@@ -2,10 +2,13 @@ package com.sngular.skilltree.contract;
 
 import com.sngular.skilltree.api.TeamApi;
 import com.sngular.skilltree.api.model.PatchedTeamDTO;
+import com.sngular.skilltree.api.model.PeopleDTO;
 import com.sngular.skilltree.application.TeamService;
 import com.sngular.skilltree.application.updater.TeamUpdater;
+import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.contract.mapper.TeamMapper;
 import com.sngular.skilltree.api.model.TeamDTO;
+import com.sngular.skilltree.model.People;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,8 @@ public class TeamController implements TeamApi {
     private final TeamUpdater teamUpdater;
 
     private final TeamMapper teamMapper;
+
+    private final PeopleMapper peopleMapper;
 
     @Override
     public ResponseEntity<List<TeamDTO>> getTeams(){
@@ -65,4 +70,10 @@ public class TeamController implements TeamApi {
                                 .toTeam(patchedTeamDTO))));
     }
 
+    @Override
+    public ResponseEntity<List<PeopleDTO>> getTeamMembersInfo(String teamcode){
+        return ResponseEntity.ok(peopleMapper
+                .toPeopleDto(teamService
+                        .getMembers(teamcode)));
+    }
 }

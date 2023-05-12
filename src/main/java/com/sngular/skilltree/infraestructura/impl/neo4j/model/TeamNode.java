@@ -28,6 +28,12 @@ public class TeamNode {
     @Relationship(type = "MEMBER_OF", direction = Relationship.Direction.INCOMING)
     private List<MemberRelationship> members;
 
+    /*@Relationship(type = "USE", direction = Relationship.Direction.OUTGOING)
+    private List<SkillNode> uses;
+
+    @Relationship(type = "STRATEGIC", direction = Relationship.Direction.OUTGOING)
+    private List<SkillNode> strategics;*/
+
     private boolean deleted;
 
 }
