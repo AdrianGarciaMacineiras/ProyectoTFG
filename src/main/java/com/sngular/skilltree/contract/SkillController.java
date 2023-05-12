@@ -1,5 +1,7 @@
 package com.sngular.skilltree.contract;
 
+import java.util.List;
+
 import com.sngular.skilltree.api.SkillsApi;
 import com.sngular.skilltree.api.model.SkillDTO;
 import com.sngular.skilltree.application.SkillService;
@@ -7,8 +9,6 @@ import com.sngular.skilltree.contract.mapper.SkillMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,9 +20,7 @@ public class SkillController implements SkillsApi {
 
     @Override
     public ResponseEntity<SkillDTO> getSkillByCode(String skillcode) {
-        return ResponseEntity.ok(skillMapper
-                .toSkillDTO(skillService
-                        .findByCode(skillcode)));
+        return ResponseEntity.ok(skillMapper.toSkillDTO(skillService.findByCode(skillcode)));
     }
 
     @Override

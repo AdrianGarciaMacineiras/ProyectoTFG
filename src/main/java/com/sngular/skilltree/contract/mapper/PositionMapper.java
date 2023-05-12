@@ -15,7 +15,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-@Mapper(config = CommonMapperConfiguration.class, uses = {ClientMapper.class, SkillMapper.class, ResolveService.class, PeopleMapper.class, ProjectMapper.class,
+@Mapper(config = CommonMapperConfiguration.class, uses = {ClientMapper.class, ResolveService.class, PeopleMapper.class, ProjectMapper.class,
   OfficeMapper.class, CandidateMapper.class})
 public interface PositionMapper {
 

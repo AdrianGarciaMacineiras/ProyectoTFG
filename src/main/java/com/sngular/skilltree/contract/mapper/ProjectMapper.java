@@ -13,7 +13,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-@Mapper(config = CommonMapperConfiguration.class, uses = {SkillMapper.class, ResolveService.class})
+@Mapper(config = CommonMapperConfiguration.class, uses = {ResolveService.class})
 public interface ProjectMapper {
 
     @Mapping(source = "client.code", target = "clientCode")
