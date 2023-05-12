@@ -556,7 +556,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /people/{personcode}:
+  /person/{personcode}:
     get:
       summary: Gets a person by the code
       description: Returns an individual person, identified by a code
@@ -693,7 +693,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /people/{peoplecode}/position/{positioncode}:
+  /person/{peoplecode}/position/{positioncode}:
     post:
       summary: Assign a candidate to a position
       description: Assign a candidate
@@ -732,7 +732,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /people/{peoplecode}/candidates:
+  /person/{peoplecode}/candidates:
     get:
       summary: List all candidacies of the person
       parameters:
@@ -766,6 +766,41 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /people/skills:
+    get:
+      summary: List of people that know all the skills given
+      parameters:
+        - in: query
+          name: skillList
+          required: true
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+          description: List of skills
+      operationId: getPeopleSkills
+      tags:
+        - people
+      responses:
+        '200':
+          description: A paged array of people
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/people"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
 
   /skills:
     summary: Skills on the skill tree

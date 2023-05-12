@@ -58,7 +58,7 @@ class PeopleControllerTest {
   void getPersonByCode() throws Exception {
     when(peopleService.findByCode(anyLong())).thenReturn(PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                            .get("/people/1")
+                            .get("/person/1")
                             .accept(MediaType.APPLICATION_JSON))
             .andExpect(content().json(PERSON_BY_CODE_JSON));
   }
@@ -67,7 +67,7 @@ class PeopleControllerTest {
   void shouldGetPersonByCodeFail() throws Exception {
     when(peopleService.findByCode(anyLong())).thenThrow(new EntityNotFoundException("People", "5"));
     mockMvc.perform(MockMvcRequestBuilders
-                    .get("/people/5")
+                    .get("/person/5")
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
   }
@@ -76,7 +76,7 @@ class PeopleControllerTest {
   void shouldDeletePersonBySuccess() throws Exception{
     when(peopleService.deleteByCode(anyLong())).thenReturn(true);
     mockMvc.perform(MockMvcRequestBuilders
-                            .delete("/people/1")
+                            .delete("/person/1")
                             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().is2xxSuccessful());
   }
@@ -85,7 +85,7 @@ class PeopleControllerTest {
   void shouldDeletePersonFail() throws Exception{
     when(peopleService.deleteByCode(anyLong())).thenThrow(new EntityNotFoundException("People", "1"));
     mockMvc.perform(MockMvcRequestBuilders
-                            .delete("/people/1")
+                            .delete("/person/1")
                             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
   }
@@ -94,7 +94,7 @@ class PeopleControllerTest {
   void updatePerson() throws Exception {
     when(peopleUpdater.update(anyLong(), any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                      .put("/people/1")
+                      .put("/person/1")
                       .contentType(MediaType.APPLICATION_JSON)
                       .accept(MediaType.APPLICATION_JSON)
                       .content(PERSON_BY_CODE_JSON))
@@ -117,7 +117,7 @@ class PeopleControllerTest {
   void patchPerson() throws Exception {
     when(peopleUpdater.patch(anyLong(),any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                            .patch("/people/1")
+                            .patch("/person/1")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .content(PATCH_PERSON_BY_CODE_JSON))

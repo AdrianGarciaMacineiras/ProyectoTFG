@@ -1,6 +1,7 @@
 package com.sngular.skilltree.contract;
 
 import com.sngular.skilltree.api.PeopleApi;
+import com.sngular.skilltree.api.PersonApi;
 import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedPeopleDTO;
 import com.sngular.skilltree.api.model.PeopleDTO;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class PeopleController implements PeopleApi {
+public class PeopleController implements PeopleApi, PersonApi {
 
     private final PeopleService peopleService;
 
@@ -37,7 +38,8 @@ public class PeopleController implements PeopleApi {
     @Override
     public ResponseEntity<Void> deletePerson(Long peoplecode) {
         peopleService.deleteByCode(peoplecode);
-        return ResponseEntity.status(HttpStatus.OK).build();    }
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
     @Override
     public ResponseEntity<PeopleDTO> updatePerson(Long peoplecode, PeopleDTO peopleDTO) {
@@ -81,5 +83,12 @@ public class PeopleController implements PeopleApi {
         return ResponseEntity.ok(candidateMapper
                 .toCandidatesDTO(peopleService
                         .getCandidates(peopleCode)));
+    }
+
+    @Override
+    public ResponseEntity<List<PeopleDTO>> getPeopleSkills(List<String> skillList){
+        return ResponseEntity.ok(peopleMapper
+                .toPeopleDto(peopleService
+                        .getPeopleSkills(skillList)));
     }
 }

@@ -17,4 +17,5 @@ public interface PeopleRepository {
 
     List<People> findByDeletedIsFalse();
 
+    List<People> getPeopleSkills(List<String> skills);
 }

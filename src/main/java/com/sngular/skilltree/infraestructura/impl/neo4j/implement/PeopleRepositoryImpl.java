@@ -5,9 +5,14 @@ import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import lombok.RequiredArgsConstructor;
+import org.neo4j.driver.Record;
+import org.neo4j.driver.types.TypeSystem;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -16,6 +21,8 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     private final PeopleCrudRepository crud;
 
     private final PeopleNodeMapper mapper;
+
+    private final Neo4jClient client;
 
     @Override
     public List<People> findAll() {
@@ -50,4 +57,26 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     public List<People> findByDeletedIsFalse() {
         return mapper.map(crud.findByDeletedIsFalse());
     }
+
+    @Override
+    public List<People> getPeopleSkills(List<String> skills) {
+
+        var query = String.format("WITH %s as skills " +
+                "MATCH(p:People)-[r:KNOWS]-(s:Skill) " +
+                "WHERE s.code in skills " +
+                "WITH p, size(skills) AS inputCnt, COUNT(DISTINCT s) AS cnt " +
+                "WHERE cnt = inputCnt " +
+                "RETURN p.code",skills);
+
+        var peopleCodes = client.query(query).fetchAs(Long.class).all();
+
+        return peopleCodes
+                .parallelStream()
+                .map(crud::findByCode)
+                .map(mapper::fromNode)
+                .toList();
+
+    }
+
+
 }

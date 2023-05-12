@@ -10,4 +10,8 @@ public interface CustomPeopleRepository {
     @Query("MATCH(n:People{code:$personcode}) RETURN n")
     PeopleNode findPeopleByCode(Long personcode);
 
+
+    @Query("MATCH(p:People)-[r]-(s) WHERE p.code=1 RETURN p,r,s")
+    List<PeopleNode> findPeopleByCodeList(List<Long> codeList);
+
 }
