@@ -33,10 +33,10 @@ docker:
   script:
   - echo "Docker Image Build Start"
   - ls target
-  - docker build -t 192.168.252.88:5000/os3/ubik/ubikservice:latest -f ./infra/Dockerfile .
+  - docker build -t 192.168.252.88:5000/os3/ubik/ubikservice:1.0.0 -f ./infra/Dockerfile .
   - echo "Docker Image Build End"
   - echo "Docker Image Push Start"
-  - docker push 192.168.252.88:5000/os3/ubik/ubikservice:latest
+  - docker push 192.168.252.88:5000/os3/ubik/ubikservice:1.0.0
   - echo "Docker Image Push End"
 
 deploy:
@@ -56,5 +56,5 @@ deploy:
 
   script:
   - echo "Deploy start"
-  - docker run -d -e "SPRING_PROFILES_ACTIVE=testing" -e "LOG_LEVEL=DEBUG" 192.168.252.88:5000/os3/ubik/ubikservice:latest
+  - docker run -d -e "SPRING_PROFILES_ACTIVE=testing" -e "LOG_LEVEL=DEBUG" 192.168.252.88:5000/os3/ubik/ubikservice:1.0.0
   - echo "Deploy end" 
