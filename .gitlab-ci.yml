@@ -22,8 +22,8 @@ docker:
   stage: docker
   tags:
   - docker
-  dependencies:
-    - build
+  needs:
+  - build
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
@@ -36,7 +36,7 @@ docker:
   script:
   - echo "Docker Image Build Start"
   - ls target
-  - docker build -t 192.168.252.88:5000/os3/ubik/ubikservice:$POM_VERSION -f ./infra/Dockerfile .
+  - docker build --build-arg UBIK_SERVICE_VERSION=$POM_VERSION -t 192.168.252.88:5000/os3/ubik/ubikservice:$POM_VERSION -f ./infra/Dockerfile .
   - echo "Docker Image Build End"
   - echo "Docker Image Push Start"
   - docker push 192.168.252.88:5000/os3/ubik/ubikservice::$POM_VERSION
