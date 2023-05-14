@@ -56,5 +56,6 @@ deploy:
 
   script:
   - echo "Deploy start"
-  - docker run -d -e "SPRING_PROFILES_ACTIVE=testing" -e "LOG_LEVEL=INFO" -p 9080:8080 192.168.252.88:5000/os3/ubik/ubikservice:1.0.0 --name ubik_service
+  - docker rm -f ubik_service
+  - docker run --name ubik_service -e "SPRING_PROFILES_ACTIVE=testing" -e "LOG_LEVEL=INFO" --restart unless-stopped -p 9080:8080 192.168.252.88:5000/os3/ubik/ubikservice:1.0.0 -d
   - echo "Deploy end" 
