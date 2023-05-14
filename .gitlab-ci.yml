@@ -42,7 +42,7 @@ docker:
   - echo "Docker Image Push Start"
   - docker push 192.168.252.88:5000/os3/ubik/ubikservice:$POM_VERSION
   - echo "Docker Image Push End"
-  - echo $POM_VERSION > vars.env
+  - echo "POM_VERSION=$POM_VERSION" > vars.env
   artifacts:
     reports:
       dotenv: vars.env
