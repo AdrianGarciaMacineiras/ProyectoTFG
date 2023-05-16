@@ -72,7 +72,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
         for (var candidateRelationship : candidateRelationshipList){
             candidateBuilder.code(candidateRelationship.code());
-            candidateBuilder.id(candidateRelationship.id());
+            candidateBuilder.id(candidateRelationship.id().value());
             candidateBuilder.candidate(peopleNodeMapper.fromNode(candidateRelationship.candidate()));
             candidateBuilder.resolutionDate(candidateRelationship.resolutionDate());
             candidateBuilder.introductionDate(candidateRelationship.resolutionDate());
@@ -273,8 +273,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
         var candidateBuilder = Candidate.builder();
         if (!Objects.isNull(result.get("ID(r)")))
-            candidateBuilder.id(result.get("ID(r)").asLong());
-        candidateBuilder.id(result.get("ID(r)").asLong());
+            candidateBuilder.id(result.get("ID(r)").asString());
+        candidateBuilder.id(result.get("ID(r)").asString());
         candidateBuilder.code(result.get("r.code").asString());
         candidateBuilder.status(EnumStatus.valueOf(result.get("r.status").asString()));
         candidateBuilder.introductionDate(NULL.equalsIgnoreCase(result.get("r.introductionDate").asString()) ? null : result.get("r.introductionDate").asLocalDate());

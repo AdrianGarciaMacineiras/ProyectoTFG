@@ -4,7 +4,6 @@ import lombok.*;
 import org.springframework.data.neo4j.core.schema.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -44,5 +43,5 @@ public class ProjectNode {
     private ClientNode client;
 
     @Relationship(type="REQUIRE", direction = Relationship.Direction.INCOMING)
-    private List<ProjectRoles> roles;
+    private List<ProjectRolesNode> roles;
 }

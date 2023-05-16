@@ -29,24 +29,31 @@ public interface PeopleNodeMapper {
 
     @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "code", source = "skillNode.code")
+    @Mapping(target = "id", expression = "java(certificateRelationship.id().value())")
     Certificate certificateRelationshipToCertificate(CertificateRelationship certificateRelationship);
 
     @Mapping(target = "skillNode", source = "code", qualifiedByName = {"resolveServiceNode", "resolveCodeToSkillNode"})
     @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "id", source = "id", qualifiedByName = {"resolveServiceNode", "resolveId"})
     CertificateRelationship certificateToCertificateRelationship(Certificate certificate);
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "id", expression = "java(role.id().value())")
     com.sngular.skilltree.model.Role roleToRole(Role role);
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "id", source = "id", qualifiedByName = {"resolveServiceNode", "resolveId"})
     Role roleToRole1(com.sngular.skilltree.model.Role role);
 
     @Mapping(target = "code", source = "skillNode.code")
+    @Mapping(target = "id", expression = "java(knowsRelationship.id().value())")
     Knows knowsRelationshipToKnows(KnowsRelationship knowsRelationship);
 
+    @Mapping(target = "id", expression = "java(id().value())")
     List<Knows> knowsRelationshipListToKnowsList(List<KnowsRelationship> list);
 
     @Mapping(target = "skillNode", source = "code", qualifiedByName={"resolveServiceNode", "resolveCodeToSkillNode"})
+    @Mapping(target = "id", source = "id", qualifiedByName = {"resolveServiceNode", "resolveId"})
     KnowsRelationship knowsToKnowsRelationship(Knows knows);
 
     List<People> map(List<PeopleNode> all);

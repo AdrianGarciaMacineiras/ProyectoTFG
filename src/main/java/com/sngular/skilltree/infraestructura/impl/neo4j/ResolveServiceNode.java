@@ -6,6 +6,7 @@ import com.sngular.skilltree.model.Assignment;
 import com.sngular.skilltree.model.EnumMode;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
+import org.springframework.data.neo4j.core.schema.ElementId;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,6 +21,10 @@ public class ResolveServiceNode {
 
     private final PositionCrudRepository positionCrudRepository;
 
+    @Named("resolveId")
+    public ElementId resolveId(final String id){
+        return ElementId.of(id);
+    }
 
     @Named("resolveCodeToSkillNode")
     public SkillNode resolveCodeToSkillNode(final String code) {
@@ -36,7 +41,7 @@ public class ResolveServiceNode {
             var positionNode = positionCrudRepository.findByCode(assignRelationship.positionNode().getCode());
             assignmentMap.compute(positionNode.getProject().getName(), (code, assignsList) -> {
                 var assign = Assignment.builder()
-                            .id(assignRelationship.id())
+                            .id(assignRelationship.id().value())
                             .role(assignRelationship.role())
                             .initDate(assignRelationship.initDate())
                             .endDate(assignRelationship.endDate())
@@ -64,7 +69,7 @@ public class ResolveServiceNode {
                             .positionNode(position)
                             .endDate(assign.endDate())
                             .initDate(assign.initDate())
-                            .id(assign.id())
+                            .id(ElementId.of(assign.id()))
                             .role(assign.role())
                             .build();
                     assignedRelationshipList.add(assignedRelationship);
