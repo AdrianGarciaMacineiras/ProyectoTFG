@@ -72,7 +72,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
         for (var candidateRelationship : candidateRelationshipList){
             candidateBuilder.code(candidateRelationship.code());
-            candidateBuilder.id(candidateRelationship.id());
+            candidateBuilder.id(candidateRelationship.id().value());
             candidateBuilder.candidate(peopleNodeMapper.fromNode(candidateRelationship.candidate()));
             candidateBuilder.resolutionDate(candidateRelationship.resolutionDate());
             candidateBuilder.introductionDate(candidateRelationship.resolutionDate());
@@ -148,8 +148,9 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         }
 
         var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
-                " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) AND ANY(lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair" +
-                ".skillcode})))" +
+                " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) " +
+                "AND ANY (lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair.skillcode}))" +
+                "AND p.assignable = TRUE )" +
                 " RETURN DISTINCT p", String.join(",", filter));
 
         var peopleList = client.query(query).fetchAs(People.class)
@@ -223,17 +224,23 @@ public class CandidateRepositoryImpl implements CandidateRepository {
        var query = String.format("MATCH(p:People),(s:Position)" +
                        "WHERE p.code=%d AND s.code='%s'" +
                        "CREATE(s)-[r:ASSIGN{assignDate:date('%s'), role:'%s', dedication:'100/100'}]->(p)"
-               , peopleCode, positionCode, LocalDate.now().toString(), position.getRole());
+               , peopleCode, positionCode, LocalDate.now(), position.getRole());
         client.query(query).run();
 
-        var queryStatusOK = String.format("MATCH(p:People)-[r:CANDIDATE]-(s:Position) WHERE ID(r) = %d SET r.status = 'OK'"
-                ,openCandidate.id());
+        var queryStatusOK = String.format("MATCH(p:People)-[r:CANDIDATE]-(s:Position) " +
+                        "WHERE ID(r) = %d SET r.status = 'OK'"
+                , openCandidate.id());
         client.query(queryStatusOK).run();
 
         var queryStatusKO = String.format("MATCH(p:People)-[r:CANDIDATE]-(n:Position{code:'%s'}) " +
-                "WHERE NOT r.status = 'KO' AND NOT r.status = 'OK' SET r.status = 'KO'",positionCode);
+                "WHERE NOT r.status = 'KO' AND NOT r.status = 'OK' SET r.status = 'KO'"
+                , positionCode);
         client.query(queryStatusKO).run();
 
+        var queryAssignableTrue = String.format("MATCH(p:People{code:%d}) " +
+                "SET p.assignable = FALSE"
+                , peopleCode);
+        client.query(queryAssignableTrue).run();
     }
 
     @Override
@@ -266,8 +273,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
         var candidateBuilder = Candidate.builder();
         if (!Objects.isNull(result.get("ID(r)")))
-            candidateBuilder.id(result.get("ID(r)").asLong());
-        candidateBuilder.id(result.get("ID(r)").asLong());
+            candidateBuilder.id(result.get("ID(r)").asString());
+        candidateBuilder.id(result.get("ID(r)").asString());
         candidateBuilder.code(result.get("r.code").asString());
         candidateBuilder.status(EnumStatus.valueOf(result.get("r.status").asString()));
         candidateBuilder.introductionDate(NULL.equalsIgnoreCase(result.get("r.introductionDate").asString()) ? null : result.get("r.introductionDate").asLocalDate());

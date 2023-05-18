@@ -15,11 +15,13 @@ import org.mapstruct.Mapping;
 public interface CandidateNodeMapper {
 
     @InheritInverseConfiguration
+    @Mapping(target = "id", source = "id", qualifiedByName = {"resolveServiceNode", "resolveId"})
     CandidateRelationship toNode(Candidate candidate);
 
     @Mapping(target = "creationDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "introductionDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "resolutionDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "id", expression = "java(candidateRelationship.id().value())")
     Candidate fromNode(CandidateRelationship candidateRelationship);
 
     List<Candidate> map(List<CandidateRelationship> all);

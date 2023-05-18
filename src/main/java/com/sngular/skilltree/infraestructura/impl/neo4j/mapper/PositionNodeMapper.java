@@ -28,9 +28,11 @@ public interface PositionNodeMapper {
   @Mapping(target = "min_exp", source = "minExp")
   @Mapping(target = "min_level", source = "minLevel")
   @Mapping(target = "req_level", source = "levelReq")
+  @Mapping(target = "id", source = "id", qualifiedByName = {"resolveServiceNode", "resolveId"})
   PositionSkillsRelationship toPositionSkillsRelationship(PositionSkill positionSkill);
 
   @InheritInverseConfiguration
+  @Mapping(target = "id", expression = "java(positionSkillsRelationship.id().value())")
   PositionSkill toPositionSkill(PositionSkillsRelationship positionSkillsRelationship);
 
   List<Position> map(List<PositionNode> all);

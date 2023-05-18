@@ -28,14 +28,4 @@ public class ContractConfig {
       builder.modulesToInstall(new JavaTimeModule());
     };
   }
-
-  @Bean
-  @Primary
-  public ObjectMapper objectMapper() {
-    final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
-    final ObjectMapper mapper = new ObjectMapper();
-    mapper.setDateFormat(sdf);
-    mapper.enable(SerializationFeature.INDENT_OUTPUT);
-    return mapper;
-  }
 }

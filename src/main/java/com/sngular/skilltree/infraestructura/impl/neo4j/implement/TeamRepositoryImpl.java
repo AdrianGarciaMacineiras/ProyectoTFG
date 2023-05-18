@@ -4,7 +4,9 @@ import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.TeamRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.TeamCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.TeamNodeMapper;
+import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Team;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -21,6 +23,8 @@ public class TeamRepositoryImpl implements TeamRepository {
     private final TeamNodeMapper mapper;
 
     private final PeopleCrudRepository peopleCrudRepository;
+
+    private final PeopleNodeMapper peopleNodeMapper;
 
     @Override
     public List<Team> findAll() { return mapper.map(crud.findByDeletedIsFalse()); }
@@ -39,6 +43,16 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     @Override
     public Team findByCode(String teamcode) { return mapper.fromNode(crud.findByCode(teamcode)); }
+
+    @Override
+    public List<People> getMembers(String teamcode) {
+        var codeList = crud.findMembersByTeamCode(teamcode);
+        return codeList
+                .parallelStream()
+                .map(peopleCrudRepository::findByCode)
+                .map(peopleNodeMapper::fromNode)
+                .toList();
+    }
 
     @Override
     public boolean deleteByCode(String teamcode) {

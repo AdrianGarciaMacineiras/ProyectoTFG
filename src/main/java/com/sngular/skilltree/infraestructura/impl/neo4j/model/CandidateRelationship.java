@@ -8,6 +8,6 @@ import java.time.LocalDate;
 
 @RelationshipProperties
 @Builder(toBuilder = true)
-public record CandidateRelationship(@RelationshipId Long id, String code, EnumStatus status, LocalDate introductionDate,
+public record CandidateRelationship(@RelationshipId ElementId id, String code, EnumStatus status, LocalDate introductionDate,
                                     LocalDate resolutionDate, LocalDate creationDate, LocalDate interviewDate, @TargetNode PeopleNode candidate) {
 }

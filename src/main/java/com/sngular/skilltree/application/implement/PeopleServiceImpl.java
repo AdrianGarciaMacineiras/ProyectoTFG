@@ -68,6 +68,11 @@ public class PeopleServiceImpl implements PeopleService {
         return candidateService.getCandidates(peopleCode);
     }
 
+    @Override
+    public List<People> getPeopleSkills(List<String> skills) {
+        return peopleRepository.getPeopleSkills(skills);
+    }
+
     private void validateExist(Long code) {
         var oldPerson = peopleRepository.findByCode(code);
         if (!Objects.isNull(oldPerson) && !oldPerson.deleted()) {

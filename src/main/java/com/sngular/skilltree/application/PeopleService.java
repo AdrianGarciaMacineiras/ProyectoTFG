@@ -20,4 +20,6 @@ public interface PeopleService {
     People assignCandidate(final Long peopleCode, final String positionCode);
 
     List<Candidate> getCandidates(final Long peopleCode);
+
+    List<People> getPeopleSkills(final List<String> skills);
 }
