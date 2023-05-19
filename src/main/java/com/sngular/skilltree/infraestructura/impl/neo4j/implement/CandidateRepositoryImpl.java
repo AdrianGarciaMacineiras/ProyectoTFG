@@ -72,7 +72,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
         for (var candidateRelationship : candidateRelationshipList){
             candidateBuilder.code(candidateRelationship.code());
-            candidateBuilder.id(candidateRelationship.id().value());
+            candidateBuilder.id(candidateRelationship.id());
             candidateBuilder.candidate(peopleNodeMapper.fromNode(candidateRelationship.candidate()));
             candidateBuilder.resolutionDate(candidateRelationship.resolutionDate());
             candidateBuilder.introductionDate(candidateRelationship.resolutionDate());

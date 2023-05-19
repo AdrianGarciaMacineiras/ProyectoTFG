@@ -2,6 +2,11 @@ docker-compose -f dockercompose.yaml up
 
 ------------------------------------------------------------------------------------------------------------------------
 
+TODO  podemos pasar el code fácilmente a String (solo sería en la capa modelo de  node)
+TODO agregamos lastUpdated y createdDate fechas que se pueden autocalcular en modelo del Neo4j, hay una anotacion de spring para cada cosa
+
+------------------------------------------------------------------------------------------------------------------------
+
 PETICIONES EXCEL
 
 Skill estrategico: relacion strategic team
@@ -10,6 +15,14 @@ Skill en estado critico: ??
 Dependencia del team a proyecto o cliente: ??
 Promocion interna: ??
 Entrevistas: ??
+Adecuacion de personas a los proyectos en los que participan: ??
+Personas potencialmente disponibles y adecuadas para una posicion: candidatos?
+Personas que no quieren trabajar en clientes/proyectos: atributo nuevo?
+Persona sobrecualificada: ??
+Personas estancadas/quemadas: atributo nuevo?
+Mentores: atributo nuevo?
+Informacion sobre la posicion sobre la posicion a la que una persona aspira: ??
+Itinerarios informativos: ??
 
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -53,3 +66,51 @@ Office
         no aparece en la imagen adress, phone
 
 ------------------------------------------------------------------------------------------------------------------------
+
+Personas similares a otras:
+
+	BUSCAR LAS SKILLS DE LA PERSONA QUE SE QUIERE COMPARAR LAS SKILLS
+		MATCH(p:People{code:%d})-[r:KNOWS]-(s:Skill) RETURN s.code
+
+	BUSCAR LOS CODIGOS DE AQUELLAS PERSONAS QUE TIENEN ESTA LISTA DE SKILLS
+		WITH %s as skills
+		MATCH(p:People)-[r:KNOWS]-(s:Skill)
+		WHERE s.code in skills
+		WITH p, size(skills) AS inputCnt, COUNT(DISTINCT s) AS cnt
+		WHERE cnt = inputCnt
+		RETURN p.code
+
+	BUSCAR A LAS PERSONAS DE FORMA INDIVIDUAL
+		var peopleCodes = client.query(query).fetchAs(Long.class).all();
+
+		return peopleCodes
+		        .parallelStream()
+		        .map(crud::findByCode)
+		        .map(mapper::fromNode)
+		        .toList();
+
+
+Uso de skills estratégicos:
+
+	BUSCAR LAS SKILLS QUE TIENEN UNA RELACION 'STRATEGIC' Y LOS EQUIPOS RELACIONADOS
+		MATCH(s:Skill)-[r:STRATEGIC]-(t:Team) RETURN s,r,t
+
+	SI SOLO SE QUIEREN LAS SKILLS QUE TIENEN LA RELACION 'STRATEGIC'
+		MATCH(s:Skill)-[r:STRATEGIC]-(p) RETURN s
+
+	BUSCAR LAS SKILLS QUE TIENEN UNA RELACION 'STRATEGIC' CON EL TEAM INDICADO
+        MATCH(s:Skill)-[r:STRATEGIC]-(t:Team{code:%s}) RETURN s,r,t
+
+Uso de skills no estratégicos:
+
+	MATCH(t:Team)-[u:USE]-(s:Skill)
+	WHERE NOT (s)<-[:STRATEGIC]-(t)
+	RETURN s
+
+
+Personas fuera del team relacionadas con los skills estatégicos:
+
+	MATCH(p:People)-[k:KNOWS]-(s:Skill), (t:Team{code:%s})
+	WHERE NOT (p)-[:MEMBER_OF]-(t) AND (s)-[:STRATEGIC]-(t)
+	RETURN p
+	(producto cartesiano?)

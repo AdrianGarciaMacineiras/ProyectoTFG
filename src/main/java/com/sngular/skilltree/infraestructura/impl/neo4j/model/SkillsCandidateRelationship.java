@@ -6,5 +6,5 @@ import org.springframework.data.neo4j.core.schema.*;
 
 @RelationshipProperties
 @Builder(toBuilder = true)
-public record SkillsCandidateRelationship(@RelationshipId ElementId id, @TargetNode SkillNode skill, EnumLevel level, Integer experience) {
+public record SkillsCandidateRelationship(@RelationshipId String id, @TargetNode SkillNode skill, EnumLevel level, Integer experience) {
 }

@@ -6,5 +6,5 @@ import org.springframework.data.neo4j.core.schema.*;
 
 @RelationshipProperties
 @Builder(toBuilder = true)
-public record MemberRelationship(@RelationshipId ElementId id, @TargetNode PeopleNode peopleNode, EnumCharge charge) {
+public record MemberRelationship(@RelationshipId String id, @TargetNode PeopleNode peopleNode, EnumCharge charge) {
 }

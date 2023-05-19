@@ -1,16 +1,21 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
-import com.sngular.skilltree.model.*;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.AssignedRelationship;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillsCandidateRelationship;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubskillsRelationship;
 import com.sngular.skilltree.model.Assignment;
-import com.sngular.skilltree.model.EnumMode;
+import com.sngular.skilltree.model.Assignments;
+import com.sngular.skilltree.model.Skill;
+import com.sngular.skilltree.model.SkillsCandidate;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
-import org.springframework.data.neo4j.core.schema.ElementId;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -22,8 +27,8 @@ public class ResolveServiceNode {
     private final PositionCrudRepository positionCrudRepository;
 
     @Named("resolveId")
-    public ElementId resolveId(final String id){
-        return ElementId.of(id);
+    public String resolveId(final String id){
+        return id;
     }
 
     @Named("resolveCodeToSkillNode")
@@ -41,7 +46,7 @@ public class ResolveServiceNode {
             var positionNode = positionCrudRepository.findByCode(assignRelationship.positionNode().getCode());
             assignmentMap.compute(positionNode.getProject().getName(), (code, assignsList) -> {
                 var assign = Assignment.builder()
-                            .id(assignRelationship.id().value())
+                            .id(assignRelationship.id())
                             .role(assignRelationship.role())
                             .initDate(assignRelationship.initDate())
                             .endDate(assignRelationship.endDate())
@@ -69,7 +74,7 @@ public class ResolveServiceNode {
                             .positionNode(position)
                             .endDate(assign.endDate())
                             .initDate(assign.initDate())
-                            .id(ElementId.of(assign.id()))
+                            .id(assign.id())
                             .role(assign.role())
                             .build();
                     assignedRelationshipList.add(assignedRelationship);
