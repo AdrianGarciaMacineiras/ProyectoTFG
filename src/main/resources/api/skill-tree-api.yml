@@ -862,6 +862,59 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /skills/strategic:
+    get:
+      summary: Gets all the members of a team that work with strategic skills
+      description: Returns a list of people
+      operationId: getStrategicSkillsUse
+      tags:
+        - skill
+      responses:
+        '200':
+          description: A array of strategic skills and the people who use them
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/strategicTeamSkill"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /skills/nostrategic:
+    get:
+      summary: Gets all the skills filtered by teams that are not used by any member
+      description: Returns a list of people
+      operationId: getNoStrategicSkillsUse
+      tags:
+        - skill
+      responses:
+        '200':
+          description: A array of strategic skills that none works with
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/strategicTeamSkillNotUsed"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
   /candidate:
     summary: Candidates
     description: Returns a list of all the company candidates
@@ -1433,33 +1486,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/people"
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '500':
-          description: Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error"
-
-  /team/strategic:
-    get:
-      summary: Gets all the members of a team that work with strategic skills
-      description: Returns a list of people
-      operationId: getStrategicSkillsUse
-      tags:
-        - team
-      responses:
-        '200':
-          description: A array of strategic skills and the people who use them
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/strategicTeamSkill"
         '400':
           description: Bad Request
         '404':
@@ -2084,6 +2110,16 @@ components:
                 enum:
                   - DIRECTOR
                   - HEAD
+
+    strategicTeamSkillNotUsed:
+      type: object
+      properties:
+        teamName:
+          type: string
+        skillList:
+          type: array
+          items:
+            type: string
 
     strategicTeamSkill:
       type: object

@@ -45,11 +45,6 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<StrategicTeamSkill> getStrategicSkillsUse() {
-        return teamRepository.getStrategicSkillsUse();
-    }
-
-    @Override
     public boolean deleteByCode(String teamcode) {
         validateDoesNotExist(teamcode);
         return teamRepository.deleteByCode(teamcode);

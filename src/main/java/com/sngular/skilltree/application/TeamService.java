@@ -18,8 +18,6 @@ public interface TeamService {
 
     List<People> getMembers(final String teamcode);
 
-    List<StrategicTeamSkill> getStrategicSkillsUse();
-
     boolean deleteByCode(final String teamcode);
 
 }

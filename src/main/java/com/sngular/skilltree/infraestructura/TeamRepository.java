@@ -19,6 +19,4 @@ public interface TeamRepository {
     boolean deleteByCode(String teamcode);
 
     List<Team> findByDeletedIsFalse();
-
-    List<StrategicTeamSkill> getStrategicSkillsUse();
 }

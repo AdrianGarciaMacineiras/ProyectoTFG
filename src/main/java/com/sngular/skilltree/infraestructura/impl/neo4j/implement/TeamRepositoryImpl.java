@@ -30,8 +30,6 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     private final PeopleNodeMapper peopleNodeMapper;
 
-    private final Neo4jClient client;
-
     @Override
     public List<Team> findAll() { return mapper.map(crud.findByDeletedIsFalse()); }
 
@@ -73,79 +71,4 @@ public class TeamRepositoryImpl implements TeamRepository {
         return mapper.map(crud.findByDeletedIsFalse());
     }
 
-    @Override
-    public List<StrategicTeamSkill> getStrategicSkillsUse() {
-
-        var query = "MATCH (t:Team)-[k:STRATEGIC]-(s:Skill)-[r:WORK_WITH]-(p:People)--(t)\n " +
-                "RETURN t.name, collect(s.name), count(s), p, s.name";
-
-        var result = new ArrayList<>(client
-                .query(query)
-                .fetchAs(StrategicTeamSkill.class)
-                .mappedBy((TypeSystem t, Record record) -> {
-
-                    People peopleBuilder = getPeople(record);
-
-                    var strategicUseBuilder = StrategicUse.builder()
-                            .skillName(record.get("s.name").asString())
-                            .peopleList(List.of(peopleBuilder))
-                            .build();
-
-                    var strategicTeamSkillBuilder = StrategicTeamSkill.builder()
-                            .teamName(record.get("t.name").asString())
-                            .skillList(List.of(strategicUseBuilder))
-                            .build();
-
-                    return strategicTeamSkillBuilder;
-                })
-                .all());
-
-
-        Map<String, StrategicTeamSkill> strategicTeamSkillMap = new HashMap<>();
-
-        Map<String, StrategicUse> strategicUseMap = new HashMap<>();
-
-        result.forEach(team ->
-                strategicTeamSkillMap.compute(team.teamName(), (name, aggStrategicSkill) -> {
-                    if(Objects.isNull(aggStrategicSkill)){
-                        return team;
-                    } else {
-                        var skillList = new ArrayList<>(aggStrategicSkill.skillList());
-                        skillList.addAll(team.skillList());
-                        aggStrategicSkill = aggStrategicSkill.toBuilder().skillList(skillList).build();
-
-                    }
-                    return aggStrategicSkill;
-                })
-        );
-
-
-/*        aggStrategicSkill.skillList().forEach(skill ->
-                strategicUseMap.compute(skill.skillName(), (skillName, aggPeople) -> {
-                    if(Objects.isNull(aggPeople)){
-                        return skill;
-                    } else {
-                        var peopleList = new ArrayList<>(aggPeople.peopleList());
-                        peopleList.addAll(skill.peopleList());
-                        aggPeople = aggPeople.toBuilder().peopleList(peopleList).build();
-                    }
-                    return aggPeople;
-                }));*/
-
-
-
-        return new ArrayList<>(strategicTeamSkillMap.values());
-    }
-
-    private static People getPeople(Record result) {
-        var people = result.get("p");
-        return People.builder()
-                .name(people.get("name").asString())
-                .surname(people.get("surname").asString())
-                .employeeId(people.get("employeeId").asString())
-                .birthDate(people.get("birthDate").asLocalDate())
-                .code(people.get("code").asLong())
-                .deleted(people.get("deleted").asBoolean())
-                .build();
-    }
 }

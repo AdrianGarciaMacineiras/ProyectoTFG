@@ -41,12 +41,6 @@ public interface TeamMapper {
 
     Team toTeam(PatchedTeamDTO patchedTeamDTO);
 
-    @Mapping(target = "skillName", source = "skillName")
-    List<StrategicUseDTO> toStrategicUseDTO(List<StrategicUse> strategicUse);
-
-    @Mapping(target = "teamName", source = "teamName")
-    List<StrategicTeamSkillDTO> toStrategicTeamSkillDTO(List<StrategicTeamSkill> strategicTeamSkills);
-
     @Named("patch")
     default Team patch(Team newTeam, Team oldTeam) {
         Team.TeamBuilder teamBuilder = oldTeam.toBuilder();

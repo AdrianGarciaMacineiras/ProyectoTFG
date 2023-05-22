@@ -75,10 +75,4 @@ public class TeamController implements TeamApi {
                         .getMembers(teamcode)));
     }
 
-    @Override
-    public  ResponseEntity<List<StrategicTeamSkillDTO>> getStrategicSkillsUse(){
-        return ResponseEntity.ok(teamMapper
-                .toStrategicTeamSkillDTO(teamService
-                        .getStrategicSkillsUse()));
-    }
 }

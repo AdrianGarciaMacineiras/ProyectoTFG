@@ -130,17 +130,12 @@ class TeamControllerTest {
 
         @Bean
         TeamMapper teamMapper() {
-            return new TeamMapperImpl(peopleMapper(), resolveService(skillService, positionService, peopleService, projectService, officeService, clientService));
+            return new TeamMapperImpl(resolveService(skillService, positionService, peopleService, projectService, officeService, clientService));
         }
 
         @Bean
         SkillMapper skillMapper() {
             return Mappers.getMapper(SkillMapper.class);
-        }
-
-        @Bean
-        PeopleMapper peopleMapper() {
-            return Mappers.getMapper(PeopleMapper.class);
         }
 
         @MockBean
