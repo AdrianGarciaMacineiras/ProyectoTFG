@@ -23,6 +23,7 @@ import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.application.TeamService;
 import com.sngular.skilltree.application.updater.TeamUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import com.sngular.skilltree.contract.mapper.TeamMapper;
 import com.sngular.skilltree.contract.mapper.TeamMapperImpl;
@@ -129,12 +130,17 @@ class TeamControllerTest {
 
         @Bean
         TeamMapper teamMapper() {
-            return new TeamMapperImpl(resolveService(skillService, positionService, peopleService, projectService, officeService, clientService));
+            return new TeamMapperImpl(peopleMapper(), resolveService(skillService, positionService, peopleService, projectService, officeService, clientService));
         }
 
         @Bean
         SkillMapper skillMapper() {
             return Mappers.getMapper(SkillMapper.class);
+        }
+
+        @Bean
+        PeopleMapper peopleMapper() {
+            return Mappers.getMapper(PeopleMapper.class);
         }
 
         @MockBean

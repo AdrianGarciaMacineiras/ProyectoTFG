@@ -4,12 +4,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import com.sngular.skilltree.api.model.MembersDTO;
-import com.sngular.skilltree.api.model.PatchedTeamDTO;
-import com.sngular.skilltree.api.model.TeamDTO;
+import com.sngular.skilltree.api.model.*;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Member;
+import com.sngular.skilltree.model.StrategicTeamSkill;
+import com.sngular.skilltree.model.StrategicUse;
 import com.sngular.skilltree.model.Team;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -40,6 +40,12 @@ public interface TeamMapper {
     List<TeamDTO> toTeamsDTO (Collection<Team> teams);
 
     Team toTeam(PatchedTeamDTO patchedTeamDTO);
+
+    @Mapping(target = "skillName", source = "skillName")
+    List<StrategicUseDTO> toStrategicUseDTO(List<StrategicUse> strategicUse);
+
+    @Mapping(target = "teamName", source = "teamName")
+    List<StrategicTeamSkillDTO> toStrategicTeamSkillDTO(List<StrategicTeamSkill> strategicTeamSkills);
 
     @Named("patch")
     default Team patch(Team newTeam, Team oldTeam) {

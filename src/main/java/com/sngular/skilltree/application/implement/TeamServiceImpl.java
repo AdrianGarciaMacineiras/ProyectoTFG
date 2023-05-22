@@ -5,6 +5,7 @@ import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.TeamRepository;
 import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.StrategicTeamSkill;
 import com.sngular.skilltree.model.Team;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,11 @@ public class TeamServiceImpl implements TeamService {
     public List<People> getMembers(String teamcode) {
         validateDoesNotExist(teamcode);
         return teamRepository.getMembers(teamcode);
+    }
+
+    @Override
+    public List<StrategicTeamSkill> getStrategicSkillsUse() {
+        return teamRepository.getStrategicSkillsUse();
     }
 
     @Override

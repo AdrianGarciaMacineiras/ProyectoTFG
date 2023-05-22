@@ -272,9 +272,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     private Candidate.CandidateBuilder getCandidateBuilder(Record result) {
 
         var candidateBuilder = Candidate.builder();
-        if (!Objects.isNull(result.get("ID(r)")))
-            candidateBuilder.id(result.get("ID(r)").asString());
-        candidateBuilder.id(result.get("ID(r)").asString());
+        candidateBuilder.id(result.get("ID(r)").toString());
         candidateBuilder.code(result.get("r.code").asString());
         candidateBuilder.status(EnumStatus.valueOf(result.get("r.status").asString()));
         candidateBuilder.introductionDate(NULL.equalsIgnoreCase(result.get("r.introductionDate").asString()) ? null : result.get("r.introductionDate").asLocalDate());

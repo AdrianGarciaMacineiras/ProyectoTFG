@@ -1,6 +1,8 @@
 package com.sngular.skilltree.infraestructura;
 
 import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.StrategicTeamSkill;
+import com.sngular.skilltree.model.StrategicUse;
 import com.sngular.skilltree.model.Team;
 import java.util.List;
 
@@ -17,4 +19,6 @@ public interface TeamRepository {
     boolean deleteByCode(String teamcode);
 
     List<Team> findByDeletedIsFalse();
+
+    List<StrategicTeamSkill> getStrategicSkillsUse();
 }

@@ -79,10 +79,10 @@ public class PeopleController implements PeopleApi, PersonApi {
     }
 
     @Override
-    public ResponseEntity<List<CandidateDTO>> getPeopleCandidates(Long peopleCode){
+    public ResponseEntity<List<CandidateDTO>> getPeopleCandidates(Long peoplecode){
         return ResponseEntity.ok(candidateMapper
                 .toCandidatesDTO(peopleService
-                        .getCandidates(peopleCode)));
+                        .getCandidates(peoplecode)));
     }
 
     @Override

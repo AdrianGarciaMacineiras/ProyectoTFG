@@ -8,5 +8,5 @@ import java.time.LocalDate;
 
 @RelationshipProperties
 @Builder(toBuilder = true)
-public record CertificateRelationship(@RelationshipId String id, @TargetNode SkillNode skillNode, String comments, LocalDate date) {
+public record CertificateRelationship(@RelationshipId String id, @TargetNode SkillNode skillNode, String comments, String date) {
 }

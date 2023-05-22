@@ -4,25 +4,33 @@ docker-compose -f dockercompose.yaml up
 
 TODO  podemos pasar el code fácilmente a String (solo sería en la capa modelo de  node)
 TODO agregamos lastUpdated y createdDate fechas que se pueden autocalcular en modelo del Neo4j, hay una anotacion de spring para cada cosa
-
+TODO en certificaterelationship cambiar el tipo de dato de la fecha de String a LocalDate
 ------------------------------------------------------------------------------------------------------------------------
+Mover la lista de assigns de PeopleNode a PositionNode y cambiar el @TargetNode de position a people
 
+    sacar los assigns en la position, no tengo atributo source para emparejarlo con el target en el nodo
+    sacar el codigo de la persona asignada para meterlo en el assign de position y verlo
+------------------------------------------------------------------------------------------------------------------------
 PETICIONES EXCEL
 
-Skill estrategico: relacion strategic team
-SKill no estrategico: relacion USE y no strategic team
 Skill en estado critico: ??
 Dependencia del team a proyecto o cliente: ??
 Promocion interna: ??
 Entrevistas: ??
 Adecuacion de personas a los proyectos en los que participan: ??
-Personas potencialmente disponibles y adecuadas para una posicion: candidatos?
-Personas que no quieren trabajar en clientes/proyectos: atributo nuevo?
-Persona sobrecualificada: ??
-Personas estancadas/quemadas: atributo nuevo?
-Mentores: atributo nuevo?
-Informacion sobre la posicion sobre la posicion a la que una persona aspira: ??
 Itinerarios informativos: ??
+
+
+Skill estrategico: relacion strategic team
+Skill no estrategico: relacion USE y no strategic team
+Personas que no quieren trabajar en clientes: atributo nuevo
+Personas que no quieren trabajar en proyectos: atributo nuevo
+Persona sobrecualificada: un nunero N de skills mayor al que requiere la posicion
+Personas estancadas: atributo nuevo
+Personas quemadas: atributo nuevo
+Mentores: relacion entre people
+Informacion sobre la posicion a la que una persona aspira(candidatura): posicion a secas de las candidaturas de una persona
+Saber a que puestos ha sido asignada una persona:
 
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -92,6 +100,12 @@ Personas similares a otras:
 
 Uso de skills estratégicos:
 
+    David Pardo
+        MATCH (t:Team)-[k:STRATEGIC]-(s:Skill)-[r:WORK_WITH]-(p:People)--(t)
+        RETURN t.name, collect(s.name), count(s)
+
+
+                            (*** ESTAS NO ***)
 	BUSCAR LAS SKILLS QUE TIENEN UNA RELACION 'STRATEGIC' Y LOS EQUIPOS RELACIONADOS
 		MATCH(s:Skill)-[r:STRATEGIC]-(t:Team) RETURN s,r,t
 
@@ -103,6 +117,11 @@ Uso de skills estratégicos:
 
 Uso de skills no estratégicos:
 
+    MATCH (t:Team)-[k:STRATEGIC]-(s:Skill)
+    WHERE NOT ((s)-[:WORK_WITH]-(:People)--(t))
+    RETURN t.name, collect(s.name), count(s)
+
+          (*** ESTAS NO ***)
 	MATCH(t:Team)-[u:USE]-(s:Skill)
 	WHERE NOT (s)<-[:STRATEGIC]-(t)
 	RETURN s

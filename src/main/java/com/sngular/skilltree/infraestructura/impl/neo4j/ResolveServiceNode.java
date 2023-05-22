@@ -50,6 +50,8 @@ public class ResolveServiceNode {
                             .role(assignRelationship.role())
                             .initDate(assignRelationship.initDate())
                             .endDate(assignRelationship.endDate())
+                            .assignDate(assignRelationship.assignDate())
+                            .dedication(assignRelationship.dedication())
                             .build();
                 if (Objects.isNull(assignsList)) {
                     assignsList = new ArrayList<>();
