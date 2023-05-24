@@ -73,6 +73,11 @@ public class PeopleServiceImpl implements PeopleService {
         return peopleRepository.getPeopleSkills(skills);
     }
 
+    @Override
+    public List<People> getOtherPeopleStrategicSkills(String teamcode) {
+        return peopleRepository.getOtherPeopleStrategicSkills(teamcode);
+    }
+
     private void validateExist(Long code) {
         var oldPerson = peopleRepository.findByCode(code);
         if (!Objects.isNull(oldPerson) && !oldPerson.deleted()) {

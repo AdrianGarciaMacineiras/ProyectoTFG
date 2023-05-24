@@ -55,4 +55,15 @@ public class PeopleNode {
 
     @Relationship(type="ASSIGN", direction = Relationship.Direction.INCOMING)
     private List<AssignedRelationship> assigns;
+
+    /*@Relationship(type="REFUSE_CLIENT", direction = Relationship.Direction.INCOMING)
+    private List<ClientNode> noClients;
+
+    @Relationship(type="REFUSE_PROJECT", direction = Relationship.Direction.INCOMING)
+    private List<ProjectNode> noProjects;
+
+    private boolean quemada;
+
+    private boolean estancada;
+    */
 }

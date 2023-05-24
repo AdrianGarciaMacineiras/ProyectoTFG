@@ -1,9 +1,6 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.AssignedRelationship;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillsCandidateRelationship;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubskillsRelationship;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
 import com.sngular.skilltree.model.Assignment;
 import com.sngular.skilltree.model.Assignments;
 import com.sngular.skilltree.model.Skill;
@@ -25,6 +22,10 @@ public class ResolveServiceNode {
     private final SkillCrudRepository skillCrudRepository;
 
     private final PositionCrudRepository positionCrudRepository;
+
+    private final ClientCrudRepository clientCrudRepository;
+
+    private final ProjectCrudRepository projectCrudRepository;
 
     @Named("resolveId")
     public String resolveId(final String id){
@@ -126,6 +127,44 @@ public class ResolveServiceNode {
             skillsCandidateRelationshipList.add(skillsCandidateRelationship);
         }
         return skillsCandidateRelationshipList;
+    }
+
+    @Named("mapToClientString")
+    public List<String> mapToClientString(List<ClientNode> clientNodeList){
+        final List<String> clientNameList = new ArrayList<>();
+        for (var clientNode : clientNodeList){
+            clientNameList.add(clientNode.getName());
+        }
+        return clientNameList;
+    }
+
+    @Named("mapToClientNode")
+    public List<ClientNode> mapToClientNode(List<String> clientNameList){
+        final List<ClientNode> clientNodeList = new ArrayList<>();
+        for (var name : clientNameList){
+            var clientNode = clientCrudRepository.findByName(name);
+            clientNodeList.add(clientNode);
+        }
+        return clientNodeList;
+    }
+
+    @Named("mapToProjectNode")
+    public List<ProjectNode> mapToProjectNode(List<String> projectNameList){
+        final List<ProjectNode> projectNodeList = new ArrayList<>();
+        for (var name : projectNameList){
+            var projectNode = projectCrudRepository.findByName(name);
+            projectNodeList.add(projectNode);
+        }
+        return projectNodeList;
+    }
+
+    @Named("mapToProjectString")
+    public List<String> mapToProjectString(List<ProjectNode> projectNodeList){
+        final List<String> projectNameList = new ArrayList<>();
+        for (var projectNode : projectNodeList){
+            projectNameList.add(projectNode.getName());
+        }
+        return projectNameList;
     }
 
 }

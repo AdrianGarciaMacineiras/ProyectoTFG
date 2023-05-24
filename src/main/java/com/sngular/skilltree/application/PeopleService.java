@@ -22,4 +22,6 @@ public interface PeopleService {
     List<Candidate> getCandidates(final Long peopleCode);
 
     List<People> getPeopleSkills(final List<String> skills);
+
+    List<People> getOtherPeopleStrategicSkills(final String teamcode);
 }

@@ -91,4 +91,12 @@ public class PeopleController implements PeopleApi, PersonApi {
                 .toPeopleDto(peopleService
                         .getPeopleSkills(skillList)));
     }
+
+    @Override
+    public ResponseEntity<List<PeopleDTO>> getOtherPeopleStrategicSkills(String teamcode){
+        return ResponseEntity.ok(peopleMapper
+                .toPeopleDto(peopleService
+                        .getOtherPeopleStrategicSkills(teamcode)));
+    }
+
 }

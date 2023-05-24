@@ -802,12 +802,45 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /people/strategic/team/{teamcode}:
+    get:
+      summary: List people outside the team that works with their strategic skills
+      parameters:
+        - name: teamcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a team
+      operationId: getOtherPeopleStrategicSkills
+      tags:
+        - people
+      responses:
+        '200':
+          description: A list of people
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/people"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
   /skills:
     summary: Skills on the skill tree
     description: Returns a list of all skills
     get:
       summary: List all available skills
-      operationId: getSKills
+      operationId: getSkills
       tags:
         - skills
       responses:
@@ -1940,6 +1973,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/certificate"
+        noClients:
+          type: array
+          items:
+            type: string
+        noProjects:
+          type: array
+          items:
+            type: string
 
     patchedPeople:
       type: object

@@ -21,10 +21,14 @@ public interface PeopleNodeMapper {
     @InheritInverseConfiguration
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "assigns", source = "assigns", qualifiedByName = {"resolveServiceNode", "mapToAssignedRelationship"})
+    //@Mapping(target = "noClients", source = "noClients", qualifiedByName = {"resolveServiceNode", "mapToClientNode"})
+    //@Mapping(target = "noProjects", source = "noProjects", qualifiedByName = {"resolveServiceNode", "mapToProjectNode"})
     PeopleNode toNode(People people);
 
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "assigns", source = "assigns", qualifiedByName = {"resolveServiceNode", "mapToAssignment"})
+    //@Mapping(target = "noClients", source = "noClients", qualifiedByName = {"resolveServiceNode", "mapToClientString"})
+    //@Mapping(target = "noProjects", source = "noProjects", qualifiedByName = {"resolveServiceNode", "mapToProjectString"})
     People fromNode(PeopleNode peopleNode);
 
     @Mapping(target = "date", dateFormat = "dd-MM-yyyy")

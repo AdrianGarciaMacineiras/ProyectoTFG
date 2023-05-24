@@ -78,5 +78,25 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
     }
 
+    @Override
+    public List<People> getOtherPeopleStrategicSkills(String teamcode) {
+
+        var query = String.format("MATCH (p:People)-[k:KNOWS]-(s:Skill), (t:Team{code:'%s'}) " +
+                "WHERE NOT (p)-[:MEMBER_OF]-(t) AND (s)-[:STRATEGIC]-(t) AND (p)-[:WORK_WITH]-(s) " +
+                "RETURN p.code", teamcode);
+
+
+         var peopleCodes = client
+                 .query(query)
+                .fetchAs(Long.class)
+                .all();
+
+        return peopleCodes
+                .parallelStream()
+                .map(crud::findByCode)
+                .map(mapper::fromNode)
+                .toList();
+    }
+
 
 }

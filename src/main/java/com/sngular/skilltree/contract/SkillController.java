@@ -28,7 +28,7 @@ public class SkillController implements SkillsApi {
     }
 
     @Override
-    public ResponseEntity<List<SkillDTO>> getSKills() {
+    public ResponseEntity<List<SkillDTO>> getSkills() {
         var skillList = skillService.getAll();
         return ResponseEntity.ok(skillMapper.toSkillsDTO(skillList));
     }
