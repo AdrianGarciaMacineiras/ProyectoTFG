@@ -83,4 +83,21 @@ public class PositionRepositoryImpl implements PositionRepository {
     return mapper.map(crud.findByDeletedIsFalse());
   }
 
+  @Override
+  public List<Position> getPeopleAssignedPositions(Long peoplecode) {
+
+    var query = String.format("MATCH(p:People{code:%d})-[r:ASSIGN]-(s:Position) RETURN s.code",peoplecode);
+
+    var positionCodes = client
+            .query(query)
+            .fetchAs(String.class)
+            .all();
+
+    return positionCodes
+            .parallelStream()
+            .map(crud::findByCode)
+            .map(mapper::fromNode)
+            .toList();
+  }
+
 }

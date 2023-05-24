@@ -16,4 +16,6 @@ public interface PositionRepository {
   boolean deleteByCode(String positioncode);
 
   List<Position> findByDeletedIsFalse();
+
+  List<Position> getPeopleAssignedPositions(Long peoplecode);
 }

@@ -2,11 +2,13 @@ package com.sngular.skilltree.application.implement;
 
 import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.application.PeopleService;
+import com.sngular.skilltree.application.PositionService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
+import com.sngular.skilltree.model.Position;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ public class PeopleServiceImpl implements PeopleService {
     private final PeopleRepository peopleRepository;
 
     private final CandidateService candidateService;
+
+    private final PositionService positionService;
 
     @Override
     public List<People> getAll() {
@@ -76,6 +80,12 @@ public class PeopleServiceImpl implements PeopleService {
     @Override
     public List<People> getOtherPeopleStrategicSkills(String teamcode) {
         return peopleRepository.getOtherPeopleStrategicSkills(teamcode);
+    }
+
+    @Override
+    public List<Position> getPeopleAssignedPositions(Long peoplecode) {
+        validateDoesNotExist(peoplecode);
+        return positionService.getPeopleAssignedPositions(peoplecode);
     }
 
     private void validateExist(Long code) {

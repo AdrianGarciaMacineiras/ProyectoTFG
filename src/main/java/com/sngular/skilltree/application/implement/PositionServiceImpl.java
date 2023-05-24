@@ -74,6 +74,10 @@ public class PositionServiceImpl implements PositionService {
     return candidateService.getCandidates(positionCode);
   }
 
+  @Override
+  public List<Position> getPeopleAssignedPositions(Long peoplecode) {
+    return positionRepository.getPeopleAssignedPositions(peoplecode);
+  }
 
   private void validateExist(String code) {
     var oldPosition = positionRepository.findByCode(code);

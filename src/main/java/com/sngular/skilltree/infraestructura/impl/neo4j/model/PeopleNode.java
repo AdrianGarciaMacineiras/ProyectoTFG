@@ -62,6 +62,9 @@ public class PeopleNode {
     @Relationship(type="REFUSE_PROJECT", direction = Relationship.Direction.INCOMING)
     private List<ProjectNode> noProjects;
 
+    @Relationship(type="MENTOR", direction = Relationship.Direction.INCOMING)
+    private List<PeopleNode> mentor;
+
     private boolean quemada;
 
     private boolean estancada;
