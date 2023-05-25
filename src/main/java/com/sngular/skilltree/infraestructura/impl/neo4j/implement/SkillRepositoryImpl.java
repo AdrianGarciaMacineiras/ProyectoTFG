@@ -158,6 +158,7 @@ public class SkillRepositoryImpl implements SkillRepository {
                         return team;
                     } else {
                         var skillList = new ArrayList<>(aggStrategicSkill.skillList());
+                        //TODO EN VEZ DE SER UNA LISTA ES UN MAP Y HAGO LA AGRUPACION
                         skillList.addAll(team.skillList());
                         aggStrategicSkill = aggStrategicSkill.toBuilder().skillList(skillList).build();
 

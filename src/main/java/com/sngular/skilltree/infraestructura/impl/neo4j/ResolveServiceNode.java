@@ -1,10 +1,8 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
+import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
-import com.sngular.skilltree.model.Assignment;
-import com.sngular.skilltree.model.Assignments;
-import com.sngular.skilltree.model.Skill;
-import com.sngular.skilltree.model.SkillsCandidate;
+import com.sngular.skilltree.model.*;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
@@ -166,5 +164,4 @@ public class ResolveServiceNode {
         }
         return projectNameList;
     }
-
 }

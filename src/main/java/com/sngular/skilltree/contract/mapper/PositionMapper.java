@@ -38,6 +38,7 @@ public interface PositionMapper {
   @Mapping(target = "managedBy", source = "managedBy", qualifiedByName = {"resolveCodePeople"})
   @Mapping(target = "office", source = "office", qualifiedByName = {"resolveCodeOffice"})
   @Mapping(target = "client", source = "clientCode", qualifiedByName = {"resolveCodeClient"})
+  @Mapping(target = "assignedPeople", ignore = true)
   Position toPosition(PositionDTO opportunityDTO);
 
   List<PositionDTO> toPositionsDTO(Collection<Position> positions);
@@ -47,6 +48,7 @@ public interface PositionMapper {
   @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "office", source = "office", qualifiedByName = {"resolveCodeOffice"})
   @Mapping(target = "managedBy", source = "managedBy", qualifiedByName = {"resolveCodePeople"})
+  @Mapping(target = "assignedPeople", ignore = true)
   Position toPosition(PatchedPositionDTO patchedPuestoDTO);
 
   @Named("patch")

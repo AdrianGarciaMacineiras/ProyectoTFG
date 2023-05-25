@@ -223,7 +223,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
        var query = String.format("MATCH(p:People),(s:Position)" +
                        "WHERE p.code=%d AND s.code='%s'" +
-                       "CREATE(s)-[r:ASSIGN{assignDate:date('%s'), role:'%s', dedication:'100/100'}]->(p)"
+                       "CREATE(s)-[r:ASSIGN{assignDate:date('%s'), role:'%s', dedication:100}]->(p)"
                , peopleCode, positionCode, LocalDate.now(), position.getRole());
         client.query(query).run();
 

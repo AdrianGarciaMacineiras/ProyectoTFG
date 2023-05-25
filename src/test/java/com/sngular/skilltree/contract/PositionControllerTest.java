@@ -165,8 +165,8 @@ class PositionControllerTest {
     }
 
     @Bean
-    PeopleMapper peopleMapper(final ResolveService resolveService) {
-      return new PeopleMapperImpl(resolveService);
+    PeopleMapper peopleMapper(final ResolveService resolveService, CandidateMapper candidateMapper) {
+      return new PeopleMapperImpl(candidateMapper, resolveService);
     }
 
     @Bean

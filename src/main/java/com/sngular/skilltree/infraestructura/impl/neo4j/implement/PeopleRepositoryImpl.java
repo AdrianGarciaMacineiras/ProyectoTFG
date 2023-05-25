@@ -37,7 +37,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
     @Override
     public People findByCode(Long personcode) {
-        return mapper.fromNode(crud.findByCode(personcode));
+        return mapper.fromNode(crud.findByCodeAndDeletedIsFalse(personcode));
     }
 
     @Override

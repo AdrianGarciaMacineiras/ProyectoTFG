@@ -5,6 +5,7 @@ import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.*;
+import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PositionNodeMapper;
 import com.sngular.skilltree.model.*;
 import com.sngular.skilltree.infraestructura.PositionRepository;
@@ -25,8 +26,6 @@ public class PositionRepositoryImpl implements PositionRepository {
 
   private final PositionCrudRepository crud;
 
-  private final CandidateRepository candidateRepository;
-
   private final ProjectCrudRepository projectCrud;
 
   private final ClientCrudRepository clientCrud;
@@ -36,6 +35,8 @@ public class PositionRepositoryImpl implements PositionRepository {
   private final PositionNodeMapper mapper;
 
   private final Neo4jClient client;
+
+  public static final String NULL = "null";
 
   @Override
   public List<Position> findAll() {
@@ -98,6 +99,45 @@ public class PositionRepositoryImpl implements PositionRepository {
             .map(crud::findByCode)
             .map(mapper::fromNode)
             .toList();
+  }
+
+  @Override
+  public List<PositionAssignment> getPeopleAssignedToPosition(String positionCode) {
+    var query = String.format("MATCH(p:People)-[r:ASSIGN]-(s:Position{code:'%s'}) RETURN p,r",positionCode);
+
+    return new ArrayList<>(client
+            .query(query)
+            .fetchAs(PositionAssignment.class)
+            .mappedBy((TypeSystem t, Record record) -> {
+
+              People person = getPeople(record);
+
+              var assign = record.get("r");
+
+              return  PositionAssignment.builder()
+                      .assignDate(assign.get("assignDate").asLocalDate())
+                      .id(assign.get("id").asString())
+                      .assigned(person)
+                      .role(assign.get("role").asString())
+                      .dedication(assign.get("dedication").asInt())
+                      .endDate(NULL.equalsIgnoreCase(assign.get("endDate").asString()) ? null : assign.get("endDate").asLocalDate())
+                      .build();
+
+            })
+            .all());
+
+  }
+
+  private static People getPeople(Record result) {
+    var people = result.get("p");
+    return People.builder()
+            .name(people.get("name").asString())
+            .surname(people.get("surname").asString())
+            .employeeId(people.get("employeeId").asString())
+            .birthDate(people.get("birthDate").asLocalDate())
+            .code(people.get("code").asLong())
+            .deleted(people.get("deleted").asBoolean())
+            .build();
   }
 
 }

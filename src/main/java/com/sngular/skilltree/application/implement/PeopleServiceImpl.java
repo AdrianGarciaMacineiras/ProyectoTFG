@@ -39,11 +39,15 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public People findByCode(Long personcode) {
-        var people = peopleRepository.findByCode(personcode);
+    public People findByCode(Long personCode) {
+        var people = peopleRepository.findByCode(personCode);
         if (Objects.isNull(people) || people.deleted())
-            throw new EntityNotFoundException("People", personcode);
-        return people;
+            throw new EntityNotFoundException("People", personCode);
+        var candidancies = candidateService.getCandidates(personCode);
+        if(!Objects.isNull(people.candidacies()))
+            people.candidacies().clear();
+        var newperson = people.toBuilder().candidacies(candidancies).build();
+        return newperson;
     }
 
     @Override
@@ -51,7 +55,8 @@ public class PeopleServiceImpl implements PeopleService {
         var people = peopleRepository.findPeopleByCode(personcode);
         if (Objects.isNull(people) || people.deleted())
             throw new EntityNotFoundException("People", personcode);
-        return people;    }
+        return people;
+    }
 
     @Override
     public boolean deleteByCode(Long personCode) {

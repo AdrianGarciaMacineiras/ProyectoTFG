@@ -19,7 +19,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-@Mapper(config = CommonMapperConfiguration.class, uses = {SkillMapper.class, ResolveService.class})
+@Mapper(config = CommonMapperConfiguration.class, uses = {SkillMapper.class, CandidateMapper.class, ResolveService.class})
 public interface PeopleMapper {
 
   @Mapping(target = "work_with", source = "work_with", qualifiedByName = {"resolveSkillNameList"})

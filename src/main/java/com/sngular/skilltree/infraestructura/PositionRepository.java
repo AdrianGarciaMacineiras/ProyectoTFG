@@ -1,7 +1,6 @@
 package com.sngular.skilltree.infraestructura;
 
-import com.sngular.skilltree.model.Candidate;
-import com.sngular.skilltree.model.Position;
+import com.sngular.skilltree.model.*;
 
 import java.util.List;
 
@@ -18,4 +17,6 @@ public interface PositionRepository {
   List<Position> findByDeletedIsFalse();
 
   List<Position> getPeopleAssignedPositions(Long peoplecode);
+
+  List<PositionAssignment> getPeopleAssignedToPosition(String positionCode);
 }

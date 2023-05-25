@@ -1715,10 +1715,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/candidate"
-        assigned:
+        assignedPeople:
           type: array
           items:
-            $ref: "#/components/schemas/assignment"
+            $ref: "#/components/schemas/positionAssignment"
         open:
           type: boolean
 
@@ -1754,6 +1754,12 @@ components:
         managedBy:
           type: integer
           format: int64
+        assignedPeople:
+          type: array
+          items:
+            $ref: "#/components/schemas/positionAssignment"
+        open:
+          type: boolean
 
     mode:
       type: string
@@ -2130,7 +2136,29 @@ components:
           type: string
           format: date
         dedication:
+          type: integer
+
+    positionAssignment:
+      type: object
+      properties:
+        id:
           type: string
+        role:
+          type: string
+        initDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        assignDate:
+          type: string
+          format: date
+        dedication:
+          type: integer
+        assigned:
+          type: integer
+          format: int64
 
     team:
       type: object
