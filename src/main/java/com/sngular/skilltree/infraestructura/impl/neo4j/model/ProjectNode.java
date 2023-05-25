@@ -36,12 +36,9 @@ public class ProjectNode {
 
     private boolean deleted;
 
-    @Relationship(type="REQUIRED", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type="REQUIRE", direction = Relationship.Direction.OUTGOING)
     private List<SkillNode> skills;
 
     @Relationship(type="PROJECT_FOR", direction = Relationship.Direction.OUTGOING)
     private ClientNode client;
-
-    @Relationship(type="REQUIRE", direction = Relationship.Direction.INCOMING)
-    private List<ProjectRolesNode> roles;
 }

@@ -71,7 +71,6 @@ public class PositionFixtures {
                     .client(CLIENT_BY_CODE)
                     .domain("Stocks")
                     .duration("Ethernal")
-                    .roles(List.of(ROLES))
                     .endDate(date)
                     .guards(EnumGuards.PASSIVE)
                     .historic(List.of("Historic"))

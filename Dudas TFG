@@ -2,9 +2,10 @@ docker-compose -f dockercompose.yaml up
 
 ------------------------------------------------------------------------------------------------------------------------
 
-TODO  podemos pasar el code fácilmente a String (solo sería en la capa modelo de  node)
+TODO podemos pasar el code fácilmente a String (solo sería en la capa modelo de  node)
 TODO agregamos lastUpdated y createdDate fechas que se pueden autocalcular en modelo del Neo4j, hay una anotacion de spring para cada cosa
 TODO en certificaterelationship cambiar el tipo de dato de la fecha de String a LocalDate
+
 ------------------------------------------------------------------------------------------------------------------------
 Mover la lista de assigns de PeopleNode a PositionNode y cambiar el @TargetNode de position a people
 
@@ -21,18 +22,25 @@ Adecuacion de personas a los proyectos en los que participan: ??
 Itinerarios informativos: ??
 
 
-Skill estrategico: relacion strategic team
-Skill no estrategico: relacion USE y no strategic team
-Personas que no quieren trabajar en clientes: atributo nuevo
-Personas que no quieren trabajar en proyectos: atributo nuevo
-Persona sobrecualificada: un nunero N de skills mayor al que requiere la posicion
-Personas estancadas: atributo nuevo
-Personas quemadas: atributo nuevo
-Mentores: relacion entre people
-Informacion sobre la posicion a la que una persona aspira(candidatura): posicion a secas de las candidaturas de una persona
-Saber a que puestos ha sido asignada una persona:
+Skill estrategico: relacion strategic team (HECHO COMPROBAR FORMATO DE RETORNO)
 
+Skill no estrategico: relacion USE y no strategic team (HECHO)
 
+Personas que no quieren trabajar en clientes: atributo nuevo (Atributo añadidos, peticiones? Aparcado)
+Personas que no quieren trabajar en proyectos: atributo nuevo (Atributo añadidos, peticiones? Aparcado)
+
+Personas estancadas: atributo nuevo (Atributo añadido. Aparcado)
+Personas quemadas: atributo nuevo (Atributo añadido. Aparcado)
+
+Persona sobrecualificada: un nunero N de skills mayor al que requiere la posicion (Aparcado)
+
+Mentores: relacion entre people (Atributo añadido)
+
+Informacion sobre la posicion a la que una persona aspira(candidatura): posicion a secas de las candidaturas de una persona (HECHO)
+
+Saber a que puestos ha sido asignada una persona: (HECHO COMPROBAR FORMATO DE RETORNO)
+
+Personas fuera del team relacionadas con los skills estatégicos (HECHO)
 ------------------------------------------------------------------------------------------------------------------------
 
 RELACIONES
@@ -119,7 +127,7 @@ Uso de skills no estratégicos:
 
     MATCH (t:Team)-[k:STRATEGIC]-(s:Skill)
     WHERE NOT ((s)-[:WORK_WITH]-(:People)--(t))
-    RETURN t.name, collect(s.name), count(s)
+    RETURN t.name, collect(s.name), count(s), s.name
 
           (*** ESTAS NO ***)
 	MATCH(t:Team)-[u:USE]-(s:Skill)
@@ -127,9 +135,9 @@ Uso de skills no estratégicos:
 	RETURN s
 
 
-Personas fuera del team relacionadas con los skills estatégicos:
+Personas fuera del team relacionadas con los skills estatégicos (HECHO):
 
 	MATCH(p:People)-[k:KNOWS]-(s:Skill), (t:Team{code:%s})
-	WHERE NOT (p)-[:MEMBER_OF]-(t) AND (s)-[:STRATEGIC]-(t)
+	WHERE NOT (p)-[:MEMBER_OF]-(t) AND (s)-[:STRATEGIC]-(t) AND (p)-[:WORK_WITH]-(s)
 	RETURN p
 	(producto cartesiano?)
