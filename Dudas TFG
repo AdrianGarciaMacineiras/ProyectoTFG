@@ -7,11 +7,6 @@ TODO agregamos lastUpdated y createdDate fechas que se pueden autocalcular en mo
 TODO en certificaterelationship cambiar el tipo de dato de la fecha de String a LocalDate
 
 ------------------------------------------------------------------------------------------------------------------------
-Mover la lista de assigns de PeopleNode a PositionNode y cambiar el @TargetNode de position a people
-
-    sacar los assigns en la position, no tengo atributo source para emparejarlo con el target en el nodo
-    sacar el codigo de la persona asignada para meterlo en el assign de position y verlo
-------------------------------------------------------------------------------------------------------------------------
 PETICIONES EXCEL
 
 Skill en estado critico: ??
@@ -22,9 +17,6 @@ Adecuacion de personas a los proyectos en los que participan: ??
 Itinerarios informativos: ??
 
 
-Skill estrategico: relacion strategic team (HECHO COMPROBAR FORMATO DE RETORNO)
-
-Skill no estrategico: relacion USE y no strategic team (HECHO)
 
 Personas que no quieren trabajar en clientes: atributo nuevo (Atributo añadidos, peticiones? Aparcado)
 Personas que no quieren trabajar en proyectos: atributo nuevo (Atributo añadidos, peticiones? Aparcado)
@@ -35,6 +27,12 @@ Personas quemadas: atributo nuevo (Atributo añadido. Aparcado)
 Persona sobrecualificada: un nunero N de skills mayor al que requiere la posicion (Aparcado)
 
 Mentores: relacion entre people (Atributo añadido)
+
+
+
+Skill estrategico: relacion strategic team (HECHO )
+
+Skill no estrategico: relacion USE y no strategic team (HECHO)
 
 Informacion sobre la posicion a la que una persona aspira(candidatura): posicion a secas de las candidaturas de una persona (HECHO)
 

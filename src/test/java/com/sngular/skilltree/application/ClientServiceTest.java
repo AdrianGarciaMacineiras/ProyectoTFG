@@ -30,7 +30,7 @@ class ClientServiceTest {
 
     private ClientService clientService;
 
-    private ClientMapper mapper = Mappers.getMapper(ClientMapper.class);
+    private final ClientMapper mapper = Mappers.getMapper(ClientMapper.class);
 
     @BeforeEach
     void setUp() {clientService = new ClientServiceImpl(clientRepository);}

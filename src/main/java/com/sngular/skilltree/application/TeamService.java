@@ -1,7 +1,5 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.model.StrategicTeamSkill;
-import com.sngular.skilltree.model.StrategicUse;
 import com.sngular.skilltree.model.Team;
 import com.sngular.skilltree.model.People;
 

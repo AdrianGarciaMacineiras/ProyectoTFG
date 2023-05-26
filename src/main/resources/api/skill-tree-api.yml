@@ -2229,16 +2229,6 @@ components:
       properties:
         teamName:
           type: string
-        skillList:
-          type: array
-          items:
-            $ref: "#/components/schemas/strategicUse"
-
-    strategicUse:
-      type: object
-      properties:
-        skillName:
-          type: string
         peopleList:
           type: array
           items:

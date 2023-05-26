@@ -6,12 +6,10 @@ import java.util.List;
 import com.sngular.skilltree.api.model.SkillDTO;
 import com.sngular.skilltree.api.model.StrategicTeamSkillDTO;
 import com.sngular.skilltree.api.model.StrategicTeamSkillNotUsedDTO;
-import com.sngular.skilltree.api.model.StrategicUseDTO;
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Skill;
 import com.sngular.skilltree.model.StrategicTeamSkill;
 import com.sngular.skilltree.model.StrategicTeamSkillNotUsed;
-import com.sngular.skilltree.model.StrategicUse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -25,9 +23,6 @@ public interface SkillMapper {
     List<SkillDTO> toSkillsDTO (Collection<Skill> skills);
 
     List<Skill> toSkills (Collection<SkillDTO> skills);
-
-    @Mapping(target = "skillName", source = "skillName")
-    List<StrategicUseDTO> toStrategicUseDTO(List<StrategicUse> strategicUse);
 
     @Mapping(target = "teamName", source = "teamName")
     List<StrategicTeamSkillDTO> toStrategicTeamSkillDTO(List<StrategicTeamSkill> strategicTeamSkills);

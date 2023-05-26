@@ -78,16 +78,11 @@ public class SkillRepositoryImpl implements SkillRepository {
                 .fetchAs(StrategicTeamSkill.class)
                 .mappedBy((TypeSystem t, Record record) -> {
 
-                    People peopleBuilder = getPeople(record);
-
-                    var strategicUseBuilder = StrategicUse.builder()
-                            .skillName(record.get("s.name").asString())
-                            .peopleList(List.of(peopleBuilder))
-                            .build();
+                    People people = getPeople(record);
 
                     return StrategicTeamSkill.builder()
                             .teamName(record.get("t.name").asString())
-                            .skillList(List.of(strategicUseBuilder))
+                            .peopleList(List.of(people))
                             .build();
 
                 })
@@ -96,39 +91,19 @@ public class SkillRepositoryImpl implements SkillRepository {
 
         Map<String, StrategicTeamSkill> strategicTeamSkillMap = new HashMap<>();
 
-        Map<String, StrategicUse> strategicUseMap = new HashMap<>();
-
         result.forEach(team ->
                 strategicTeamSkillMap.compute(team.teamName(), (name, aggStrategicSkill) -> {
                     if(Objects.isNull(aggStrategicSkill)){
                         return team;
                     } else {
-                        var skillList = new ArrayList<>(aggStrategicSkill.skillList());
-                        skillList.addAll(team.skillList());
-                        aggStrategicSkill = aggStrategicSkill.toBuilder().skillList(skillList).build();
+                        var peopleList = new ArrayList<>(aggStrategicSkill.peopleList());
+                        peopleList.addAll(team.peopleList());
+                        aggStrategicSkill = aggStrategicSkill.toBuilder().peopleList(peopleList).build();
 
                     }
                     return aggStrategicSkill;
                 })
         );
-
-        var list = new ArrayList<>(strategicTeamSkillMap.values());
-
-
-
-        /*        aggStrategicSkill.skillList().forEach(skill ->
-                strategicUseMap.compute(skill.skillName(), (skillName, aggPeople) -> {
-                    if(Objects.isNull(aggPeople)){
-                        return skill;
-                    } else {
-                        var peopleList = new ArrayList<>(aggPeople.peopleList());
-                        peopleList.addAll(skill.peopleList());
-                        aggPeople = aggPeople.toBuilder().peopleList(peopleList).build();
-                    }
-                    return aggPeople;
-                }));*/
-
-
 
         return new ArrayList<>(strategicTeamSkillMap.values());
     }
@@ -158,7 +133,6 @@ public class SkillRepositoryImpl implements SkillRepository {
                         return team;
                     } else {
                         var skillList = new ArrayList<>(aggStrategicSkill.skillList());
-                        //TODO EN VEZ DE SER UNA LISTA ES UN MAP Y HAGO LA AGRUPACION
                         skillList.addAll(team.skillList());
                         aggStrategicSkill = aggStrategicSkill.toBuilder().skillList(skillList).build();
 

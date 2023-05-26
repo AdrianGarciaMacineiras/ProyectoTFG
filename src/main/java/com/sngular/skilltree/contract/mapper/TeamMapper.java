@@ -8,8 +8,6 @@ import com.sngular.skilltree.api.model.*;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Member;
-import com.sngular.skilltree.model.StrategicTeamSkill;
-import com.sngular.skilltree.model.StrategicUse;
 import com.sngular.skilltree.model.Team;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
