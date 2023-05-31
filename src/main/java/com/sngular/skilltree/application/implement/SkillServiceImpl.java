@@ -3,6 +3,8 @@ package com.sngular.skilltree.application.implement;
 import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.model.Skill;
 import com.sngular.skilltree.infraestructura.SkillRepository;
+import com.sngular.skilltree.model.StrategicTeamSkill;
+import com.sngular.skilltree.model.StrategicTeamSkillNotUsed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -32,4 +34,16 @@ public class SkillServiceImpl implements SkillService {
     public Skill findByName(String skillName){
         return skillRepository.findByName(skillName);
     }
+
+    @Override
+    public List<StrategicTeamSkill> getStrategicSkillsUse() {
+        return skillRepository.getStrategicSkillsUse();
+    }
+
+    @Override
+    public List<StrategicTeamSkillNotUsed> getNoStrategicSkillsUse() {
+        return skillRepository.getNoStrategicSkillsUse();
+    }
+
+
 }

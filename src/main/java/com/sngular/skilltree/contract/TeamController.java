@@ -1,13 +1,11 @@
 package com.sngular.skilltree.contract;
 
 import com.sngular.skilltree.api.TeamApi;
-import com.sngular.skilltree.api.model.PatchedTeamDTO;
-import com.sngular.skilltree.api.model.PeopleDTO;
+import com.sngular.skilltree.api.model.*;
 import com.sngular.skilltree.application.TeamService;
 import com.sngular.skilltree.application.updater.TeamUpdater;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.contract.mapper.TeamMapper;
-import com.sngular.skilltree.api.model.TeamDTO;
 import com.sngular.skilltree.model.People;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -76,4 +74,5 @@ public class TeamController implements TeamApi {
                 .toPeopleDto(teamService
                         .getMembers(teamcode)));
     }
+
 }

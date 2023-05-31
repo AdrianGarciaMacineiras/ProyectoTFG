@@ -1,6 +1,9 @@
 package com.sngular.skilltree.application;
 
 import com.sngular.skilltree.model.Skill;
+import com.sngular.skilltree.model.StrategicTeamSkill;
+import com.sngular.skilltree.model.StrategicTeamSkillNotUsed;
+
 import java.util.List;
 
 public interface SkillService {
@@ -12,5 +15,9 @@ public interface SkillService {
     Skill findSkill(String skillcode);
 
     Skill findByName(String name);
+
+    List<StrategicTeamSkill> getStrategicSkillsUse();
+
+    List<StrategicTeamSkillNotUsed> getNoStrategicSkillsUse();
 
 }

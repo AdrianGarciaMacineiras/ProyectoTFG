@@ -11,8 +11,7 @@ import com.sngular.skilltree.model.Team;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -66,4 +65,5 @@ public class TeamRepositoryImpl implements TeamRepository {
     public List<Team> findByDeletedIsFalse() {
         return mapper.map(crud.findByDeletedIsFalse());
     }
+
 }

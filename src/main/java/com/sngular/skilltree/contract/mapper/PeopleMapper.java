@@ -19,7 +19,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
-@Mapper(config = CommonMapperConfiguration.class, uses = {ResolveService.class})
+@Mapper(config = CommonMapperConfiguration.class, uses = {SkillMapper.class, CandidateMapper.class, ResolveService.class})
 public interface PeopleMapper {
 
   @Mapping(target = "work_with", source = "work_with", qualifiedByName = {"resolveSkillNameList"})
@@ -82,7 +82,7 @@ public interface PeopleMapper {
                 .master((Objects.isNull(newPeople.master())) ? oldPeople.master() : newPeople.master())
                 .work_with((Objects.isNull(newPeople.work_with())) ? oldPeople.work_with() : newPeople.work_with())
                 .roles((Objects.isNull(newPeople.roles())) ? oldPeople.roles() : newPeople.roles())
-                .assignable((Objects.isNull(newPeople.assignable())) ? oldPeople.assignable() :  newPeople.assignable())
+                .assignable(newPeople.assignable())
                 .assigns((Objects.isNull(newPeople.assigns())) ? oldPeople.assigns() : newPeople.assigns())
                 .build();
 

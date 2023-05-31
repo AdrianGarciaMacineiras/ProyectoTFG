@@ -36,12 +36,16 @@ public class PositionServiceImpl implements PositionService {
   }
 
   @Override
-  public Position findByCode(final String positioncode) {
-    var position = positionRepository.findByCode(positioncode);
+  public Position findByCode(final String positionCode) {
+    var position = positionRepository.findByCode(positionCode);
     if (Objects.isNull(position) || position.deleted()) {
-      throw new EntityNotFoundException("Position", positioncode);
+      throw new EntityNotFoundException("Position", positionCode);
     }
-    return position;
+    var assigned = positionRepository.getPeopleAssignedToPosition(positionCode);
+    if (!Objects.isNull(position.assignedPeople()))
+      position.assignedPeople().clear();
+    var newPosition = position.toBuilder().assignedPeople(assigned).build();
+    return newPosition;
   }
 
   @Override
@@ -74,6 +78,10 @@ public class PositionServiceImpl implements PositionService {
     return candidateService.getCandidates(positionCode);
   }
 
+  @Override
+  public List<Position> getPeopleAssignedPositions(Long peoplecode) {
+    return positionRepository.getPeopleAssignedPositions(peoplecode);
+  }
 
   private void validateExist(String code) {
     var oldPosition = positionRepository.findByCode(code);

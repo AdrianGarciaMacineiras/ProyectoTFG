@@ -44,7 +44,6 @@ public interface ProjectMapper {
                 .tag((Objects.isNull(newProject.tag())) ? oldProject.tag() : newProject.tag())
                 .skills((Objects.isNull(newProject.skills())) ? oldProject.skills() : newProject.skills())
                 .name((Objects.isNull(newProject.name())) ? oldProject.name() : newProject.name())
-                .roles((Objects.isNull(newProject.roles())) ? oldProject.roles() : newProject.roles())
                 .area((Objects.isNull(newProject.area())) ? oldProject.area() : newProject.area())
                 .historic((Objects.isNull(newProject.historic())) ? oldProject.historic() : newProject.historic())
                 .endDate((Objects.isNull(newProject.endDate())) ? oldProject.endDate() : newProject.endDate())

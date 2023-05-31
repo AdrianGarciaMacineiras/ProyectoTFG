@@ -11,4 +11,6 @@ public interface ClientCrudRepository extends Neo4jRepository<ClientNode, Long> 
     ClientNode findByCode(Long clientcode);
 
     List<ClientNode> findByDeletedIsFalse();
+
+    ClientNode findByName(String name);
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.sngular.skilltree.api.SkillsApi;
 import com.sngular.skilltree.api.model.SkillDTO;
+import com.sngular.skilltree.api.model.StrategicTeamSkillDTO;
+import com.sngular.skilltree.api.model.StrategicTeamSkillNotUsedDTO;
 import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +27,24 @@ public class SkillController implements SkillsApi {
                                              .findByCode(skillcode)));
   }
 
-  @Override
-  public ResponseEntity<List<SkillDTO>> getSKills() {
-    var skillList = skillService.getAll();
-    return ResponseEntity.ok(skillMapper.toSkillsDTO(skillList));
-  }
+    @Override
+    public ResponseEntity<List<SkillDTO>> getSkills() {
+        var skillList = skillService.getAll();
+        return ResponseEntity.ok(skillMapper.toSkillsDTO(skillList));
+    }
+
+    @Override
+    public  ResponseEntity<List<StrategicTeamSkillDTO>> getStrategicSkillsUse(){
+        return ResponseEntity.ok(skillMapper
+                .toStrategicTeamSkillDTO(skillService
+                        .getStrategicSkillsUse()));
+    }
+
+    @Override
+    public  ResponseEntity<List<StrategicTeamSkillNotUsedDTO>> getNoStrategicSkillsUse(){
+        return ResponseEntity.ok(skillMapper
+                .toStrategicTeamSkillNotUsed(skillService
+                        .getNoStrategicSkillsUse()));
+    }
+
 }

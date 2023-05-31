@@ -13,4 +13,6 @@ public interface PeopleCrudRepository extends Neo4jRepository<PeopleNode, Long>,
     PeopleNode findByCode(Long personcode);
 
     List<PeopleNode> findByDeletedIsFalse();
+
+    PeopleNode findByCodeAndDeletedIsFalse(Long personCode);
 }

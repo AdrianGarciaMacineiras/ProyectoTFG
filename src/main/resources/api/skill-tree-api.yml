@@ -766,6 +766,40 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /person/{peoplecode}/assignments:
+    get:
+      summary: List all positions of a person that has been assigned to
+      parameters:
+        - name: peoplecode
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Long that represents the code of a person
+      operationId: getPeopleAssignedPositions
+      tags:
+        - people
+      responses:
+        '200':
+          description: A paged array of positions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/position"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
   /people/skills:
     get:
       summary: List of people that know all the skills given
@@ -802,12 +836,45 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /people/strategic/team/{teamcode}:
+    get:
+      summary: List people outside the team that works with their strategic skills
+      parameters:
+        - name: teamcode
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the code of a team
+      operationId: getOtherPeopleStrategicSkills
+      tags:
+        - people
+      responses:
+        '200':
+          description: A list of people
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/people"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
   /skills:
     summary: Skills on the skill tree
     description: Returns a list of all skills
     get:
       summary: List all available skills
-      operationId: getSKills
+      operationId: getSkills
       tags:
         - skills
       responses:
@@ -862,6 +929,59 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /skills/strategic:
+    get:
+      summary: Gets all the members of a team that work with strategic skills
+      description: Returns a list of people
+      operationId: getStrategicSkillsUse
+      tags:
+        - skill
+      responses:
+        '200':
+          description: A array of strategic skills and the people who use them
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/strategicTeamSkill"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /skills/nostrategic:
+    get:
+      summary: Gets all the skills filtered by teams that are not used by any member
+      description: Returns a list of people
+      operationId: getNoStrategicSkillsUse
+      tags:
+        - skill
+      responses:
+        '200':
+          description: A array of strategic skills that none works with
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/strategicTeamSkillNotUsed"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
   /candidate:
     summary: Candidates
     description: Returns a list of all the company candidates
@@ -1482,10 +1602,10 @@ components:
           type: array
           items:
             type: string
-        roles:
+        assignedPeople:
           type: array
           items:
-            $ref: "#/components/schemas/projectRoles"
+            $ref: "#/components/schemas/assignment"
 
     patchedProject:
       type: object
@@ -1517,10 +1637,6 @@ components:
           type: array
           items:
             type: string
-        roles:
-          type: array
-          items:
-            $ref: "#/components/schemas/projectRoles"
 
     guards:
       type: string
@@ -1599,6 +1715,12 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/candidate"
+        assignedPeople:
+          type: array
+          items:
+            $ref: "#/components/schemas/positionAssignment"
+        open:
+          type: boolean
 
     patchedPosition:
       type: object
@@ -1632,6 +1754,12 @@ components:
         managedBy:
           type: integer
           format: int64
+        assignedPeople:
+          type: array
+          items:
+            $ref: "#/components/schemas/positionAssignment"
+        open:
+          type: boolean
 
     mode:
       type: string
@@ -1825,8 +1953,7 @@ components:
             type: object
             properties:
               id:
-                type: integer
-                format: int64
+                type: string
               role:
                 type: string
               category:
@@ -1840,8 +1967,7 @@ components:
             type: object
             properties:
               id:
-                type: integer
-                format: int64
+                type: string
               code:
                 type: string
               level:
@@ -1883,6 +2009,18 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/certificate"
+        noClients:
+          type: array
+          items:
+            type: string
+        noProjects:
+          type: array
+          items:
+            type: string
+        candidacies:
+          type: array
+          items:
+            $ref: "#/components/schemas/candidate"
 
     patchedPeople:
       type: object
@@ -1961,8 +2099,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
         code:
           type: string
         comments:
@@ -1986,8 +2123,7 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
         role:
           type: string
         initDate:
@@ -2000,7 +2136,29 @@ components:
           type: string
           format: date
         dedication:
+          type: integer
+
+    positionAssignment:
+      type: object
+      properties:
+        id:
           type: string
+        role:
+          type: string
+        initDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        assignDate:
+          type: string
+          format: date
+        dedication:
+          type: integer
+        assigned:
+          type: integer
+          format: int64
 
     team:
       type: object
@@ -2055,6 +2213,26 @@ components:
                 enum:
                   - DIRECTOR
                   - HEAD
+
+    strategicTeamSkillNotUsed:
+      type: object
+      properties:
+        teamName:
+          type: string
+        skillList:
+          type: array
+          items:
+            type: string
+
+    strategicTeamSkill:
+      type: object
+      properties:
+        teamName:
+          type: string
+        peopleList:
+          type: array
+          items:
+            $ref: "#/components/schemas/people"
 
     error:
       type: object

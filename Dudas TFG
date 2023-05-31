@@ -2,16 +2,43 @@ docker-compose -f dockercompose.yaml up
 
 ------------------------------------------------------------------------------------------------------------------------
 
+TODO podemos pasar el code fácilmente a String (solo sería en la capa modelo de  node)
+TODO agregamos lastUpdated y createdDate fechas que se pueden autocalcular en modelo del Neo4j, hay una anotacion de spring para cada cosa
+TODO en certificaterelationship cambiar el tipo de dato de la fecha de String a LocalDate
+
+------------------------------------------------------------------------------------------------------------------------
 PETICIONES EXCEL
 
-Skill estrategico: relacion strategic team
-SKill no estrategico: relacion USE y no strategic team
 Skill en estado critico: ??
 Dependencia del team a proyecto o cliente: ??
 Promocion interna: ??
 Entrevistas: ??
+Adecuacion de personas a los proyectos en los que participan: ??
+Itinerarios informativos: ??
 
 
+
+Personas que no quieren trabajar en clientes: atributo nuevo (Atributo añadidos, peticiones? Aparcado)
+Personas que no quieren trabajar en proyectos: atributo nuevo (Atributo añadidos, peticiones? Aparcado)
+
+Personas estancadas: atributo nuevo (Atributo añadido. Aparcado)
+Personas quemadas: atributo nuevo (Atributo añadido. Aparcado)
+
+Persona sobrecualificada: un nunero N de skills mayor al que requiere la posicion (Aparcado)
+
+Mentores: relacion entre people (Atributo añadido)
+
+
+
+Skill estrategico: relacion strategic team (HECHO )
+
+Skill no estrategico: relacion USE y no strategic team (HECHO)
+
+Informacion sobre la posicion a la que una persona aspira(candidatura): posicion a secas de las candidaturas de una persona (HECHO)
+
+Saber a que puestos ha sido asignada una persona: (HECHO COMPROBAR FORMATO DE RETORNO)
+
+Personas fuera del team relacionadas con los skills estatégicos (HECHO)
 ------------------------------------------------------------------------------------------------------------------------
 
 RELACIONES
@@ -53,3 +80,62 @@ Office
         no aparece en la imagen adress, phone
 
 ------------------------------------------------------------------------------------------------------------------------
+
+Personas similares a otras:
+
+	BUSCAR LAS SKILLS DE LA PERSONA QUE SE QUIERE COMPARAR LAS SKILLS
+		MATCH(p:People{code:%d})-[r:KNOWS]-(s:Skill) RETURN s.code
+
+	BUSCAR LOS CODIGOS DE AQUELLAS PERSONAS QUE TIENEN ESTA LISTA DE SKILLS
+		WITH %s as skills
+		MATCH(p:People)-[r:KNOWS]-(s:Skill)
+		WHERE s.code in skills
+		WITH p, size(skills) AS inputCnt, COUNT(DISTINCT s) AS cnt
+		WHERE cnt = inputCnt
+		RETURN p.code
+
+	BUSCAR A LAS PERSONAS DE FORMA INDIVIDUAL
+		var peopleCodes = client.query(query).fetchAs(Long.class).all();
+
+		return peopleCodes
+		        .parallelStream()
+		        .map(crud::findByCode)
+		        .map(mapper::fromNode)
+		        .toList();
+
+
+Uso de skills estratégicos:
+
+    David Pardo
+        MATCH (t:Team)-[k:STRATEGIC]-(s:Skill)-[r:WORK_WITH]-(p:People)--(t)
+        RETURN t.name, collect(s.name), count(s)
+
+
+                            (*** ESTAS NO ***)
+	BUSCAR LAS SKILLS QUE TIENEN UNA RELACION 'STRATEGIC' Y LOS EQUIPOS RELACIONADOS
+		MATCH(s:Skill)-[r:STRATEGIC]-(t:Team) RETURN s,r,t
+
+	SI SOLO SE QUIEREN LAS SKILLS QUE TIENEN LA RELACION 'STRATEGIC'
+		MATCH(s:Skill)-[r:STRATEGIC]-(p) RETURN s
+
+	BUSCAR LAS SKILLS QUE TIENEN UNA RELACION 'STRATEGIC' CON EL TEAM INDICADO
+        MATCH(s:Skill)-[r:STRATEGIC]-(t:Team{code:%s}) RETURN s,r,t
+
+Uso de skills no estratégicos:
+
+    MATCH (t:Team)-[k:STRATEGIC]-(s:Skill)
+    WHERE NOT ((s)-[:WORK_WITH]-(:People)--(t))
+    RETURN t.name, collect(s.name), count(s), s.name
+
+          (*** ESTAS NO ***)
+	MATCH(t:Team)-[u:USE]-(s:Skill)
+	WHERE NOT (s)<-[:STRATEGIC]-(t)
+	RETURN s
+
+
+Personas fuera del team relacionadas con los skills estatégicos (HECHO):
+
+	MATCH(p:People)-[k:KNOWS]-(s:Skill), (t:Team{code:%s})
+	WHERE NOT (p)-[:MEMBER_OF]-(t) AND (s)-[:STRATEGIC]-(t) AND (p)-[:WORK_WITH]-(s)
+	RETURN p
+	(producto cartesiano?)

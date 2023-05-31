@@ -53,6 +53,20 @@ public class PeopleNode {
     @Relationship(type="HAS_CERTIFICATE", direction = Relationship.Direction.OUTGOING)
     private List<CertificateRelationship> certificates;
 
-    @Relationship(type="ASSIGNED", direction = Relationship.Direction.INCOMING)
+    @Relationship(type="ASSIGN", direction = Relationship.Direction.INCOMING)
     private List<AssignedRelationship> assigns;
+
+    /*@Relationship(type="REFUSE_CLIENT", direction = Relationship.Direction.INCOMING)
+    private List<ClientNode> noClients;
+
+    @Relationship(type="REFUSE_PROJECT", direction = Relationship.Direction.INCOMING)
+    private List<ProjectNode> noProjects;
+
+    @Relationship(type="MENTOR", direction = Relationship.Direction.INCOMING)
+    private List<PeopleNode> mentor;
+
+    private boolean quemada;
+
+    private boolean estancada;
+    */
 }

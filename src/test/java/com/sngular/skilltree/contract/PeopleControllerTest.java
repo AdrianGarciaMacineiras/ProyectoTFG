@@ -137,8 +137,8 @@ class PeopleControllerTest {
   static class ControllerTestConfiguration {
 
     @Bean
-    public PeopleMapper getPeopleMapper(final ResolveService resolveService) {
-      return new PeopleMapperImpl(resolveService);
+    public PeopleMapper getPeopleMapper(final ResolveService resolveService, final CandidateMapper candidateMapper) {
+      return new PeopleMapperImpl(candidateMapper, resolveService);
     }
 
     @Bean

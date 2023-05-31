@@ -2,6 +2,7 @@ package com.sngular.skilltree.application;
 
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.Position;
 
 import java.util.List;
 
@@ -22,4 +23,8 @@ public interface PeopleService {
     List<Candidate> getCandidates(final Long peopleCode);
 
     List<People> getPeopleSkills(final List<String> skills);
+
+    List<People> getOtherPeopleStrategicSkills(final String teamcode);
+
+    List<Position> getPeopleAssignedPositions(final Long peoplecode);
 }

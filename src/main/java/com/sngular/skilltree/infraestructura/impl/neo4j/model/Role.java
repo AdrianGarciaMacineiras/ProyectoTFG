@@ -7,5 +7,5 @@ import java.time.LocalDate;
 
 @Node("Role")
 @Builder(toBuilder = true)
-public record Role(@Id ElementId id, String role, String category, LocalDate initDate, boolean deleted) {
-};
+public record Role(@Id String id, String role, String category, LocalDate initDate, boolean deleted) {
+}

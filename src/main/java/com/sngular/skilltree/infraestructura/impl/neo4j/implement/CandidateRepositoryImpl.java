@@ -72,7 +72,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
         for (var candidateRelationship : candidateRelationshipList){
             candidateBuilder.code(candidateRelationship.code());
-            candidateBuilder.id(candidateRelationship.id().value());
+            candidateBuilder.id(candidateRelationship.id());
             candidateBuilder.candidate(peopleNodeMapper.fromNode(candidateRelationship.candidate()));
             candidateBuilder.resolutionDate(candidateRelationship.resolutionDate());
             candidateBuilder.introductionDate(candidateRelationship.resolutionDate());
@@ -177,7 +177,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         for (var people: peopleList) {
             var candidateQuery = String.format("MATCH(p:People{code:%d}),(n:Position{code:'%s'})" +
                     "CREATE (n)-[r:CANDIDATE{code:'%s',status:'%s',creationDate:date('%s')}]->(p)" +
-                    "RETURN p,r.code,r.status,r.creationDate,n.code,ID(r)", people.code(), positionCode,people.code()+ "-" + people.employeeId(),EnumStatus.OPENED,LocalDate.now().toString());
+                    "RETURN p,r.code,r.status,r.creationDate,n.code,ID(r)", people.code(), positionCode,people.code()+ "-" + people.employeeId(),EnumStatus.OPENED, LocalDate.now());
 
             var candidate = client.query(candidateQuery).fetchAs(Candidate.class)
                                   .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
@@ -223,7 +223,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
        var query = String.format("MATCH(p:People),(s:Position)" +
                        "WHERE p.code=%d AND s.code='%s'" +
-                       "CREATE(s)-[r:ASSIGN{assignDate:date('%s'), role:'%s', dedication:'100/100'}]->(p)"
+                       "CREATE(s)-[r:ASSIGN{assignDate:date('%s'), role:'%s', dedication:100}]->(p)"
                , peopleCode, positionCode, LocalDate.now(), position.getRole());
         client.query(query).run();
 
@@ -272,9 +272,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     private Candidate.CandidateBuilder getCandidateBuilder(Record result) {
 
         var candidateBuilder = Candidate.builder();
-        if (!Objects.isNull(result.get("ID(r)")))
-            candidateBuilder.id(result.get("ID(r)").asString());
-        candidateBuilder.id(result.get("ID(r)").asString());
+        candidateBuilder.id(result.get("ID(r)").toString());
         candidateBuilder.code(result.get("r.code").asString());
         candidateBuilder.status(EnumStatus.valueOf(result.get("r.status").asString()));
         candidateBuilder.introductionDate(NULL.equalsIgnoreCase(result.get("r.introductionDate").asString()) ? null : result.get("r.introductionDate").asLocalDate());

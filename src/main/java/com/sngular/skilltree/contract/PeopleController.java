@@ -5,10 +5,12 @@ import com.sngular.skilltree.api.PersonApi;
 import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedPeopleDTO;
 import com.sngular.skilltree.api.model.PeopleDTO;
+import com.sngular.skilltree.api.model.PositionDTO;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.updater.PeopleUpdater;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
+import com.sngular.skilltree.contract.mapper.PositionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,8 @@ public class PeopleController implements PeopleApi, PersonApi {
     private final PeopleMapper peopleMapper;
 
     private final CandidateMapper candidateMapper;
+
+    private final PositionMapper positionMapper;
 
     @Override
     public ResponseEntity<PeopleDTO> getPersonByCode(Long peoplecode) {
@@ -79,10 +83,10 @@ public class PeopleController implements PeopleApi, PersonApi {
     }
 
     @Override
-    public ResponseEntity<List<CandidateDTO>> getPeopleCandidates(Long peopleCode){
+    public ResponseEntity<List<CandidateDTO>> getPeopleCandidates(Long peoplecode){
         return ResponseEntity.ok(candidateMapper
                 .toCandidatesDTO(peopleService
-                        .getCandidates(peopleCode)));
+                        .getCandidates(peoplecode)));
     }
 
     @Override
@@ -91,4 +95,19 @@ public class PeopleController implements PeopleApi, PersonApi {
                 .toPeopleDto(peopleService
                         .getPeopleSkills(skillList)));
     }
+
+    @Override
+    public ResponseEntity<List<PeopleDTO>> getOtherPeopleStrategicSkills(String teamcode){
+        return ResponseEntity.ok(peopleMapper
+                .toPeopleDto(peopleService
+                        .getOtherPeopleStrategicSkills(teamcode)));
+    }
+
+    @Override
+    public ResponseEntity<List<PositionDTO>> getPeopleAssignedPositions(Long peoplecode){
+        return ResponseEntity.ok(positionMapper
+                .toPositionsDTO(peopleService
+                        .getPeopleAssignedPositions(peoplecode)));
+    }
+
 }

@@ -18,4 +18,6 @@ public interface PeopleRepository {
     List<People> findByDeletedIsFalse();
 
     List<People> getPeopleSkills(List<String> skills);
+
+    List<People> getOtherPeopleStrategicSkills(String teamcode);
 }

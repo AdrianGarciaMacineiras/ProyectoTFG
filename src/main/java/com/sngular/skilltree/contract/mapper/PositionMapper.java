@@ -38,6 +38,7 @@ public interface PositionMapper {
   @Mapping(target = "managedBy", source = "managedBy", qualifiedByName = {"resolveCodePeople"})
   @Mapping(target = "office", source = "office", qualifiedByName = {"resolveCodeOffice"})
   @Mapping(target = "client", source = "clientCode", qualifiedByName = {"resolveCodeClient"})
+  @Mapping(target = "assignedPeople", ignore = true)
   Position toPosition(PositionDTO opportunityDTO);
 
   List<PositionDTO> toPositionsDTO(Collection<Position> positions);
@@ -47,6 +48,7 @@ public interface PositionMapper {
   @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "office", source = "office", qualifiedByName = {"resolveCodeOffice"})
   @Mapping(target = "managedBy", source = "managedBy", qualifiedByName = {"resolveCodePeople"})
+  @Mapping(target = "assignedPeople", ignore = true)
   Position toPosition(PatchedPositionDTO patchedPuestoDTO);
 
   @Named("patch")
@@ -54,18 +56,18 @@ public interface PositionMapper {
     Position.PositionBuilder positionBuilder = oldPosition.toBuilder();
 
     return positionBuilder
-      .code(oldPosition.code())
-      .skills((Objects.isNull(newPosition.skills())) ? oldPosition.skills() : newPosition.skills())
-      .client((Objects.isNull(newPosition.client())) ? oldPosition.client() : newPosition.client())
-      .project((Objects.isNull(newPosition.project())) ? oldPosition.project() : newPosition.project())
-      .name((Objects.isNull(newPosition.name())) ? oldPosition.name() : newPosition.name())
-      .priority((Objects.isNull(newPosition.priority())) ? oldPosition.priority() : newPosition.priority())
-      .openingDate((Objects.isNull(newPosition.openingDate())) ? oldPosition.openingDate() : newPosition.openingDate())
-      .closingDate((Objects.isNull(newPosition.closingDate())) ? oldPosition.closingDate() : newPosition.closingDate())
-      .mode((Objects.isNull(newPosition.mode())) ? oldPosition.mode() : newPosition.mode())
-      .office((Objects.isNull(newPosition.office())) ? oldPosition.office() : newPosition.office())
-      .role((Objects.isNull(newPosition.role())) ? oldPosition.role() : newPosition.role())
-      .candidates(oldPosition.candidates())
-      .build();
+            .code(oldPosition.code())
+            .skills((Objects.isNull(newPosition.skills())) ? oldPosition.skills() : newPosition.skills())
+            .client((Objects.isNull(newPosition.client())) ? oldPosition.client() : newPosition.client())
+            .project((Objects.isNull(newPosition.project())) ? oldPosition.project() : newPosition.project())
+            .name((Objects.isNull(newPosition.name())) ? oldPosition.name() : newPosition.name())
+            .priority((Objects.isNull(newPosition.priority())) ? oldPosition.priority() : newPosition.priority())
+            .openingDate((Objects.isNull(newPosition.openingDate())) ? oldPosition.openingDate() : newPosition.openingDate())
+            .closingDate((Objects.isNull(newPosition.closingDate())) ? oldPosition.closingDate() : newPosition.closingDate())
+            .mode((Objects.isNull(newPosition.mode())) ? oldPosition.mode() : newPosition.mode())
+            .office((Objects.isNull(newPosition.office())) ? oldPosition.office() : newPosition.office())
+            .role((Objects.isNull(newPosition.role())) ? oldPosition.role() : newPosition.role())
+            .candidates(oldPosition.candidates())
+            .build();
   }
 }

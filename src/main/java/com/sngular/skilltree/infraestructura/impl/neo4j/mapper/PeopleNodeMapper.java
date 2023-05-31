@@ -21,15 +21,18 @@ public interface PeopleNodeMapper {
     @InheritInverseConfiguration
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "assigns", source = "assigns", qualifiedByName = {"resolveServiceNode", "mapToAssignedRelationship"})
+    //@Mapping(target = "noClients", source = "noClients", qualifiedByName = {"resolveServiceNode", "mapToClientNode"})
+    //@Mapping(target = "noProjects", source = "noProjects", qualifiedByName = {"resolveServiceNode", "mapToProjectNode"})
     PeopleNode toNode(People people);
 
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "assigns", source = "assigns", qualifiedByName = {"resolveServiceNode", "mapToAssignment"})
+    //@Mapping(target = "noClients", source = "noClients", qualifiedByName = {"resolveServiceNode", "mapToClientString"})
+    //@Mapping(target = "noProjects", source = "noProjects", qualifiedByName = {"resolveServiceNode", "mapToProjectString"})
     People fromNode(PeopleNode peopleNode);
 
     @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "code", source = "skillNode.code")
-    @Mapping(target = "id", expression = "java(certificateRelationship.id().value())")
     Certificate certificateRelationshipToCertificate(CertificateRelationship certificateRelationship);
 
     @Mapping(target = "skillNode", source = "code", qualifiedByName = {"resolveServiceNode", "resolveCodeToSkillNode"})
@@ -38,7 +41,6 @@ public interface PeopleNodeMapper {
     CertificateRelationship certificateToCertificateRelationship(Certificate certificate);
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
-    @Mapping(target = "id", expression = "java(role.id().value())")
     com.sngular.skilltree.model.Role roleToRole(Role role);
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
@@ -46,10 +48,8 @@ public interface PeopleNodeMapper {
     Role roleToRole1(com.sngular.skilltree.model.Role role);
 
     @Mapping(target = "code", source = "skillNode.code")
-    @Mapping(target = "id", expression = "java(knowsRelationship.id().value())")
     Knows knowsRelationshipToKnows(KnowsRelationship knowsRelationship);
 
-    @Mapping(target = "id", expression = "java(id().value())")
     List<Knows> knowsRelationshipListToKnowsList(List<KnowsRelationship> list);
 
     @Mapping(target = "skillNode", source = "code", qualifiedByName={"resolveServiceNode", "resolveCodeToSkillNode"})

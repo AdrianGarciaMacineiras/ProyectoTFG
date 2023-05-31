@@ -20,4 +20,7 @@ public interface PositionService {
   Position assignCandidate(final String positionCode, final Long peopleCode);
 
   List<Candidate> getCandidates(final String positionCode);
+
+  List<Position> getPeopleAssignedPositions(final Long peoplecode);
+
 }

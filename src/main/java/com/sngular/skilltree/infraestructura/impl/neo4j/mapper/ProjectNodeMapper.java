@@ -27,7 +27,7 @@ public interface ProjectNodeMapper {
 
     List<Project> map(List<ProjectNode> all);
 
-    @Mapping(target = "id", expression = "java(rol.id().value())")
+    @Mapping(target = "id")
     ProjectRoles rolesToRolesNode(ProjectRolesNode rol);
 
     @Mapping(target = "id", source = "id", qualifiedByName = {"resolveServiceNode", "resolveId"})

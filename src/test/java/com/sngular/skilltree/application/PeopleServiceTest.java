@@ -28,11 +28,14 @@ class PeopleServiceTest {
     @Mock
     private CandidateService candidateService;
 
+    @Mock
+    private PositionService positionService;
+
     private PeopleService peopleService;
 
     @BeforeEach
     void setUp(){
-        peopleService = new PeopleServiceImpl(peopleRepository, candidateService);
+        peopleService = new PeopleServiceImpl(peopleRepository, candidateService, positionService);
     }
 
     @Test

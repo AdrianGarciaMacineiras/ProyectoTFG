@@ -1,16 +1,16 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
+import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
 import com.sngular.skilltree.model.*;
-import com.sngular.skilltree.model.Assignment;
-import com.sngular.skilltree.model.EnumMode;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
-import org.springframework.data.neo4j.core.schema.ElementId;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +21,13 @@ public class ResolveServiceNode {
 
     private final PositionCrudRepository positionCrudRepository;
 
+    private final ClientCrudRepository clientCrudRepository;
+
+    private final ProjectCrudRepository projectCrudRepository;
+
     @Named("resolveId")
-    public ElementId resolveId(final String id){
-        return ElementId.of(id);
+    public String resolveId(final String id){
+        return id;
     }
 
     @Named("resolveCodeToSkillNode")
@@ -41,10 +45,12 @@ public class ResolveServiceNode {
             var positionNode = positionCrudRepository.findByCode(assignRelationship.positionNode().getCode());
             assignmentMap.compute(positionNode.getProject().getName(), (code, assignsList) -> {
                 var assign = Assignment.builder()
-                            .id(assignRelationship.id().value())
+                            .id(assignRelationship.id())
                             .role(assignRelationship.role())
                             .initDate(assignRelationship.initDate())
                             .endDate(assignRelationship.endDate())
+                            .assignDate(assignRelationship.assignDate())
+                            .dedication(assignRelationship.dedication())
                             .build();
                 if (Objects.isNull(assignsList)) {
                     assignsList = new ArrayList<>();
@@ -69,7 +75,7 @@ public class ResolveServiceNode {
                             .positionNode(position)
                             .endDate(assign.endDate())
                             .initDate(assign.initDate())
-                            .id(ElementId.of(assign.id()))
+                            .id(assign.id())
                             .role(assign.role())
                             .build();
                     assignedRelationshipList.add(assignedRelationship);
@@ -121,4 +127,41 @@ public class ResolveServiceNode {
         return skillsCandidateRelationshipList;
     }
 
+    @Named("mapToClientString")
+    public List<String> mapToClientString(List<ClientNode> clientNodeList){
+        final List<String> clientNameList = new ArrayList<>();
+        for (var clientNode : clientNodeList){
+            clientNameList.add(clientNode.getName());
+        }
+        return clientNameList;
+    }
+
+    @Named("mapToClientNode")
+    public List<ClientNode> mapToClientNode(List<String> clientNameList){
+        final List<ClientNode> clientNodeList = new ArrayList<>();
+        for (var name : clientNameList){
+            var clientNode = clientCrudRepository.findByName(name);
+            clientNodeList.add(clientNode);
+        }
+        return clientNodeList;
+    }
+
+    @Named("mapToProjectNode")
+    public List<ProjectNode> mapToProjectNode(List<String> projectNameList){
+        final List<ProjectNode> projectNodeList = new ArrayList<>();
+        for (var name : projectNameList){
+            var projectNode = projectCrudRepository.findByName(name);
+            projectNodeList.add(projectNode);
+        }
+        return projectNodeList;
+    }
+
+    @Named("mapToProjectString")
+    public List<String> mapToProjectString(List<ProjectNode> projectNodeList){
+        final List<String> projectNameList = new ArrayList<>();
+        for (var projectNode : projectNodeList){
+            projectNameList.add(projectNode.getName());
+        }
+        return projectNameList;
+    }
 }

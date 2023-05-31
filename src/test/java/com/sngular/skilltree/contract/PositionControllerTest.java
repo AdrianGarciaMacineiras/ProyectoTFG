@@ -29,9 +29,11 @@ import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.contract.mapper.PeopleMapperImpl;
 import com.sngular.skilltree.contract.mapper.PositionMapper;
 import com.sngular.skilltree.contract.mapper.PositionMapperImpl;
+import com.sngular.skilltree.contract.mapper.SkillMapper;
 import com.sngular.skilltree.model.Position;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -158,8 +160,13 @@ class PositionControllerTest {
     }
 
     @Bean
-    PeopleMapper peopleMapper(final ResolveService resolveService) {
-      return new PeopleMapperImpl(resolveService);
+    SkillMapper skillMapper() {
+      return Mappers.getMapper(SkillMapper.class);
+    }
+
+    @Bean
+    PeopleMapper peopleMapper(final ResolveService resolveService, CandidateMapper candidateMapper) {
+      return new PeopleMapperImpl(candidateMapper, resolveService);
     }
 
     @Bean

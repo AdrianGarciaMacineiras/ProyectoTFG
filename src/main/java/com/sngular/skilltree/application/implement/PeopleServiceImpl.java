@@ -2,11 +2,13 @@ package com.sngular.skilltree.application.implement;
 
 import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.application.PeopleService;
+import com.sngular.skilltree.application.PositionService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
+import com.sngular.skilltree.model.Position;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ public class PeopleServiceImpl implements PeopleService {
     private final PeopleRepository peopleRepository;
 
     private final CandidateService candidateService;
+
+    private final PositionService positionService;
 
     @Override
     public List<People> getAll() {
@@ -35,11 +39,15 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public People findByCode(Long personcode) {
-        var people = peopleRepository.findByCode(personcode);
+    public People findByCode(Long personCode) {
+        var people = peopleRepository.findByCode(personCode);
         if (Objects.isNull(people) || people.deleted())
-            throw new EntityNotFoundException("People", personcode);
-        return people;
+            throw new EntityNotFoundException("People", personCode);
+        var candidancies = candidateService.getCandidates(personCode);
+        if(!Objects.isNull(people.candidacies()))
+            people.candidacies().clear();
+        var newperson = people.toBuilder().candidacies(candidancies).build();
+        return newperson;
     }
 
     @Override
@@ -47,7 +55,8 @@ public class PeopleServiceImpl implements PeopleService {
         var people = peopleRepository.findPeopleByCode(personcode);
         if (Objects.isNull(people) || people.deleted())
             throw new EntityNotFoundException("People", personcode);
-        return people;    }
+        return people;
+    }
 
     @Override
     public boolean deleteByCode(Long personCode) {
@@ -71,6 +80,17 @@ public class PeopleServiceImpl implements PeopleService {
     @Override
     public List<People> getPeopleSkills(List<String> skills) {
         return peopleRepository.getPeopleSkills(skills);
+    }
+
+    @Override
+    public List<People> getOtherPeopleStrategicSkills(String teamcode) {
+        return peopleRepository.getOtherPeopleStrategicSkills(teamcode);
+    }
+
+    @Override
+    public List<Position> getPeopleAssignedPositions(Long peoplecode) {
+        validateDoesNotExist(peoplecode);
+        return positionService.getPeopleAssignedPositions(peoplecode);
     }
 
     private void validateExist(Long code) {
