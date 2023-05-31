@@ -1,28 +1,15 @@
 package com.sngular.skilltree.application;
 
+import com.sngular.skilltree.model.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sngular.skilltree.model.Candidate;
-import com.sngular.skilltree.model.Client;
-import com.sngular.skilltree.model.EnumGuards;
-import com.sngular.skilltree.model.EnumLevel;
-import com.sngular.skilltree.model.EnumLevelReq;
-import com.sngular.skilltree.model.EnumMinLevel;
-import com.sngular.skilltree.model.EnumMode;
-import com.sngular.skilltree.model.EnumTitle;
-import com.sngular.skilltree.model.Office;
-import com.sngular.skilltree.model.People;
-import com.sngular.skilltree.model.Position;
-import com.sngular.skilltree.model.PositionSkill;
-import com.sngular.skilltree.model.Project;
-import com.sngular.skilltree.model.ProjectRoles;
-import com.sngular.skilltree.model.Skill;
-import com.sngular.skilltree.model.SkillsCandidate;
-
 public class CandidateFixtures {
+
+    public static final PositionSkill POSITION_SKILL = PositionSkill.builder().build();
 
     public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 

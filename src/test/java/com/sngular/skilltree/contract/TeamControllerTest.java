@@ -1,36 +1,12 @@
 package com.sngular.skilltree.contract;
 
-import static com.sngular.skilltree.fixtures.TeamFixtures.LIST_TEAM_JSON;
-import static com.sngular.skilltree.fixtures.TeamFixtures.PATCHED_TEAM_BY_CODE_JSON;
-import static com.sngular.skilltree.fixtures.TeamFixtures.TEAM_BY_CODE;
-import static com.sngular.skilltree.fixtures.TeamFixtures.TEAM_BY_CODE_JSON;
-import static com.sngular.skilltree.fixtures.TeamFixtures.TEAM_LIST;
-import static com.sngular.skilltree.fixtures.TeamFixtures.UPDATED_TEAM_BY_CODE;
-import static com.sngular.skilltree.fixtures.TeamFixtures.UPDATED_TEAM_BY_CODE_JSON;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import com.sngular.skilltree.application.ClientService;
-import com.sngular.skilltree.application.OfficeService;
-import com.sngular.skilltree.application.PeopleService;
-import com.sngular.skilltree.application.PositionService;
-import com.sngular.skilltree.application.ProjectService;
-import com.sngular.skilltree.application.ResolveService;
-import com.sngular.skilltree.application.SkillService;
-import com.sngular.skilltree.application.TeamService;
+import com.sngular.skilltree.application.*;
 import com.sngular.skilltree.application.updater.TeamUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
-import com.sngular.skilltree.contract.mapper.PeopleMapper;
-import com.sngular.skilltree.contract.mapper.SkillMapper;
-import com.sngular.skilltree.contract.mapper.TeamMapper;
-import com.sngular.skilltree.contract.mapper.TeamMapperImpl;
+import com.sngular.skilltree.contract.mapper.*;
 import com.sngular.skilltree.model.Team;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -39,6 +15,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static com.sngular.skilltree.fixtures.TeamFixtures.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @WebMvcTest(controllers = TeamController.class)
@@ -129,13 +112,23 @@ class TeamControllerTest {
     static class OpportunityControllerTestConfiguration {
 
         @Bean
-        TeamMapper teamMapper() {
-            return new TeamMapperImpl(resolveService(skillService, positionService, peopleService, projectService, officeService, clientService));
+        TeamMapper teamMapper(final ResolveService resolveService) {
+            return new TeamMapperImpl(resolveService);
         }
 
         @Bean
-        SkillMapper skillMapper() {
-            return Mappers.getMapper(SkillMapper.class);
+        PeopleMapper peopleMapper(final CandidateMapper candidateMapper, final ResolveService resolveService) {
+            return new PeopleMapperImpl(candidateMapper, resolveService);
+        }
+
+        @Bean
+        CandidateMapper candidateMapper(final ResolveService resolveService) {
+            return new CandidateMapperImpl(resolveService);
+        }
+
+        @Bean
+        SkillMapper skillMapper(final PeopleMapper peopleMapper) {
+            return new SkillMapperImpl(peopleMapper);
         }
 
         @MockBean

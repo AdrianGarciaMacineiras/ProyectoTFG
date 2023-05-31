@@ -1,24 +1,9 @@
 package com.sngular.skilltree.contract;
 
-import static com.sngular.skilltree.fixtures.SkillFixtures.LIST_SKILL_JSON;
-import static com.sngular.skilltree.fixtures.SkillFixtures.SKILL_BY_CODE;
-import static com.sngular.skilltree.fixtures.SkillFixtures.SKILL_BY_CODE_JSON;
-import static com.sngular.skilltree.fixtures.SkillFixtures.SKILL_LIST;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-
-import com.sngular.skilltree.application.ClientService;
-import com.sngular.skilltree.application.OfficeService;
-import com.sngular.skilltree.application.PeopleService;
-import com.sngular.skilltree.application.PositionService;
-import com.sngular.skilltree.application.ProjectService;
-import com.sngular.skilltree.application.ResolveService;
-import com.sngular.skilltree.application.SkillService;
-import com.sngular.skilltree.contract.mapper.SkillMapper;
+import com.sngular.skilltree.application.*;
+import com.sngular.skilltree.contract.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -27,6 +12,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static com.sngular.skilltree.fixtures.SkillFixtures.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @Slf4j
 @WebMvcTest(controllers = SkillController.class)
@@ -60,8 +50,18 @@ class SkillControllerTest {
   static class OpportunityControllerTestConfiguration {
 
     @Bean
-    SkillMapper skillMapper() {
-      return Mappers.getMapper(SkillMapper.class);
+    SkillMapper skillMapper(final PeopleMapper peopleMapper) {
+      return new SkillMapperImpl(peopleMapper);
+    }
+
+    @Bean
+    PeopleMapper peopleMapper(final CandidateMapper candidateMapper, final ResolveService resolveService) {
+      return new PeopleMapperImpl(candidateMapper, resolveService);
+    }
+
+    @Bean
+    CandidateMapper candidateMapper(final ResolveService resolveService) {
+      return new CandidateMapperImpl(resolveService);
     }
 
     @MockBean

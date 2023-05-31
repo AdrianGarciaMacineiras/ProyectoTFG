@@ -1,28 +1,24 @@
 package com.sngular.skilltree.application;
 
-import static com.sngular.skilltree.application.CandidateFixtures.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.list;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.sngular.skilltree.application.implement.CandidateServiceImpl;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.PositionRepository;
-import com.sngular.skilltree.model.*;
-import org.checkerframework.checker.units.qual.C;
+import com.sngular.skilltree.model.Candidate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+
+import static com.sngular.skilltree.application.CandidateFixtures.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CandidateServiceTest {
@@ -79,7 +75,8 @@ class CandidateServiceTest {
     @Test
     @DisplayName("Testing assign candidate")
     void testAssignCandidate(){
-        doNothing().when(candidateRepository).assignCandidate(anyString(),anyLong(),listArgumentCaptor.capture());
+        when(candidateRepository.findByPeopleandPosition(anyString(), anyLong())).thenReturn(List.of(CANDIDATE_BY_CODE, CANDIDATE2_BY_CODE));
+        doNothing().when(candidateRepository).assignCandidate(anyString(), anyLong(), listArgumentCaptor.capture());
         candidateService.assignCandidate("itxtl1", 1L);
         assertThat(listArgumentCaptor.getValue()).containsExactly(CANDIDATE_BY_CODE, CANDIDATE2_BY_CODE);
     }

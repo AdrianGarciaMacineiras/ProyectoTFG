@@ -1,39 +1,13 @@
 package com.sngular.skilltree.contract;
 
-import static com.sngular.skilltree.fixtures.PositionFixtures.LIST_POSITION_JSON;
-import static com.sngular.skilltree.fixtures.PositionFixtures.PATCH_POSITION_BY_CODE_JSON;
-import static com.sngular.skilltree.fixtures.PositionFixtures.POSITION_BY_CODE;
-import static com.sngular.skilltree.fixtures.PositionFixtures.POSITION_BY_CODE_JSON;
-import static com.sngular.skilltree.fixtures.PositionFixtures.POSITION_LIST;
-import static com.sngular.skilltree.fixtures.PositionFixtures.UPDATED_POSITION_BY_CODE;
-import static com.sngular.skilltree.fixtures.PositionFixtures.UPDATED_POSITION_BY_CODE_JSON;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.sngular.skilltree.CommonTestConfiguration;
-import com.sngular.skilltree.application.ClientService;
-import com.sngular.skilltree.application.OfficeService;
-import com.sngular.skilltree.application.PeopleService;
-import com.sngular.skilltree.application.PositionService;
-import com.sngular.skilltree.application.ProjectService;
-import com.sngular.skilltree.application.ResolveService;
-import com.sngular.skilltree.application.SkillService;
+import com.sngular.skilltree.application.*;
 import com.sngular.skilltree.application.updater.PositionUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
-import com.sngular.skilltree.contract.mapper.CandidateMapper;
-import com.sngular.skilltree.contract.mapper.CandidateMapperImpl;
-import com.sngular.skilltree.contract.mapper.PeopleMapper;
-import com.sngular.skilltree.contract.mapper.PeopleMapperImpl;
-import com.sngular.skilltree.contract.mapper.PositionMapper;
-import com.sngular.skilltree.contract.mapper.PositionMapperImpl;
-import com.sngular.skilltree.contract.mapper.SkillMapper;
+import com.sngular.skilltree.contract.mapper.*;
 import com.sngular.skilltree.model.Position;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -43,6 +17,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static com.sngular.skilltree.fixtures.PositionFixtures.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @WebMvcTest(controllers = PositionController.class)
@@ -160,12 +141,12 @@ class PositionControllerTest {
     }
 
     @Bean
-    SkillMapper skillMapper() {
-      return Mappers.getMapper(SkillMapper.class);
+    SkillMapper skillMapper(final PeopleMapper peopleMapper) {
+      return new SkillMapperImpl(peopleMapper);
     }
 
     @Bean
-    PeopleMapper peopleMapper(final ResolveService resolveService, CandidateMapper candidateMapper) {
+    PeopleMapper peopleMapper(final ResolveService resolveService, final CandidateMapper candidateMapper) {
       return new PeopleMapperImpl(candidateMapper, resolveService);
     }
 
