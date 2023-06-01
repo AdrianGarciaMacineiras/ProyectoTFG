@@ -4,5 +4,14 @@
   "name": "people2",
   "surname": "LaPel",
   "title": "DEVELOPER",
-  "birthDate": "20-01-2023"
+  "birthDate": "20-01-2023",
+  "assigns": [{
+    "name": "itxtl1",
+    "assignments": [{
+      "id": "a1120",
+      "role": "Tech Leader",
+      "assignDate":"20-01-2023",
+      "dedication": 10
+    }]
+  }]
 }

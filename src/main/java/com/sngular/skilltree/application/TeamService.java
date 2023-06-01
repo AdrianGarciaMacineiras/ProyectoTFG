@@ -1,5 +1,6 @@
 package com.sngular.skilltree.application;
 
+import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.Team;
 import com.sngular.skilltree.model.People;
 
@@ -14,7 +15,7 @@ public interface TeamService {
 
     Team findByCode(final String teamcode);
 
-    List<People> getMembers(final String teamcode);
+    List<Member> getMembers(final String teamcode);
 
     boolean deleteByCode(final String teamcode);
 

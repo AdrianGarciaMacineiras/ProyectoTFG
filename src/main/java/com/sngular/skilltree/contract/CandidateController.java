@@ -24,8 +24,6 @@ public class CandidateController implements CandidateApi {
 
     private final CandidateMapper candidateMapper;
 
-    private final PositionService positionService;
-
     @Override
     public ResponseEntity<List<CandidateDTO>> getCandidates() {
         var candidateList = candidateService.getAll();

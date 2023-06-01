@@ -1533,7 +1533,7 @@ paths:
   /team/{teamcode}/people:
     get:
       summary: Gets all the members of a team and its information
-      description: Returns a list of people
+      description: Returns a list of members
       operationId: getTeamMembersInfo
       parameters:
         - name: teamcode
@@ -1546,13 +1546,13 @@ paths:
         - team
       responses:
         '200':
-          description: A array of people
+          description: A array of members
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/people"
+                  $ref: "#/components/schemas/member"
         '400':
           description: Bad Request
         '404':
@@ -2178,16 +2178,7 @@ components:
         members:
           type: array
           items:
-            type: object
-            properties:
-              peopleCode:
-                type: integer
-                format: int64
-              charge:
-                type: string
-                enum:
-                  - DIRECTOR
-                  - HEAD
+            $ref: "#/components/schemas/member"
 
     patchedTeam:
       type: object
@@ -2203,16 +2194,18 @@ components:
         members:
           type: array
           items:
-            type: object
-            properties:
-              peopleCode:
-                type: integer
-                format: int64
-              charge:
-                type: string
-                enum:
-                  - DIRECTOR
-                  - HEAD
+            $ref: "#/components/schemas/member"
+
+    member:
+      type: object
+      properties:
+        people:
+          $ref: "#/components/schemas/people"
+        charge:
+          type: string
+          enum:
+            - DIRECTOR
+            - HEAD
 
     strategicTeamSkillNotUsed:
       type: object

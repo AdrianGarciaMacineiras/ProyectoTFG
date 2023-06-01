@@ -1,15 +1,15 @@
 package com.sngular.skilltree.application;
 
-import static com.sngular.skilltree.application.PersonFixtures.PEOPLE2_BY_CODE;
-import static com.sngular.skilltree.application.PersonFixtures.PEOPLE_BY_CODE;
-import static com.sngular.skilltree.application.PersonFixtures.PEOPLE_LIST;
+import static com.sngular.skilltree.application.PersonFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import com.sngular.skilltree.application.implement.PeopleServiceImpl;
+import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.model.People;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +27,9 @@ class PeopleServiceTest {
 
     @Mock
     private CandidateService candidateService;
+
+    @Mock
+    private CandidateRepository candidateRepository;
 
     @Mock
     private PositionService positionService;
@@ -70,5 +73,22 @@ class PeopleServiceTest {
         boolean result = peopleService.deleteByCode(1L);
         assertThat(result).isTrue();
     }
+
+    @Test
+    @DisplayName("Testing get people with a set of skills")
+    void testGetPeopleSkills(){
+        when(peopleRepository.getPeopleSkills(anyList())).thenReturn(PEOPLE_LIST);
+        List<People> result = peopleService.getPeopleSkills(List.of("s1120"));
+        assertThat(result).containsExactly(PEOPLE_BY_CODE, PEOPLE2_BY_CODE);
+    }
+
+    @Test
+    @DisplayName("Test get other people that work with the strategic skills of a team")
+    void testGetOtherPeopleStrategicSkills(){
+        when(peopleRepository.getOtherPeopleStrategicSkills(anyString())).thenReturn(PEOPLE_LIST);
+        List<People> result = peopleService.getOtherPeopleStrategicSkills("t1120");
+        assertThat(result).containsExactly(PEOPLE_BY_CODE, PEOPLE2_BY_CODE);
+    }
+
 
 }

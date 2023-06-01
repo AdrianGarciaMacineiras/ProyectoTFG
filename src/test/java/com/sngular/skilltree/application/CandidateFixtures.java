@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CandidateFixtures {
 
-    public static final PositionSkill POSITION_SKILL = PositionSkill.builder().build();
+    //public static final PositionSkill POSITION_SKILL = PositionSkill.builder().build();
 
     public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
@@ -38,6 +38,16 @@ public class CandidateFixtures {
                     .code("s1120")
                     .name("Spring")
                     .build();
+
+    public static final PositionSkill POSITION_SKILL =
+            PositionSkill.builder()
+                    .id("positionSkill1")
+                    .levelReq(EnumLevelReq.MANDATORY)
+                    .minExp(10)
+                    .levelReq(EnumLevelReq.MANDATORY)
+                    .skill(SKILL_BY_CODE)
+                    .build();
+
 
     public static final ProjectRoles ROLES =
             ProjectRoles.builder()

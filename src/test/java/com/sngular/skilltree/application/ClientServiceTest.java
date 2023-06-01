@@ -11,9 +11,11 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 
 import com.sngular.skilltree.application.implement.ClientServiceImpl;
+import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.contract.mapper.ClientMapper;
 import com.sngular.skilltree.infraestructura.ClientRepository;
 import com.sngular.skilltree.model.Client;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +43,15 @@ class ClientServiceTest {
         when(clientRepository.save(CLIENT_BY_CODE)).thenReturn(CLIENT_BY_CODE);
         Client result = clientService.create(CLIENT_BY_CODE);
         assertThat(result).isEqualTo(CLIENT_BY_CODE);
+    }
+
+    @Test
+    @DisplayName("Testing save client exception already exists")
+    void testSaveException(){
+        when(clientRepository.findByCode(anyLong())).thenReturn(CLIENT_BY_CODE);
+        Assertions.assertThrows(EntityFoundException.class, () ->
+                clientService.create(CLIENT_BY_CODE)
+        );
     }
 
     @Test

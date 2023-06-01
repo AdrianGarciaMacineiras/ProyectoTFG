@@ -25,13 +25,11 @@ public interface TeamMapper {
         teamDto.setTags( team.tags() );
     }
 
-    List<MembersDTO> toMember(List<Member> members);
+    List<MemberDTO> toMember(List<Member> members);
 
-    @Mapping(source="people.code", target = "peopleCode")
-    MembersDTO toMemberDTO(Member members);
+    MemberDTO toMemberDTO(Member members);
 
-    @Mapping(target = "people", source = "peopleCode", qualifiedByName = {"resolveCodePeople"})
-    Member toMember(MembersDTO membersDTO);
+    Member toMember(MemberDTO membersDTO);
 
     Team toTeam(TeamDTO teamDTO);
 

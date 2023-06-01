@@ -1,8 +1,8 @@
 package com.sngular.skilltree.contract;
 
 import com.sngular.skilltree.api.TeamApi;
+import com.sngular.skilltree.api.model.MemberDTO;
 import com.sngular.skilltree.api.model.PatchedTeamDTO;
-import com.sngular.skilltree.api.model.PeopleDTO;
 import com.sngular.skilltree.api.model.TeamDTO;
 import com.sngular.skilltree.application.TeamService;
 import com.sngular.skilltree.application.updater.TeamUpdater;
@@ -71,9 +71,9 @@ public class TeamController implements TeamApi {
     }
 
     @Override
-    public ResponseEntity<List<PeopleDTO>> getTeamMembersInfo(String teamcode){
-        return ResponseEntity.ok(peopleMapper
-                .toPeopleDto(teamService
+    public ResponseEntity<List<MemberDTO>> getTeamMembersInfo(String teamcode){
+        return ResponseEntity.ok(teamMapper
+                .toMember(teamService
                         .getMembers(teamcode)));
     }
 

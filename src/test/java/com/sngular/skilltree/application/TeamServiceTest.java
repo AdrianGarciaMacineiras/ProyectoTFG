@@ -1,8 +1,6 @@
 package com.sngular.skilltree.application;
 
-import static com.sngular.skilltree.application.TeamFixtures.TEAM2_BY_CODE;
-import static com.sngular.skilltree.application.TeamFixtures.TEAM_BY_CODE;
-import static com.sngular.skilltree.application.TeamFixtures.TEAM_LIST;
+import static com.sngular.skilltree.application.TeamFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
@@ -12,6 +10,7 @@ import java.util.List;
 
 import com.sngular.skilltree.application.implement.TeamServiceImpl;
 import com.sngular.skilltree.infraestructura.TeamRepository;
+import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.Team;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -55,6 +54,15 @@ class TeamServiceTest {
         when(teamRepository.findByCode(anyString())).thenReturn(TEAM_BY_CODE);
         Team result = teamService.findByCode("t1120");
         assertThat(result).isEqualTo(TEAM_BY_CODE);
+    }
+
+    @Test
+    @DisplayName("Testing get all members of a team")
+    void testGetMembers(){
+        when(teamRepository.getMembers(anyString())).thenReturn(List.of(MEMBER1));
+        when(teamRepository.findByCode(anyString())).thenReturn(TEAM_BY_CODE);
+        List<Member> result = teamService.getMembers("t1120");
+        assertThat(result).containsExactly(MEMBER1);
     }
 
     @Test

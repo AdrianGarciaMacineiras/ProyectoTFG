@@ -121,6 +121,8 @@ class CandidateControllerTest {
                 .andExpect(content().json(LIST_CANDIDATE_JSON));
     }
 
+
+
     @TestConfiguration
     static class CandidateControllerTestConfiguration {
 

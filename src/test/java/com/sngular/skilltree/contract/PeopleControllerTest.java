@@ -19,8 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.sngular.skilltree.fixtures.PersonFixtures.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -117,6 +116,13 @@ class PeopleControllerTest {
                             .accept(MediaType.APPLICATION_JSON))
             .andExpect(content().json(LIST_PERSON_JSON));
   }
+
+  /*@Test
+  void asignCandidate() throws Exception {
+    when(peopleService.assignCandidate(anyLong(), anyString())).thenReturn(PEOPLE_BY_CODE);
+    mockMvc.perform(MockMvcRequestBuilders
+            .post("/person/{peoplecode}/position/{positioncode}"))
+  }*/
 
   @TestConfiguration
   static class ControllerTestConfiguration {

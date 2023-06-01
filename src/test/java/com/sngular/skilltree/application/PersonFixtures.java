@@ -5,23 +5,37 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sngular.skilltree.model.EnumTitle;
-import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.*;
 
 public final class PersonFixtures {
 
   public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
+  public static final Assignment ASSIGNMENT =
+          Assignment.builder()
+                  .assignDate(date)
+                  .role("TechLeader")
+                  .id("a1120")
+                  .dedication(100)
+                  .build();
+
+  public static final Assignments ASSIGNMENTS =
+          Assignments.builder()
+                  .name("itxtl1")
+                  .assignments(List.of(ASSIGNMENT))
+                  .build();
+
   public static final People PEOPLE_BY_CODE =
     People.builder()
-          .code(1L)
-          .name("people")
-          .surname("surname")
-          .employeeId("employeeId")
-          .title(EnumTitle.SENIOR)
-          .birthDate(date)
-          .assignable(true)
-          .build();
+            .code(1L)
+            .name("people")
+            .surname("surname")
+            .employeeId("employeeId")
+            .title(EnumTitle.SENIOR)
+            .birthDate(date)
+            .assignable(true)
+            .assigns(List.of(ASSIGNMENTS))
+            .build();
 
   public static final People PEOPLE2_BY_CODE =
           People.builder()

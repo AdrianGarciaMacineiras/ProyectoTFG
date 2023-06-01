@@ -22,7 +22,10 @@ public class ResolveServiceTeamNode {
         final List<Member> memberList = new ArrayList<>();
         for (var memberRelationship : memberRelationshipList){
             var people = mapper.fromNode(memberRelationship.peopleNode());
-            var member = Member.builder().people(people).charge(memberRelationship.charge()).build();
+            var member = Member.builder()
+                    .people(people)
+                    .charge(memberRelationship.charge())
+                    .build();
             memberList.add(member);
         }
         return memberList;

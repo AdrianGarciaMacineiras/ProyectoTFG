@@ -4,11 +4,12 @@ import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.TeamRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.TeamCrudRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.TeamNodeMapper;
-import com.sngular.skilltree.model.People;
-import com.sngular.skilltree.model.Team;
+import com.sngular.skilltree.model.*;
 import lombok.RequiredArgsConstructor;
+import org.neo4j.driver.Record;
+import org.neo4j.driver.types.TypeSystem;
+import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -23,7 +24,9 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     private final PeopleCrudRepository peopleCrudRepository;
 
-    private final PeopleNodeMapper peopleNodeMapper;
+    private final Neo4jClient client;
+
+    public static final String NULL = "null";
 
     @Override
     public List<Team> findAll() { return mapper.map(crud.findByDeletedIsFalse()); }
@@ -44,13 +47,26 @@ public class TeamRepositoryImpl implements TeamRepository {
     public Team findByCode(String teamcode) { return mapper.fromNode(crud.findByCode(teamcode)); }
 
     @Override
-    public List<People> getMembers(String teamcode) {
-        var codeList = crud.findMembersByTeamCode(teamcode);
-        return codeList
-                .parallelStream()
-                .map(peopleCrudRepository::findByCode)
-                .map(peopleNodeMapper::fromNode)
-                .toList();
+    public List<Member> getMembers(String teamcode) {
+
+        var query = String.format("MATCH(t:Team{code:'%s'})-[r:MEMBER_OF]-(p:People) RETURN p,r",teamcode);
+
+        return new ArrayList<>(client.query(query)
+                .fetchAs(Member.class)
+                .mappedBy((TypeSystem t, Record record) ->{
+
+                    People person = getPeople(record);
+
+                    var member = record.get("r");
+
+                    return Member.builder()
+                            .id(member.get("id").asString())
+                            .charge(NULL.equalsIgnoreCase(member.get("charge").asString()) ? null : EnumCharge.valueOf(member.get("charge").asString()))
+                            .people(person)
+                            .build();
+
+                })
+                .all());
     }
 
     @Override
@@ -66,4 +82,15 @@ public class TeamRepositoryImpl implements TeamRepository {
         return mapper.map(crud.findByDeletedIsFalse());
     }
 
+    private static People getPeople(Record result) {
+        var people = result.get("p");
+        return People.builder()
+                .name(people.get("name").asString())
+                .surname(people.get("surname").asString())
+                .employeeId(people.get("employeeId").asString())
+                .birthDate(people.get("birthDate").asLocalDate())
+                .code(people.get("code").asLong())
+                .deleted(people.get("deleted").asBoolean())
+                .build();
+    }
 }

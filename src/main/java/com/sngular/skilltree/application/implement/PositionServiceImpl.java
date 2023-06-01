@@ -61,8 +61,7 @@ public class PositionServiceImpl implements PositionService {
       throw new EntityNotFoundException("Position", positionCode);
     }
     candidateService.generateCandidates(position.code(), position.skills());
-    var newPosition = positionRepository.findByCode(positionCode);
-    return newPosition;
+    return positionRepository.findByCode(positionCode);
   }
 
   @Override

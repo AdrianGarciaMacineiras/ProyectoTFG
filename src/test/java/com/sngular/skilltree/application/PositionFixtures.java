@@ -59,7 +59,7 @@ public class PositionFixtures {
                     .skills(List.of(SKILL_BY_CODE))
                     .build();
 
-    public static final PositionSkill OPPORTUNITY_SKILL =
+    public static final PositionSkill POSITION_SKILL =
             PositionSkill.builder()
                     .skill(SKILL_BY_CODE)
                     .levelReq(EnumLevelReq.MANDATORY)
@@ -77,6 +77,32 @@ public class PositionFixtures {
                     .birthDate(date)
                     .build();
 
+    public static final Candidate CANDIDATE_BY_CODE =
+            Candidate.builder()
+                    .code("c1120")
+                    .candidate(PEOPLE_BY_CODE)
+                    .build();
+
+    public static final Candidate CANDIDATE2_BY_CODE =
+            Candidate.builder()
+                    .code("c1122")
+                    .candidate(PEOPLE_BY_CODE)
+                    .build();
+
+    public static final List<Candidate> CANDIDATE_LIST = new ArrayList<>(){{
+        add(CANDIDATE_BY_CODE);
+        add(CANDIDATE2_BY_CODE);
+    }};
+
+
+    public static final PositionAssignment POSITION_ASSIGNMENT =
+            PositionAssignment.builder()
+                    .assigned(PEOPLE_BY_CODE)
+                    .id("a1120")
+                    .role("Tech Leader")
+                    .assignDate(date)
+                    .build();
+
     public static final Position POSITION_BY_CODE =
             Position.builder()
                     .code("itxtl1")
@@ -90,7 +116,9 @@ public class PositionFixtures {
                     .priority("HIGH")
                     .project(PROJECT_BY_CODE)
                     .managedBy(PEOPLE_BY_CODE)
-                    .skills(List.of(OPPORTUNITY_SKILL))
+                    .skills(List.of(POSITION_SKILL))
+                    .candidates(CANDIDATE_LIST)
+                    .assignedPeople(List.of(POSITION_ASSIGNMENT))
                     .build();
 
     public static final Position POSITION_2_BY_CODE =
@@ -106,7 +134,7 @@ public class PositionFixtures {
                     .priority("HIGH")
                     .project(PROJECT_BY_CODE)
                     .managedBy(PEOPLE_BY_CODE)
-                    .skills(List.of(OPPORTUNITY_SKILL))
+                    .skills(List.of(POSITION_SKILL))
                     .build();
 
     public static final List<Position> POSITION_LIST = new ArrayList<>() {{
