@@ -27,6 +27,18 @@ public class ClientFixtures {
                     .principalOffice("itxhq")
                     .build();
 
+    public static final Client CLIENT_BY_CODE_DELETED_TRUE =
+            Client.builder()
+                    .code(1L)
+                    .HQ("A Coruña")
+                    .country("Spain")
+                    .industry("RETAIL")
+                    .name("Inditex")
+                    .offices(List.of(OFFICE))
+                    .principalOffice("itxhq")
+                    .deleted(true)
+                    .build();
+
     public static final Client CLIENT2_BY_CODE =
             Client.builder()
                     .code(2L)

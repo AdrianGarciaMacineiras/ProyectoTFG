@@ -43,10 +43,10 @@ public class PeopleServiceImpl implements PeopleService {
         var people = peopleRepository.findByCode(personCode);
         if (Objects.isNull(people) || people.deleted())
             throw new EntityNotFoundException("People", personCode);
-        var candidancies = candidateService.getCandidates(personCode);
+        var candidacies = candidateService.getCandidates(personCode);
         if(!Objects.isNull(people.candidacies()))
             people.candidacies().clear();
-        var newperson = people.toBuilder().candidacies(candidancies).build();
+        var newperson = people.toBuilder().candidacies(candidacies).build();
         return newperson;
     }
 

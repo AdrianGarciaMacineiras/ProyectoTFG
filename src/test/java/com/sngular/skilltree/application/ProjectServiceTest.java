@@ -1,17 +1,20 @@
 package com.sngular.skilltree.application;
 
-import static com.sngular.skilltree.application.ProjectFixtures.PROJECT2_BY_CODE;
-import static com.sngular.skilltree.application.ProjectFixtures.PROJECT_BY_CODE;
-import static com.sngular.skilltree.application.ProjectFixtures.PROJECT_LIST;
+import static com.sngular.skilltree.application.PositionFixtures.POSITION_BY_CODE_DELETED_TRUE;
+import static com.sngular.skilltree.application.ProjectFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import com.sngular.skilltree.application.implement.ProjectServiceImpl;
+import com.sngular.skilltree.common.exceptions.EntityFoundException;
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.ProjectRepository;
 import com.sngular.skilltree.model.Project;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +42,15 @@ class ProjectServiceTest {
     }
 
     @Test
+    @DisplayName("Test save exception")
+    void testSaveException(){
+        when(projectRepository.findByCode(anyLong())).thenReturn(PROJECT_BY_CODE);
+        Assertions.assertThrows(EntityFoundException.class, () ->
+                projectService.create(PROJECT_BY_CODE)
+        );
+    }
+
+    @Test
     @DisplayName("Testing getAll the projects")
     void testGetAll(){
         when(projectRepository.findAll()).thenReturn(PROJECT_LIST);
@@ -55,6 +67,23 @@ class ProjectServiceTest {
     }
 
     @Test
+    @DisplayName("Test find project by code exception null")
+    void testFindByCodeExceptionNull(){
+        when(projectRepository.findByCode(anyLong())).thenReturn(null);
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                projectService.findByCode(1L)
+        );
+    }
+    @Test
+    @DisplayName("Test find project by code exception deleted")
+    void testFindByCodeExceptionDeleted(){
+        when(projectRepository.findByCode(anyLong())).thenReturn(PROJECT_BY_CODE_DELETED_TRUE);
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                projectService.findByCode(1L)
+        );
+    }
+
+    @Test
     @DisplayName("Testing deleteByCode")
     void testDeleteByCode(){
         when(projectRepository.deleteByCode(anyLong())).thenReturn(true);
@@ -63,4 +92,46 @@ class ProjectServiceTest {
         assertThat(result).isTrue();
     }
 
+    @Test
+    @DisplayName("Testing delete project exception is deleted")
+    void testDeleteByCodeExceptionDeleteTrue(){
+        when(projectRepository.findByCode(anyLong())).thenReturn(PROJECT_BY_CODE_DELETED_TRUE);
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                projectService.deleteByCode(1L)
+        );
+    }
+
+    @Test
+    @DisplayName("Testing delete project exception is null")
+    void testDeleteByCodeExceptionNull(){
+        when(projectRepository.findByCode(anyLong())).thenReturn(null);
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                projectService.deleteByCode(1L)
+        );
+    }
+
+    @Test
+    @DisplayName("Testing find project")
+    void testFindProject(){
+        when(projectRepository.findProject(anyLong())).thenReturn(PROJECT_BY_CODE);
+        Project result = projectService.findProject(1L);
+        assertThat(result).isEqualTo(PROJECT_BY_CODE);
+    }
+
+    @Test
+    @DisplayName("Test find project exception null")
+    void testFindProjectExceptionNull(){
+        when(projectRepository.findProject(anyLong())).thenReturn(null);
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                projectService.findProject(1L)
+        );
+    }
+    @Test
+    @DisplayName("Test find project exception deleted")
+    void testFindProjectExceptionDeleted(){
+        when(projectRepository.findProject(anyLong())).thenReturn(PROJECT_BY_CODE_DELETED_TRUE);
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                projectService.findProject(1L)
+        );
+    }
 }

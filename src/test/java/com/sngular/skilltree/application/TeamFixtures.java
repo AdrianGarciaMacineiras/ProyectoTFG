@@ -48,6 +48,16 @@ public class TeamFixtures {
                     .members(List.of(MEMBER1))
                     .build();
 
+    public final static Team TEAM_BY_CODE_DELETED_TRUE =
+            Team.builder()
+                    .code("t1120")
+                    .tags(List.of("Project"))
+                    .name("TeamName")
+                    .description("Team description")
+                    .members(List.of(MEMBER1))
+                    .deleted(true)
+                    .build();
+
     public final static List<Team> TEAM_LIST = List.of(TEAM_BY_CODE, TEAM2_BY_CODE);
 
     public final static Team UPDATED_TEAM_BY_CODE =

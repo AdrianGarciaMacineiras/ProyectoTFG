@@ -1,5 +1,7 @@
 package com.sngular.skilltree.application;
 
+import static com.sngular.skilltree.application.PersonFixtures.PEOPLE_BY_CODE;
+import static com.sngular.skilltree.application.PersonFixtures.PEOPLE_BY_CODE_DELETE_TRUE;
 import static com.sngular.skilltree.application.PositionFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
@@ -8,11 +10,14 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 
 import com.sngular.skilltree.application.implement.PositionServiceImpl;
+import com.sngular.skilltree.common.exceptions.EntityFoundException;
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.PositionRepository;
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.PositionSkill;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,6 +62,15 @@ class PositionServiceTest {
     }
 
     @Test
+    @DisplayName("Testing save position exception already exists")
+    void testSaveExceptionDeletedFalse(){
+        when(positionRepository.findByCode(anyString())).thenReturn(POSITION_BY_CODE_DELETED_FALSE);
+        Assertions.assertThrows(EntityFoundException.class, () ->
+                positionService.create(POSITION_BY_CODE)
+        );
+    }
+
+    @Test
     @DisplayName("Testing getAll the opportunities")
     void testGetAll(){
         when(positionRepository.findAll()).thenReturn(POSITION_LIST);
@@ -65,7 +79,7 @@ class PositionServiceTest {
     }
 
     @Test
-    @DisplayName("Testing findByCode a opportunity")
+    @DisplayName("Testing findByCode a position")
     void testFindByCode(){
         when(positionRepository.findByCode(anyString())).thenReturn(POSITION_BY_CODE);
         Position result = positionService.findByCode("itxtl1");
@@ -79,6 +93,24 @@ class PositionServiceTest {
         lenient().when(positionRepository.findByCode(anyString())).thenReturn(POSITION_BY_CODE);
         boolean result = positionService.deleteByCode("itxtl1");
         assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("Testing delete position exception is deleted")
+    void testDeleteByCodeExceptionDeleteTrue(){
+        when(positionRepository.findByCode(anyString())).thenReturn(POSITION_BY_CODE_DELETED_TRUE);
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                positionService.deleteByCode("itxtl1")
+        );
+    }
+
+    @Test
+    @DisplayName("Testing delete position exception is null")
+    void testDeleteByCodeExceptionNull(){
+        when(positionRepository.findByCode(anyString())).thenReturn(null);
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                positionService.deleteByCode("itxtl1")
+        );
     }
 
     @Test

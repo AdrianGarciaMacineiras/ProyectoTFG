@@ -118,7 +118,7 @@ public class PositionFixtures {
                     .managedBy(PEOPLE_BY_CODE)
                     .skills(List.of(POSITION_SKILL))
                     .candidates(CANDIDATE_LIST)
-                    .assignedPeople(List.of(POSITION_ASSIGNMENT))
+                    .assignedPeople(new ArrayList<>())
                     .build();
 
     public static final Position POSITION_2_BY_CODE =
@@ -135,6 +135,44 @@ public class PositionFixtures {
                     .project(PROJECT_BY_CODE)
                     .managedBy(PEOPLE_BY_CODE)
                     .skills(List.of(POSITION_SKILL))
+                    .build();
+
+    public static final Position POSITION_BY_CODE_DELETED_FALSE =
+            Position.builder()
+                    .code("itxtl1")
+                    .office(OFFICE)
+                    .role("Team Leader")
+                    .name("Tech Leader at INDITEX")
+                    .client(CLIENT_BY_CODE)
+                    .closingDate(date)
+                    .mode(EnumMode.REMOTE)
+                    .openingDate(date)
+                    .priority("HIGH")
+                    .project(PROJECT_BY_CODE)
+                    .managedBy(PEOPLE_BY_CODE)
+                    .skills(List.of(POSITION_SKILL))
+                    .candidates(CANDIDATE_LIST)
+                    .assignedPeople(List.of(POSITION_ASSIGNMENT))
+                    .deleted(false)
+                    .build();
+
+    public static final Position POSITION_BY_CODE_DELETED_TRUE =
+            Position.builder()
+                    .code("itxtl1")
+                    .office(OFFICE)
+                    .role("Team Leader")
+                    .name("Tech Leader at INDITEX")
+                    .client(CLIENT_BY_CODE)
+                    .closingDate(date)
+                    .mode(EnumMode.REMOTE)
+                    .openingDate(date)
+                    .priority("HIGH")
+                    .project(PROJECT_BY_CODE)
+                    .managedBy(PEOPLE_BY_CODE)
+                    .skills(List.of(POSITION_SKILL))
+                    .candidates(CANDIDATE_LIST)
+                    .assignedPeople(List.of(POSITION_ASSIGNMENT))
+                    .deleted(true)
                     .build();
 
     public static final List<Position> POSITION_LIST = new ArrayList<>() {{

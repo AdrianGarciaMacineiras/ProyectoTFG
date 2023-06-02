@@ -3,6 +3,8 @@ package com.sngular.skilltree.application;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.sngular.skilltree.model.*;
@@ -35,7 +37,22 @@ public final class PersonFixtures {
             .birthDate(date)
             .assignable(true)
             .assigns(List.of(ASSIGNMENTS))
+            .deleted(false)
+            .candidacies(Collections.emptyList())
             .build();
+
+  public static final People PEOPLE_BY_CODE_DELETE_TRUE =
+          People.builder()
+                  .code(1L)
+                  .name("people")
+                  .surname("surname")
+                  .employeeId("employeeId")
+                  .title(EnumTitle.SENIOR)
+                  .birthDate(date)
+                  .assignable(true)
+                  .assigns(List.of(ASSIGNMENTS))
+                  .deleted(true)
+                  .build();
 
   public static final People PEOPLE2_BY_CODE =
           People.builder()
@@ -61,4 +78,6 @@ public final class PersonFixtures {
     add(PEOPLE_BY_CODE);
     add(PEOPLE2_BY_CODE);
   }};
+
+
 }

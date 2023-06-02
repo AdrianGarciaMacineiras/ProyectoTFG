@@ -123,6 +123,25 @@ public class ProjectFixtures {
                     .skills(SKILL_LIST)
                     .build();
 
+    public static final Project PROJECT_BY_CODE_DELETED_TRUE =
+            Project.builder()
+                    .code(1L)
+                    .area("Logistica")
+                    .tag("Project")
+                    .initDate(date)
+                    .desc("Data consolidation project for Data Analytics")
+                    .client(CLIENT_BY_CODE)
+                    .domain("Stocks")
+                    .duration("Ethernal")
+                    .endDate(date)
+                    .guards(EnumGuards.PASSIVE)
+                    .historic(List.of("Historic"))
+                    .initDate(date)
+                    .name("Cosmos Data")
+                    .skills(SKILL_LIST)
+                    .deleted(true)
+                    .build();
+
     public static final List<Project> PROJECT_LIST = List.of(PROJECT_BY_CODE, PROJECT2_BY_CODE);
 
 }

@@ -47,7 +47,8 @@ public class ProjectServiceImpl implements ProjectService {
         var project = projectRepository.findProject(projectcode);
         if (Objects.isNull(project) || project.deleted())
             throw new EntityNotFoundException("Project", projectcode);
-        return project;    }
+        return project;
+    }
 
     private void validateExist(Long code) {
         var oldProject = projectRepository.findByCode(code);
