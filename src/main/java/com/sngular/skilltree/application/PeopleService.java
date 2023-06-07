@@ -12,19 +12,19 @@ public interface PeopleService {
 
     People create (final People toPeople);
 
-    People findByCode(final Long personcode);
+    People findByCode(final String personCode);
 
-    People findPeopleByCode(final Long personcode);
+    People findPeopleByCode(final String personCode);
 
-    boolean deleteByCode(final Long personcode);
+    boolean deleteByCode(final String personCode);
 
-    People assignCandidate(final Long peopleCode, final String positionCode);
+    People assignCandidate(final String peopleCode, final String positionCode);
 
-    List<Candidate> getCandidates(final Long peopleCode);
+    List<Candidate> getCandidates(final String peopleCode);
 
     List<People> getPeopleSkills(final List<String> skills);
 
-    List<People> getOtherPeopleStrategicSkills(final String teamcode);
+    List<People> getOtherPeopleStrategicSkills(final String teamCode);
 
-    List<Position> getPeopleAssignedPositions(final Long peoplecode);
+    List<Position> getPeopleAssignedPositions(final String peopleCode);
 }

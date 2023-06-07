@@ -4,7 +4,7 @@ import com.sngular.skilltree.model.People;
 
 public interface PeopleUpdater {
 
-    People update(final Long personcode, final People newPeople);
+    People update(final String personCode, final People newPeople);
 
-    People patch(final Long personcode, final People patchedPeople);
+    People patch(final String personCode, final People patchedPeople);
 }

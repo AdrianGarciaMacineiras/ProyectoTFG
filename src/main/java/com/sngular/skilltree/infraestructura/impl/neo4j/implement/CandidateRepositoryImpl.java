@@ -90,13 +90,13 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     }
 
     @Override
-    public Candidate findByCode(String candidatecode) {
-        return mapper.fromNode(crud.findByCode(candidatecode));
+    public Candidate findByCode(String candidateCode) {
+        return mapper.fromNode(crud.findByCode(candidateCode));
     }
 
     @Override
-    public boolean deleteByCode(String candidatecode) {
-        var node = crud.findByCode(candidatecode);
+    public boolean deleteByCode(String candidateCode) {
+        var node = crud.findByCode(candidateCode);
         crud.save(node);
         crud.delete(node);
         return true;
@@ -157,7 +157,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                 .mappedBy(getTypeSystemRecordPeopleBiFunction())
                 .all();
 
-        Map<Long, People> knowsMap = new HashMap<>();
+        Map<String, People> knowsMap = new HashMap<>();
 
         peopleList.forEach(people ->
                 knowsMap.compute(people.code(), (code, aggPeople) -> {
@@ -175,9 +175,9 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         var candidateList = new ArrayList<Candidate>();
 
         for (var people: peopleList) {
-            var candidateQuery = String.format("MATCH(p:People{code:%d}),(n:Position{code:'%s'})" +
+            var candidateQuery = String.format("MATCH(p:People{code:%s}),(n:Position{code:'%s'})" +
                     "CREATE (n)-[r:CANDIDATE{code:'%s',status:'%s',creationDate:date('%s')}]->(p)" +
-                    "RETURN p,r.code,r.status,r.creationDate,n.code,ID(r)", people.code(), positionCode,people.code()+ "-" + people.employeeId(),EnumStatus.OPENED, LocalDate.now());
+                    "RETURN p,r.code,r.status,r.creationDate,n.code,ID(r)", people.code(), positionCode, people.code() + "-" + people.employeeId(), EnumStatus.OPENED, LocalDate.now());
 
             var candidate = client.query(candidateQuery).fetchAs(Candidate.class)
                                   .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
@@ -190,29 +190,29 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     }
 
     @Override
-    public List<Candidate> findByPeopleandPosition(String positionCode, Long peopleCode) {
+    public List<Candidate> findByPeopleAndPosition(String positionCode, String peopleCode) {
 
-        var query = String.format("MATCH(p:People{code:%d})-[r:CANDIDATE]-(n:Position{code:'%s'}) " +
-                                  "WHERE r.status IN %s RETURN p,r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n",
-                                  peopleCode, positionCode, CANDIDATE_OPEN_STATUS);
+        var query = String.format("MATCH(p:People{code:%s})-[r:CANDIDATE]-(n:Position{code:'%s'}) " +
+                        "WHERE r.status IN %s RETURN p,r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n",
+                peopleCode, positionCode, CANDIDATE_OPEN_STATUS);
 
         return new ArrayList<>(client
-                                 .query(query)
-                                 .fetchAs(Candidate.class)
-                                 .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
-                                 .all()
+                .query(query)
+                .fetchAs(Candidate.class)
+                .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
+                .all()
         );
 
     }
 
     @Override
-    public void assignCandidate(String positionCode, Long peopleCode, List<Candidate> candidates) {
+    public void assignCandidate(String positionCode, String peopleCode, List<Candidate> candidates) {
 
         var position = positionCrudRepository.findByCode(positionCode);
 
         Candidate openCandidate = null;
-        for (var candidate: candidates){
-            if(candidate.status() == OPENED || candidate.status() == INTERVIEWED || candidate.status() == ASSIGNED){
+        for (var candidate : candidates) {
+            if (candidate.status() == OPENED || candidate.status() == INTERVIEWED || candidate.status() == ASSIGNED) {
                 openCandidate = candidate;
                 break;
             }
@@ -228,7 +228,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         client.query(query).run();
 
         var queryStatusOK = String.format("MATCH(p:People)-[r:CANDIDATE]-(s:Position) " +
-                        "WHERE ID(r) = %d SET r.status = 'OK'"
+                        "WHERE ID(r) = %s SET r.status = 'OK'"
                 , openCandidate.id());
         client.query(queryStatusOK).run();
 
@@ -244,28 +244,28 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     }
 
     @Override
-    public List<Candidate> getCandidates(String positionCode) {
+    public List<Candidate> getCandidatesByPosition(String positionCode) {
         var query = String.format("MATCH(n:Position{code:'%s'})-[r:CANDIDATE]-(p:People) " +
                         "RETURN p, r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n.code",
                 positionCode);
 
         return new ArrayList<>(client
-                                 .query(query)
-                                 .fetchAs(Candidate.class)
-                                 .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
+                .query(query)
+                .fetchAs(Candidate.class)
+                .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
                 .all());
     }
 
     @Override
-    public List<Candidate> getCandidates(Long peopleCode) {
-        var query = String.format("MATCH(n:Position)-[r:CANDIDATE]-(p:People{code:%d}) " +
+    public List<Candidate> getCandidatesByPeople(String peopleCode) {
+        var query = String.format("MATCH(n:Position)-[r:CANDIDATE]-(p:People{code:%s}) " +
                         "RETURN p, r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n.code",
                 peopleCode);
 
         return new ArrayList<>(client
-                                 .query(query)
-                                 .fetchAs(Candidate.class)
-                                 .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
+                .query(query)
+                .fetchAs(Candidate.class)
+                .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
                 .all());
     }
 
@@ -289,11 +289,11 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     private static People getPeople(Record result) {
         var people = result.get("p");
         return People.builder()
-                     .name(people.get("name").asString())
-                     .surname(people.get("surname").asString())
-                     .employeeId(people.get("employeeId").asString())
-                     .birthDate(people.get("birthDate").asLocalDate())
-                     .code(people.get("code").asLong())
+                .name(people.get("name").asString())
+                .surname(people.get("surname").asString())
+                .employeeId(people.get("employeeId").asString())
+                .birthDate(people.get("birthDate").asLocalDate())
+                .code(people.get("code").asString())
                      .deleted(people.get("deleted").asBoolean())
                      .build();
     }
@@ -306,11 +306,11 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         return (TypeSystem t, Record result) -> {
             var people = result.get("p");
             return People.builder()
-                         .name(people.get("name").asString())
-                         .surname(people.get("surname").asString())
-                         .employeeId(people.get("employeeId").asString())
-                         .birthDate(people.get("birthDate").asLocalDate())
-                         .code(people.get("code").asLong())
+                    .name(people.get("name").asString())
+                    .surname(people.get("surname").asString())
+                    .employeeId(people.get("employeeId").asString())
+                    .birthDate(people.get("birthDate").asLocalDate())
+                    .code(people.get("code").asString())
                          .deleted(people.get("deleted").asBoolean())
                          .build();
         };

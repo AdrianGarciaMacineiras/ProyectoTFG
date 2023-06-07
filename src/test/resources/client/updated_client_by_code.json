@@ -1,12 +1,11 @@
 {
-  "code": 1,
+  "code": "1",
   "name": "Inditex",
   "industry": "TECH",
   "country": "Spain",
   "principalOffice": "itxhq",
   "hQ": "Santiago",
-  "offices":
-  [
+  "offices": [
     {
       "code": "itxhq",
       "name": "Servicios Centrales",

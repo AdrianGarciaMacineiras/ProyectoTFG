@@ -6,9 +6,9 @@ import org.springframework.data.neo4j.repository.query.Query;
 
 import java.util.List;
 
-public interface ClientCrudRepository extends Neo4jRepository<ClientNode, Long> {
+public interface ClientCrudRepository extends Neo4jRepository<ClientNode, String> {
 
-    ClientNode findByCode(Long clientcode);
+    ClientNode findByCode(String clientCode);
 
     List<ClientNode> findByDeletedIsFalse();
 

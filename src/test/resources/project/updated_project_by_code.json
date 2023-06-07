@@ -1,29 +1,21 @@
 {
-  "code": 1,
+  "initDate": "20-01-2023",
+  "desc": "Updated description",
+  "area": "Textil",
+  "code": "1",
+  "endDate": "20-01-2023",
+  "guards": "PASSIVE",
+  "duration": "1 year",
+  "domain": "Stocks",
+  "skills": [
+    "jdk11",
+    "kafka",
+    "db2",
+    "mongodb",
+    "spring"
+  ],
   "tag": "Project",
   "name": "Cosmos Data",
-  "desc": "Updated description",
-  "initDate": "20-01-2023",
-  "endDate": "20-01-2023",
-  "clientCode": 1,
-  "area": "Textil",
-  "domain": "Stocks",
-  "duration": "1 year",
-  "guards": "PASSIVE",
-  "skills": ["jdk11", "kafka", "db2", "mongodb", "spring"],
-  "roles":
-    [
-      {
-        "rol": "SENIOR",
-        "number": 2
-      },
-      {
-        "rol": "DEVELOPER",
-        "number": 2
-      },
-      {
-        "rol": "JUNIOR",
-        "number": 1
-      }
-    ]
+  "assignedPeople": null,
+  "clientCode": "1"
 }

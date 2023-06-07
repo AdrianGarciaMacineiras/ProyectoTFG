@@ -42,7 +42,7 @@ public class PositionFixtures {
 
     public static final Client CLIENT_BY_CODE =
             Client.builder()
-                    .code(1L)
+                    .code("1")
                     .HQ("A Coruña")
                     .country("Spain")
                     .industry("RETAIL")
@@ -65,7 +65,7 @@ public class PositionFixtures {
 
     public  static final Project PROJECT_BY_CODE =
             Project.builder()
-                    .code(1L)
+                    .code("1")
                     .area("Logistica")
                     .desc("Data consolidation project for Data Analytics")
                     .client(CLIENT_BY_CODE)
@@ -81,7 +81,7 @@ public class PositionFixtures {
 
     public static final People PEOPLE_BY_CODE =
             People.builder()
-                    .code(1L)
+                    .code("1")
                     .name("people")
                     .surname("surname")
                     .employeeId("employeeId")

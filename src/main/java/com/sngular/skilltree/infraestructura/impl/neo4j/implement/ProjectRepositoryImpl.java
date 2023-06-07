@@ -35,13 +35,13 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     }
 
     @Override
-    public Project findByCode(Long projectcode) {
-        return mapper.fromNode(crud.findByCode(projectcode));
+    public Project findByCode(String projectCode) {
+        return mapper.fromNode(crud.findByCode(projectCode));
     }
 
     @Override
-    public boolean deleteByCode(Long projectcode) {
-        var node = crud.findByCode(projectcode);
+    public boolean deleteByCode(String projectCode) {
+        var node = crud.findByCode(projectCode);
         node.setDeleted(true);
         crud.save(node);
         return true;
@@ -53,8 +53,8 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     }
 
     @Override
-    public Project findProject(Long projectcode) {
-        return mapper.fromNode(crud.findProject(projectcode));
+    public Project findProject(String projectCode) {
+        return mapper.fromNode(crud.findProject(projectCode));
     }
 
 

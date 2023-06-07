@@ -39,7 +39,7 @@ public final class PersonFixtures {
 
   public static final People PEOPLE_BY_CODE =
           People.builder()
-                  .code(1L)
+                  .code("1")
                   .name("people")
                   .surname("surname")
                   .employeeId("employeeId")
@@ -51,7 +51,7 @@ public final class PersonFixtures {
 
   public static final People PEOPLE2_BY_CODE =
           People.builder()
-                  .code(2L)
+                  .code("2")
                   .name("people3")
                   .surname("surname3")
                   .employeeId("employeeId")
@@ -61,7 +61,7 @@ public final class PersonFixtures {
 
   public static final People UPDATED_PEOPLE_BY_CODE =
           People.builder()
-                  .code(1L)
+                  .code("1")
                   .name("people2")
                   .surname("surname2")
                   .employeeId("employeeId")

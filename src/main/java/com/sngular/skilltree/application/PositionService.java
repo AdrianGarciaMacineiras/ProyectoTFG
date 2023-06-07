@@ -17,10 +17,10 @@ public interface PositionService {
 
   Position generateCandidates(final String positionCode);
 
-  Position assignCandidate(final String positionCode, final Long peopleCode);
+  Position assignCandidate(final String positionCode, final String peopleCode);
 
   List<Candidate> getCandidates(final String positionCode);
 
-  List<Position> getPeopleAssignedPositions(final Long peoplecode);
+    List<Position> getPeopleAssignedPositions(final String peopleCode);
 
 }

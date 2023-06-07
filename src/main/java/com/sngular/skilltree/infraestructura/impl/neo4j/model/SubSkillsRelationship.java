@@ -8,5 +8,5 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 
 @RelationshipProperties
 @Builder(toBuilder = true)
-public record SubskillsRelationship (@RelationshipId String id, @TargetNode SkillNode skillNode, String type){
+public record SubSkillsRelationship(@RelationshipId String id, @TargetNode SkillNode skillNode, String type) {
 }

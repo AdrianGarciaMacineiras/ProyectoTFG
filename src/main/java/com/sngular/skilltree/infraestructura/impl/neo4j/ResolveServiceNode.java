@@ -1,6 +1,5 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
-import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
 import com.sngular.skilltree.model.*;
 import lombok.RequiredArgsConstructor;
@@ -86,20 +85,20 @@ public class ResolveServiceNode {
     }
 
     @Named("mapToSubskill")
-    public List<Skill> mapToSubskill(List<SubskillsRelationship> subskillsRelationships) {
+    public List<Skill> mapToSubskill(List<SubSkillsRelationship> subSkillsRelationships) {
         final List<Skill> skillList = new ArrayList<>();
         return skillList;
     }
 
     @Named("mapToSkillRelationship")
-    public List<SubskillsRelationship> mapToSkillRelationship(List<Skill> skills) {
-        final List<SubskillsRelationship> subskillsRelationshipsList = new ArrayList<>();
+    public List<SubSkillsRelationship> mapToSkillRelationship(List<Skill> skills) {
+        final List<SubSkillsRelationship> subSkillsRelationshipsList = new ArrayList<>();
         for (var skill : skills) {
             var skillNode = skillCrudRepository.findSkillByCode(skill.code());
-            SubskillsRelationship subskillsRelationship = new SubskillsRelationship(null, skillNode, "own");
-            subskillsRelationshipsList.add(subskillsRelationship);
+            SubSkillsRelationship subskillsRelationship = new SubSkillsRelationship(null, skillNode, "own");
+            subSkillsRelationshipsList.add(subskillsRelationship);
         }
-        return subskillsRelationshipsList;
+        return subSkillsRelationshipsList;
     }
 
     @Named("mapToSkillCandidate")

@@ -94,26 +94,26 @@ class CandidateServiceTest {
     @Test
     @DisplayName("Testing assign candidate")
     void testAssignCandidate(){
-        when(candidateRepository.findByPeopleandPosition(anyString(), anyLong())).thenReturn(CANDIDATE_LIST);
-        doNothing().when(candidateRepository).assignCandidate(anyString(), anyLong(), listArgumentCaptor.capture());
-        candidateService.assignCandidate("itxtl1", 1L);
+        when(candidateRepository.findByPeopleAndPosition(anyString(), anyString())).thenReturn(CANDIDATE_LIST);
+        doNothing().when(candidateRepository).assignCandidate(anyString(), anyString(), listArgumentCaptor.capture());
+        candidateService.assignCandidate("itxtl1", "1");
         assertThat(listArgumentCaptor.getValue()).containsExactly(CANDIDATE_BY_CODE, CANDIDATE2_BY_CODE);
     }
 
     @Test
     @DisplayName("Testing assign null exception")
-    void testAssignCandidateExceptionNull(){
-        when(candidateRepository.findByPeopleandPosition(anyString(), anyLong())).thenReturn(null);
-        Assertions.assertThrows(EntityNotFoundException.class,()->
-                candidateService.assignCandidate("c1120", 1L)
+    void testAssignCandidateExceptionNull() {
+        when(candidateRepository.findByPeopleAndPosition(anyString(), anyString())).thenReturn(null);
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                candidateService.assignCandidate("c1120", "1")
         );
     }
     @Test
     @DisplayName("Testing assign empty exception")
-    void testAssignCandidateExceptionEmpty(){
-        when(candidateRepository.findByPeopleandPosition(anyString(), anyLong())).thenReturn(Collections.emptyList());
-        Assertions.assertThrows(EntityNotFoundException.class,()->
-                candidateService.assignCandidate("c1120", 1L)
+    void testAssignCandidateExceptionEmpty() {
+        when(candidateRepository.findByPeopleAndPosition(anyString(), anyString())).thenReturn(Collections.emptyList());
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                candidateService.assignCandidate("c1120", "1")
         );
     }
 
@@ -121,17 +121,17 @@ class CandidateServiceTest {
 
     @Test
     @DisplayName("Testing get candidates using long as parameter")
-    void testGetCandidatesLong(){
-        when(candidateRepository.getCandidates(anyLong())).thenReturn(CANDIDATE_LIST);
-        List<Candidate> result = candidateService.getCandidates(1L);
+    void testGetCandidatesLong() {
+        when(candidateRepository.getCandidatesByPosition(anyString())).thenReturn(CANDIDATE_LIST);
+        List<Candidate> result = candidateService.getCandidatesByPeople("1");
         assertThat(result).containsExactly(CANDIDATE_BY_CODE, CANDIDATE2_BY_CODE);
     }
 
     @Test
     @DisplayName("Testing get candidates using string as parameter")
-    void testGetCandidatesString(){
-        when(candidateRepository.getCandidates(anyString())).thenReturn(CANDIDATE_LIST);
-        List<Candidate> result = candidateService.getCandidates("itxtl1");
+    void testGetCandidatesString() {
+        when(candidateRepository.getCandidatesByPosition(anyString())).thenReturn(CANDIDATE_LIST);
+        List<Candidate> result = candidateService.getCandidatesByPosition("itxtl1");
         assertThat(result).containsExactly(CANDIDATE_BY_CODE, CANDIDATE2_BY_CODE);
     }
 

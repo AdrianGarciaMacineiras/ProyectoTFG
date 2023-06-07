@@ -89,7 +89,7 @@ public class TeamRepositoryImpl implements TeamRepository {
                 .surname(people.get("surname").asString())
                 .employeeId(people.get("employeeId").asString())
                 .birthDate(people.get("birthDate").asLocalDate())
-                .code(people.get("code").asLong())
+                .code(people.get("code").asString())
                 .deleted(people.get("deleted").asBoolean())
                 .build();
     }

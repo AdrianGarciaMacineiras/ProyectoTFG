@@ -1,6 +1,5 @@
-package com.sngular.skilltree.infraestructura.impl.neo4j.customRepository;
+package com.sngular.skilltree.infraestructura.impl.neo4j.customrepository;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
 import org.springframework.data.neo4j.repository.query.Query;
 
 import java.util.List;

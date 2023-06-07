@@ -9,15 +9,15 @@ public interface PeopleRepository {
 
     People save(People people);
 
-    People findByCode(Long personcode);
+    People findByCode(String personCode);
 
-    People findPeopleByCode(Long personcode);
+    People findPeopleByCode(String personCode);
 
-    boolean deleteByCode(Long personcode);
+    boolean deleteByCode(String personCode);
 
     List<People> findByDeletedIsFalse();
 
     List<People> getPeopleSkills(List<String> skills);
 
-    List<People> getOtherPeopleStrategicSkills(String teamcode);
+    List<People> getOtherPeopleStrategicSkills(String teamCode);
 }

@@ -45,31 +45,31 @@ public class PositionController implements PositionApi {
     }
 
     @Override
-    public ResponseEntity<PositionDTO> getPositionByCode(String positioncode) {
+    public ResponseEntity<PositionDTO> getPositionByCode(String positionCode) {
         return ResponseEntity.ok(positionMapper
                 .toPositionDTO(positionService
-                        .findByCode(positioncode)));
+                        .findByCode(positionCode)));
     }
 
     @Override
-    public ResponseEntity<Void> deletePosition(String positioncode) {
-        var result = positionService.deleteByCode(positioncode);
-        return ResponseEntity.status(result? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<Void> deletePosition(String positionCode) {
+        var result = positionService.deleteByCode(positionCode);
+        return ResponseEntity.status(result ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @Override
-    public ResponseEntity<PositionDTO> updatePosition(String positioncode, PositionDTO positionDTO) {
+    public ResponseEntity<PositionDTO> updatePosition(String positionCode, PositionDTO positionDTO) {
         return ResponseEntity.ok(positionMapper
                 .toPositionDTO(positionUpdater
-                        .update(positioncode, positionMapper
+                        .update(positionCode, positionMapper
                                 .toPosition(positionDTO))));
     }
 
     @Override
-    public ResponseEntity<PositionDTO> patchPosition(String positioncode, PatchedPositionDTO patchedPositionDTO) {
+    public ResponseEntity<PositionDTO> patchPosition(String positionCode, PatchedPositionDTO patchedPositionDTO) {
         return ResponseEntity.ok(positionMapper
                 .toPositionDTO(positionUpdater
-                        .patch(positioncode, positionMapper
+                        .patch(positionCode, positionMapper
                                 .toPosition(patchedPositionDTO))));
     }
 
@@ -81,7 +81,7 @@ public class PositionController implements PositionApi {
     }
 
     @Override
-    public ResponseEntity<PositionDTO> assignCandidate(String positionCode, Long peopleCode){
+    public ResponseEntity<PositionDTO> assignCandidate(String positionCode, String peopleCode) {
         return ResponseEntity.ok(positionMapper
                 .toPositionDTO(positionService
                         .assignCandidate(positionCode, peopleCode)));

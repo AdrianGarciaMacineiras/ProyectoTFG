@@ -1,6 +1,6 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.customRepository.CustomTeamRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomTeamRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.TeamNode;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 

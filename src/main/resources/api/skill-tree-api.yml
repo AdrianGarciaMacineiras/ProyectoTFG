@@ -67,18 +67,17 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /project/{projectcode}:
+  /project/{projectCode}:
     get:
       summary: Gets a project by the code
       description: Returns an individual project, identified by a code
       operationId: getProjectByCode
       parameters:
-        - name: projectcode
+        - name: projectCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: String that represents the code of a project
       tags:
         - project
@@ -105,12 +104,11 @@ paths:
       description: Updates the entirety of a project
       operationId: updateProject
       parameters:
-        - name: projectcode
+        - name: projectCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: String that represents the code of a project
       tags:
         - project
@@ -142,12 +140,11 @@ paths:
       summary: Updates some of the information of a project
       description: Updates part of a project
       parameters:
-        - name: projectcode
+        - name: projectCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: String that represents the code of a project
       operationId: patchProject
       tags:
@@ -180,12 +177,11 @@ paths:
       summary: Deletes the given project
       description: Deletes the project
       parameters:
-        - name: projectcode
+        - name: projectCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: String that represents the code of a project
       operationId: deleteProject
       tags:
@@ -262,13 +258,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /position/{positioncode}:
+  /position/{positionCode}:
     get:
       summary: Gets a position by the code
       description: Returns an individual position, identified by a code
       operationId: getPositionByCode
       parameters:
-        - name: positioncode
+        - name: positionCode
           in: path
           required: true
           schema:
@@ -299,7 +295,7 @@ paths:
       description: Updates the entirety of a position
       operationId: updatePosition
       parameters:
-        - name: positioncode
+        - name: positionCode
           in: path
           required: true
           schema:
@@ -335,7 +331,7 @@ paths:
       summary: Updates some of the information of a position
       description: Updates part of a position
       parameters:
-        - name: positioncode
+        - name: positionCode
           in: path
           required: true
           schema:
@@ -372,7 +368,7 @@ paths:
       summary: Deletes the given position
       description: Deletes the position
       parameters:
-        - name: positioncode
+        - name: positionCode
           in: path
           required: true
           schema:
@@ -395,12 +391,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /position/{positioncode}/candidates:
+  /position/{positionCode}/candidates:
     post:
       summary: Generate new candidates for a position
       description: Generate candidates
       parameters:
-        - name: positioncode
+        - name: positionCode
           in: path
           required: true
           schema:
@@ -430,7 +426,7 @@ paths:
     get:
       summary: List all candidates of the position
       parameters:
-        - name: positioncode
+        - name: positionCode
           in: path
           required: true
           schema:
@@ -459,23 +455,22 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /position/{positioncode}/people/{peoplecode}:
+  /position/{positionCode}/people/{peopleCode}:
     post:
       summary: Assign a candidate to a position
       description: Assign a candidate
       parameters:
-        - name: positioncode
+        - name: positionCode
           in: path
           required: true
           schema:
             type: string
           description: String that represents the code of a position
-        - name: peoplecode
+        - name: peopleCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: Number that represents the code of a person that is a candidate of the position
       operationId: assignCandidate
       tags:
@@ -556,18 +551,17 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /person/{personcode}:
+  /person/{peopleCode}:
     get:
       summary: Gets a person by the code
       description: Returns an individual person, identified by a code
       operationId: getPersonByCode
       parameters:
-        - name: personcode
+        - name: peopleCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: String that represents the code of a person
       tags:
         - people
@@ -594,12 +588,11 @@ paths:
       description: Updates the entirety of a person
       operationId: updatePerson
       parameters:
-        - name: personcode
+        - name: peopleCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: String that represents the code of a person
       tags:
         - people
@@ -631,12 +624,11 @@ paths:
       summary: Updates some of the information of a person
       description: Updates part of a person
       parameters:
-        - name: personcode
+        - name: peopleCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: String that represents the code of a person
       operationId: patchPerson
       tags:
@@ -669,12 +661,11 @@ paths:
       summary: Deletes the given person
       description: Deletes a person
       parameters:
-        - name: personcode
+        - name: peopleCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: String that represents the code of a person
       operationId: deletePerson
       tags:
@@ -693,19 +684,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /person/{peoplecode}/position/{positioncode}:
+  /person/{peopleCode}/position/{positionCode}:
     post:
       summary: Assign a candidate to a position
       description: Assign a candidate
       parameters:
-        - name: peoplecode
+        - name: peopleCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: Number that represents the code of a person that is a candidate of the position
-        - name: positioncode
+        - name: positionCode
           in: path
           required: true
           schema:
@@ -732,16 +722,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /person/{peoplecode}/candidates:
+  /person/{peopleCode}/candidates:
     get:
       summary: List all candidacies of the person
       parameters:
-        - name: peoplecode
+        - name: peopleCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: Long that represents the code of a person
       operationId: getPeopleCandidates
       tags:
@@ -766,16 +755,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /person/{peoplecode}/assignments:
+  /person/{peopleCode}/assignments:
     get:
       summary: List all positions of a person that has been assigned to
       parameters:
-        - name: peoplecode
+        - name: peopleCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: Long that represents the code of a person
       operationId: getPeopleAssignedPositions
       tags:
@@ -836,11 +824,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /people/strategic/team/{teamcode}:
+  /people/strategic/team/{teamCode}:
     get:
       summary: List people outside the team that works with their strategic skills
       parameters:
-        - name: teamcode
+        - name: teamCode
           in: path
           required: true
           schema:
@@ -897,13 +885,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /skills/{skillcode}:
+  /skills/{skillCode}:
     get:
       summary: Gets a skill by the code as well as the skills under it
       description: Returns an individual skill as well as the skills under it, identified by a code
       operationId: getSkillByCode
       parameters:
-        - name: skillcode
+        - name: skillCode
           in: path
           required: true
           schema:
@@ -987,7 +975,7 @@ paths:
     description: Returns a list of all the company candidates
     get:
       summary: List all candidates
-      operationId: getCandidates
+      operationId: getCandidatesByPeople
       tags:
         - candidate
       responses:
@@ -1011,13 +999,13 @@ paths:
                 $ref: "#/components/schemas/error"
 
 
-  /candidate/{candidatecode}:
+  /candidate/{candidateCode}:
     get:
       summary: Gets a candidate by the code
       description: Returns an individual candidate, identified by a code
       operationId: getCandidateByCode
       parameters:
-        - name: candidatecode
+        - name: candidateCode
           in: path
           required: true
           schema:
@@ -1048,7 +1036,7 @@ paths:
       description: Updates the entirety of a candidate
       operationId: updateCandidate
       parameters:
-        - name: candidatecode
+        - name: candidateCode
           in: path
           required: true
           schema:
@@ -1084,7 +1072,7 @@ paths:
       summary: Updates some of the information of a candidate
       description: Updates part of a candidate
       parameters:
-        - name: candidatecode
+        - name: candidateCode
           in: path
           required: true
           schema:
@@ -1121,7 +1109,7 @@ paths:
       summary: Deletes the given candidate
       description: Deletes a candidate
       parameters:
-        - name: candidatecode
+        - name: candidateCode
           in: path
           required: true
           schema:
@@ -1202,18 +1190,17 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /client/{clientcode}:
+  /client/{clientCode}:
     get:
       summary: Gets a client by the code
       description: Returns an individual client, identified by a code
       operationId: getClientByCode
       parameters:
-        - name: clientcode
+        - name: clientCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: String that represents the code of a client
       tags:
         - client
@@ -1240,12 +1227,11 @@ paths:
       description: Updates the entirety of a client
       operationId: updateClient
       parameters:
-        - name: clientcode
+        - name: clientCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: String that represents the code of a client
       tags:
         - client
@@ -1277,12 +1263,11 @@ paths:
       summary: Updates some of the information of a client
       description: Updates part of a client
       parameters:
-        - name: clientcode
+        - name: clientCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: String that represents the code of a client
       operationId: patchClient
       tags:
@@ -1315,12 +1300,11 @@ paths:
       summary: Deletes the given client
       description: Deletes a client
       parameters:
-        - name: clientcode
+        - name: clientCode
           in: path
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
           description: String that represents the code of a client
       operationId: deleteClient
       tags:
@@ -1573,8 +1557,7 @@ components:
         - clientCode
       properties:
         code:
-          type: integer
-          format: int64
+          type: string
         tag:
           type: string
         name:
@@ -1588,8 +1571,7 @@ components:
           type: string
           format: date
         clientCode:
-          type: integer
-          format: int64
+          type: string
         area:
           type: string
         domain:
@@ -1623,8 +1605,7 @@ components:
           type: string
           format: date
         clientCode:
-          type: integer
-          format: int64
+          type: string
         area:
           type: string
         domain:
@@ -1685,11 +1666,9 @@ components:
         name:
           type: string
         projectCode:
-          type: integer
-          format: int64
+          type: string
         clientCode:
-          type: integer
-          format: int64
+          type: string
         openingDate:
           type: string
           format: date
@@ -1709,8 +1688,7 @@ components:
           items:
             $ref: "#/components/schemas/positionSkill"
         managedBy:
-          type: integer
-          format: int64
+          type: string
         candidates:
           type: array
           items:
@@ -1728,11 +1706,9 @@ components:
         name:
           type: string
         projectCode:
-          type: integer
-          format: int64
+          type: string
         clientCode:
-          type: integer
-          format: int64
+          type: string
         openingDate:
           type: string
           format: date
@@ -1752,8 +1728,7 @@ components:
           items:
             $ref: "#/components/schemas/positionSkill"
         managedBy:
-          type: integer
-          format: int64
+          type: string
         assignedPeople:
           type: array
           items:
@@ -1774,8 +1749,7 @@ components:
         - code
       properties:
         code:
-          type: integer
-          format: int64
+          type: string
         name:
           type: string
         industry:
@@ -1847,8 +1821,7 @@ components:
           type: string
           enum: [OPENED, ASSIGNED, INTERVIEWED, PRESENTED, OK, KO]
         candidateCode:
-          type: integer
-          format: int64
+          type: string
         positionCode:
           type: string
         skills:
@@ -1872,8 +1845,7 @@ components:
           type: string
           enum: [OPENED, ASSIGNED, INTERVIEWED, PRESENTED, OK, KO ]
         candidateCode:
-          type: integer
-          format: int64
+          type: string
         positionCode:
           type: string
         skills:
@@ -1934,8 +1906,7 @@ components:
         - code
       properties:
         code:
-          type: integer
-          format: int64
+          type: string
         employeeId:
           type: string
         name:
@@ -2157,8 +2128,7 @@ components:
         dedication:
           type: integer
         assigned:
-          type: integer
-          format: int64
+          type: string
 
     team:
       type: object
@@ -2234,7 +2204,6 @@ components:
         - message
       properties:
         code:
-          type: integer
-          format: int32
+          type: string
         message:
           type: string

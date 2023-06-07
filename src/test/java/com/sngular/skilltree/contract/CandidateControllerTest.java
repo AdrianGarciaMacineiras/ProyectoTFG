@@ -112,17 +112,6 @@ class CandidateControllerTest {
                 .andExpect(content().json(PATCH_CANDIDATE_BY_CODE_JSON));
     }
 
-    @Test
-    void getCandidates() throws Exception{
-        when(candidateService.getAll()).thenReturn(CANDIDATE_LIST);
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(LIST_CANDIDATE_JSON));
-    }
-
-
-
     @TestConfiguration
     static class CandidateControllerTestConfiguration {
 

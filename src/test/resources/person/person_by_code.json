@@ -1,17 +1,32 @@
 {
-  "code": 1,
-  "employeeId": "900003940059",
-  "name": "people2",
-  "surname": "LaPel",
-  "title": "DEVELOPER",
+  "assigns": [
+    {
+      "assignments": [
+        {
+          "assignDate": "20-01-2023",
+          "initDate": null,
+          "dedication": 100,
+          "role": "Tech Leader",
+          "id": "a1120",
+          "endDate": null
+        }
+      ],
+      "name": "itxtl1"
+    }
+  ],
+  "roles": null,
+  "code": "1",
+  "employeeId": "employeeId",
+  "title": "SENIOR",
   "birthDate": "20-01-2023",
-  "assigns": [{
-    "name": "itxtl1",
-    "assignments": [{
-      "id": "a1120",
-      "role": "Tech Leader",
-      "assignDate":"20-01-2023",
-      "dedication": 10
-    }]
-  }]
+  "noClients": null,
+  "work_with": [],
+  "master": [],
+  "knows": null,
+  "name": "people",
+  "noProjects": null,
+  "interest": [],
+  "surname": "surname",
+  "candidacies": null,
+  "certificates": null
 }

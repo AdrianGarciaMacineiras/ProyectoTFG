@@ -33,31 +33,31 @@ public class PeopleController implements PeopleApi, PersonApi {
     private final PositionMapper positionMapper;
 
     @Override
-    public ResponseEntity<PeopleDTO> getPersonByCode(Long peoplecode) {
+    public ResponseEntity<PeopleDTO> getPersonByCode(String peopleCode) {
         return ResponseEntity.ok(peopleMapper
                 .toPersonDTO(peopleService
-                        .findByCode(peoplecode)));
+                        .findByCode(peopleCode)));
     }
 
     @Override
-    public ResponseEntity<Void> deletePerson(Long peoplecode) {
-        peopleService.deleteByCode(peoplecode);
+    public ResponseEntity<Void> deletePerson(String peopleCode) {
+        peopleService.deleteByCode(peopleCode);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Override
-    public ResponseEntity<PeopleDTO> updatePerson(Long peoplecode, PeopleDTO peopleDTO) {
+    public ResponseEntity<PeopleDTO> updatePerson(String peopleCode, PeopleDTO peopleDTO) {
         return ResponseEntity.ok(peopleMapper
                 .toPersonDTO(peopleUpdater
-                        .update(peoplecode, peopleMapper
+                        .update(peopleCode, peopleMapper
                                 .toPerson(peopleDTO))));
     }
 
     @Override
-    public ResponseEntity<PeopleDTO> patchPerson(Long personcode, PatchedPeopleDTO patchedPeopleDTO) {
+    public ResponseEntity<PeopleDTO> patchPerson(String personCode, PatchedPeopleDTO patchedPeopleDTO) {
         return ResponseEntity.ok(peopleMapper
                 .toPersonDTO(peopleUpdater
-                        .patch(personcode, peopleMapper
+                        .patch(personCode, peopleMapper
                                 .toPeople(patchedPeopleDTO))));
     }
 
@@ -76,17 +76,17 @@ public class PeopleController implements PeopleApi, PersonApi {
     }
 
     @Override
-    public ResponseEntity<PeopleDTO> assignCandidate(Long peopleCode, String positionCode){
+    public ResponseEntity<PeopleDTO> assignCandidate(String peopleCode, String positionCode) {
         return ResponseEntity.ok(peopleMapper
                 .toPersonDTO(peopleService
-                        .assignCandidate(peopleCode,positionCode)));
+                        .assignCandidate(peopleCode, positionCode)));
     }
 
     @Override
-    public ResponseEntity<List<CandidateDTO>> getPeopleCandidates(Long peoplecode){
+    public ResponseEntity<List<CandidateDTO>> getPeopleCandidates(String peopleCode) {
         return ResponseEntity.ok(candidateMapper
                 .toCandidatesDTO(peopleService
-                        .getCandidates(peoplecode)));
+                        .getCandidates(peopleCode)));
     }
 
     @Override
@@ -97,17 +97,17 @@ public class PeopleController implements PeopleApi, PersonApi {
     }
 
     @Override
-    public ResponseEntity<List<PeopleDTO>> getOtherPeopleStrategicSkills(String teamcode){
+    public ResponseEntity<List<PeopleDTO>> getOtherPeopleStrategicSkills(String teamCode) {
         return ResponseEntity.ok(peopleMapper
                 .toPeopleDto(peopleService
-                        .getOtherPeopleStrategicSkills(teamcode)));
+                        .getOtherPeopleStrategicSkills(teamCode)));
     }
 
     @Override
-    public ResponseEntity<List<PositionDTO>> getPeopleAssignedPositions(Long peoplecode){
+    public ResponseEntity<List<PositionDTO>> getPeopleAssignedPositions(String peopleCode) {
         return ResponseEntity.ok(positionMapper
                 .toPositionsDTO(peopleService
-                        .getPeopleAssignedPositions(peoplecode)));
+                        .getPeopleAssignedPositions(peopleCode)));
     }
 
 }

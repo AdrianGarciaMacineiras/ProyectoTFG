@@ -1,13 +1,52 @@
 [
   {
-  "code": 1,
-  "name": "people2",
-  "title": "DEVELOPER",
-  "birthDate": "20-01-2023"
+    "assigns": [
+      {
+        "assignments": [
+          {
+            "assignDate": "20-01-2023",
+            "initDate": null,
+            "dedication": 100,
+            "role": "Tech Leader",
+            "id": "a1120",
+            "endDate": null
+          }
+        ],
+        "name": "itxtl1"
+      }
+    ],
+    "roles": null,
+    "code": "1",
+    "employeeId": "employeeId",
+    "title": "SENIOR",
+    "birthDate": "20-01-2023",
+    "noClients": null,
+    "work_with": [],
+    "master": [],
+    "knows": null,
+    "name": "people",
+    "noProjects": null,
+    "interest": [],
+    "surname": "surname",
+    "candidacies": null,
+    "certificates": null
   },
   {
-    "code": 2,
-    "name": "people3",
+    "assigns": null,
+    "roles": null,
+    "code": "2",
+    "employeeId": "employeeId",
     "title": "SENIOR",
-    "birthDate": "20-01-2023"
-  }]
+    "birthDate": "20-01-2023",
+    "noClients": null,
+    "work_with": [],
+    "master": [],
+    "knows": null,
+    "name": "people3",
+    "noProjects": null,
+    "interest": [],
+    "surname": "surname3",
+    "candidacies": null,
+    "certificates": null
+  }
+]

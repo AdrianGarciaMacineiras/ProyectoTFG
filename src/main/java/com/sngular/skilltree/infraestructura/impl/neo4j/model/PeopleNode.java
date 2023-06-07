@@ -19,7 +19,7 @@ import java.util.List;
 public class PeopleNode {
 
     @Id
-    private Long code;
+    private String code;
 
     private String name;
 

@@ -10,10 +10,10 @@ public interface ProjectService {
 
     Project create (final Project toProject);
 
-    Project findByCode(final Long projectcode);
+    Project findByCode(final String projectCode);
 
-    boolean deleteByCode(final Long projectcode);
+    boolean deleteByCode(final String projectCode);
 
-    Project findProject(final Long projectcode);
+    Project findProject(final String projectCode);
 
 }

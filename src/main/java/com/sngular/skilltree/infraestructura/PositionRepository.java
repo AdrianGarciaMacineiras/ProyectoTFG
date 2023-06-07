@@ -10,13 +10,13 @@ public interface PositionRepository {
 
   Position save(Position position);
 
-  Position findByCode(String positioncode);
+  Position findByCode(String positionCode);
 
-  boolean deleteByCode(String positioncode);
+    boolean deleteByCode(String positionCode);
 
   List<Position> findByDeletedIsFalse();
 
-  List<Position> getPeopleAssignedPositions(Long peoplecode);
+    List<Position> getPeopleAssignedPositions(String peopleCode);
 
   List<PositionAssignment> getPeopleAssignedToPosition(String positionCode);
 }

@@ -1,27 +1,63 @@
 [
   {
-    "code" : "t1120",
-    "tags": ["Project"],
-    "name": "TeamName",
     "description": "Team description",
-    "members":
-      [
-        {
-          "charge": "DIRECTOR",
-          "peopleCode": 1
-        }
-      ]
+    "tags": [
+      "Project"
+    ],
+    "name": "TeamName",
+    "code": "t1120",
+    "members": [
+      {
+        "people": {
+          "assigns": null,
+          "roles": null,
+          "code": "1",
+          "employeeId": "900003940059",
+          "title": "DEVELOPER",
+          "birthDate": "2023-01-20",
+          "noClients": null,
+          "work_with": [],
+          "master": [],
+          "knows": null,
+          "name": "people2",
+          "noProjects": null,
+          "interest": [],
+          "surname": "LaPel",
+          "candidacies": null,
+          "certificates": null
+        },
+        "charge": "DIRECTOR"
+      }
+    ]
   },
   {
-    "code" : "t1121",
-    "tags": ["Backend"],
-    "name": "TeamName2",
     "description": "Team2 description",
-    "members":
-    [
+    "tags": [
+      "Backend"
+    ],
+    "name": "TeamName2",
+    "code": "t1121",
+    "members": [
       {
-        "charge": "DIRECTOR",
-        "peopleCode": 1
+        "people": {
+          "assigns": null,
+          "roles": null,
+          "code": "1",
+          "employeeId": "900003940059",
+          "title": "DEVELOPER",
+          "birthDate": "2023-01-20",
+          "noClients": null,
+          "work_with": [],
+          "master": [],
+          "knows": null,
+          "name": "people2",
+          "noProjects": null,
+          "interest": [],
+          "surname": "LaPel",
+          "candidacies": null,
+          "certificates": null
+        },
+        "charge": "DIRECTOR"
       }
     ]
   }

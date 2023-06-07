@@ -16,14 +16,14 @@ public class CandidateUpdaterImpl implements CandidateUpdater {
     private final CandidateMapper mapper;
 
     @Override
-    public Candidate update(String candidatecode, Candidate newCandidate) {
-        var oldCandidate = candidateRepository.findByCode(candidatecode);
+    public Candidate update(String candidateCode, Candidate newCandidate) {
+        var oldCandidate = candidateRepository.findByCode(candidateCode);
         return candidateRepository.save(newCandidate);
     }
 
     @Override
-    public Candidate patch(String candidatecode, Candidate patchedCandidate) {
-        var oldCandidate = candidateRepository.findByCode(candidatecode);
+    public Candidate patch(String candidateCode, Candidate patchedCandidate) {
+        var oldCandidate = candidateRepository.findByCode(candidateCode);
         var client = mapper.update(oldCandidate, patchedCandidate);
         return candidateRepository.save(client);
     }

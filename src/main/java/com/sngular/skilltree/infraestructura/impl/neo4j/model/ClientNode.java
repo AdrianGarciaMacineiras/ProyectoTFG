@@ -15,7 +15,7 @@ import java.util.List;
 public class ClientNode {
 
     @Id
-    private Long code;
+    private String code;
 
     private String name;
 

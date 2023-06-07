@@ -36,18 +36,18 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     }
 
     @Override
-    public People findByCode(Long personcode) {
-        return mapper.fromNode(crud.findByCodeAndDeletedIsFalse(personcode));
+    public People findByCode(String personCode) {
+        return mapper.fromNode(crud.findByCodeAndDeletedIsFalse(personCode));
     }
 
     @Override
-    public People findPeopleByCode(Long personcode) {
-        return mapper.fromNode(crud.findPeopleByCode(personcode));
+    public People findPeopleByCode(String personCode) {
+        return mapper.fromNode(crud.findPeopleByCode(personCode));
     }
 
     @Override
-    public boolean deleteByCode(Long personcode) {
-        var node = crud.findByCode(personcode);
+    public boolean deleteByCode(String personCode) {
+        var node = crud.findByCode(personCode);
         node.setDeleted(true);
         crud.save(node);
         return true;
@@ -68,7 +68,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
                 "WHERE cnt = inputCnt " +
                 "RETURN p.code",skills);
 
-        var peopleCodes = client.query(query).fetchAs(Long.class).all();
+        var peopleCodes = client.query(query).fetchAs(String.class).all();
 
         return peopleCodes
                 .parallelStream()
@@ -88,7 +88,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
          var peopleCodes = client
                  .query(query)
-                .fetchAs(Long.class)
+                 .fetchAs(String.class)
                 .all();
 
         return peopleCodes

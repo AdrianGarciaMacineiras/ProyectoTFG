@@ -23,21 +23,24 @@ public class PeopleUpdaterImpl implements PeopleUpdater {
     private final PeopleCrudRepository crud;
 
     @Override
-    public People update(Long personcode, People newPeople) {
-        validate(personcode);
-        var oldPerson = peopleRepository.findByCode(personcode);
+    public People update(final String personCode, final People newPeople) {
+        validate(personCode);
+        var oldPerson = peopleRepository.findByCode(personCode);
+        if (Objects.isNull(oldPerson)) {
+            throw new EntityNotFoundException("People", personCode);
+        }
         return peopleRepository.save(newPeople);
     }
 
     @Override
-    public People patch(Long personcode, People patchedPeople) {
-        validate(personcode);
-        var oldPerson = peopleRepository.findByCode(personcode);
+    public People patch(final String personCode, final People patchedPeople) {
+        validate(personCode);
+        var oldPerson = peopleRepository.findByCode(personCode);
         var person = mapper.patch(patchedPeople, oldPerson);
         return peopleRepository.save(person);
     }
 
-    private void validate(Long code) {
+    private void validate(final String code) {
         var oldPerson = peopleRepository.findByCode(code);
         if (Objects.isNull(oldPerson) || oldPerson.deleted()) {
             throw new EntityNotFoundException("People", code);

@@ -88,7 +88,7 @@ public interface PeopleMapper {
 
   }
 
-    default Long toPeopleCode(final People people) {
-        return people.code();
+    default String toPeopleCode(final People people) {
+      return people.code();
     }
 }

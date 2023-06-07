@@ -38,31 +38,31 @@ public class ClientController implements ClientApi {
     }
 
     @Override
-    public ResponseEntity<ClientDTO> getClientByCode(Long clientcode) {
+    public ResponseEntity<ClientDTO> getClientByCode(String clientCode) {
         return ResponseEntity.ok(clientMapper
                 .toClientDTO(clientService
-                        .findByCode(clientcode)));
+                        .findByCode(clientCode)));
     }
 
     @Override
-    public ResponseEntity<Void> deleteClient(Long clientcode) {
-        var result = clientService.deleteByCode(clientcode);
-        return ResponseEntity.status(result? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<Void> deleteClient(String clientCode) {
+        var result = clientService.deleteByCode(clientCode);
+        return ResponseEntity.status(result ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @Override
-    public ResponseEntity<ClientDTO> updateClient(Long clientcode, ClientDTO clientDTO) {
+    public ResponseEntity<ClientDTO> updateClient(String clientCode, ClientDTO clientDTO) {
         return ResponseEntity.ok(clientMapper
                 .toClientDTO(clientUpdater
-                        .update(clientcode, clientMapper
+                        .update(clientCode, clientMapper
                                 .toClient(clientDTO))));
     }
 
     @Override
-    public ResponseEntity<ClientDTO> patchClient(Long clientcode, PatchedClientDTO patchedClientDTO) {
+    public ResponseEntity<ClientDTO> patchClient(String clientCode, PatchedClientDTO patchedClientDTO) {
         return ResponseEntity.ok(clientMapper
                 .toClientDTO(clientUpdater
-                        .patch(clientcode, clientMapper
+                        .patch(clientCode, clientMapper
                                 .toClient(patchedClientDTO))));
     }
 }

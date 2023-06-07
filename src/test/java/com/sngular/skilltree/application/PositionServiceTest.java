@@ -116,8 +116,8 @@ class PositionServiceTest {
     @Test
     @DisplayName("Testing get positions that a person has been assigned")
     void testGetPeopleAssignedPositions(){
-        when(positionRepository.getPeopleAssignedPositions(anyLong())).thenReturn(POSITION_LIST);
-        List<Position> result = positionService.getPeopleAssignedPositions(1L);
+        when(positionRepository.getPeopleAssignedPositions(anyString())).thenReturn(POSITION_LIST);
+        List<Position> result = positionService.getPeopleAssignedPositions("1");
         assertThat(result).containsExactly(POSITION_BY_CODE, POSITION_2_BY_CODE);
     }
 

@@ -44,15 +44,14 @@ public class PositionServiceImpl implements PositionService {
     var assigned = positionRepository.getPeopleAssignedToPosition(positionCode);
     if (!Objects.isNull(position.assignedPeople()))
       position.assignedPeople().clear();
-    var newPosition = position.toBuilder().assignedPeople(assigned).build();
-    return newPosition;
+    return position.toBuilder().assignedPeople(assigned).build();
   }
 
-  @Override
-  public boolean deleteByCode(final String positioncode) {
-    validateDoesNotExist(positioncode);
-    return positionRepository.deleteByCode(positioncode);
-  }
+    @Override
+    public boolean deleteByCode(final String positionCode) {
+        validateDoesNotExist(positionCode);
+        return positionRepository.deleteByCode(positionCode);
+    }
 
   @Override
   public Position generateCandidates(String positionCode) {
@@ -64,23 +63,23 @@ public class PositionServiceImpl implements PositionService {
     return positionRepository.findByCode(positionCode);
   }
 
-  @Override
-  public Position assignCandidate(String positionCode, Long peopleCode) {
-    validateDoesNotExist(positionCode);
-    candidateService.assignCandidate(positionCode, peopleCode);
-    return positionRepository.findByCode(positionCode);
-  }
+    @Override
+    public Position assignCandidate(String positionCode, String peopleCode) {
+        validateDoesNotExist(positionCode);
+        candidateService.assignCandidate(positionCode, peopleCode);
+        return positionRepository.findByCode(positionCode);
+    }
 
   @Override
   public List<Candidate> getCandidates(String positionCode) {
     validateDoesNotExist(positionCode);
-    return candidateService.getCandidates(positionCode);
+      return candidateService.getCandidatesByPosition(positionCode);
   }
 
-  @Override
-  public List<Position> getPeopleAssignedPositions(Long peoplecode) {
-    return positionRepository.getPeopleAssignedPositions(peoplecode);
-  }
+    @Override
+    public List<Position> getPeopleAssignedPositions(String peopleCode) {
+        return positionRepository.getPeopleAssignedPositions(peopleCode);
+    }
 
   private void validateExist(String code) {
     var oldPosition = positionRepository.findByCode(code);

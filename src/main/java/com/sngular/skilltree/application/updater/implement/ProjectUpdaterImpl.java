@@ -19,23 +19,21 @@ public class ProjectUpdaterImpl implements ProjectUpdater {
 
     private final ProjectMapper mapper;
 
-    private final ProjectCrudRepository crud;
-
     @Override
-    public Project update(Long projectcode, Project newProject) {
-        validate(projectcode);
+    public Project update(String projectCode, Project newProject) {
+        validate(projectCode);
         return projectRepository.save(newProject);
     }
 
     @Override
-    public Project patch(Long projectcode, Project patchedProject) {
-        validate(projectcode);
-        var oldProject = projectRepository.findByCode(projectcode);
+    public Project patch(String projectCode, Project patchedProject) {
+        validate(projectCode);
+        var oldProject = projectRepository.findByCode(projectCode);
         var project = mapper.patch(patchedProject, oldProject);
         return projectRepository.save(project);
     }
 
-    private void validate(Long code) {
+    private void validate(String code) {
         var oldProject = projectRepository.findByCode(code);
         if (Objects.isNull(oldProject) || oldProject.deleted()) {
             throw new EntityNotFoundException("Project", code);

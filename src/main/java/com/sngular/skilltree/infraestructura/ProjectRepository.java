@@ -9,11 +9,11 @@ public interface ProjectRepository {
 
     Project save(Project project);
 
-    Project findByCode(Long projectcode);
+    Project findByCode(String projectCode);
 
-    boolean deleteByCode(Long projectcode);
+    boolean deleteByCode(String projectCode);
 
     List<Project> findByDeletedIsFalse();
 
-    Project findProject(Long projectcode);
+    Project findProject(String projectCode);
 }

@@ -3,6 +3,7 @@ package com.sngular.skilltree.application;
 import static com.sngular.skilltree.application.ClientFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
@@ -47,7 +48,7 @@ class ClientServiceTest {
     @Test
     @DisplayName("Testing save client exception already exists")
     void testSaveException(){
-        when(clientRepository.findByCode(anyLong())).thenReturn(CLIENT_BY_CODE);
+        when(clientRepository.findByCode(anyString())).thenReturn(CLIENT_BY_CODE);
         Assertions.assertThrows(EntityFoundException.class, () ->
                 clientService.create(CLIENT_BY_CODE)
         );
@@ -63,54 +64,54 @@ class ClientServiceTest {
 
     @Test
     @DisplayName("Testing findByCode a client")
-    void testFindByCode(){
-        when(clientRepository.findByCode(anyLong())).thenReturn(CLIENT_BY_CODE);
-        Client result = clientService.findByCode(1L);
+    void testFindByCode() {
+        when(clientRepository.findByCode(anyString())).thenReturn(CLIENT_BY_CODE);
+        Client result = clientService.findByCode("1");
         assertThat(result).isEqualTo(CLIENT_BY_CODE);
     }
 
     @Test
     @DisplayName("Testing find by code exception null")
     void testFindByCodeExceptionNull(){
-        when(clientRepository.findByCode(anyLong())).thenReturn(null);
+        when(clientRepository.findByCode(anyString())).thenReturn(null);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                clientService.findByCode(1L)
+                clientService.findByCode("1")
         );
     }
 
     @Test
     @DisplayName("Testing find by code exception deleted")
     void testFindByCodeExceptionDeletedTrue(){
-        when(clientRepository.findByCode(anyLong())).thenReturn(CLIENT_BY_CODE_DELETED_TRUE);
+        when(clientRepository.findByCode(anyString())).thenReturn(CLIENT_BY_CODE_DELETED_TRUE);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                clientService.findByCode(1L)
+                clientService.findByCode("1")
         );
     }
 
     @Test
     @DisplayName("Testing deleteByCode")
-    void testDeleteByCode(){
-        when(clientRepository.deleteByCode(anyLong())).thenReturn(true);
-        lenient().when(clientRepository.findByCode(anyLong())).thenReturn(CLIENT_BY_CODE);
-        boolean result = clientService.deleteByCode(1L);
+    void testDeleteByCode() {
+        when(clientRepository.deleteByCode(anyString())).thenReturn(true);
+        lenient().when(clientRepository.findByCode(anyString())).thenReturn(CLIENT_BY_CODE);
+        boolean result = clientService.deleteByCode("1");
         assertThat(result).isTrue();
     }
 
     @Test
     @DisplayName("Testing delete client exception null")
     void testDeleteExceptionNull(){
-        when(clientRepository.findByCode(anyLong())).thenReturn(null);
+        when(clientRepository.findByCode(anyString())).thenReturn(null);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                clientService.deleteByCode(1L)
+                clientService.deleteByCode("1")
         );
     }
 
     @Test
     @DisplayName("Testing delete client exception deleted")
     void testDeleteExceptionDeletedTrue(){
-        when(clientRepository.findByCode(anyLong())).thenReturn(CLIENT_BY_CODE_DELETED_TRUE);
+        when(clientRepository.findByCode(anyString())).thenReturn(CLIENT_BY_CODE_DELETED_TRUE);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                clientService.deleteByCode(1L)
+                clientService.deleteByCode("1")
         );
     }
 }

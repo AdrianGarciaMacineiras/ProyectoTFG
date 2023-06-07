@@ -14,7 +14,7 @@ import java.util.List;
 public class ProjectNode {
 
     @Id
-    private Long code;
+    private String code;
 
     private String name;
 

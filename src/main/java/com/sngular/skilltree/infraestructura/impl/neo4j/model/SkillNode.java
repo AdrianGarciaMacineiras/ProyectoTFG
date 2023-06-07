@@ -1,11 +1,9 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
@@ -23,6 +21,6 @@ public class SkillNode {
 
     private String name;
 
-    @Relationship(type="REQUIRE", direction = Relationship.Direction.INCOMING)
-    private List<SubskillsRelationship> subSkills;
+    @Relationship(type = "REQUIRE", direction = Relationship.Direction.INCOMING)
+    private List<SubSkillsRelationship> subSkills;
 }

@@ -4,8 +4,8 @@ import com.sngular.skilltree.model.Candidate;
 
 public interface CandidateUpdater {
 
-    Candidate update(final String candidatecode, final Candidate newCandidate);
+    Candidate update(final String candidateCode, final Candidate newCandidate);
 
-    Candidate patch(final String candidatecode, final Candidate patchedCandidate);
+    Candidate patch(final String candidateCode, final Candidate patchedCandidate);
 
 }

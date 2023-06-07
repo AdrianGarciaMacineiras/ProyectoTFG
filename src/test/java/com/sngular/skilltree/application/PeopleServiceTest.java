@@ -66,7 +66,7 @@ class PeopleServiceTest {
     @Test
     @DisplayName("Testing save person exception already exists")
     void testSaveExceptionDeletedFalse(){
-        when(peopleRepository.findByCode(anyLong())).thenReturn(PEOPLE_BY_CODE);
+        when(peopleRepository.findByCode(anyString())).thenReturn(PEOPLE_BY_CODE);
         Assertions.assertThrows(EntityFoundException.class, () ->
                 peopleService.create(PEOPLE_BY_CODE)
         );
@@ -74,54 +74,54 @@ class PeopleServiceTest {
 
     @Test
     @DisplayName("Testing findByCode a person")
-    void testFindByCode(){
-        when(peopleRepository.findByCode(anyLong())).thenReturn(PEOPLE_BY_CODE);
-        People result = peopleService.findByCode(1L);
+    void testFindByCode() {
+        when(peopleRepository.findByCode(anyString())).thenReturn(PEOPLE_BY_CODE);
+        People result = peopleService.findByCode("1");
         assertThat(result).isEqualTo(PEOPLE_BY_CODE);
     }
 
     @Test
     @DisplayName("Testing find person exception is null")
     void testFindByCodeExceptionNull(){
-        when(peopleRepository.findByCode(anyLong())).thenReturn(null);
+        when(peopleRepository.findByCode(anyString())).thenReturn(null);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                peopleService.findByCode(1L)
+                peopleService.findByCode("1")
         );
     }
 
     @Test
     @DisplayName("Testing find person exception is deleted")
     void testFindByCodeExceptionDeleteTrue(){
-        when(peopleRepository.findByCode(anyLong())).thenReturn(PEOPLE_BY_CODE_DELETE_TRUE);
+        when(peopleRepository.findByCode(anyString())).thenReturn(PEOPLE_BY_CODE_DELETE_TRUE);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                peopleService.findByCode(1L)
+                peopleService.findByCode("1")
         );
     }
 
     @Test
     @DisplayName("Testing deleteByCode")
-    void testDeleteByCode(){
-        when(peopleRepository.deleteByCode(anyLong())).thenReturn(true);
-        when(peopleRepository.findByCode(1L)).thenReturn(PEOPLE_BY_CODE);
-        boolean result = peopleService.deleteByCode(1L);
+    void testDeleteByCode() {
+        when(peopleRepository.deleteByCode(anyString())).thenReturn(true);
+        when(peopleRepository.findByCode("1")).thenReturn(PEOPLE_BY_CODE);
+        boolean result = peopleService.deleteByCode("1");
         assertThat(result).isTrue();
     }
 
     @Test
     @DisplayName("Testing delete person exception is deleted")
     void testDeleteByCodeExceptionDeleteTrue(){
-        when(peopleRepository.findByCode(anyLong())).thenReturn(PEOPLE_BY_CODE_DELETE_TRUE);
+        when(peopleRepository.findByCode(anyString())).thenReturn(PEOPLE_BY_CODE_DELETE_TRUE);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                peopleService.deleteByCode(1L)
+                peopleService.deleteByCode("1")
         );
     }
 
     @Test
     @DisplayName("Testing delete person exception is null")
     void testDeleteByCodeExceptionNull(){
-        when(peopleRepository.findByCode(anyLong())).thenReturn(null);
+        when(peopleRepository.findByCode(anyString())).thenReturn(null);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                peopleService.deleteByCode(1L)
+                peopleService.deleteByCode("1")
         );
     }
 
@@ -144,70 +144,70 @@ class PeopleServiceTest {
     @Test
     @DisplayName("Test assign a candidate to a position exception null")
     void testAssignCandidateExceptionNull(){
-        when(peopleRepository.findByCode(anyLong())).thenReturn(null);
+        when(peopleRepository.findByCode(anyString())).thenReturn(null);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                peopleService.assignCandidate(1L, "itxtl1")
+                peopleService.assignCandidate("1", "itxtl1")
         );
     }
 
     @Test
     @DisplayName("Test assign a candidate to a position exception deleted")
     void testAssignCandidateExceptionDeleted(){
-        when(peopleRepository.findByCode(anyLong())).thenReturn(PEOPLE_BY_CODE_DELETE_TRUE);
+        when(peopleRepository.findByCode(anyString())).thenReturn(PEOPLE_BY_CODE_DELETE_TRUE);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                peopleService.assignCandidate(1L, "itxtl1")
+                peopleService.assignCandidate("1", "itxtl1")
         );
     }
 
     @Test
     @DisplayName("Test get candidates")
-    void testGetCandidates(){
-        when(candidateService.getCandidates(anyLong())).thenReturn(CANDIDATE_LIST);
-        List<Candidate> result = candidateService.getCandidates(1L);
+    void testGetCandidates() {
+        when(candidateService.getCandidatesByPosition(anyString())).thenReturn(CANDIDATE_LIST);
+        List<Candidate> result = candidateService.getCandidatesByPosition("1");
         assertThat(result).containsExactly(CANDIDATE_BY_CODE, CANDIDATE2_BY_CODE);
     }
 
     @Test
     @DisplayName("Test get candidates exception null")
     void testGetCandidateExceptionNull(){
-        when(peopleRepository.findByCode(anyLong())).thenReturn(null);
+        when(peopleRepository.findByCode(anyString())).thenReturn(null);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                peopleService.getCandidates(1L)
+                peopleService.getCandidates("1")
         );
     }
 
     @Test
     @DisplayName("Test get candidates exception deleted")
     void testGetCandidateExceptionDeleted(){
-        when(peopleRepository.findByCode(anyLong())).thenReturn(PEOPLE_BY_CODE_DELETE_TRUE);
+        when(peopleRepository.findByCode(anyString())).thenReturn(PEOPLE_BY_CODE_DELETE_TRUE);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                peopleService.getCandidates(1L)
+                peopleService.getCandidates("1")
         );
     }
 
     @Test
     @DisplayName("Test get people assigned positions")
-    void testGetPeopleAssignedPositions(){
-        when(positionService.getPeopleAssignedPositions(anyLong())).thenReturn(List.of(POSITION_BY_CODE));
-        List<Position> result = positionService.getPeopleAssignedPositions(1L);
+    void testGetPeopleAssignedPositions() {
+        when(positionService.getPeopleAssignedPositions(anyString())).thenReturn(List.of(POSITION_BY_CODE));
+        List<Position> result = positionService.getPeopleAssignedPositions("1");
         assertThat(result).containsExactly(POSITION_BY_CODE);
     }
 
     @Test
     @DisplayName("Test get people assigned positions exception null")
     void testGetPeopleAssignedPositionsNull(){
-        when(peopleRepository.findByCode(anyLong())).thenReturn(null);
+        when(peopleRepository.findByCode(anyString())).thenReturn(null);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                peopleService.getPeopleAssignedPositions(1L)
+                peopleService.getPeopleAssignedPositions("1")
         );
     }
 
     @Test
     @DisplayName("Test get candidates exception deleted")
     void testGetPeopleAssignedPositionsDeleted(){
-        when(peopleRepository.findByCode(anyLong())).thenReturn(PEOPLE_BY_CODE_DELETE_TRUE);
+        when(peopleRepository.findByCode(anyString())).thenReturn(PEOPLE_BY_CODE_DELETE_TRUE);
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                peopleService.getPeopleAssignedPositions(1L)
+                peopleService.getPeopleAssignedPositions("1")
         );
     }
 

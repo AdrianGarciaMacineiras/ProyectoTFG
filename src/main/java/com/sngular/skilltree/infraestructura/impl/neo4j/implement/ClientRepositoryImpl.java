@@ -26,13 +26,13 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
 
     @Override
-    public Client findByCode(Long clientcode) {
-        return mapper.fromNode(crud.findByCode(clientcode));
+    public Client findByCode(String clientCode) {
+        return mapper.fromNode(crud.findByCode(clientCode));
     }
 
     @Override
-    public boolean deleteByCode(Long clientcode) {
-        var node = crud.findByCode(clientcode);
+    public boolean deleteByCode(String clientCode) {
+        var node = crud.findByCode(clientCode);
         node.setDeleted(true);
         crud.save(node);
         return true;

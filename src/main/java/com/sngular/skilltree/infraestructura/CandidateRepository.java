@@ -1,7 +1,6 @@
 package com.sngular.skilltree.infraestructura;
 
 import com.sngular.skilltree.model.Candidate;
-import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.PositionSkill;
 
 import java.util.List;
@@ -12,20 +11,20 @@ public interface CandidateRepository {
 
     Candidate save(Candidate candidate);
 
-    Candidate findByCode(String candidatecode);
+    Candidate findByCode(String candidateCode);
 
-    boolean deleteByCode(String candidatecode);
+    boolean deleteByCode(String candidateCode);
 
     List<Candidate> findAllCandidates();
 
     List<Candidate> generateCandidates(String positionCode, List<PositionSkill> positionSkills);
 
-    List<Candidate> findByPeopleandPosition(String positionCode, Long peopleCode);
+    List<Candidate> findByPeopleAndPosition(String positionCode, String peopleCode);
 
-    void assignCandidate(String positionCode, Long peopleCandidate, List<Candidate> candidates);
+    void assignCandidate(String positionCode, String peopleCandidate, List<Candidate> candidates);
 
-    List<Candidate> getCandidates(String positionCode);
+    List<Candidate> getCandidatesByPosition(String positionCode);
 
-    List<Candidate> getCandidates(Long peopleCode);
+    List<Candidate> getCandidatesByPeople(String peopleCode);
 
 }

@@ -25,37 +25,31 @@ public class CandidateController implements CandidateApi {
     private final CandidateMapper candidateMapper;
 
     @Override
-    public ResponseEntity<List<CandidateDTO>> getCandidates() {
-        var candidateList = candidateService.getAll();
-        return ResponseEntity.ok(candidateMapper.toCandidatesDTO(candidateList));
-    }
-
-    @Override
-    public ResponseEntity<CandidateDTO> getCandidateByCode(String candidatecode) {
+    public ResponseEntity<CandidateDTO> getCandidateByCode(String candidateCode) {
         return ResponseEntity.ok(candidateMapper
                 .toCandidateDTO(candidateService
-                        .findByCode(candidatecode)));
+                        .findByCode(candidateCode)));
     }
 
     @Override
-    public ResponseEntity<Void> deleteCandidate(String candidatecode) {
-        var result = candidateService.deleteByCode(candidatecode);
-        return ResponseEntity.status(result? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<Void> deleteCandidate(String candidateCode) {
+        var result = candidateService.deleteByCode(candidateCode);
+        return ResponseEntity.status(result ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @Override
-    public ResponseEntity<CandidateDTO> updateCandidate(String candidatecode, CandidateDTO candidateDTO) {
+    public ResponseEntity<CandidateDTO> updateCandidate(String candidateCode, CandidateDTO candidateDTO) {
         return ResponseEntity.ok(candidateMapper
                 .toCandidateDTO(candidateUpdater
-                        .update(candidatecode, candidateMapper
+                        .update(candidateCode, candidateMapper
                                 .toCandidate(candidateDTO))));
     }
 
     @Override
-    public ResponseEntity<CandidateDTO> patchCandidate(String candidatecode, PatchedCandidateDTO patchedCandidateDTO) {
+    public ResponseEntity<CandidateDTO> patchCandidate(String candidateCode, PatchedCandidateDTO patchedCandidateDTO) {
         return ResponseEntity.ok(candidateMapper
                 .toCandidateDTO(candidateUpdater
-                        .patch(candidatecode, candidateMapper
+                        .patch(candidateCode, candidateMapper
                                 .toCandidate(patchedCandidateDTO))));
     }
 }

@@ -40,16 +40,16 @@ class PeopleControllerTest {
 
   @Test
   void getPersonByCode() throws Exception {
-    when(peopleService.findByCode(anyLong())).thenReturn(PEOPLE_BY_CODE);
+    when(peopleService.findByCode(anyString())).thenReturn(PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                            .get("/person/1")
-                            .accept(MediaType.APPLICATION_JSON))
+                    .get("/person/1")
+                    .accept(MediaType.APPLICATION_JSON))
             .andExpect(content().json(PERSON_BY_CODE_JSON));
   }
 
   @Test
   void shouldGetPersonByCodeFail() throws Exception {
-    when(peopleService.findByCode(anyLong())).thenThrow(new EntityNotFoundException("People", "5"));
+    when(peopleService.findByCode(anyString())).thenThrow(new EntityNotFoundException("People", "5"));
     mockMvc.perform(MockMvcRequestBuilders
                     .get("/person/5")
                     .accept(MediaType.APPLICATION_JSON))
@@ -58,32 +58,32 @@ class PeopleControllerTest {
 
   @Test
   void shouldDeletePersonBySuccess() throws Exception{
-    when(peopleService.deleteByCode(anyLong())).thenReturn(true);
+    when(peopleService.deleteByCode(anyString())).thenReturn(true);
     mockMvc.perform(MockMvcRequestBuilders
-                            .delete("/person/1")
-                            .accept(MediaType.APPLICATION_JSON))
+                    .delete("/person/1")
+                    .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().is2xxSuccessful());
   }
 
   @Test
   void shouldDeletePersonFail() throws Exception{
-    when(peopleService.deleteByCode(anyLong())).thenThrow(new EntityNotFoundException("People", "1"));
+    when(peopleService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("People", "1"));
     mockMvc.perform(MockMvcRequestBuilders
-                            .delete("/person/1")
-                            .accept(MediaType.APPLICATION_JSON))
+                    .delete("/person/1")
+                    .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
   }
 
   @Test
   void updatePerson() throws Exception {
-    when(peopleUpdater.update(anyLong(), any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
+    when(peopleUpdater.update(anyString(), any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                      .put("/person/1")
-                      .contentType(MediaType.APPLICATION_JSON)
-                      .accept(MediaType.APPLICATION_JSON)
-                      .content(PERSON_BY_CODE_JSON))
-           .andExpect(status().isOk())
-           .andExpect(content().json(UPDATED_PERSON_BY_CODE_JSON));
+                    .put("/person/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .content(PERSON_BY_CODE_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().json(UPDATED_PERSON_BY_CODE_JSON));
   }
 
   @Test
@@ -99,12 +99,12 @@ class PeopleControllerTest {
 
   @Test
   void patchPerson() throws Exception {
-    when(peopleUpdater.patch(anyLong(),any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
+    when(peopleUpdater.patch(anyString(), any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                            .patch("/person/1")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .accept(MediaType.APPLICATION_JSON)
-                            .content(PATCH_PERSON_BY_CODE_JSON))
+                    .patch("/person/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .content(PATCH_PERSON_BY_CODE_JSON))
             .andExpect(content().json(PATCH_PERSON_BY_CODE_JSON));
   }
 
@@ -121,7 +121,7 @@ class PeopleControllerTest {
   void asignCandidate() throws Exception {
     when(peopleService.assignCandidate(anyLong(), anyString())).thenReturn(PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-            .post("/person/{peoplecode}/position/{positioncode}"))
+            .post("/person/{peopleCode}/position/{positionCode}"))
   }*/
 
   @TestConfiguration

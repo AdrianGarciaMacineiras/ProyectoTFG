@@ -4,7 +4,7 @@ import com.sngular.skilltree.model.Position;
 
 public interface PositionUpdater {
 
-    Position update(final String positioncode, final Position newPosition);
+    Position update(final String positionCode, final Position newPosition);
 
-    Position patch(final String positioncode, final Position patchedPosition);
+    Position patch(final String positionCode, final Position patchedPosition);
 }

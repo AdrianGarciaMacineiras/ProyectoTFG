@@ -22,20 +22,20 @@ public class ClientUpdaterImpl implements ClientUpdater {
     private final ClientCrudRepository crud;
 
     @Override
-    public Client update(Long clientcode, Client newClient) {
-        validate(clientcode);
+    public Client update(String clientCode, Client newClient) {
+        validate(clientCode);
         return clientRepository.save(newClient);
     }
 
     @Override
-        public Client patch(Long clientcode, Client patchedClient) {
-        validate(clientcode);
-        var oldClient = clientRepository.findByCode(clientcode);
+    public Client patch(String clientCode, Client patchedClient) {
+        validate(clientCode);
+        var oldClient = clientRepository.findByCode(clientCode);
         var client = mapper.patch(patchedClient, oldClient);
         return clientRepository.save(client);
     }
 
-    private void validate(Long code) {
+    private void validate(String code) {
         var oldClient = clientRepository.findByCode(code);
         if (Objects.isNull(oldClient) || oldClient.deleted()) {
             throw new EntityNotFoundException("Client", code);

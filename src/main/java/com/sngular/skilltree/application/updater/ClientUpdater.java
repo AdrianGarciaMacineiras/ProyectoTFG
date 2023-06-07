@@ -4,7 +4,7 @@ import com.sngular.skilltree.model.Client;
 
 public interface ClientUpdater {
 
-    Client update(final Long clientcode, final Client newClient);
+    Client update(final String clientCode, final Client newClient);
 
-    Client patch(final Long clientcode, final Client patchedClient);
+    Client patch(final String clientCode, final Client patchedClient);
 }

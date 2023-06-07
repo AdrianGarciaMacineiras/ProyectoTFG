@@ -1,7 +1,7 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.SkillCrudRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubskillsRelationship;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubSkillsRelationship;
 import com.sngular.skilltree.model.*;
 import com.sngular.skilltree.infraestructura.SkillRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.SkillNodeMapper;
@@ -31,7 +31,7 @@ public class SkillRepositoryImpl implements SkillRepository {
         List<Skill> skills = new ArrayList<>();
         for(SkillNode skillNode: skillNodeList){
             subSkills = new ArrayList<>();
-            for (SubskillsRelationship subSkillNode: skillNode.getSubSkills()){
+            for (SubSkillsRelationship subSkillNode : skillNode.getSubSkills()) {
                 var toSkill = mapper.fromNode(subSkillNode.skillNode());
                 subSkills.add(toSkill);
             }
@@ -45,7 +45,7 @@ public class SkillRepositoryImpl implements SkillRepository {
     public Skill findByCode(String skillcode) {
         var skillNode = crud.findByCode(skillcode);
         List<Skill> subSkills = new ArrayList<>();
-        for(SubskillsRelationship subSkillNode: skillNode.getSubSkills()){
+        for (SubSkillsRelationship subSkillNode : skillNode.getSubSkills()) {
             var toSkill = mapper.fromNode(subSkillNode.skillNode());
             subSkills.add(toSkill);
         }
@@ -152,7 +152,7 @@ public class SkillRepositoryImpl implements SkillRepository {
                 .surname(people.get("surname").asString())
                 .employeeId(people.get("employeeId").asString())
                 .birthDate(people.get("birthDate").asLocalDate())
-                .code(people.get("code").asLong())
+                .code(people.get("code").asString())
                 .deleted(people.get("deleted").asBoolean())
                 .build();
     }

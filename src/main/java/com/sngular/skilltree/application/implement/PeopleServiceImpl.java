@@ -39,42 +39,41 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public People findByCode(Long personCode) {
-        var people = peopleRepository.findByCode(personCode);
+    public People findByCode(String peopleCode) {
+        var people = peopleRepository.findByCode(peopleCode);
         if (Objects.isNull(people) || people.deleted())
-            throw new EntityNotFoundException("People", personCode);
-        var candidacies = candidateService.getCandidates(personCode);
-        if(!Objects.isNull(people.candidacies()))
+            throw new EntityNotFoundException("People", peopleCode);
+        var candidacies = candidateService.getCandidatesByPosition(peopleCode);
+        if (!Objects.isNull(people.candidacies()))
             people.candidacies().clear();
-        var newperson = people.toBuilder().candidacies(candidacies).build();
-        return newperson;
+        return people.toBuilder().candidacies(candidacies).build();
     }
 
     @Override
-    public People findPeopleByCode(Long personcode) {
-        var people = peopleRepository.findPeopleByCode(personcode);
+    public People findPeopleByCode(String peopleCode) {
+        var people = peopleRepository.findPeopleByCode(peopleCode);
         if (Objects.isNull(people) || people.deleted())
-            throw new EntityNotFoundException("People", personcode);
+            throw new EntityNotFoundException("People", peopleCode);
         return people;
     }
 
     @Override
-    public boolean deleteByCode(Long personCode) {
-        validateDoesNotExist(personCode);
-        return peopleRepository.deleteByCode(personCode);
+    public boolean deleteByCode(String peopleCode) {
+        validateDoesNotExist(peopleCode);
+        return peopleRepository.deleteByCode(peopleCode);
     }
 
     @Override
-    public People assignCandidate(Long peopleCode, String positionCode) {
+    public People assignCandidate(String peopleCode, String positionCode) {
         validateDoesNotExist(peopleCode);
         candidateService.assignCandidate(positionCode, peopleCode);
         return peopleRepository.findByCode(peopleCode);
     }
 
     @Override
-    public List<Candidate> getCandidates(Long peopleCode) {
+    public List<Candidate> getCandidates(String peopleCode) {
         validateDoesNotExist(peopleCode);
-        return candidateService.getCandidates(peopleCode);
+        return candidateService.getCandidatesByPeople(peopleCode);
     }
 
     @Override
@@ -83,24 +82,24 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public List<People> getOtherPeopleStrategicSkills(String teamcode) {
-        return peopleRepository.getOtherPeopleStrategicSkills(teamcode);
+    public List<People> getOtherPeopleStrategicSkills(String teamCode) {
+        return peopleRepository.getOtherPeopleStrategicSkills(teamCode);
     }
 
     @Override
-    public List<Position> getPeopleAssignedPositions(Long peoplecode) {
-        validateDoesNotExist(peoplecode);
-        return positionService.getPeopleAssignedPositions(peoplecode);
+    public List<Position> getPeopleAssignedPositions(String peopleCode) {
+        validateDoesNotExist(peopleCode);
+        return positionService.getPeopleAssignedPositions(peopleCode);
     }
 
-    private void validateExist(Long code) {
+    private void validateExist(String code) {
         var oldPerson = peopleRepository.findByCode(code);
         if (!Objects.isNull(oldPerson) && !oldPerson.deleted()) {
             throw new EntityFoundException("People", code);
         }
     }
 
-    private void validateDoesNotExist(Long code) {
+    private void validateDoesNotExist(String code) {
         var oldPerson = peopleRepository.findByCode(code);
         if (Objects.isNull(oldPerson) || oldPerson.deleted()) {
             throw new EntityNotFoundException("People", code);

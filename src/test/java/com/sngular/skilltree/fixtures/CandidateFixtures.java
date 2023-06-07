@@ -46,7 +46,7 @@ public class CandidateFixtures {
 
     public static final Client CLIENT_BY_CODE =
             Client.builder()
-                    .code(1L)
+                    .code("1")
                     .HQ("A Coruña")
                     .country("Spain")
                     .industry("RETAIL")
@@ -69,7 +69,7 @@ public class CandidateFixtures {
 
     public  static final Project PROJECT_BY_CODE =
             Project.builder()
-                    .code(1L)
+                    .code("1")
                     .area("Logistica")
                     .desc("Data consolidation project for Data Analytics")
                     .client(CLIENT_BY_CODE)
@@ -122,7 +122,7 @@ public class CandidateFixtures {
 
     public static final People PEOPLE_BY_CODE =
             People.builder()
-                    .code(1L)
+                    .code("1")
                     .name("people")
                     .surname("surname")
                     .employeeId("employeeId")
@@ -132,7 +132,7 @@ public class CandidateFixtures {
 
     public static final People PEOPLE_BY_CODE2 =
             People.builder()
-                    .code(2L)
+                    .code("2")
                     .name("people")
                     .surname("surname")
                     .employeeId("employeeId")

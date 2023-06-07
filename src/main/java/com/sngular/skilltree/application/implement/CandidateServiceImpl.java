@@ -5,7 +5,6 @@ import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.PositionRepository;
 import com.sngular.skilltree.model.Candidate;
-import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.PositionSkill;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,42 +26,42 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public Candidate findByCode(String candidatecode) {
-        var candidate = candidateRepository.findByCode(candidatecode);
-        if(Objects.isNull(candidate)){
-            throw new EntityNotFoundException("Candidate", candidatecode);
+    public Candidate findByCode(String candidateCode) {
+        var candidate = candidateRepository.findByCode(candidateCode);
+        if (Objects.isNull(candidate)) {
+            throw new EntityNotFoundException("Candidate", candidateCode);
         }
         return candidate;
     }
 
     @Override
-    public boolean deleteByCode(String candidatecode) {
-        validateDoesNotExist(candidatecode);
-        return candidateRepository.deleteByCode(candidatecode);
+    public boolean deleteByCode(String candidateCode) {
+        validateDoesNotExist(candidateCode);
+        return candidateRepository.deleteByCode(candidateCode);
     }
 
     @Override
-    public List<Candidate> generateCandidates(String positioncode, List<PositionSkill> positionSkills) {
-        return candidateRepository.generateCandidates(positioncode, positionSkills);
+    public List<Candidate> generateCandidates(String positionCode, List<PositionSkill> positionSkills) {
+        return candidateRepository.generateCandidates(positionCode, positionSkills);
     }
 
     @Override
-    public void assignCandidate(String positionCode, Long peopleCode) {
-        var candidates = candidateRepository.findByPeopleandPosition(positionCode, peopleCode);
-        if (Objects.isNull(candidates) || candidates.isEmpty()){
+    public void assignCandidate(String positionCode, String peopleCode) {
+        var candidates = candidateRepository.findByPeopleAndPosition(positionCode, peopleCode);
+        if (Objects.isNull(candidates) || candidates.isEmpty()) {
             throw new EntityNotFoundException("Candidate", positionCode, peopleCode);
         }
         candidateRepository.assignCandidate(positionCode, peopleCode, candidates);
     }
 
     @Override
-    public List<Candidate> getCandidates(String positionCode) {
-        return candidateRepository.getCandidates(positionCode);
+    public List<Candidate> getCandidatesByPosition(String positionCode) {
+        return candidateRepository.getCandidatesByPosition(positionCode);
     }
 
     @Override
-    public List<Candidate> getCandidates(Long peopleCode) {
-        return candidateRepository.getCandidates(peopleCode);
+    public List<Candidate> getCandidatesByPeople(String peopleCode) {
+        return candidateRepository.getCandidatesByPosition(peopleCode);
     }
 
     private void validateDoesNotExist(String code) {

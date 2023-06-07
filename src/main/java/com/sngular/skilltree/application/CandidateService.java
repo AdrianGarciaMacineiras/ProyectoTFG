@@ -9,16 +9,16 @@ public interface CandidateService {
 
     List<Candidate> getAll();
 
-    Candidate findByCode(final String candidatecode);
+    Candidate findByCode(final String candidateCode);
 
-    boolean deleteByCode(final String candidatecode);
+    boolean deleteByCode(final String candidateCode);
 
-    List<Candidate> generateCandidates(String positioncode, List<PositionSkill> positionSkills);
+    List<Candidate> generateCandidates(String positionCode, List<PositionSkill> positionSkills);
 
-    void assignCandidate(final String positionCode, final Long peopleCode);
+    void assignCandidate(final String positionCode, final String peopleCode);
 
-    List<Candidate> getCandidates(final String positionCode);
+    List<Candidate> getCandidatesByPosition(final String positionCode);
 
-    List<Candidate> getCandidates(final Long peopleCode);
+    List<Candidate> getCandidatesByPeople(final String peopleCode);
 
 }

@@ -29,28 +29,28 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client findByCode(Long clientcode) {
-        var client = clientRepository.findByCode(clientcode);
+    public Client findByCode(String clientCode) {
+        var client = clientRepository.findByCode(clientCode);
         if (Objects.isNull(client) || client.deleted())
-            throw new EntityNotFoundException("Client", clientcode);
+            throw new EntityNotFoundException("Client", clientCode);
         return client;
     }
 
     @Override
-    public boolean deleteByCode(Long clientcode) {
-        validateDoesNotExist(clientcode);
-        return clientRepository.deleteByCode(clientcode);
+    public boolean deleteByCode(String clientCode) {
+        validateDoesNotExist(clientCode);
+        return clientRepository.deleteByCode(clientCode);
     }
 
 
-    private void validateExist(Long code) {
+    private void validateExist(String code) {
         var oldClient = clientRepository.findByCode(code);
         if (!Objects.isNull(oldClient) && !oldClient.deleted()) {
             throw new EntityFoundException("Client", code);
         }
     }
 
-    private void validateDoesNotExist(Long code) {
+    private void validateDoesNotExist(String code) {
         var oldClient = clientRepository.findByCode(code);
         if (Objects.isNull(oldClient) || oldClient.deleted()) {
             throw new EntityNotFoundException("Client", code);

@@ -67,35 +67,35 @@ public class PositionRepositoryImpl implements PositionRepository {
   }
 
   @Override
-  public Position findByCode(String positioncode) {
-    return mapper.fromNode(crud.findByCode(positioncode));
+  public Position findByCode(String positionCode) {
+      return mapper.fromNode(crud.findByCode(positionCode));
   }
 
-  @Override
-  public boolean deleteByCode(String positioncode) {
-    var node = crud.findByCode(positioncode);
-    node.setDeleted(true);
-    crud.save(node);
-    return true;
-  }
+    @Override
+    public boolean deleteByCode(String positionCode) {
+        var node = crud.findByCode(positionCode);
+        node.setDeleted(true);
+        crud.save(node);
+        return true;
+    }
 
   @Override
   public List<Position> findByDeletedIsFalse() {
     return mapper.map(crud.findByDeletedIsFalse());
   }
 
-  @Override
-  public List<Position> getPeopleAssignedPositions(Long peoplecode) {
+    @Override
+    public List<Position> getPeopleAssignedPositions(String peopleCode) {
 
-    var query = String.format("MATCH(p:People{code:%d})-[r:ASSIGN]-(s:Position) RETURN s.code",peoplecode);
+        var query = String.format("MATCH(p:People{code:%d})-[r:ASSIGN]-(s:Position) RETURN s.code", peopleCode);
 
-    var positionCodes = client
-            .query(query)
-            .fetchAs(String.class)
-            .all();
+        var positionCodes = client
+                .query(query)
+                .fetchAs(String.class)
+                .all();
 
-    return positionCodes
-            .parallelStream()
+        return positionCodes
+                .parallelStream()
             .map(crud::findByCode)
             .map(mapper::fromNode)
             .toList();
@@ -135,7 +135,7 @@ public class PositionRepositoryImpl implements PositionRepository {
             .surname(people.get("surname").asString())
             .employeeId(people.get("employeeId").asString())
             .birthDate(people.get("birthDate").asLocalDate())
-            .code(people.get("code").asLong())
+            .code(people.get("code").asString())
             .deleted(people.get("deleted").asBoolean())
             .build();
   }

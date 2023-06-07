@@ -5,6 +5,6 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 public interface CandidateCrudRepository extends Neo4jRepository<CandidateRelationship, String>{
 
-    CandidateRelationship findByCode(String candidatecode);
+    CandidateRelationship findByCode(String candidateCode);
 
 }

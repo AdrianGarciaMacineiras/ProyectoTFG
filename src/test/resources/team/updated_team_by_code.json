@@ -1,13 +1,32 @@
 {
-  "code" : "t1120",
-  "tags": ["Develop","Frontend"],
-  "name": "TeamFrontend",
   "description": "Team description",
-  "members":
-    [
-      {
-        "charge": "DIRECTOR",
-        "peopleCode": 1
-      }
-    ]
+  "tags": [
+    "Develop",
+    "Frontend"
+  ],
+  "name": "TeamFrontend",
+  "code": "t1120",
+  "members": [
+    {
+      "people": {
+        "assigns": null,
+        "roles": null,
+        "code": "1",
+        "employeeId": "900003940059",
+        "title": "DEVELOPER",
+        "birthDate": "2023-01-20",
+        "noClients": null,
+        "work_with": [],
+        "master": [],
+        "knows": null,
+        "name": "people2",
+        "noProjects": null,
+        "interest": [],
+        "surname": "LaPel",
+        "candidacies": null,
+        "certificates": null
+      },
+      "charge": "DIRECTOR"
+    }
+  ]
 }

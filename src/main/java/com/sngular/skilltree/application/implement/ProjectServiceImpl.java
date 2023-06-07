@@ -29,35 +29,35 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project findByCode(Long projectcode) {
-        var project = projectRepository.findByCode(projectcode);
+    public Project findByCode(String projectCode) {
+        var project = projectRepository.findByCode(projectCode);
         if (Objects.isNull(project) || project.deleted())
-            throw new EntityNotFoundException("Project", projectcode);
+            throw new EntityNotFoundException("Project", projectCode);
         return project;
     }
 
     @Override
-    public boolean deleteByCode(Long projectcode) {
-        validateDoesNotExist(projectcode);
-        return projectRepository.deleteByCode(projectcode);
+    public boolean deleteByCode(String projectCode) {
+        validateDoesNotExist(projectCode);
+        return projectRepository.deleteByCode(projectCode);
     }
 
     @Override
-    public Project findProject(Long projectcode) {
-        var project = projectRepository.findProject(projectcode);
+    public Project findProject(String projectCode) {
+        var project = projectRepository.findProject(projectCode);
         if (Objects.isNull(project) || project.deleted())
-            throw new EntityNotFoundException("Project", projectcode);
+            throw new EntityNotFoundException("Project", projectCode);
         return project;
     }
 
-    private void validateExist(Long code) {
+    private void validateExist(String code) {
         var oldProject = projectRepository.findByCode(code);
         if (!Objects.isNull(oldProject) && !oldProject.deleted()) {
             throw new EntityFoundException("Project", code);
         }
     }
 
-    private void validateDoesNotExist(Long code) {
+    private void validateDoesNotExist(String code) {
         var oldProject = projectRepository.findByCode(code);
         if (Objects.isNull(oldProject) || oldProject.deleted()) {
             throw new EntityNotFoundException("Project", code);

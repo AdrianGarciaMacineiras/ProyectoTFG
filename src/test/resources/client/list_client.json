@@ -1,13 +1,12 @@
 [
   {
-    "code": 1,
+    "code": "1",
     "name": "Inditex",
     "industry": "RETAIL",
     "country": "Spain",
     "principalOffice": "itxhq",
     "hQ": "A Coruña",
-    "offices":
-    [
+    "offices": [
       {
         "code": "itxhq",
         "name": "Servicios Centrales",
@@ -18,14 +17,13 @@
     ]
   },
   {
-    "code": 2,
+    "code": "2",
     "name": "Inditex",
     "industry": "RETAIL",
     "country": "Spain",
     "principalOffice": "itxhq",
     "hQ": "A Coruña",
-    "offices":
-    [
+    "offices": [
       {
         "code": "itxhq",
         "name": "Servicios Centrales",

@@ -7,8 +7,7 @@ import static com.sngular.skilltree.fixtures.ClientFixtures.LIST_CLIENT_JSON;
 import static com.sngular.skilltree.fixtures.ClientFixtures.PATCH_CLIENT_BY_CODE_JSON;
 import static com.sngular.skilltree.fixtures.ClientFixtures.UPDATED_CLIENT_BY_CODE;
 import static com.sngular.skilltree.fixtures.ClientFixtures.UPDATED_CLIENT_BY_CODE_JSON;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,7 +50,7 @@ class ClientControllerTest {
 
     @Test
     void getClientByCode() throws Exception{
-        when(clientService.findByCode(anyLong())).thenReturn(CLIENT_BY_CODE);
+        when(clientService.findByCode(anyString())).thenReturn(CLIENT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/client/1")
                         .accept(MediaType.APPLICATION_JSON))
@@ -61,7 +60,7 @@ class ClientControllerTest {
 
     @Test
     void shouldDeleteClientBySuccess() throws Exception{
-        when(clientService.deleteByCode(anyLong())).thenReturn(true);
+        when(clientService.deleteByCode(anyString())).thenReturn(true);
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/client/1")
                         .accept(MediaType.APPLICATION_JSON))
@@ -70,7 +69,7 @@ class ClientControllerTest {
 
     @Test
     void shouldDeleteClientFail() throws Exception{
-        when(clientService.deleteByCode(anyLong())).thenThrow(new EntityNotFoundException("Client", "1"));
+        when(clientService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("Client", "1"));
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/client/1")
                         .accept(MediaType.APPLICATION_JSON))
@@ -79,7 +78,7 @@ class ClientControllerTest {
 
     @Test
     void updateClient() throws Exception {
-        when(clientUpdater.update(anyLong(),any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
+        when(clientUpdater.update(anyString(), any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/client/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -102,7 +101,7 @@ class ClientControllerTest {
 
     @Test
     void patchClient() throws Exception {
-        when(clientUpdater.patch(anyLong(),any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
+        when(clientUpdater.patch(anyString(), any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
                         .patch("/client/1")
                         .contentType(MediaType.APPLICATION_JSON)
