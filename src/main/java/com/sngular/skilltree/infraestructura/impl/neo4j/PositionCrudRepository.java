@@ -6,9 +6,9 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 import java.util.List;
 
-public interface PositionCrudRepository extends Neo4jRepository<PositionNode, String>, CustomPositionRepository {
+public interface PositionCrudRepository extends Neo4jRepository<PositionNode, Long>, CustomPositionRepository {
 
     PositionNode findByCode(String positionCode);
 
-  List<PositionNode> findByDeletedIsFalse();
+    List<PositionNode> findByDeletedIsFalse();
 }
