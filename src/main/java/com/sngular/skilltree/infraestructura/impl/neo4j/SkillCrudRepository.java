@@ -6,13 +6,13 @@ import org.springframework.data.neo4j.repository.query.Query;
 
 public interface SkillCrudRepository extends Neo4jRepository<SkillNode, Long> {
 
-    SkillNode findByCode(String skillcode);
+    SkillNode findByCode(String skillCode);
 
-    @Query("MATCH(n:Skill{code:$skillcode}) RETURN n")
-    SkillNode findSkillByCode(String skillcode);
+    @Query("MATCH(n:Skill{code:$skillCode}) RETURN n")
+    SkillNode findSkillByCode(String skillCode);
 
-    @Query("MATCH p=()-[r:REQUIRE]->(n:Skill{code:$skillcode}) DELETE r")
-    void deleteRequire(String skillcode);
+    @Query("MATCH p=()-[r:REQUIRE]->(n:Skill{code:$skillCode}) DELETE r")
+    void deleteRequire(String skillCode);
 
-    SkillNode findByName(String skillname);
+    SkillNode findByName(String skillName);
 }
