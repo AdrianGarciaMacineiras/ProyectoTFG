@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TeamCrudRepository extends Neo4jRepository<TeamNode, String>, CustomTeamRepository {
 
-    TeamNode findByCode(String teamcode);
+    TeamNode findByCode(String teamCode);
 
     List<TeamNode> findByDeletedIsFalse();
 }
