@@ -6,7 +6,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 import java.util.List;
 
-public interface ProjectCrudRepository extends Neo4jRepository<ProjectNode, Long>, CustomProjectRepository {
+public interface ProjectCrudRepository extends Neo4jRepository<ProjectNode, String>, CustomProjectRepository {
 
     ProjectNode findByCode(String projectCode);
 
