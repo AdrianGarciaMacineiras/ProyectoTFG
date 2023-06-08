@@ -37,12 +37,6 @@ public class PositionFixtures {
                     .name("Spring")
                     .build();
 
-    public static final ProjectRoles ROLES =
-            ProjectRoles.builder()
-                    .rol("senior")
-                    .number(2)
-                    .build();
-
     public  static final Project PROJECT_BY_CODE =
             Project.builder()
                     .code("1")
@@ -109,7 +103,6 @@ public class PositionFixtures {
                     .office(OFFICE)
                     .role("Team Leader")
                     .name("Tech Leader at INDITEX")
-                    .client(CLIENT_BY_CODE)
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)
@@ -127,7 +120,6 @@ public class PositionFixtures {
                     .office(OFFICE)
                     .role("Team Leader")
                     .name("Tech Leader at INDITEX")
-                    .client(CLIENT_BY_CODE)
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)
@@ -143,7 +135,6 @@ public class PositionFixtures {
                     .office(OFFICE)
                     .role("Team Leader")
                     .name("Tech Leader at INDITEX")
-                    .client(CLIENT_BY_CODE)
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)
@@ -162,7 +153,6 @@ public class PositionFixtures {
                     .office(OFFICE)
                     .role("Team Leader")
                     .name("Tech Leader at INDITEX")
-                    .client(CLIENT_BY_CODE)
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)

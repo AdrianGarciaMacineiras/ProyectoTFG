@@ -85,7 +85,6 @@ public class CandidateFixtures {
                     .office(OFFICE)
                     .role("Team Leader")
                     .name("Teach Leader at INDITEX")
-                    .client(CLIENT_BY_CODE)
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)

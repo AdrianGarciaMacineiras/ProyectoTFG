@@ -1,6 +1,7 @@
 package com.sngular.skilltree.model;
 
 public enum EnumLevelReq {
+
     MANDATORY("mandatory"),
     NICE_TO_HAVE("nice_to_have");
 

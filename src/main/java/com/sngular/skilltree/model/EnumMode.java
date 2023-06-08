@@ -15,5 +15,15 @@ public enum EnumMode {
         return value;
     }
 
-
+    public EnumMode from(final String value) {
+        final EnumMode result;
+        if (REMOTE.value.equalsIgnoreCase(value)) {
+            result = REMOTE;
+        } else if (PRESENTIAL.value.equalsIgnoreCase(value)) {
+            result = PRESENTIAL;
+        } else {
+            result = MIX;
+        }
+        return result;
+    }
 }

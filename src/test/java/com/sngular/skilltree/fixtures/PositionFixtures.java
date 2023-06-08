@@ -1,23 +1,11 @@
 package com.sngular.skilltree.fixtures;
 
+import com.sngular.skilltree.model.*;
+import com.sngular.skilltree.testutil.FileHelper;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import com.sngular.skilltree.model.Client;
-import com.sngular.skilltree.model.EnumGuards;
-import com.sngular.skilltree.model.EnumLevelReq;
-import com.sngular.skilltree.model.EnumMinLevel;
-import com.sngular.skilltree.model.EnumMode;
-import com.sngular.skilltree.model.EnumTitle;
-import com.sngular.skilltree.model.Office;
-import com.sngular.skilltree.model.People;
-import com.sngular.skilltree.model.Position;
-import com.sngular.skilltree.model.PositionSkill;
-import com.sngular.skilltree.model.Project;
-import com.sngular.skilltree.model.ProjectRoles;
-import com.sngular.skilltree.model.Skill;
-import com.sngular.skilltree.testutil.FileHelper;
 
 public class PositionFixtures {
 
@@ -103,7 +91,6 @@ public class PositionFixtures {
                     .office(OFFICE)
                     .role("Team Leader")
                     .name("Tech Leader at INDITEX")
-                    .client(CLIENT_BY_CODE)
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)
@@ -119,7 +106,6 @@ public class PositionFixtures {
                     .office(OFFICE)
                     .role("Leader")
                     .name("Leader at INDITEX")
-                    .client(CLIENT_BY_CODE)
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)
@@ -135,7 +121,6 @@ public class PositionFixtures {
                     .office(OFFICE)
                     .role("Team Leader")
                     .name("Tech Leader at INDITEX")
-                    .client(CLIENT_BY_CODE)
                     .closingDate(date)
                     .mode(EnumMode.REMOTE)
                     .openingDate(date)

@@ -1,6 +1,7 @@
 package com.sngular.skilltree.model;
 
 public enum EnumLevel {
+
     LOW("low"),
     MEDIUM("medium"),
     CONFIDENT("confident"),

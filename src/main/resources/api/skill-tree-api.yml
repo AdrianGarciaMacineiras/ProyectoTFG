@@ -1658,7 +1658,6 @@ components:
       required:
         - code
         - projectCode
-        - clientCode
         - skills
       properties:
         code:
@@ -1666,8 +1665,6 @@ components:
         name:
           type: string
         projectCode:
-          type: string
-        clientCode:
           type: string
         openingDate:
           type: string
@@ -1706,8 +1703,6 @@ components:
         name:
           type: string
         projectCode:
-          type: string
-        clientCode:
           type: string
         openingDate:
           type: string
