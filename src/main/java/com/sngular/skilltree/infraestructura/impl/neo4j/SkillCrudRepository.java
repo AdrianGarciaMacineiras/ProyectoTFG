@@ -4,7 +4,7 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 
-public interface SkillCrudRepository extends Neo4jRepository<SkillNode, Long> {
+public interface SkillCrudRepository extends Neo4jRepository<SkillNode, String> {
 
     SkillNode findByCode(String skillCode);
 
