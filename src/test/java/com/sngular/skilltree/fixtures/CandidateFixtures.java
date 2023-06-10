@@ -1,16 +1,13 @@
 package com.sngular.skilltree.fixtures;
 
+import com.sngular.skilltree.CommonFixtures;
 import com.sngular.skilltree.model.*;
 import com.sngular.skilltree.testutil.FileHelper;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CandidateFixtures {
-
-    public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+public class CandidateFixtures extends CommonFixtures {
 
     public static final String CANDIDATE_BY_CODE_JSON = FileHelper.getContent("/candidate/candidate_by_code.json");
 
@@ -110,7 +107,7 @@ public class CandidateFixtures {
                     .name("people")
                     .surname("surname")
                     .employeeId("employeeId")
-                    .title(EnumTitle.SENIOR)
+                    .title("SD3")
                     .birthDate(date)
                     .build();
 
@@ -120,7 +117,7 @@ public class CandidateFixtures {
                     .name("people")
                     .surname("surname")
                     .employeeId("employeeId")
-                    .title(EnumTitle.SENIOR)
+                    .title("SD3")
                     .birthDate(date)
                     .build();
 

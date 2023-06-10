@@ -3,7 +3,8 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 public enum EnumLevelReq {
 
     MANDATORY("mandatory"),
-    NICE_TO_HAVE("nice_to_have");
+    NICE_TO_HAVE("nice_to_have"),
+    UNKNOWN("unknown");
 
     private final String value;
 
@@ -11,16 +12,15 @@ public enum EnumLevelReq {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
+    public String getValue() {
+        return value;
     }
 
-    public EnumLevelReq from(final String value) {
-        final EnumLevelReq result;
+    public static EnumLevelReq from(final String value) {
+        var result = UNKNOWN;
         if (MANDATORY.value.equalsIgnoreCase(value)) {
             result = MANDATORY;
-        } else {
+        } else if (NICE_TO_HAVE.value.equalsIgnoreCase(value)) {
             result = NICE_TO_HAVE;
         }
         return result;

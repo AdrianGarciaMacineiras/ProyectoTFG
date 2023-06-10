@@ -4,7 +4,8 @@ public enum EnumGuards {
 
     PASSIVE("passive"),
     ACTIVE("active"),
-    NO_GUARD("no_guard");
+    NONE("NONE"),
+    UNKNOWN("unknown");
 
     private final String value;
 
@@ -24,7 +25,7 @@ public enum EnumGuards {
         } else if (ACTIVE.getValue().equalsIgnoreCase(value)) {
             result = ACTIVE;
         } else {
-            result = NO_GUARD;
+            result = NONE;
         }
         return result;
     }

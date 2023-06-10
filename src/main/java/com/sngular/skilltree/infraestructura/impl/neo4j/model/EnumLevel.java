@@ -3,9 +3,9 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 public enum EnumLevel {
 
     LOW("low"),
-    MEDIUM("medium"),
-    CONFIDENT("confident"),
-    HIGH("high");
+    MIDDLE("middle"),
+    ADVANCED("advanced"),
+    UNKNOWN("unknown");
 
     private final String value;
 
@@ -17,16 +17,14 @@ public enum EnumLevel {
         return value;
     }
 
-    public EnumLevel from(final String value) {
-        EnumLevel result;
+    public static EnumLevel from(final String value) {
+        var result = UNKNOWN;
         if (LOW.value.equalsIgnoreCase(value)) {
             result = LOW;
-        } else if (MEDIUM.value.equalsIgnoreCase(value)) {
-            result = MEDIUM;
-        } else if (CONFIDENT.value.equalsIgnoreCase(value)) {
-            result = CONFIDENT;
-        } else {
-            result = HIGH;
+        } else if (MIDDLE.value.equalsIgnoreCase(value)) {
+            result = MIDDLE;
+        } else if (ADVANCED.value.equalsIgnoreCase(value)) {
+            result = ADVANCED;
         }
         return result;
     }

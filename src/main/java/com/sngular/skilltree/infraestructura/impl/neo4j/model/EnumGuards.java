@@ -4,7 +4,8 @@ public enum EnumGuards {
 
     PASSIVE("passive"),
     ACTIVE("active"),
-    NO_GUARD("no_guard");
+    NONE("none"),
+    UNKNOWN("unknown");
 
     private final String value;
 
@@ -16,15 +17,15 @@ public enum EnumGuards {
         return value;
     }
 
-    public EnumGuards from(final String value) {
-        final EnumGuards result;
+    public static EnumGuards from(final String value) {
+        var result = UNKNOWN;
 
         if (PASSIVE.getValue().equalsIgnoreCase(value)) {
             result = PASSIVE;
         } else if (ACTIVE.getValue().equalsIgnoreCase(value)) {
             result = ACTIVE;
-        } else {
-            result = NO_GUARD;
+        } else if (NONE.getValue().equalsIgnoreCase(value)) {
+            result = NONE;
         }
         return result;
     }

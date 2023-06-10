@@ -3,7 +3,8 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 public enum EnumMode {
     REMOTE("remote"),
     PRESENTIAL("presential"),
-    MIX("mix");
+    MIX("mix"),
+    UNKNOWN("unknown");
 
     private final String value;
 
@@ -15,13 +16,13 @@ public enum EnumMode {
         return value;
     }
 
-    public EnumMode from(final String value) {
-        final EnumMode result;
+    public static EnumMode from(final String value) {
+        var result = UNKNOWN;
         if (REMOTE.value.equalsIgnoreCase(value)) {
             result = REMOTE;
         } else if (PRESENTIAL.value.equalsIgnoreCase(value)) {
             result = PRESENTIAL;
-        } else {
+        } else if (MIX.value.equalsIgnoreCase(value)) {
             result = MIX;
         }
         return result;

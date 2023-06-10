@@ -1,15 +1,12 @@
 package com.sngular.skilltree.application;
 
+import com.sngular.skilltree.CommonFixtures;
 import com.sngular.skilltree.model.*;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PositionFixtures {
-
-    public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+public class PositionFixtures extends CommonFixtures {
 
     public static final Office OFFICE =
             Office.builder()
@@ -67,7 +64,7 @@ public class PositionFixtures {
                     .name("people")
                     .surname("surname")
                     .employeeId("employeeId")
-                    .title(EnumTitle.SENIOR)
+                    .title("SD3")
                     .birthDate(date)
                     .build();
 

@@ -1,17 +1,15 @@
 package com.sngular.skilltree.application;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import com.sngular.skilltree.CommonFixtures;
+import com.sngular.skilltree.model.Assignment;
+import com.sngular.skilltree.model.Assignments;
+import com.sngular.skilltree.model.People;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.sngular.skilltree.model.*;
-
-public final class PersonFixtures {
-
-  public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+public final class PersonFixtures extends CommonFixtures {
 
   public static final Assignment ASSIGNMENT =
           Assignment.builder()
@@ -28,12 +26,12 @@ public final class PersonFixtures {
                   .build();
 
   public static final People PEOPLE_BY_CODE =
-    People.builder()
-            .code("1")
-            .name("people")
-            .surname("surname")
-            .employeeId("employeeId")
-            .title(EnumTitle.SENIOR)
+          People.builder()
+                  .code("1")
+                  .name("people")
+                  .surname("surname")
+                  .employeeId("employeeId")
+                  .title("SD3")
             .birthDate(date)
             .assignable(true)
             .assigns(List.of(ASSIGNMENTS))
@@ -47,7 +45,7 @@ public final class PersonFixtures {
                   .name("people")
                   .surname("surname")
                   .employeeId("employeeId")
-                  .title(EnumTitle.SENIOR)
+                  .title("SD3")
                   .birthDate(date)
                   .assignable(true)
                   .assigns(List.of(ASSIGNMENTS))
@@ -60,7 +58,7 @@ public final class PersonFixtures {
                   .name("people3")
                   .surname("surname3")
                   .employeeId("employeeId")
-                  .title(EnumTitle.SENIOR)
+                  .title("SD3")
                   .birthDate(date)
                   .build();
 
@@ -70,11 +68,11 @@ public final class PersonFixtures {
                   .name("people2")
                   .surname("surname2")
                   .employeeId("employeeId")
-                  .title(EnumTitle.DEVELOPER)
+                  .title("SD2")
                   .birthDate(date)
                   .build();
 
-  public static final List<People> PEOPLE_LIST = new ArrayList<People>(){{
+  public static final List<People> PEOPLE_LIST = new ArrayList<>() {{
     add(PEOPLE_BY_CODE);
     add(PEOPLE2_BY_CODE);
   }};

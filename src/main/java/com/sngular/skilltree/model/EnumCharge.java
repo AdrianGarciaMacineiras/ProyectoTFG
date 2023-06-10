@@ -3,7 +3,8 @@ package com.sngular.skilltree.model;
 public enum EnumCharge {
 
     DIRECTOR("director"),
-    HEAD("head");
+    HEAD("head"),
+    UNKNOWN("unknown");
 
     private final String value;
 

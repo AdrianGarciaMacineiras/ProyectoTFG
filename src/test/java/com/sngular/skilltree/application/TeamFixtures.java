@@ -1,28 +1,24 @@
 package com.sngular.skilltree.application;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
+import com.sngular.skilltree.CommonFixtures;
 import com.sngular.skilltree.model.EnumCharge;
-import com.sngular.skilltree.model.EnumTitle;
 import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Team;
 
-public class TeamFixtures {
+import java.util.List;
 
-    public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+public class TeamFixtures extends CommonFixtures {
 
     public static final People PEOPLE_BY_CODE =
-      People.builder()
-              .code("1")
-            .name("people2")
-            .surname("LaPel")
-            .employeeId("900003940059")
-            .title(EnumTitle.DEVELOPER)
-            .birthDate(date)
-            .build();
+            People.builder()
+                    .code("1")
+                    .name("people2")
+                    .surname("LaPel")
+                    .employeeId("900003940059")
+                    .title("SD2")
+                    .birthDate(date)
+                    .build();
 
     public final static Member MEMBER1 =
             Member.builder()

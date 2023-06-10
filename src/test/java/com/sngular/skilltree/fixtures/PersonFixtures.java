@@ -1,19 +1,15 @@
 package com.sngular.skilltree.fixtures;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.sngular.skilltree.CommonFixtures;
 import com.sngular.skilltree.model.Assignment;
 import com.sngular.skilltree.model.Assignments;
-import com.sngular.skilltree.model.EnumTitle;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.testutil.FileHelper;
 
-public final class PersonFixtures {
+import java.util.ArrayList;
+import java.util.List;
 
-  public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+public final class PersonFixtures extends CommonFixtures {
 
   public static final String UPDATED_PERSON_BY_CODE_JSON = FileHelper.getContent("/person/updated_person_by_code.json");
 
@@ -43,7 +39,7 @@ public final class PersonFixtures {
                   .name("people")
                   .surname("surname")
                   .employeeId("employeeId")
-                  .title(EnumTitle.SENIOR)
+                  .title("SD3")
                   .birthDate(date)
                   .assignable(true)
                   .assigns(List.of(ASSIGNMENTS))
@@ -55,7 +51,7 @@ public final class PersonFixtures {
                   .name("people3")
                   .surname("surname3")
                   .employeeId("employeeId")
-                  .title(EnumTitle.SENIOR)
+                  .title("SD3")
                   .birthDate(date)
                   .build();
 
@@ -65,7 +61,7 @@ public final class PersonFixtures {
                   .name("people2")
                   .surname("surname2")
                   .employeeId("employeeId")
-                  .title(EnumTitle.DEVELOPER)
+                  .title("SD2")
                   .birthDate(date)
                   .build();
 

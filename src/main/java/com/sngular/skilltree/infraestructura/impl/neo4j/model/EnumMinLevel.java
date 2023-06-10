@@ -3,7 +3,8 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 public enum EnumMinLevel {
     HIGH("high"),
     MEDIUM("medium"),
-    LOW("low");
+    LOW("low"),
+    UNKNOWN("unknown");
 
     private final String value;
 
@@ -15,14 +16,14 @@ public enum EnumMinLevel {
         return value;
     }
 
-    public EnumMinLevel from(final String value) {
-        final EnumMinLevel result;
+    public static EnumMinLevel from(final String value) {
+        var result = UNKNOWN;
 
         if (HIGH.value.equalsIgnoreCase(value)) {
             result = HIGH;
         } else if (MEDIUM.value.equalsIgnoreCase(value)) {
             result = MEDIUM;
-        } else {
+        } else if (LOW.value.equalsIgnoreCase(value)) {
             result = LOW;
         }
         return result;

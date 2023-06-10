@@ -1,28 +1,20 @@
 package com.sngular.skilltree.application;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import com.sngular.skilltree.CommonFixtures;
+import com.sngular.skilltree.model.*;
+
 import java.util.List;
 
-import com.sngular.skilltree.model.Client;
-import com.sngular.skilltree.model.EnumGuards;
-import com.sngular.skilltree.model.Office;
-import com.sngular.skilltree.model.Project;
-import com.sngular.skilltree.model.ProjectRoles;
-import com.sngular.skilltree.model.Skill;
-
-public class ProjectFixtures {
-
-    public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+public class ProjectFixtures extends CommonFixtures {
 
     public static final Office OFFICE =
-      Office.builder()
-            .code("itxhq")
-            .address("Baños de Arteixo S/N")
-            .phone("555 89 90 09")
-            .geolocation("45.667776, 12.455555")
-            .name("Servicios Centrales")
-            .build();
+            Office.builder()
+                    .code("itxhq")
+                    .address("Baños de Arteixo S/N")
+                    .phone("555 89 90 09")
+                    .geolocation("45.667776, 12.455555")
+                    .name("Servicios Centrales")
+                    .build();
 
     public static final Client CLIENT_BY_CODE =
             Client.builder()

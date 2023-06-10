@@ -1,16 +1,15 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model.converter;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.EnumCharge;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.EnumLevelReq;
 import org.neo4j.driver.Value;
 import org.neo4j.driver.internal.value.StringValue;
 import org.springframework.data.neo4j.core.convert.Neo4jPersistentPropertyConverter;
-import org.springframework.lang.Nullable;
 
 import java.util.Objects;
 
-public class EnumChargeConverter implements Neo4jPersistentPropertyConverter<EnumCharge> {
+public class EnumLevelReqConverter implements Neo4jPersistentPropertyConverter<EnumLevelReq> {
     @Override
-    public Value write(@Nullable EnumCharge source) {
+    public Value write(EnumLevelReq source) {
         if (Objects.isNull(source)) {
             throw new NullPointerException("Enum is null");
         }
@@ -18,7 +17,7 @@ public class EnumChargeConverter implements Neo4jPersistentPropertyConverter<Enu
     }
 
     @Override
-    public EnumCharge read(Value source) {
-        return EnumCharge.from(source.asString());
+    public EnumLevelReq read(Value source) {
+        return EnumLevelReq.from(source.asString());
     }
 }

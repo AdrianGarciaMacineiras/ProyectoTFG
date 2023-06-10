@@ -5,9 +5,10 @@ public enum EnumLevel {
     LOW("low"),
     MEDIUM("medium"),
     CONFIDENT("confident"),
-    HIGH("high");
+    HIGH("high"),
+    UNKNOWN("unknown");
 
-    private final String value;
+    private String value;
 
     EnumLevel(String value) {
         this.value = value;

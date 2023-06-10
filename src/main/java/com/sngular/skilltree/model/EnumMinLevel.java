@@ -3,7 +3,8 @@ package com.sngular.skilltree.model;
 public enum EnumMinLevel {
     HIGH("high"),
     MEDIUM("medium"),
-    LOW("low");
+    LOW("low"),
+    UNKNOWN("unknown");
 
     private final String value;
 

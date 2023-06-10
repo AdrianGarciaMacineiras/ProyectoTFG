@@ -2,7 +2,8 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
 public enum EnumCharge {
     DIRECTOR("director"),
-    HEAD("head");
+    HEAD("head"),
+    UNKNOWN("unknown");
 
     private final String value;
 
@@ -15,11 +16,11 @@ public enum EnumCharge {
     }
 
     public static EnumCharge from(final String value) {
-        final EnumCharge result;
+        var result = UNKNOWN;
 
         if (DIRECTOR.getValue().equalsIgnoreCase(value)) {
             result = DIRECTOR;
-        } else {
+        } else if (HEAD.getValue().equalsIgnoreCase(value)) {
             result = HEAD;
         }
         return result;

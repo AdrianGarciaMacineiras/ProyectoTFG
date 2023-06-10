@@ -1737,6 +1737,7 @@ components:
         - REMOTE
         - PRESENTIAL
         - MIX
+        - UNKNOWN
 
     client:
       type: object
@@ -1814,7 +1815,16 @@ components:
           format: date
         status:
           type: string
-          enum: [OPENED, ASSIGNED, INTERVIEWED, PRESENTED, OK, KO]
+          enum:
+            - QUALIFICATION
+            - PENDING_PRESENTATION
+            - PRESENTED_TO_CLIENT
+            - PENDING_INTERVIEW
+            - PENDING_TECH_TEST
+            - PENDING_CLIENT_DECISION
+            - OK
+            - KO
+            - UNKNOWN
         candidateCode:
           type: string
         positionCode:
@@ -1838,7 +1848,16 @@ components:
           format: date
         status:
           type: string
-          enum: [OPENED, ASSIGNED, INTERVIEWED, PRESENTED, OK, KO ]
+          enum:
+            - QUALIFICATION
+            - PENDING_PRESENTATION
+            - PRESENTED_TO_CLIENT
+            - PENDING_INTERVIEW
+            - PENDING_TECH_TEST
+            - PENDING_CLIENT_DECISION
+            - OK
+            - KO
+            - UNKNOWN
         candidateCode:
           type: string
         positionCode:
@@ -1860,10 +1879,10 @@ components:
         level:
           type: string
           enum:
-          - HIGH
-          - MEDIUM
-          - CONFIDENT
-          - LOW
+            - ADVANCED
+            - MIDDLE
+            - LOW
+            - UNKNOWN
         experience:
           type: integer
           format: int32
@@ -1885,12 +1904,14 @@ components:
           enum:
             - MANDATORY
             - NICE_TO_HAVE
+            - UNKNOWN
         minLevel:
           type: string
           enum:
             - HIGH
             - MEDIUM
             - LOW
+            - UNKNOWN
         minExp:
           type: integer
           format: int32
@@ -1912,7 +1933,8 @@ components:
           type: string
           format: date
         title:
-          $ref: "#/components/schemas/title"
+          type: string
+        #         $ref: "#/components/schemas/title"
         roles:
           type: array
           items:
@@ -1939,10 +1961,10 @@ components:
               level:
                 type: string
                 enum:
-                  - HIGH
-                  - MEDIUM
-                  - CONFIDENT
+                  - ADVANCE
+                  - MIDDLE
                   - LOW
+                  - UNKNOWN
               experience:
                 type: integer
                 format: int32
@@ -2024,10 +2046,10 @@ components:
               level:
                 type: string
                 enum:
-                  - HIGH
-                  - MEDIUM
-                  - CONFIDENT
+                  - ADVANCED
+                  - MIDDLE
                   - LOW
+                  - UNKNOWN
               experience:
                 type: integer
                 format: int32
@@ -2084,7 +2106,7 @@ components:
         - SENIOR
         - DEVELOPER
         - JUNIOR
-
+        - UNKNOWN
     assignment:
       type: object
       properties:
@@ -2171,7 +2193,7 @@ components:
           enum:
             - DIRECTOR
             - HEAD
-
+            - UNKNOWN
     strategicTeamSkillNotUsed:
       type: object
       properties:

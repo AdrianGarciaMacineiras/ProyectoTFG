@@ -3,7 +3,8 @@ package com.sngular.skilltree.model;
 public enum EnumMode {
     REMOTE("remote"),
     PRESENTIAL("presential"),
-    MIX("mix");
+    MIX("mix"),
+    UNKNOWN("unknown");
 
     private final String value;
 

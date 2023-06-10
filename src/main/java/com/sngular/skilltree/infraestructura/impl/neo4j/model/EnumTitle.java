@@ -7,5 +7,6 @@ public enum EnumTitle {
         EXPERT,
         SENIOR,
         DEVELOPER,
-        JUNIOR
+        JUNIOR,
+        UNKNOWN
 }

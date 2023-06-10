@@ -1,12 +1,13 @@
 package com.sngular.skilltree.fixtures;
 
-import java.util.List;
-
+import com.sngular.skilltree.CommonFixtures;
 import com.sngular.skilltree.model.Client;
 import com.sngular.skilltree.model.Office;
 import com.sngular.skilltree.testutil.FileHelper;
 
-public class ClientFixtures {
+import java.util.List;
+
+public class ClientFixtures extends CommonFixtures {
 
     public static final String CLIENT_BY_CODE_JSON = FileHelper.getContent("/client/client_by_code.json");
 
