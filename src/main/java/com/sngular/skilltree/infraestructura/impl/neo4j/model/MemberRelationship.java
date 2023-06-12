@@ -9,6 +9,6 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 
 @RelationshipProperties
 @Builder(toBuilder = true)
-public record MemberRelationship(@RelationshipId String id, @TargetNode PeopleNode peopleNode,
+public record MemberRelationship(@RelationshipId String id, @TargetNode PeopleNode people,
                                  @ConvertWith(converter = EnumChargeConverter.class) EnumCharge charge) {
 }

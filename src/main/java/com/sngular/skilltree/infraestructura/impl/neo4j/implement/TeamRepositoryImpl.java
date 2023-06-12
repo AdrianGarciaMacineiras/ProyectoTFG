@@ -5,15 +5,18 @@ import com.sngular.skilltree.infraestructura.TeamRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.TeamCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.TeamNodeMapper;
-import com.sngular.skilltree.infraestructura.impl.neo4j.projection.TeamProjection;
-import com.sngular.skilltree.model.*;
+import com.sngular.skilltree.model.Member;
+import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.Team;
 import lombok.RequiredArgsConstructor;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
@@ -38,7 +41,7 @@ public class TeamRepositoryImpl implements TeamRepository {
     public Team save(Team team) {
         var teamNode = mapper.toNode(team);
         for (var member : teamNode.getMembers()){
-            var peopleNode = peopleCrudRepository.findByCode(member.peopleNode().getCode());
+            var peopleNode = peopleCrudRepository.findByCode(member.people().getCode());
             if (Objects.isNull(peopleNode) || peopleNode.isDeleted()) {
                 throw new EntityNotFoundException("People", peopleNode.getCode());
             }
@@ -64,7 +67,7 @@ public class TeamRepositoryImpl implements TeamRepository {
 
                     return Member.builder()
                             .id(member.get("id").asString())
-                            .charge(NULL.equalsIgnoreCase(member.get("charge").asString()) ? null : EnumCharge.valueOf(member.get("charge").asString()))
+                            .charge(NULL.equalsIgnoreCase(member.get("charge").asString()) ? null : member.get("charge").asString())
                             .people(person)
                             .build();
 
