@@ -5,6 +5,7 @@ import com.sngular.skilltree.infraestructura.TeamRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.TeamCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.TeamNodeMapper;
+import com.sngular.skilltree.infraestructura.impl.neo4j.projection.TeamProjection;
 import com.sngular.skilltree.model.*;
 import lombok.RequiredArgsConstructor;
 import org.neo4j.driver.Record;
@@ -29,7 +30,9 @@ public class TeamRepositoryImpl implements TeamRepository {
     public static final String NULL = "null";
 
     @Override
-    public List<Team> findAll() { return mapper.map(crud.findByDeletedIsFalse()); }
+    public List<Team> findAll() {
+        return mapper.mapProjection(crud.findByDeletedIsFalse());
+    }
 
     @Override
     public Team save(Team team) {
@@ -79,7 +82,7 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     @Override
     public List<Team> findByDeletedIsFalse() {
-        return mapper.map(crud.findByDeletedIsFalse());
+        return mapper.mapProjection(crud.findByDeletedIsFalse());
     }
 
     private static People getPeople(Record result) {
