@@ -22,7 +22,7 @@ public class ResolveServiceTeamNode {
     public List<Member> mapToMember(List<MemberRelationship> memberRelationshipList){
         final List<Member> memberList = new ArrayList<>();
         for (var memberRelationship : memberRelationshipList){
-            var people = mapper.fromNode(memberRelationship.peopleNode());
+            var people = mapper.fromNode(memberRelationship.people());
             var member = Member.builder()
                     .people(people)
                     .charge(com.sngular.skilltree.model.EnumCharge.valueOf(memberRelationship.charge().name()))

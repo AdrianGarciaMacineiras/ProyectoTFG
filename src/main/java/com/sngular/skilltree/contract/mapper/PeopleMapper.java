@@ -1,14 +1,6 @@
 package com.sngular.skilltree.contract.mapper;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-
-import com.sngular.skilltree.api.model.AssignmentDTO;
-import com.sngular.skilltree.api.model.CertificateDTO;
-import com.sngular.skilltree.api.model.PatchedPeopleDTO;
-import com.sngular.skilltree.api.model.PeopleDTO;
-import com.sngular.skilltree.api.model.RolesDTO;
+import com.sngular.skilltree.api.model.*;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Assignment;
@@ -18,6 +10,10 @@ import com.sngular.skilltree.model.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 @Mapper(config = CommonMapperConfiguration.class, uses = {SkillMapper.class, CandidateMapper.class, ResolveService.class})
 public interface PeopleMapper {
@@ -89,6 +85,6 @@ public interface PeopleMapper {
   }
 
     default String toPeopleCode(final People people) {
-      return people.code();
+      return Objects.isNull(people) ? "Unknown" : people.code();
     }
 }

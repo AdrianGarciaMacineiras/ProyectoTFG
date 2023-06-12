@@ -12,5 +12,5 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 public record KnowsRelationship(@RelationshipId String id, Integer experience,
                                 @ConvertWith(converter = EnumLevelConverter.class) EnumLevel level,
                                 Boolean primary,
-                                @TargetNode SkillNode skillNode) {
+                                @TargetNode SkillNode skill) {
 }
