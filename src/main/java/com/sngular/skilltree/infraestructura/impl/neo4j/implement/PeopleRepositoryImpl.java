@@ -1,18 +1,16 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
-import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleView;
+import com.sngular.skilltree.model.People;
 import lombok.RequiredArgsConstructor;
-import org.neo4j.driver.Record;
-import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,7 +24,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
     @Override
     public List<People> findAll() {
-        return mapper.map(crud.findByDeletedIsFalse());
+        return mapper.map(crud.findByDeletedIsFalse(PeopleView.class));
     }
 
     @Override
@@ -47,7 +45,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
     @Override
     public boolean deleteByCode(String personCode) {
-        var node = crud.findByCode(personCode);
+        var node = crud.findByCode(personCode, PeopleNode.class);
         node.setDeleted(true);
         crud.save(node);
         return true;
@@ -55,7 +53,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
     @Override
     public List<People> findByDeletedIsFalse() {
-        return mapper.map(crud.findByDeletedIsFalse());
+        return mapper.map(crud.findByDeletedIsFalse(PeopleView.class));
     }
 
     @Override
@@ -72,8 +70,8 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
         return peopleCodes
                 .parallelStream()
-                .map(crud::findByCode)
-                .map(mapper::fromNode)
+                .map(code -> crud.findByCode(code, PeopleView.class))
+                .map(mapper::fromView)
                 .toList();
 
     }
@@ -93,8 +91,8 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
         return peopleCodes
                 .parallelStream()
-                .map(crud::findByCode)
-                .map(mapper::fromNode)
+                .map(code -> crud.findByCode(code, PeopleView.class))
+                .map(mapper::fromView)
                 .toList();
     }
 

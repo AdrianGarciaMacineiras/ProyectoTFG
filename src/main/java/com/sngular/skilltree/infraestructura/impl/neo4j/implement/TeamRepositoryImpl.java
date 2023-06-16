@@ -5,15 +5,21 @@ import com.sngular.skilltree.infraestructura.TeamRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.TeamCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.TeamNodeMapper;
-import com.sngular.skilltree.infraestructura.impl.neo4j.projection.TeamProjection;
-import com.sngular.skilltree.model.*;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.TeamView;
+import com.sngular.skilltree.model.EnumCharge;
+import com.sngular.skilltree.model.Member;
+import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.Team;
 import lombok.RequiredArgsConstructor;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
@@ -31,14 +37,14 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     @Override
     public List<Team> findAll() {
-        return mapper.mapProjection(crud.findByDeletedIsFalse());
+        return crud.findByDeletedIsFalse(TeamView.class).stream().map(mapper::map).toList();
     }
 
     @Override
     public Team save(Team team) {
         var teamNode = mapper.toNode(team);
         for (var member : teamNode.getMembers()){
-            var peopleNode = peopleCrudRepository.findByCode(member.peopleNode().getCode());
+            var peopleNode = peopleCrudRepository.findByCode(member.people().getCode(), PeopleNode.class);
             if (Objects.isNull(peopleNode) || peopleNode.isDeleted()) {
                 throw new EntityNotFoundException("People", peopleNode.getCode());
             }
@@ -56,11 +62,11 @@ public class TeamRepositoryImpl implements TeamRepository {
 
         return new ArrayList<>(client.query(query)
                 .fetchAs(Member.class)
-                .mappedBy((TypeSystem t, Record record) ->{
+                .mappedBy((TypeSystem t, Record queryResult) -> {
 
-                    People person = getPeople(record);
+                    People person = getPeople(queryResult);
 
-                    var member = record.get("r");
+                    var member = queryResult.get("r");
 
                     return Member.builder()
                             .id(member.get("id").asString())
@@ -82,7 +88,7 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     @Override
     public List<Team> findByDeletedIsFalse() {
-        return mapper.mapProjection(crud.findByDeletedIsFalse());
+        return crud.findByDeletedIsFalse(TeamView.class).stream().map(mapper::map).toList();
     }
 
     private static People getPeople(Record result) {

@@ -4,6 +4,7 @@ import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.PositionSkill;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CandidateRepository {
 
@@ -19,9 +20,9 @@ public interface CandidateRepository {
 
     List<Candidate> generateCandidates(String positionCode, List<PositionSkill> positionSkills);
 
-    List<Candidate> findByPeopleAndPosition(String positionCode, String peopleCode);
+    Optional<Candidate> findByPeopleAndPosition(String positionCode, String peopleCode);
 
-    void assignCandidate(String positionCode, String peopleCandidate, List<Candidate> candidates);
+    void assignCandidate(String positionCode, String peopleCandidate, Candidate candidates);
 
     List<Candidate> getCandidatesByPosition(String positionCode);
 

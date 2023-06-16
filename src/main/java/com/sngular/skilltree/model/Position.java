@@ -7,8 +7,9 @@ import java.util.List;
 
 
 @Builder(toBuilder = true)
-public record Position(String code, String name, Project project, Client client, LocalDate openingDate, LocalDate closingDate,
+public record Position(String code, String name, Project project, LocalDate openingDate, LocalDate closingDate,
                        String priority, EnumMode mode, Office office, String role, List<PositionSkill> skills,
-                       List<Candidate> candidates, List<PositionAssignment> assignedPeople, People managedBy, boolean deleted) {
+                       List<Candidate> candidates, List<PositionAssignment> assignedPeople, People managedBy,
+                       boolean deleted) {
 
 }

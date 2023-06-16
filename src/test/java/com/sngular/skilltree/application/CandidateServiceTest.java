@@ -15,12 +15,13 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.sngular.skilltree.application.CandidateFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +37,7 @@ class CandidateServiceTest {
     private CandidateService candidateService;
 
     @Captor
-    ArgumentCaptor<List<Candidate>> listArgumentCaptor;
+    ArgumentCaptor<Candidate> candidateArgumentCaptor;
 
     @BeforeEach
     void setUp() {candidateService = new CandidateServiceImpl(candidateRepository, positionRepository);}
@@ -93,25 +94,17 @@ class CandidateServiceTest {
 
     @Test
     @DisplayName("Testing assign candidate")
-    void testAssignCandidate(){
-        when(candidateRepository.findByPeopleAndPosition(anyString(), anyString())).thenReturn(CANDIDATE_LIST);
-        doNothing().when(candidateRepository).assignCandidate(anyString(), anyString(), listArgumentCaptor.capture());
+    void testAssignCandidate() {
+        when(candidateRepository.findByPeopleAndPosition(anyString(), anyString())).thenReturn(Optional.of(CANDIDATE_BY_CODE));
+        doNothing().when(candidateRepository).assignCandidate(anyString(), anyString(), candidateArgumentCaptor.capture());
         candidateService.assignCandidate("itxtl1", "1");
-        assertThat(listArgumentCaptor.getValue()).containsExactly(CANDIDATE_BY_CODE, CANDIDATE2_BY_CODE);
+        assertThat(candidateArgumentCaptor.getValue()).isEqualTo(CANDIDATE_BY_CODE);
     }
 
     @Test
-    @DisplayName("Testing assign null exception")
-    void testAssignCandidateExceptionNull() {
-        when(candidateRepository.findByPeopleAndPosition(anyString(), anyString())).thenReturn(null);
-        Assertions.assertThrows(EntityNotFoundException.class, () ->
-                candidateService.assignCandidate("c1120", "1")
-        );
-    }
-    @Test
     @DisplayName("Testing assign empty exception")
     void testAssignCandidateExceptionEmpty() {
-        when(candidateRepository.findByPeopleAndPosition(anyString(), anyString())).thenReturn(Collections.emptyList());
+        when(candidateRepository.findByPeopleAndPosition(anyString(), anyString())).thenReturn(Optional.empty());
         Assertions.assertThrows(EntityNotFoundException.class, () ->
                 candidateService.assignCandidate("c1120", "1")
         );

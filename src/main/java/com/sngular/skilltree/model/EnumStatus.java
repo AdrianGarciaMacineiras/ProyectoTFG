@@ -1,10 +1,13 @@
 package com.sngular.skilltree.model;
 
 public enum EnumStatus {
-    OPENED,
-    ASSIGNED,
-    INTERVIEWED,
-    PRESENTED,
+    QUALIFICATION,
+    PENDING_PRESENTATION,
+    PRESENTED_TO_CLIENT,
+    PENDING_INTERVIEW,
+    PENDING_TECH_TEST,
+    PENDING_CLIENT_DECISION,
     OK,
-    KO
+    KO,
+    UNKNOWN
 }

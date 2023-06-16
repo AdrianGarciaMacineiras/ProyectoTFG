@@ -1,20 +1,12 @@
 package com.sngular.skilltree.fixtures;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
-import com.sngular.skilltree.model.Client;
-import com.sngular.skilltree.model.EnumGuards;
-import com.sngular.skilltree.model.Office;
-import com.sngular.skilltree.model.Project;
-import com.sngular.skilltree.model.ProjectRoles;
-import com.sngular.skilltree.model.Skill;
+import com.sngular.skilltree.CommonFixtures;
+import com.sngular.skilltree.model.*;
 import com.sngular.skilltree.testutil.FileHelper;
 
-public class ProjectFixtures {
+import java.util.List;
 
-    public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+public class ProjectFixtures extends CommonFixtures {
 
     public static final String PROJECT_BY_CODE_JSON = FileHelper.getContent("/project/project_by_code.json");
 
@@ -73,26 +65,6 @@ public class ProjectFixtures {
                     .build();
 
     public static final List<Skill> SKILL_LIST = List.of(SKILL1, SKILL2, SKILL3, SKILL4, SKILL5);
-
-    public static final ProjectRoles ROLE1 =
-            ProjectRoles.builder()
-                    .rol("SENIOR")
-                    .number(2)
-                    .build();
-
-    public static final ProjectRoles ROLE2 =
-            ProjectRoles.builder()
-                    .rol("DEVELOPER")
-                    .number(2)
-                    .build();
-
-    public static final ProjectRoles ROLE3 =
-            ProjectRoles.builder()
-                    .rol("JUNIOR")
-                    .number(1)
-                    .build();
-
-    public static final List<ProjectRoles> ROLES_LIST = List.of(ROLE1, ROLE2, ROLE3);
 
     public static final Project PROJECT_BY_CODE =
             Project.builder()

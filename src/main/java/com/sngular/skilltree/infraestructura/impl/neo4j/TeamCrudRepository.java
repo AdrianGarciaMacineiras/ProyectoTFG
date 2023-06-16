@@ -2,8 +2,8 @@ package com.sngular.skilltree.infraestructura.impl.neo4j;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomTeamRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.TeamNode;
-import com.sngular.skilltree.infraestructura.impl.neo4j.projection.TeamProjection;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.neo4j.repository.query.Query;
 
 import java.util.List;
 
@@ -11,5 +11,7 @@ public interface TeamCrudRepository extends Neo4jRepository<TeamNode, String>, C
 
     TeamNode findByCode(String teamCode);
 
-    List<TeamProjection> findByDeletedIsFalse();
+    @Query("MATCH(t:Team{code:$teamcode})-[r]-(p:People) RETURN p.code")
+    List<Long> findMembersByTeamCode(String teamcode);
+
 }

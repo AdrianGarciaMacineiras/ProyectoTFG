@@ -1,7 +1,8 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
-import lombok.*;
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
@@ -23,7 +24,7 @@ public class ClientNode {
 
     private String country;
 
-    @Relationship(type="CLIENT", direction = Relationship.Direction.INCOMING)
+    @Relationship(type = "BELONG", direction = Relationship.Direction.INCOMING)
     private List<OfficeNode> offices;
 
     private boolean deleted;

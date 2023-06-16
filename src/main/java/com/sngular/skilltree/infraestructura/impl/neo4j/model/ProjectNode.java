@@ -1,7 +1,15 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
-import lombok.*;
-import org.springframework.data.neo4j.core.schema.*;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.EnumGuardConverter;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateConverter;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.neo4j.core.convert.ConvertWith;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,16 +30,19 @@ public class ProjectNode {
 
     private String desc;
 
+    @ConvertWith(converter = LocalDateConverter.class)
     private LocalDate initDate;
 
+    @ConvertWith(converter = LocalDateConverter.class)
     private LocalDate endDate;
 
-    private String dominio;
+    private String domain;
 
     private String area;
 
     private String duration;
 
+    @ConvertWith(converter = EnumGuardConverter.class)
     private EnumGuards guards;
 
     private boolean deleted;
@@ -39,6 +50,6 @@ public class ProjectNode {
     @Relationship(type="REQUIRE", direction = Relationship.Direction.OUTGOING)
     private List<SkillNode> skills;
 
-    @Relationship(type="PROJECT_FOR", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type = "FOR_CLIENT", direction = Relationship.Direction.OUTGOING)
     private ClientNode client;
 }

@@ -47,11 +47,11 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public void assignCandidate(String positionCode, String peopleCode) {
-        var candidates = candidateRepository.findByPeopleAndPosition(positionCode, peopleCode);
-        if (Objects.isNull(candidates) || candidates.isEmpty()) {
+        var candidate = candidateRepository.findByPeopleAndPosition(positionCode, peopleCode);
+        if (candidate.isEmpty()) {
             throw new EntityNotFoundException("Candidate", positionCode, peopleCode);
         }
-        candidateRepository.assignCandidate(positionCode, peopleCode, candidates);
+        candidate.ifPresent(candidat -> candidateRepository.assignCandidate(positionCode, peopleCode, candidat));
     }
 
     @Override

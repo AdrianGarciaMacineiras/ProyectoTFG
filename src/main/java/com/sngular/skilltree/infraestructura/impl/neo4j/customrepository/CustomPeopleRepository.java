@@ -1,12 +1,11 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.customrepository;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
-import org.springframework.data.neo4j.repository.query.Query;
+import java.util.List;
 
 
 public interface CustomPeopleRepository {
 
-    @Query("MATCH(n:People{code:$personCode}) RETURN n")
-    PeopleNode findPeopleByCode(String personCode);
+    <T> List<T> findByDeletedIsFalse(Class<T> type);
 
+    <T> T findByCode(String code, Class<T> type);
 }

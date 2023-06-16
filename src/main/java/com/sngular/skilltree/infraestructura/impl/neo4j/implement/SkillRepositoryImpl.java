@@ -1,15 +1,21 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.SkillCrudRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubSkillsRelationship;
-import com.sngular.skilltree.model.*;
 import com.sngular.skilltree.infraestructura.SkillRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.SkillCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.SkillNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubSkillsRelationship;
+import com.sngular.skilltree.infraestructura.impl.neo4j.tool.NodeUtil;
+import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.Skill;
+import com.sngular.skilltree.model.StrategicTeamSkill;
+import com.sngular.skilltree.model.StrategicTeamSkillNotUsed;
 import lombok.RequiredArgsConstructor;
 import org.neo4j.driver.Record;
+import org.neo4j.driver.internal.InternalNode;
 import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
+import org.springframework.data.neo4j.core.mapping.Neo4jMappingContext;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -24,12 +30,14 @@ public class SkillRepositoryImpl implements SkillRepository {
 
     private final Neo4jClient client;
 
+    private final Neo4jMappingContext neo4jMappingContext;
+
     @Override
     public List<Skill> findAll() {
         var skillNodeList = crud.findAll();
         List<Skill> subSkills;
         List<Skill> skills = new ArrayList<>();
-        for(SkillNode skillNode: skillNodeList){
+        for (SkillNode skillNode : skillNodeList) {
             subSkills = new ArrayList<>();
             for (SubSkillsRelationship subSkillNode : skillNode.getSubSkills()) {
                 var toSkill = mapper.fromNode(subSkillNode.skillNode());
@@ -49,40 +57,38 @@ public class SkillRepositoryImpl implements SkillRepository {
             var toSkill = mapper.fromNode(subSkillNode.skillNode());
             subSkills.add(toSkill);
         }
-        Skill skill = new Skill(skillcode, skillNode.getName(), subSkills);
-        return skill;
+        return new Skill(skillcode, skillNode.getName(), subSkills);
     }
 
     @Override
     public Skill findSkill(String skillcode) {
         var skillNode = crud.findByCode(skillcode);
-        Skill skill = new Skill(skillcode, skillNode.getName(), new ArrayList<>());
-        return skill;
+        return new Skill(skillcode, skillNode.getName(), new ArrayList<>());
     }
 
     @Override
     public Skill findByName(String skillname) {
         var skillNode = crud.findByName(skillname);
-        Skill skill = new Skill(skillNode.getCode(), skillname, new ArrayList<>());
-        return skill;
+        return new Skill(skillNode.getCode(), skillname, new ArrayList<>());
     }
 
     @Override
     public List<StrategicTeamSkill> getStrategicSkillsUse() {
 
         var query = "MATCH (t:Team)-[k:STRATEGIC]-(s:Skill)-[r:WORK_WITH]-(p:People)--(t)\n " +
-                "RETURN t.name, collect(s.name), count(s), p, s.name";
+                "RETURN t.name as teamName, collect(s.name) as skillList, count(s), collect(p) as teamMembers";
 
         var result = new ArrayList<>(client
                 .query(query)
                 .fetchAs(StrategicTeamSkill.class)
-                .mappedBy((TypeSystem t, Record record) -> {
+                .mappedBy((TypeSystem t, Record queryResult) -> {
 
-                    People people = getPeople(record);
+                    var peopleList = getPeople(queryResult.get("teamMembers", Collections.emptyList()));
 
                     return StrategicTeamSkill.builder()
-                            .teamName(record.get("t.name").asString())
-                            .peopleList(List.of(people))
+                            .teamName(queryResult.get("teamName").asString())
+                            .peopleList(peopleList)
+                            .skillList(toSkillList(queryResult.get("skillList", Collections.emptyList())))
                             .build();
 
                 })
@@ -118,9 +124,9 @@ public class SkillRepositoryImpl implements SkillRepository {
         var result = new ArrayList<>(client
                 .query(query)
                 .fetchAs(StrategicTeamSkillNotUsed.class)
-                .mappedBy((TypeSystem t, Record record) -> StrategicTeamSkillNotUsed.builder()
-                        .teamName(record.get("t.name").asString())
-                        .skillList(List.of(record.get("s.name").asString()))
+                .mappedBy((TypeSystem t, Record queryResult) -> StrategicTeamSkillNotUsed.builder()
+                        .teamName(queryResult.get("t.name").asString())
+                        .skillList(List.of(queryResult.get("s.name").asString()))
                         .build())
                 .all());
 
@@ -145,15 +151,26 @@ public class SkillRepositoryImpl implements SkillRepository {
         return new ArrayList<>(strategicTeamSkillNotUsedMap.values());
     }
 
-    private static People getPeople(Record result) {
-        var people = result.get("p");
-        return People.builder()
-                .name(people.get("name").asString())
-                .surname(people.get("surname").asString())
-                .employeeId(people.get("employeeId").asString())
-                .birthDate(people.get("birthDate").asLocalDate())
-                .code(people.get("code").asString())
-                .deleted(people.get("deleted").asBoolean())
-                .build();
+    private static List<People> getPeople(List<Object> peopleList) {
+        var result = new HashMap<String, People>();
+        peopleList.forEach(peopleObject -> {
+            var peopleNode = ((InternalNode) peopleObject);
+            var people = People.builder()
+                    .name(peopleNode.get("name").asString())
+                    .surname(peopleNode.get("surname").asString())
+                    .employeeId(peopleNode.get("employeeId").asString())
+                    .birthDate(NodeUtil.getValueAsLocalDate(peopleNode, "birthdate"))
+                    .code(peopleNode.get("code").asString())
+                    .deleted(false)
+                    .build();
+            result.putIfAbsent(people.code(), people);
+        });
+        return new ArrayList<>(result.values());
+    }
+
+    private List<String> toSkillList(List<Object> skillNodeList) {
+        var skillList = new HashSet<String>();
+        skillNodeList.forEach(skill -> skillList.add(skill.toString()));
+        return new ArrayList<>(skillList);
     }
 }

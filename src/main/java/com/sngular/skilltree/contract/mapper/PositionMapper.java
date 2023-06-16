@@ -1,9 +1,5 @@
 package com.sngular.skilltree.contract.mapper;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-
 import com.sngular.skilltree.api.model.PatchedPositionDTO;
 import com.sngular.skilltree.api.model.PositionDTO;
 import com.sngular.skilltree.api.model.PositionSkillDTO;
@@ -15,6 +11,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+
 @Mapper(config = CommonMapperConfiguration.class, uses = {ClientMapper.class, ResolveService.class, PeopleMapper.class, ProjectMapper.class,
   OfficeMapper.class, CandidateMapper.class})
 public interface PositionMapper {
@@ -22,7 +22,6 @@ public interface PositionMapper {
   @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "projectCode", source = "project.code")
-  @Mapping(target = "clientCode", source = "client.code")
   @Mapping(target = "office", source = "office.code")
   PositionDTO toPositionDTO(Position position);
 
@@ -37,7 +36,6 @@ public interface PositionMapper {
   @Mapping(target = "project", source = "projectCode", qualifiedByName = {"resolveCodeProject"})
   @Mapping(target = "managedBy", source = "managedBy", qualifiedByName = {"resolveCodePeople"})
   @Mapping(target = "office", source = "office", qualifiedByName = {"resolveCodeOffice"})
-  @Mapping(target = "client", source = "clientCode", qualifiedByName = {"resolveCodeClient"})
   @Mapping(target = "assignedPeople", ignore = true)
   Position toPosition(PositionDTO opportunityDTO);
 
@@ -58,7 +56,6 @@ public interface PositionMapper {
     return positionBuilder
             .code(oldPosition.code())
             .skills((Objects.isNull(newPosition.skills())) ? oldPosition.skills() : newPosition.skills())
-            .client((Objects.isNull(newPosition.client())) ? oldPosition.client() : newPosition.client())
             .project((Objects.isNull(newPosition.project())) ? oldPosition.project() : newPosition.project())
             .name((Objects.isNull(newPosition.name())) ? oldPosition.name() : newPosition.name())
             .priority((Objects.isNull(newPosition.priority())) ? oldPosition.priority() : newPosition.priority())

@@ -1,18 +1,5 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
-import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
-import static com.sngular.skilltree.model.EnumStatus.ASSIGNED;
-import static com.sngular.skilltree.model.EnumStatus.INTERVIEWED;
-import static com.sngular.skilltree.model.EnumStatus.OPENED;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.BiFunction;
-
 import com.sngular.skilltree.common.exceptions.AssignUnableException;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.CandidateCrudRepository;
@@ -31,19 +18,26 @@ import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.*;
+import java.util.function.BiFunction;
+
+import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
+import static com.sngular.skilltree.model.EnumStatus.QUALIFICATION;
+
 @Repository
 @RequiredArgsConstructor
 public class CandidateRepositoryImpl implements CandidateRepository {
 
-    public static final String HIGH = "'HIGH'";
+    public static final String ADVANCED = "'ADVANCED'";
 
-    private static final List<String> LOW_LEVEL_LIST = List.of("'LOW'", "'MEDIUM'", HIGH);
+    private static final List<String> LOW_LEVEL_LIST = List.of("'LOW'", "'MIDDLE'", ADVANCED);
 
-    private static final List<String> MID_LEVEL_LIST = List.of("'MEDIUM'", HIGH);
+    private static final List<String> MID_LEVEL_LIST = List.of("'MIDDLE'", ADVANCED);
 
-    private static final List<String> HIGH_LEVEL_LIST = List.of(HIGH);
+    private static final List<String> HIGH_LEVEL_LIST = List.of(ADVANCED);
 
-    private static final List<String> CANDIDATE_OPEN_STATUS = List.of("'OPENED'", "'ASSIGNED'", "'INTERVIEWED'");
+    private static final List<String> CANDIDATE_OPEN_STATUS = List.of("'KO'", "'OK'", "'UNKNOWN'");
 
     public static final String NULL = "null";
 
@@ -76,7 +70,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
             candidateBuilder.candidate(peopleNodeMapper.fromNode(candidateRelationship.candidate()));
             candidateBuilder.resolutionDate(candidateRelationship.resolutionDate());
             candidateBuilder.introductionDate(candidateRelationship.resolutionDate());
-            candidateBuilder.status(candidateRelationship.status());
+            candidateBuilder.status(EnumStatus.valueOf(candidateRelationship.status().name()));
             candidateBuilder.skills(peopleNodeMapper.knowsRelationshipListToKnowsList(candidateRelationship.candidate().getKnows()));
             candidateBuilder.build();
         }
@@ -177,7 +171,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         for (var people: peopleList) {
             var candidateQuery = String.format("MATCH(p:People{code:%s}),(n:Position{code:'%s'})" +
                     "CREATE (n)-[r:CANDIDATE{code:'%s',status:'%s',creationDate:date('%s')}]->(p)" +
-                    "RETURN p,r.code,r.status,r.creationDate,n.code,ID(r)", people.code(), positionCode, people.code() + "-" + people.employeeId(), EnumStatus.OPENED, LocalDate.now());
+                    "RETURN p,r.code,r.status,r.creationDate,n.code,ID(r)", people.code(), positionCode, people.code() + "-" + people.employeeId(), QUALIFICATION, LocalDate.now());
 
             var candidate = client.query(candidateQuery).fetchAs(Candidate.class)
                                   .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
@@ -190,46 +184,37 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     }
 
     @Override
-    public List<Candidate> findByPeopleAndPosition(String positionCode, String peopleCode) {
+    public Optional<Candidate> findByPeopleAndPosition(String positionCode, String peopleCode) {
 
         var query = String.format("MATCH(p:People{code:%s})-[r:CANDIDATE]-(n:Position{code:'%s'}) " +
-                        "WHERE r.status IN %s RETURN p,r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n",
+                        "WHERE NOT(r.status NOT IN %s) RETURN p,r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n",
                 peopleCode, positionCode, CANDIDATE_OPEN_STATUS);
 
-        return new ArrayList<>(client
+        return client
                 .query(query)
                 .fetchAs(Candidate.class)
                 .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
-                .all()
-        );
-
+                .one();
     }
 
     @Override
-    public void assignCandidate(String positionCode, String peopleCode, List<Candidate> candidates) {
+    public void assignCandidate(String positionCode, String peopleCode, Candidate candidate) {
 
         var position = positionCrudRepository.findByCode(positionCode);
 
-        Candidate openCandidate = null;
-        for (var candidate : candidates) {
-            if (candidate.status() == OPENED || candidate.status() == INTERVIEWED || candidate.status() == ASSIGNED) {
-                openCandidate = candidate;
-                break;
-            }
-        }
-        if (Objects.isNull(openCandidate)){
-           throw new AssignUnableException("Candidate");
+        if (Objects.isNull(candidate)) {
+            throw new AssignUnableException("Candidate");
         }
 
-       var query = String.format("MATCH(p:People),(s:Position)" +
-                       "WHERE p.code=%d AND s.code='%s'" +
-                       "CREATE(s)-[r:ASSIGN{assignDate:date('%s'), role:'%s', dedication:100}]->(p)"
-               , peopleCode, positionCode, LocalDate.now(), position.getRole());
+        var query = String.format("MATCH(p:People),(s:Position)" +
+                        "WHERE p.code=%s AND s.code='%s'" +
+                        "CREATE(s)-[r:ASSIGN{assignDate:date('%s'), role:'%s', dedication:100}]->(p)",
+                peopleCode, positionCode, LocalDate.now(), position.getRole());
         client.query(query).run();
 
         var queryStatusOK = String.format("MATCH(p:People)-[r:CANDIDATE]-(s:Position) " +
                         "WHERE ID(r) = %s SET r.status = 'OK'"
-                , openCandidate.id());
+                , candidate.id());
         client.query(queryStatusOK).run();
 
         var queryStatusKO = String.format("MATCH(p:People)-[r:CANDIDATE]-(n:Position{code:'%s'}) " +
@@ -237,8 +222,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                 , positionCode);
         client.query(queryStatusKO).run();
 
-        var queryAssignableTrue = String.format("MATCH(p:People{code:%d}) " +
-                "SET p.assignable = FALSE"
+        var queryAssignableTrue = String.format("MATCH(p:People{code:%s}) SET p.assignable = FALSE"
                 , peopleCode);
         client.query(queryAssignableTrue).run();
     }

@@ -1,19 +1,15 @@
 package com.sngular.skilltree.fixtures;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
+import com.sngular.skilltree.CommonFixtures;
 import com.sngular.skilltree.model.EnumCharge;
-import com.sngular.skilltree.model.EnumTitle;
 import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Team;
 import com.sngular.skilltree.testutil.FileHelper;
 
-public class TeamFixtures {
+import java.util.List;
 
-    public static LocalDate date = LocalDate.parse("20-01-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+public class TeamFixtures extends CommonFixtures {
 
     public static final String TEAM_BY_CODE_JSON = FileHelper.getContent("/team/team_by_code.json");
 
@@ -29,7 +25,7 @@ public class TeamFixtures {
                     .name("people2")
                     .surname("LaPel")
                     .employeeId("900003940059")
-                    .title(EnumTitle.DEVELOPER)
+                    .title("SD2")
                     .birthDate(date)
                     .build();
 
