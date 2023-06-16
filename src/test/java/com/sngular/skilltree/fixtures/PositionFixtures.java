@@ -43,12 +43,10 @@ public class PositionFixtures {
     public static final Client CLIENT_BY_CODE =
             Client.builder()
                     .code("1")
-                    .HQ("A Coruña")
                     .country("Spain")
                     .industry("RETAIL")
                     .name("Inditex")
                     .offices(List.of(OFFICE))
-                    .principalOffice("itxhq")
                     .build();
 
     public  static final Skill SKILL_BY_CODE =

@@ -23,10 +23,6 @@ public class ClientNode {
 
     private String country;
 
-    private String principalOffice;
-
-    private String hQ;
-
     @Relationship(type="CLIENT", direction = Relationship.Direction.INCOMING)
     private List<OfficeNode> offices;
 

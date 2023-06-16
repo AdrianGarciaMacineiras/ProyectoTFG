@@ -6,6 +6,8 @@ TODO podemos pasar el code fácilmente a String (solo sería en la capa modelo d
 TODO agregamos lastUpdated y createdDate fechas que se pueden autocalcular en modelo del Neo4j, hay una anotacion de spring para cada cosa
 TODO en certificaterelationship cambiar el tipo de dato de la fecha de String a LocalDate
 
+
+TODO test metodos void (candidate) y tests que llaman a otros servicios (people, position) y que estos metodos que llaman a otros servicios son void (candidate)
 ------------------------------------------------------------------------------------------------------------------------
 PETICIONES EXCEL
 

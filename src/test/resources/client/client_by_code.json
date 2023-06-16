@@ -3,8 +3,6 @@
   "name": "Inditex",
   "industry": "RETAIL",
   "country": "Spain",
-  "principalOffice": "itxhq",
-  "hQ": "A Coruña",
   "offices": [
     {
       "code": "itxhq",

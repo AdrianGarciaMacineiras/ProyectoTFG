@@ -28,23 +28,19 @@ public class ClientFixtures {
     public static final Client CLIENT_BY_CODE =
             Client.builder()
                     .code("1")
-                    .HQ("A Coruña")
                     .country("Spain")
                     .industry("RETAIL")
                     .name("Inditex")
                     .offices(List.of(OFFICE))
-                    .principalOffice("itxhq")
                     .build();
 
     public static final Client CLIENT2_BY_CODE =
             Client.builder()
                     .code("2")
-                    .HQ("A Coruña")
                     .country("Spain")
                     .industry("RETAIL")
                     .name("Inditex")
                     .offices(List.of(OFFICE))
-                    .principalOffice("itxhq")
                     .build();
 
     public static final List<Client> CLIENT_LIST = List.of(CLIENT_BY_CODE, CLIENT2_BY_CODE);
@@ -52,11 +48,9 @@ public class ClientFixtures {
     public static final Client UPDATED_CLIENT_BY_CODE =
             Client.builder()
                     .code("1")
-                    .HQ("Santiago")
                     .country("Spain")
                     .industry("TECH")
                     .name("Inditex")
                     .offices(List.of(OFFICE))
-                    .principalOffice("itxhq")
                     .build();
 }

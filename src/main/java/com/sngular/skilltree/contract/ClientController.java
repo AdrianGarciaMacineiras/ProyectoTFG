@@ -7,12 +7,15 @@ import com.sngular.skilltree.application.ClientService;
 import com.sngular.skilltree.application.updater.ClientUpdater;
 import com.sngular.skilltree.contract.mapper.ClientMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ClientController implements ClientApi {
@@ -39,9 +42,11 @@ public class ClientController implements ClientApi {
 
     @Override
     public ResponseEntity<ClientDTO> getClientByCode(String clientCode) {
-        return ResponseEntity.ok(clientMapper
+        var result = clientMapper
                 .toClientDTO(clientService
-                        .findByCode(clientCode)));
+                        .findByCode(clientCode));
+        log.info(result.toString());
+        return ResponseEntity.ok(result);
     }
 
     @Override

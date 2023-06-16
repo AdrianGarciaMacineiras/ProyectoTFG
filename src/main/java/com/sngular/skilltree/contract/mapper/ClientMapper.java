@@ -15,7 +15,6 @@ import org.mapstruct.Named;
 @Mapper(config = CommonMapperConfiguration.class)
 public interface ClientMapper {
 
-    @Mapping(source="HQ", target="hQ")
     ClientDTO toClientDTO(Client client);
 
     Client toClient(ClientDTO clientDTO);
@@ -32,9 +31,7 @@ public interface ClientMapper {
                 .code(oldClient.code())
                 .industry((Objects.isNull(newClient.industry())) ? oldClient.industry() : newClient.industry())
                 .country((Objects.isNull(newClient.country())) ? oldClient.country() : newClient.country())
-                .HQ((Objects.isNull(newClient.HQ())) ? oldClient.HQ() : newClient.HQ())
                 .offices((Objects.isNull(newClient.offices())) ? oldClient.offices() : newClient.offices())
-                .principalOffice((Objects.isNull(newClient.principalOffice())) ? oldClient.principalOffice() : newClient.principalOffice())
                 .name((Objects.isNull(newClient.name())) ? oldClient.name() : newClient.name())
                 .build();
 
