@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+.vis-tooltip {
+  background-color: red;
+  color: blue;
+  z-index: 99;
+}
