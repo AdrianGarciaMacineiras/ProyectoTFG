@@ -9,30 +9,39 @@ function App() {
         clientCode: ''
     });
 
-    const [data, setData] = useState([{
-      Name:'',
-      Surname:'',
-      Email:'',
-      EmployeeId:'',
-      FriendlyName:'',
-      Title:'',
-    }]);
+    const graphTemp = {
+      nodes:[],
+      edges:[]
+    };
 
-    const [interest, setInterest] = useState([]);
+    /*const graph = {
+      nodes: [
+        { id: 1, label: "Node 1", title: "node 1 tootip text" },
+        { id: 2, label: "Node 2", title: "node 2 tootip text" },
+        { id: 3, label: "Node 3", title: "node 3 tootip text" },
+        { id: 4, label: "Node 4", title: "node 4 tootip text" },
+        { id: 5, label: "Node 5", title: "node 5 tootip text" }
+      ],
+      edges: [
+        { from: 1, to: 2 },
+        { from: 1, to: 3 },
+        { from: 2, to: 4 },
+        { from: 2, to: 5 }
+      ]
+    };*/
+
+    const [graph, setGraph] = useState({
+      nodes:[],
+      edges:[]
+    });
+
+
 
     const [aux, setAux] = useState([]);
 
-    const[knows, setKnows] = useState([]);
-
     const [isToggled, setIsToggled] = useState(false);
 
-    const [nodes, setNodes] = useState([]);
-
-    const graph = {
-      nodes:[],
-      edges:[]
-    }
-
+  
     const options = {
       layout: {
           improvedLayout: true
@@ -42,7 +51,7 @@ function App() {
       },
       height: "500px",
       physics: {
-        enabled: false
+        enabled: true
       }
     };
     
@@ -60,10 +69,23 @@ function App() {
         .then(response => {return response.json()})
         .then(response => {
           setAux(response);
-          setData({Name:response.name, Surname:response.surname, Email:response.email, EmployeeId:response.employeeId,
-          FriendlyName:response.friendlyName, Title:response.title});
-          setKnows(response.knows);
-          setInterest(response.interest);
+          var i = 1;
+          var temp ={Name:response.name, Surname:response.surname, Email:response.email, EmployeeId:response.employeeId,
+            FriendlyName:response.friendlyName, Title:response.title}
+          graphTemp.nodes.push({id:i, label: response.name + ' ' + response.surname, title: JSON.stringify(temp,'',2)});
+          response.knows.forEach(element => {
+            i++;
+            var temp = {Primary:element.primary, Experience: element.experience, Level: element.level}
+            graphTemp.nodes.push({id:i, label: element.code, title:  JSON.stringify(temp,'',2)});
+            graphTemp.edges.push({from:1, to:i})
+          });
+          response.interest.forEach(element => {
+            i++;
+            graphTemp.edges.push({from:1, to:i})
+            graphTemp.nodes.push({id:i, label: element, title: element});
+          });
+          console.log(graphTemp);
+          setGraph(prev => graphTemp);
         });
 
     const handleClientCode = (event) => {
@@ -83,7 +105,6 @@ function App() {
         })
         
         setIsToggled(!isToggled);
-
     }
 
   return (
@@ -100,7 +121,7 @@ function App() {
             <button type="submit">Submit</button>
          </form>
           
-          <pre>{JSON.stringify(aux,'',2)}</pre>
+        <pre>{JSON.stringify(graph,'',2)}</pre>
 
         {isToggled &&
           <VisGraph
