@@ -5,9 +5,6 @@ import com.sngular.skilltree.infraestructura.TeamRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.TeamCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.TeamNodeMapper;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
-import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.TeamView;
-import com.sngular.skilltree.model.EnumCharge;
 import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Team;
@@ -37,14 +34,14 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     @Override
     public List<Team> findAll() {
-        return crud.findByDeletedIsFalse(TeamView.class).stream().map(mapper::map).toList();
+        return mapper.mapProjection(crud.findByDeletedIsFalse());
     }
 
     @Override
     public Team save(Team team) {
         var teamNode = mapper.toNode(team);
         for (var member : teamNode.getMembers()){
-            var peopleNode = peopleCrudRepository.findByCode(member.people().getCode(), PeopleNode.class);
+            var peopleNode = peopleCrudRepository.findByCode(member.people().getCode());
             if (Objects.isNull(peopleNode) || peopleNode.isDeleted()) {
                 throw new EntityNotFoundException("People", peopleNode.getCode());
             }
@@ -62,15 +59,15 @@ public class TeamRepositoryImpl implements TeamRepository {
 
         return new ArrayList<>(client.query(query)
                 .fetchAs(Member.class)
-                .mappedBy((TypeSystem t, Record queryResult) -> {
+                .mappedBy((TypeSystem t, Record record) ->{
 
-                    People person = getPeople(queryResult);
+                    People person = getPeople(record);
 
-                    var member = queryResult.get("r");
+                    var member = record.get("r");
 
                     return Member.builder()
                             .id(member.get("id").asString())
-                            .charge(NULL.equalsIgnoreCase(member.get("charge").asString()) ? null : EnumCharge.valueOf(member.get("charge").asString()))
+                            .charge(NULL.equalsIgnoreCase(member.get("charge").asString()) ? null : member.get("charge").asString())
                             .people(person)
                             .build();
 
@@ -88,7 +85,7 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     @Override
     public List<Team> findByDeletedIsFalse() {
-        return crud.findByDeletedIsFalse(TeamView.class).stream().map(mapper::map).toList();
+        return mapper.mapProjection(crud.findByDeletedIsFalse());
     }
 
     private static People getPeople(Record result) {

@@ -1,7 +1,5 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.projection;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.EnumTitle;
-
 import java.time.LocalDate;
 
 public interface PeopleNodeProjection {
@@ -16,7 +14,7 @@ public interface PeopleNodeProjection {
 
     LocalDate getBirthDate();
 
-    EnumTitle getTitle();
+    String getTitle();
 
     boolean getDeleted();
 
