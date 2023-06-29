@@ -1,7 +1,10 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
-import com.sngular.skilltree.model.*;
+import com.sngular.skilltree.model.Assignment;
+import com.sngular.skilltree.model.Assignments;
+import com.sngular.skilltree.model.Skill;
+import com.sngular.skilltree.model.SkillsCandidate;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
@@ -25,7 +28,7 @@ public class ResolveServiceNode {
     private final ProjectCrudRepository projectCrudRepository;
 
     @Named("resolveId")
-    public String resolveId(final String id){
+    public String resolveId(final String id) {
         return id;
     }
 
@@ -39,11 +42,12 @@ public class ResolveServiceNode {
     @Named("mapToAssignment")
     public List<Assignments> mapToAssignment(List<AssignedRelationship> assignedRelationshipList) {
         final List<Assignments> assignmentsList = new ArrayList<>();
-        var assignmentMap = new HashMap<String, List<Assignment>>();
-        for (var assignRelationship : assignedRelationshipList) {
-            var positionNode = positionCrudRepository.findByCode(assignRelationship.positionNode().getCode());
-            assignmentMap.compute(positionNode.getProject().getName(), (code, assignsList) -> {
-                var assign = Assignment.builder()
+        if (Objects.nonNull(assignedRelationshipList)) {
+            var assignmentMap = new HashMap<String, List<Assignment>>();
+            for (var assignRelationship : assignedRelationshipList) {
+                var positionNode = positionCrudRepository.findByCode(assignRelationship.positionNode().getCode());
+                assignmentMap.compute(positionNode.getProject().getName(), (code, assignsList) -> {
+                    var assign = Assignment.builder()
                             .id(assignRelationship.id())
                             .role(assignRelationship.role())
                             .initDate(assignRelationship.initDate())
@@ -51,21 +55,22 @@ public class ResolveServiceNode {
                             .assignDate(assignRelationship.assignDate())
                             .dedication(assignRelationship.dedication())
                             .build();
-                if (Objects.isNull(assignsList)) {
-                    assignsList = new ArrayList<>();
-                }
-                assignsList.add(assign);
-                return assignsList;
-            });
+                    if (Objects.isNull(assignsList)) {
+                        assignsList = new ArrayList<>();
+                    }
+                    assignsList.add(assign);
+                    return assignsList;
+                });
+            }
+            assignmentMap.forEach((code, roleList) -> assignmentsList.add(Assignments.builder().name(code).assignments(roleList).build()));
         }
-        assignmentMap.forEach((code, roleList) -> assignmentsList.add(Assignments.builder().name(code).assignments(roleList).build()));
         return assignmentsList;
     }
 
     @Named("mapToAssignedRelationship")
     public List<AssignedRelationship> mapToAssignedRelationship(List<Assignments> assignmentsList) {
         final List<AssignedRelationship> assignedRelationshipList = new ArrayList<>();
-        if(!Objects.isNull(assignmentsList)) {
+        if (!Objects.isNull(assignmentsList)) {
             for (var assignment : assignmentsList) {
                 var position = positionCrudRepository.findPositionByProject(assignment.name());
                 for (var assign : assignment.assignments()) {
@@ -87,6 +92,14 @@ public class ResolveServiceNode {
     @Named("mapToSubskill")
     public List<Skill> mapToSubskill(List<SubSkillsRelationship> subSkillsRelationships) {
         final List<Skill> skillList = new ArrayList<>();
+        subSkillsRelationships
+                .forEach(subSkillsRelationship ->
+                        skillList.add(Skill.builder()
+                                .name(subSkillsRelationship.skillNode().getName())
+                                .code(subSkillsRelationship.skillNode().getCode())
+                                .subSkills(mapToSubskill(subSkillsRelationship.skillNode().getSubSkills()))
+                                .build())
+                );
         return skillList;
     }
 
@@ -127,18 +140,18 @@ public class ResolveServiceNode {
     }
 
     @Named("mapToClientString")
-    public List<String> mapToClientString(List<ClientNode> clientNodeList){
+    public List<String> mapToClientString(List<ClientNode> clientNodeList) {
         final List<String> clientNameList = new ArrayList<>();
-        for (var clientNode : clientNodeList){
+        for (var clientNode : clientNodeList) {
             clientNameList.add(clientNode.getName());
         }
         return clientNameList;
     }
 
     @Named("mapToClientNode")
-    public List<ClientNode> mapToClientNode(List<String> clientNameList){
+    public List<ClientNode> mapToClientNode(List<String> clientNameList) {
         final List<ClientNode> clientNodeList = new ArrayList<>();
-        for (var name : clientNameList){
+        for (var name : clientNameList) {
             var clientNode = clientCrudRepository.findByName(name);
             clientNodeList.add(clientNode);
         }
@@ -146,9 +159,9 @@ public class ResolveServiceNode {
     }
 
     @Named("mapToProjectNode")
-    public List<ProjectNode> mapToProjectNode(List<String> projectNameList){
+    public List<ProjectNode> mapToProjectNode(List<String> projectNameList) {
         final List<ProjectNode> projectNodeList = new ArrayList<>();
-        for (var name : projectNameList){
+        for (var name : projectNameList) {
             var projectNode = projectCrudRepository.findByName(name);
             projectNodeList.add(projectNode);
         }
@@ -156,9 +169,9 @@ public class ResolveServiceNode {
     }
 
     @Named("mapToProjectString")
-    public List<String> mapToProjectString(List<ProjectNode> projectNodeList){
+    public List<String> mapToProjectString(List<ProjectNode> projectNodeList) {
         final List<String> projectNameList = new ArrayList<>();
-        for (var projectNode : projectNodeList){
+        for (var projectNode : projectNodeList) {
             projectNameList.add(projectNode.getName());
         }
         return projectNameList;

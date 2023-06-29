@@ -1961,7 +1961,7 @@ components:
               level:
                 type: string
                 enum:
-                  - ADVANCE
+                  - ADVANCED
                   - MIDDLE
                   - LOW
                   - UNKNOWN
@@ -2166,6 +2166,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/member"
+        strategics:
+          type: array
+          items:
+            $ref: "#/components/schemas/skill"
 
     patchedTeam:
       type: object
@@ -2213,6 +2217,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/people"
+        skillList:
+          type: array
+          items:
+            type: string
 
     error:
       type: object

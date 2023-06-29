@@ -16,7 +16,7 @@ public enum EnumCharge {
         return value;
     }
 
-    public EnumCharge from(final String value) {
+    public static EnumCharge from(final String value) {
         final EnumCharge result;
 
         if (DIRECTOR.getValue().equalsIgnoreCase(value)) {

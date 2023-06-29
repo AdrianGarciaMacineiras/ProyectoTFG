@@ -1,21 +1,24 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateConverter;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.neo4j.core.convert.ConvertWith;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
+@Builder
 @Node("People")
 @NoArgsConstructor
+@AllArgsConstructor
 public class PeopleNode {
 
     @Id
@@ -36,26 +39,33 @@ public class PeopleNode {
 
     private boolean assignable;
 
-    @Relationship(type="EVOLVED", direction = Relationship.Direction.OUTGOING)
-    private List<Role> roles;
+    @Builder.Default
+    @Relationship(type = "EVOLVED", direction = Relationship.Direction.OUTGOING)
+    private List<Role> roles = new ArrayList<>();
 
-    @Relationship(type = "KNOW", direction = Relationship.Direction.OUTGOING)
-    private List<KnowsRelationship> knows;
+    @Builder.Default
+    @Relationship(type = "KNOWS", direction = Relationship.Direction.OUTGOING)
+    private List<KnowsRelationship> knows = new ArrayList<>();
 
-    @Relationship(type="WORK_WITH", direction = Relationship.Direction.OUTGOING)
-    private List<SkillNode> work_with;
+    @Builder.Default
+    @Relationship(type = "WORK_WITH", direction = Relationship.Direction.OUTGOING)
+    private List<SkillNode> workWith = new ArrayList<>();
 
-    @Relationship(type="MASTER", direction = Relationship.Direction.OUTGOING)
-    private List<SkillNode> master;
+    @Builder.Default
+    @Relationship(type = "MASTER", direction = Relationship.Direction.OUTGOING)
+    private List<SkillNode> master = new ArrayList<>();
 
-    @Relationship(type="IS_INTERESTED", direction = Relationship.Direction.OUTGOING)
-    private List<SkillNode> interest;
+    @Builder.Default
+    @Relationship(type = "IS_INTERESTED", direction = Relationship.Direction.OUTGOING)
+    private List<SkillNode> interest = new ArrayList<>();
 
+    @Builder.Default
     @Relationship(type = "HAVE_CERTIFICATE", direction = Relationship.Direction.OUTGOING)
-    private List<CertificateRelationship> certificates;
+    private List<CertificateRelationship> certificates = new ArrayList<>();
 
+    @Builder.Default
     @Relationship(type = "COVER", direction = Relationship.Direction.OUTGOING)
-    private List<AssignedRelationship> assigns;
+    private List<AssignedRelationship> assigns = new ArrayList<>();
 
     /*@Relationship(type="REFUSE_CLIENT", direction = Relationship.Direction.INCOMING)
     private List<ClientNode> noClients;
