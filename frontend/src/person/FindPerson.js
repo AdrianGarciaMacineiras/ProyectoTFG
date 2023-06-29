@@ -93,16 +93,19 @@ function FindPerson() {
             graphTemp.nodes.push({id:i, label: element.name, title:  JSON.stringify(temp,'',2), group: 'knows', value: element.experience*150});
             graphTemp.edges.push({from:1, to:i, label: "KNOWS"});
           });
+
           response.interest.forEach(element => {
             i++;
             graphTemp.nodes.push({id:i, label: element, title: element, group: 'interest', value: 10});
             graphTemp.edges.push({from:1, to:i, label: "INTEREST"});
           });
+
           response.work_with.forEach(element => {
             i++;
             graphTemp.nodes.push({id:i, label: element, title: element, group: 'work_with'});
             graphTemp.edges.push({from:1, to:i, label: "WORK_WITH"});
           });
+
           response.master.forEach(element => {
             i++;
             graphTemp.nodes.push({id:i, label: element, title: element, group: 'master'});
@@ -114,6 +117,7 @@ function FindPerson() {
             graphTemp.nodes.push({id:i, label: element.code, title: JSON.stringify(temp,'',2), group: 'have_certificate'});
             graphTemp.edges.push({from:1, to:i, label: "HAVE_CERTIFICATE"});
           });
+
           response.assigns.forEach(element => {
             i++;
             graphTemp.nodes.push({id:i, label: element.name, title: element.name, group: 'position'});
@@ -121,12 +125,14 @@ function FindPerson() {
               var temp = {AssignDate: element.assignDate, InitDate: element.initDate, EndDate: element.endDate, Dedication:element.dedication, Role: element.role}
               graphTemp.edges.push({from:1, to:i, label: "COVER", title: JSON.stringify(temp,'',2)});
             })
-          })
+          });
+
           response.candidacies.forEach(element => {
             var temp = {Code: element.code, IntroductionDate: element.introductionDate, ResolutionDate: element.resolutionDate, CreationDate: element.creationDate, 
             Status: element.status}
             graphTemp.edges.push({from:1, to:i, label: "CANDIDATE", title: JSON.stringify(temp,'',2), group: 'candidate'});
           });
+          
           console.log(graphTemp);
           setGraph(prev => graphTemp);
         });

@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import "../network.css";
 import VisGraph from 'react-vis-graph-wrapper';
 
-function FindClient() {
+function FindSkill() {
 
     const [form, setForm] = useState({
-        clientCode: ''
+        skillCode: ''
     });
 
     const graphTemp = {
@@ -35,6 +35,9 @@ function FindClient() {
           type: "discrete",
           roundness: 0.5
         }
+      },
+      groups: {
+        mainSkill: {color:{background:'red'}, borderWidth:3},
       },
       height: "800px",
       physics: {
@@ -66,21 +69,35 @@ function FindClient() {
       }
     };
 
-    const findClient = (clientCode) =>
-	    fetch(`http://localhost:9080/client/${clientCode}`, {method: "GET", headers: {
+    const FindSkill = (skillCode) =>
+	    fetch(`http://localhost:9080/skills/${skillCode}`, {method: "GET", headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*"
           }})
         .then(response => {return response.json()})
         .then(response => {
           setAux(response);
-          var i = 1;
-          graphTemp.nodes.push({id:i, label: response.name, title: JSON.stringify(response,'',2)});
+          var i = 1
+          var temp = {Name: response.name, Code: response.code}
+          graphTemp.nodes.push({id:i, label: response.name, title: JSON.stringify(temp,'',2), group:"mainSkill"});
+          response.subSkills.forEach(element => {
+            i++;
+            var idHijo = i;
+            var temp = {Name: element.name, Code: element.code}
+            graphTemp.nodes.push({id:idHijo, label: element.name, title: JSON.stringify(temp,'',2)});
+            graphTemp.edges.push({from:1, to: i, label: "REQUIRE"})
+            element.subSkills.forEach(subskill => {
+              i++;
+              var temp = {Name: subskill.name, Code: subskill.code}
+              graphTemp.nodes.push({id:i, label: subskill.name, title: JSON.stringify(temp,'',2)});
+              graphTemp.edges.push({from:idHijo, to: i, label: "REQUIRE"})
+            })
+          });
           console.log(graphTemp);
           setGraph(prev => graphTemp);
         });
 
-    const handleClientCode = (event) => {
+    const handleSkillCode = (event) => {
         setForm({
             ...form,
             [event.target.id]: event.target.value,
@@ -90,10 +107,10 @@ function FindClient() {
     const handleSubmit = (event) => {
         event.preventDefault();
         
-        findClient(form.clientCode);
+        FindSkill(form.skillCode);
 
         setForm({
-            clientCode:''
+            skillCode:''
         })        
     }
 
@@ -101,12 +118,12 @@ function FindClient() {
     <div>
         <form onSubmit = {handleSubmit}>
             <div>
-                <label htmlFor="clientCode">Client code</label>
+                <label htmlFor="skillCode">Skill code</label>
                 <input
-                    id="clientCode"
+                    id="skillCode"
                     type="text"
-                    value = {form.clientCode}
-                    onChange = {handleClientCode}/>
+                    value = {form.skillCode}
+                    onChange = {handleSkillCode}/>
             </div>
             <button type="submit">Submit</button>
          </form>
@@ -129,4 +146,4 @@ function FindClient() {
   );
 }
 
-export default FindClient;
+export default FindSkill;

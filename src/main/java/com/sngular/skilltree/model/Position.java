@@ -10,6 +10,6 @@ import java.util.List;
 public record Position(String code, String name, Project project, LocalDate openingDate, LocalDate closingDate,
                        String priority, EnumMode mode, Office office, String role, List<PositionSkill> skills,
                        List<Candidate> candidates, List<PositionAssignment> assignedPeople, People managedBy,
-                       boolean deleted) {
+                       boolean deleted, String active) {
 
 }

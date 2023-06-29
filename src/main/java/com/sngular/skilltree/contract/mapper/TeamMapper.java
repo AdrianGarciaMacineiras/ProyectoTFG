@@ -27,6 +27,12 @@ public interface TeamMapper {
 
     List<MemberDTO> toMember(List<Member> members);
 
+    default MemberDTO.Charge toCharge(String charge) {
+        if(Objects.isNull(charge))
+            charge = "unknown";
+        return MemberDTO.Charge.valueOf(charge.toUpperCase());
+    }
+
     MemberDTO toMemberDTO(Member members);
 
     Member toMember(MemberDTO membersDTO);

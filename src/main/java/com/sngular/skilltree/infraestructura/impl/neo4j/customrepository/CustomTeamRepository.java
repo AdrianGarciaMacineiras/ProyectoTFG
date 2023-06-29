@@ -5,4 +5,7 @@ import java.util.List;
 public interface CustomTeamRepository {
 
     <T> List<T> findByDeletedIsFalse(Class<T> type);
+
+    <T> T findByCodeAndDeletedIsFalse(String code, Class<T> type);
+
 }

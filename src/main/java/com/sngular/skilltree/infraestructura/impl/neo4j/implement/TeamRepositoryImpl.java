@@ -52,7 +52,8 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public Team findByCode(String teamcode) { return mapper.fromNode(crud.findByCode(teamcode)); }
+    public Team findByCode(String teamcode) { return mapper.map(crud.findByCodeAndDeletedIsFalse(teamcode,
+            TeamView.class)); }
 
     @Override
     public List<Member> getMembers(String teamcode) {

@@ -82,7 +82,7 @@ public class PositionRepositoryImpl implements PositionRepository {
     @Override
     public List<Position> getPeopleAssignedPositions(String peopleCode) {
 
-        var query = String.format("MATCH(p:People{code:%d})-[r:ASSIGN]-(s:Position) RETURN s.code", peopleCode);
+        var query = String.format("MATCH(p:People{code:%d})-[r:COVER]-(s:Position) RETURN s.code", peopleCode);
 
         var positionCodes = client
                 .query(query)
@@ -98,7 +98,7 @@ public class PositionRepositoryImpl implements PositionRepository {
 
   @Override
   public List<PositionAssignment> getPeopleAssignedToPosition(String positionCode) {
-    var query = String.format("MATCH(p:People)-[r:ASSIGN]-(s:Position{code:'%s'}) RETURN p,r",positionCode);
+    var query = String.format("MATCH(p:People)-[r:COVER]-(s:Position{code:'%s'}) RETURN p,r",positionCode);
 
     return new ArrayList<>(client
             .query(query)
@@ -110,11 +110,11 @@ public class PositionRepositoryImpl implements PositionRepository {
               var assign = record.get("r");
 
               return  PositionAssignment.builder()
-                      .assignDate(assign.get("assignDate").asLocalDate())
+                      .assignDate(NULL.equalsIgnoreCase(assign.get("assignDate").asString()) ? null: assign.get("assignDate").asLocalDate())
                       .id(assign.get("id").asString())
                       .assigned(person)
                       .role(assign.get("role").asString())
-                      .dedication(assign.get("dedication").asInt())
+                      //.dedication(Objects.isNull(assign.get("dedication").asInt()) ? null : assign.get("dedication").asInt())
                       .endDate(NULL.equalsIgnoreCase(assign.get("endDate").asString()) ? null : assign.get("endDate").asLocalDate())
                       .build();
 
@@ -129,7 +129,7 @@ public class PositionRepositoryImpl implements PositionRepository {
             .name(people.get("name").asString())
             .surname(people.get("surname").asString())
             .employeeId(people.get("employeeId").asString())
-            .birthDate(people.get("birthDate").asLocalDate())
+            .birthDate(NULL.equalsIgnoreCase(people.get("birthDate").asString()) ? null : people.get("birthDate").asLocalDate())
             .code(people.get("code").asString())
             .deleted(people.get("deleted").asBoolean())
             .build();

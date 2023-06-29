@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import "../network.css";
 import VisGraph from 'react-vis-graph-wrapper';
 
-function FindClient() {
+function FindTeam() {
 
     const [form, setForm] = useState({
-        clientCode: ''
+        teamCode: ''
     });
 
     const graphTemp = {
@@ -35,6 +35,11 @@ function FindClient() {
           type: "discrete",
           roundness: 0.5
         }
+      },
+      groups: {
+        team: {color:{background:'red'}, borderWidth:3},
+        members: {color:{background:'blue'}, borderWidth:3},
+        skills: {color:{background:'green'}, borderWidth:3},
       },
       height: "800px",
       physics: {
@@ -66,8 +71,8 @@ function FindClient() {
       }
     };
 
-    const findClient = (clientCode) =>
-	    fetch(`http://localhost:9080/client/${clientCode}`, {method: "GET", headers: {
+    const findTeam = (teamCode) =>
+	    fetch(`http://localhost:9080/team/${teamCode}`, {method: "GET", headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*"
           }})
@@ -75,12 +80,29 @@ function FindClient() {
         .then(response => {
           setAux(response);
           var i = 1;
-          graphTemp.nodes.push({id:i, label: response.name, title: JSON.stringify(response,'',2)});
+          var temp = {Code: response.code, Name: response.name, Description: response.description, Tags: response.tags}      
+          graphTemp.nodes.push({id: i, label: response.name, title: JSON.stringify(temp, '', 2), group: "team"})  
+          
+          response.members.forEach(element=>{
+            i++
+            var temp ={Code: element.people.code, Name:element.people.name, Surname:element.people.surname, Email:element.people.email, EmployeeId:element.people.employeeId,
+                FriendlyName:element.people.friendlyName, Title:element.people.title, BirthDate: element.people.birthDate}
+              graphTemp.nodes.push({id:i, label: element.people.name + ' ' + element.people.surname, title: JSON.stringify(temp,'',2), group: "members"});
+              graphTemp.edges.push({from:i, to: 1, label: "MEMBER_OF", title: JSON.stringify(element.people.charge,'',2)});
+          });
+          
+          response.strategics.forEach(element=>{
+            i++
+            var temp = {Name: element.name, Code: element.code}
+            graphTemp.nodes.push({id:i, label: element.name, title: JSON.stringify(temp,'',2), group:"skills"});
+            graphTemp.edges.push({from:1, to: i, label: "STRATEGIC"});
+          });
+
           console.log(graphTemp);
           setGraph(prev => graphTemp);
         });
 
-    const handleClientCode = (event) => {
+    const handleTeamCode = (event) => {
         setForm({
             ...form,
             [event.target.id]: event.target.value,
@@ -90,10 +112,10 @@ function FindClient() {
     const handleSubmit = (event) => {
         event.preventDefault();
         
-        findClient(form.clientCode);
+        findTeam(form.teamCode);
 
         setForm({
-            clientCode:''
+            teamCode:''
         })        
     }
 
@@ -101,12 +123,12 @@ function FindClient() {
     <div>
         <form onSubmit = {handleSubmit}>
             <div>
-                <label htmlFor="clientCode">Client code</label>
+                <label htmlFor="teamCode">Team code</label>
                 <input
-                    id="clientCode"
+                    id="teamCode"
                     type="text"
-                    value = {form.clientCode}
-                    onChange = {handleClientCode}/>
+                    value = {form.teamCode}
+                    onChange = {handleTeamCode}/>
             </div>
             <button type="submit">Submit</button>
          </form>
@@ -129,4 +151,4 @@ function FindClient() {
   );
 }
 
-export default FindClient;
+export default FindTeam;

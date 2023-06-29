@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import "../network.css";
 import VisGraph from 'react-vis-graph-wrapper';
 
-function FindClient() {
+function FindProject() {
 
     const [form, setForm] = useState({
-        clientCode: ''
+        projectCode: ''
     });
 
     const graphTemp = {
@@ -35,6 +35,15 @@ function FindClient() {
           type: "discrete",
           roundness: 0.5
         }
+      },
+      groups: {
+        knows: {color:{background:'red'}, borderWidth:3},
+        interest: {color:{background:'blue'}, borderWidth:3},
+        work_with: {color:{background:'green'}, borderWidth:3},
+        master: {color:{background:'orange'}, borderWidth:3},
+        have_certificate: {color:{background:'yellow'}, borderWidth:3},
+        position: {color:{background:'white'}, borderWidth:3},
+        candidate: {color:{background:'pink'}, borderWidth:3},
       },
       height: "800px",
       physics: {
@@ -66,21 +75,28 @@ function FindClient() {
       }
     };
 
-    const findClient = (clientCode) =>
-	    fetch(`http://localhost:9080/client/${clientCode}`, {method: "GET", headers: {
+    const findProject = (projectCode) =>
+	    fetch(`http://localhost:9080/project/${projectCode}`, {method: "GET", headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*"
           }})
         .then(response => {return response.json()})
         .then(response => {
-          setAux(response);
-          var i = 1;
-          graphTemp.nodes.push({id:i, label: response.name, title: JSON.stringify(response,'',2)});
-          console.log(graphTemp);
-          setGraph(prev => graphTemp);
+            setAux(response);
+            var i = 1;
+            var temp ={Code: response.code, Name:response.name, InitDate:response.initDate, Descripcion:response.desc, Area:response.area,
+                Guards:response.guards, Duration:response.duration, Domain: response.domain, Tag: response.tag}
+            graphTemp.nodes.push({id:i, label: response.name , title: JSON.stringify(temp,'',2)});
+
+            i++
+            graphTemp.nodes.push({id:i, label: response.clientCode , title: JSON.stringify(response.clientCode,'',2)});
+            graphTemp.edges.push({from:1, to: i, label:"FOR_CLIENT", title: response.clientCode});
+            
+            console.log(graphTemp);
+            setGraph(prev => graphTemp);
         });
 
-    const handleClientCode = (event) => {
+    const handleProjectCode = (event) => {
         setForm({
             ...form,
             [event.target.id]: event.target.value,
@@ -90,10 +106,10 @@ function FindClient() {
     const handleSubmit = (event) => {
         event.preventDefault();
         
-        findClient(form.clientCode);
+        findProject(form.projectCode);
 
         setForm({
-            clientCode:''
+            projectCode:''
         })        
     }
 
@@ -101,12 +117,12 @@ function FindClient() {
     <div>
         <form onSubmit = {handleSubmit}>
             <div>
-                <label htmlFor="clientCode">Client code</label>
+                <label htmlFor="projectCode">Project code</label>
                 <input
-                    id="clientCode"
+                    id="projectCode"
                     type="text"
-                    value = {form.clientCode}
-                    onChange = {handleClientCode}/>
+                    value = {form.projectCode}
+                    onChange = {handleProjectCode}/>
             </div>
             <button type="submit">Submit</button>
          </form>
@@ -129,4 +145,4 @@ function FindClient() {
   );
 }
 
-export default FindClient;
+export default FindProject;

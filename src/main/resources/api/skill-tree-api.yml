@@ -1694,8 +1694,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/positionAssignment"
-        open:
-          type: boolean
+        active:
+          type: string
 
     patchedPosition:
       type: object
@@ -1953,6 +1953,8 @@ components:
               id:
                 type: string
               code:
+                type: string
+              name:
                 type: string
               level:
                 type: string

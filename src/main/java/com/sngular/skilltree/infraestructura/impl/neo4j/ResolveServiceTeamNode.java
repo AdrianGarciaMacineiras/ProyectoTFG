@@ -1,14 +1,17 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.EnumCharge;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.MemberRelationship;
 import com.sngular.skilltree.model.Member;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +27,7 @@ public class ResolveServiceTeamNode {
             var people = mapper.fromNode(memberRelationship.people());
             var member = Member.builder()
                     .people(people)
-                    .charge(memberRelationship.charge())
+                    .charge(Objects.isNull(memberRelationship.charge())? EnumCharge.UNKNOWN.getValue() : memberRelationship.charge().getValue())
                     .build();
             memberList.add(member);
         }
