@@ -18,11 +18,11 @@ import java.util.Objects;
 @Mapper(config = CommonMapperConfiguration.class, uses = {SkillMapper.class, CandidateMapper.class, ResolveService.class})
 public interface PeopleMapper {
 
-  @Mapping(target = "work_with", source = "work_with", qualifiedByName = {"resolveSkillNameList"})
-  @Mapping(target = "master", source = "master", qualifiedByName = {"resolveSkillNameList"})
-  @Mapping(target = "interest", source = "interest", qualifiedByName = {"resolveSkillNameList"})
-  @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
-  PeopleDTO toPersonDTO(People people);
+    @Mapping(target = "work_with", source = "work_with", qualifiedByName = {"resolveSkillNameList"})
+    @Mapping(target = "master", source = "master", qualifiedByName = {"resolveSkillNameList"})
+    @Mapping(target = "interest", source = "interest", qualifiedByName = {"resolveSkillNameList"})
+    @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
+    PeopleDTO toPersonDTO(People people);
 
   @Mapping(source = "work_with", target = "work_with", qualifiedByName = {"resolveNameSkillList"})
   @Mapping(source = "master", target = "master", qualifiedByName = {"resolveNameSkillList"})
@@ -85,6 +85,6 @@ public interface PeopleMapper {
   }
 
     default String toPeopleCode(final People people) {
-      return Objects.isNull(people) ? "Unknown" : people.code();
+        return Objects.isNull(people) ? "Unknown" : people.code();
     }
 }
