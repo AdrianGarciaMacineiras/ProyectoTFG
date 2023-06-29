@@ -1,6 +1,7 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.EnumCharge;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.MemberRelationship;
 import com.sngular.skilltree.model.Member;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class ResolveServiceTeamNode {
             var people = mapper.fromNode(memberRelationship.people());
             var member = Member.builder()
                     .people(people)
-                    .charge(memberRelationship.charge())
+                    .charge(memberRelationship.charge().getValue())
                     .build();
             memberList.add(member);
         }
@@ -36,7 +37,7 @@ public class ResolveServiceTeamNode {
         final List<MemberRelationship> memberRelationshipList = new ArrayList<>();
         for (var member : memberList){
             var peopleNode = mapper.toNode(member.people());
-            MemberRelationship memberRelationship = new MemberRelationship(null, peopleNode, member.charge());
+            MemberRelationship memberRelationship = new MemberRelationship(null, peopleNode, EnumCharge.from(member.charge()));
             memberRelationshipList.add(memberRelationship);
         }
         return memberRelationshipList;

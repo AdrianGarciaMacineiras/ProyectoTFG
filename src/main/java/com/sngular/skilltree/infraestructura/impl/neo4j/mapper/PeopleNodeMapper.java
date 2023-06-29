@@ -37,6 +37,7 @@ public interface PeopleNodeMapper {
 
     @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "code", source = "skillNode.code")
+    @Mapping(target = "name", source = "skillNode.name")
     Certificate certificateRelationshipToCertificate(CertificateRelationship certificateRelationship);
 
     @Mapping(target = "skillNode", source = "code", qualifiedByName = {"resolveServiceNode", "resolveCodeToSkillNode"})
@@ -52,9 +53,11 @@ public interface PeopleNodeMapper {
     Role roleToRole1(com.sngular.skilltree.model.Role role);
 
     @Mapping(target = "code", source = "skill.code")
+    @Mapping(target = "name", source = "skill.name")
     Knows knowsRelationshipToKnows(KnowsRelationship knowsRelationship);
 
     @Mapping(target = "code", source = "skill.code")
+    @Mapping(target = "name", source = "skill.name")
     Knows knowsViewToKnows(KnowsView knowsView);
 
     List<Knows> knowsRelationshipListToKnowsList(List<KnowsRelationship> list);
