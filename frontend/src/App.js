@@ -3,6 +3,7 @@ import {useNavigate, Routes, Route} from 'react-router-dom';
 import FindPerson from './person/FindPerson'
 import FindClient from './client/FindClient'
 import FindSkill from './skill/FindSkill'
+import SkillList from './skill/SkillList'
 import FindProject from './project/FindProject'
 import FindPosition from './position/FindPosition'
 import FindTeam from './team/FindTeam'
@@ -36,6 +37,10 @@ function App() {
     navigate("/findTeam")
   }
 
+  const navigateToSkillList = () => {
+    navigate("/skillList")
+  }
+
   return (
     <div>
       <Routes>
@@ -45,6 +50,7 @@ function App() {
         <Route path='/findProject' element={<FindProject/>} />
         <Route path='/findPosition' element={<FindPosition/>} />
         <Route path='/findTeam' element={<FindTeam/>} />
+        <Route path='/skillList' element={<SkillList/>} />
       </Routes>
     <div>
       <button onClick={() => navigateToFindPeople()}>Find Person</button>
@@ -53,6 +59,7 @@ function App() {
       <button onClick={() => navigateToFindProject()}>Find Project</button>
       <button onClick={() => navigateToFindPosition()}>Find Position</button>
       <button onClick={() => navigateToFindTeam()}>Find Team</button>
+      <button onClick={() => navigateToSkillList()}>Skill List</button>
     </div>
   </div>
   );

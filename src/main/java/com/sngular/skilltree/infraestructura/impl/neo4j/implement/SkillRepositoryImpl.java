@@ -34,9 +34,13 @@ public class SkillRepositoryImpl implements SkillRepository {
 
     @Override
     public List<Skill> findAll() {
-        var skillNodeList = crud.findAll();
+        var parentNodeCodes = crud.findAllParents();
         List<Skill> subSkills;
         List<Skill> skills = new ArrayList<>();
+        List<SkillNode> skillNodeList = new ArrayList<>();
+        for(String parentNode : parentNodeCodes){
+            skillNodeList.add(crud.findByCode(parentNode));
+        }
         for (SkillNode skillNode : skillNodeList) {
             subSkills = new ArrayList<>();
             for (SubSkillsRelationship subSkillNode : skillNode.getSubSkills()) {

@@ -88,7 +88,8 @@ function FindTeam() {
             var temp ={Code: element.people.code, Name:element.people.name, Surname:element.people.surname, Email:element.people.email, EmployeeId:element.people.employeeId,
                 FriendlyName:element.people.friendlyName, Title:element.people.title, BirthDate: element.people.birthDate}
               graphTemp.nodes.push({id:i, label: element.people.name + ' ' + element.people.surname, title: JSON.stringify(temp,'',2), group: "members"});
-              graphTemp.edges.push({from:i, to: 1, label: "MEMBER_OF", title: JSON.stringify(element.people.charge,'',2)});
+              console.log(element.charge)
+              graphTemp.edges.push({from:i, to: 1, label: "MEMBER_OF", title: element.charge});
           });
           
           response.strategics.forEach(element=>{
