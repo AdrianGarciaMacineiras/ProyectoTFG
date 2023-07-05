@@ -7,7 +7,6 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.TeamCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.TeamNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.TeamView;
-import com.sngular.skilltree.model.EnumCharge;
 import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Team;
@@ -70,7 +69,7 @@ public class TeamRepositoryImpl implements TeamRepository {
 
                     return Member.builder()
                             .id(member.get("id").asString())
-                            .charge(NULL.equalsIgnoreCase(member.get("charge").asString()) ? null : EnumCharge.valueOf(member.get("charge").asString()))
+                            .charge(NULL.equalsIgnoreCase(member.get("charge").asString()) ? null : member.get("charge").asString())
                             .people(person)
                             .build();
 
