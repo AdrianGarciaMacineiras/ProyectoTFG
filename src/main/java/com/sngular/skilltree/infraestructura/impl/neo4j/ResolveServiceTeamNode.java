@@ -25,7 +25,7 @@ public class ResolveServiceTeamNode {
             var people = mapper.fromNode(memberRelationship.people());
             var member = Member.builder()
                     .people(people)
-                    .charge(com.sngular.skilltree.model.EnumCharge.valueOf(memberRelationship.charge().name()))
+                    .charge(memberRelationship.charge().getValue())
                     .build();
             memberList.add(member);
         }
@@ -35,9 +35,13 @@ public class ResolveServiceTeamNode {
     @Named("mapToMemberRelationship")
     public List<MemberRelationship> mapToMemberRelationship(List<Member> memberList){
         final List<MemberRelationship> memberRelationshipList = new ArrayList<>();
-        for (var member : memberList){
+        for (var member : memberList) {
             var peopleNode = mapper.toNode(member.people());
-            MemberRelationship memberRelationship = new MemberRelationship(null, peopleNode, EnumCharge.valueOf(member.charge().name()));
+            MemberRelationship memberRelationship = MemberRelationship
+                    .builder()
+                    .people(peopleNode)
+                    .charge(EnumCharge.from(member.charge()))
+                    .build();
             memberRelationshipList.add(memberRelationship);
         }
         return memberRelationshipList;

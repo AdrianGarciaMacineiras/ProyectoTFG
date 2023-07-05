@@ -31,7 +31,7 @@ public class TeamFixtures extends CommonFixtures {
 
     public final static Member MEMBER1 =
             Member.builder()
-                    .charge(EnumCharge.DIRECTOR)
+                    .charge(EnumCharge.DIRECTOR.name())
                     .people(PEOPLE_BY_CODE)
                     .build();
 
