@@ -37,7 +37,9 @@ function FindPosition() {
         }
       },
       groups: {
-        mainSkill: {color:{background:'red'}, borderWidth:3},
+        assigned: {color:{background:'red'}, borderWidth:3},
+        candidates: {color:{background:'green'}, borderWidth:3},
+        project: {color:{background:'yellow'}, borderWidth:3},
       },
       height: "800px",
       physics: {
@@ -79,18 +81,25 @@ function FindPosition() {
           setAux(response);
           var i = 1
           var temp = {Code: response.code, Active: response.active, Role: response.role, EndDate: response.closingDate, InitDate: response.openingDate}
-          graphTemp.nodes.push({id:i, label: response.code, title: JSON.stringify(temp,'',2), group:"mainSkill"});
+          graphTemp.nodes.push({id:i, label: response.code, title: JSON.stringify(temp,'',2)});
 
           response.assignedPeople.forEach(element => {
             i++;
             var temp ={AssignDate: element.assignDate, InitDate: element.initDate, EndDate:element.endDate, Dedication: element.dedication, Role: element.role}
-            graphTemp.nodes.push({id: i, label: element.assigned, title: JSON.stringify(element.assigned,'',2)});
+            graphTemp.nodes.push({id: i, label: element.assigned, title: JSON.stringify(element.assigned,'',2), group:"assigned"});
             graphTemp.edges.push({from: i, to: 1, label: "COVER", title: JSON.stringify(temp,'',2) })
           });
 
           i++
-          graphTemp.nodes.push({id: i, label: response.projectCode, title: JSON.stringify(response.projectCode,'',2)});
+          graphTemp.nodes.push({id: i, label: response.projectCode, title: JSON.stringify(response.projectCode,'',2), group:"project" });
           graphTemp.edges.push({from: i, to: 1, label: "FOR_PROJECT", title: JSON.stringify(response.projectCode,'',2)});
+
+          response.candidates.forEach(element => {
+            i++;
+            graphTemp.nodes.push({id:i, label: element.candidateCode, title: element.candidateCode, group:"candidates" });
+            var temp ={Code: element.code, Status:element.status, IntroductionDate:element.introductionDate, ResolutionDate:element.resolutionDate, CreationDate:element.creationDate}
+            graphTemp.edges.push({from: 1, to: i, label: "CANDIDATE", title: JSON.stringify(temp,'',2)});
+          })
 
           console.log(graphTemp);
           setGraph(prev => graphTemp);

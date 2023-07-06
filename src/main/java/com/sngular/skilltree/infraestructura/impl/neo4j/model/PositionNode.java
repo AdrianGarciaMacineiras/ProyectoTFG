@@ -57,7 +57,7 @@ public class PositionNode {
     @Relationship(type = "NEED", direction = Relationship.Direction.OUTGOING)
     private List<PositionSkillsRelationship> skills;
 
-    @Relationship(type = "CANDIDATE", direction = Relationship.Direction.INCOMING)
+    @Relationship(type = "CANDIDATE", direction = Relationship.Direction.OUTGOING)
     private List<CandidateRelationship> candidates;
 
 }

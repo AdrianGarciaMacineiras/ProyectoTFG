@@ -4,12 +4,15 @@ import TreeItem from "@mui/lab/TreeItem";
 import Checkbox from '@mui/material/Checkbox';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import Mock from "./Mock.json";
 
 function SkillList() {
 
   const [skillList, setSkillList] = useState([]);
 
-  const [check, setCheck] = useState([]);
+  const [selected, setSelected] = useState([]);
+
+  const auxList = [];
 
   const recursive = (dataList) => {
     var list = [];
@@ -36,8 +39,22 @@ function SkillList() {
         children = getTreeItemsFromData(treeItemData.children);
     }
 
-    const handleChange = (event) => {
-      setCheck(!check);
+    const handleChange = (event, nodeId) => {
+      //console.log("Evento", event)
+      //console.log("Id", nodeId)
+
+      const foundElement = treeItems.find(element => element.nodeId === nodeId)
+      if(foundElement.active){
+        foundElement.active = false
+        const index = auxList.indexOf(foundElement.name)
+        
+      }else{
+        foundElement.active = true
+        auxList.push(foundElement.name)
+        console.log("AuxList añadido", auxList)
+      }
+      setSelected(selected.concat(auxList))
+      console.log("Selected", selected)
     };
 
       return (
@@ -47,9 +64,8 @@ function SkillList() {
           label={
             <>
             <Checkbox
-              checked={check}
-              onChange= {(event) =>
-                handleChange(event.currentTarget.checked, treeItemData)}
+              checked = {treeItemData.active}
+              onChange= {(event)=>handleChange(event,treeItemData.nodeId)}
               onClick={e => (e.stopPropagation())}
             />
             {treeItemData.name}
@@ -62,9 +78,9 @@ function SkillList() {
   };
       
   const DataTreeView = ({ treeItems }) => {
+    //console.log(treeItems)
     return (
       <TreeView
-        multiSelect
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
       >
@@ -78,11 +94,12 @@ function SkillList() {
   };
 
   return (
-    <div className="SkillList">
+    <div>
       <button onClick={handleClick} type="submit">Submit</button>
-      <DataTreeView treeItems={skillList} />
+      <DataTreeView  treeItems={skillList} />
     </div>
   );
 }
 
 export default SkillList;
+

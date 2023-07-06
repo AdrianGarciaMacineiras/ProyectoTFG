@@ -51,10 +51,10 @@ public class PositionRepositoryImpl implements PositionRepository {
       throw new EntityNotFoundException("Project", projectNode.getCode());
     }
 
-    var officeNode = officeCrud.findByCode(position.office().code());
+    /*var officeNode = officeCrud.findByCode(position.office().code());
     if (Objects.isNull(officeNode) || officeNode.isDeleted()) {
       throw new EntityNotFoundException("Office", officeNode.getCode());
-    }
+    }*/
 
     var positionNode = crud.save(mapper.toNode(position));
 
