@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TreeView from '@mui/lab/TreeView';
 import TreeItem from "@mui/lab/TreeItem";
 import Checkbox from '@mui/material/Checkbox';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import VisGraph from 'react-vis-graph-wrapper';
 import Mock from "./Mock.json";
 
 function SkillList() {
@@ -12,26 +13,71 @@ function SkillList() {
 
   const [selected, setSelected] = useState([]);
 
-  const auxList = [];
+  const [isToggled, setToggled] = useState(false);
 
-  const recursive = (dataList) => {
-    var list = [];
-    dataList.forEach(data => {
-      list.push({nodeId:data.code, name:data.name, children:recursive(data.subSkills)})
-    });
-    return list;
-  }
+  var auxList = [];
+
+  const graphTemp = {
+    nodes:[],
+    edges:[]
+  };
+
+  const [graph, setGraph] = useState({
+    nodes:[],
+    edges:[]
+  });
+
+  const [aux, setAux] = useState([]);
+
+  const options = {
+    layout: {
+        improvedLayout: true
+    },
+    nodes:{
+      shape: "dot",
+      scaling: {min:10,label:false}
+    },
+    edges: {
+      color: "#000000",
+      smooth: {
+        enabled: true,
+        type: "discrete",
+        roundness: 0.5
+      }
+    },
+    groups: {
+      mainSkill: {color:{background:'red'}, borderWidth:3},
+    },
+    height: "800px",
+    physics: {
+      barnesHut: {
+        gravitationalConstant: -11500,
+        centralGravity: 0.5,
+        springLength: 270,
+        springConstant: 0.135,
+        avoidOverlap: 0.02
+      },
+      minVelocity: 0.75
+    },
+    configure: {
+      enabled: true,
+      filter: 'physics, layout',
+      showButton: true
+   },
+    interaction: {
+      hover: true,
+      hoverConnectedEdges: true,
+      selectable: true,
+      selectConnectedEdges: true
+    }
+  };
   
-  const FindSkills = () =>
-	    fetch(`http://localhost:9080/skills`, {method: "GET", headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-          }})
-          .then(response => {return response.json()})
-          .then(response => {
-            setSkillList(recursive(response));
-          });
-
+  const events = {
+    select: function(event) {
+      var { nodes, edges } = event;
+    }
+  };
+  
   const getTreeItemsFromData = treeItems => {
     return treeItems.map(treeItemData => {
       let children = undefined;
@@ -40,24 +86,21 @@ function SkillList() {
     }
 
     const handleChange = (event, nodeId) => {
-      //console.log("Evento", event)
-      //console.log("Id", nodeId)
-
+      event.stopPropagation();
       const foundElement = treeItems.find(element => element.nodeId === nodeId)
       if(foundElement.active){
         foundElement.active = false
-        const index = auxList.indexOf(foundElement.name)
-        
+        const items = selected.filter(item => item !== foundElement.nodeId)
+        setSelected(items)
       }else{
         foundElement.active = true
-        auxList.push(foundElement.name)
-        console.log("AuxList añadido", auxList)
+        auxList.push('"'+foundElement.nodeId+'"')
+        setSelected(selected.concat(auxList))
       }
-      setSelected(selected.concat(auxList))
-      console.log("Selected", selected)
+      console.log(selected)
     };
 
-      return (
+    return (
         <TreeItem
           key={treeItemData.nodeId}
           nodeId={treeItemData.nodeId}
@@ -76,9 +119,52 @@ function SkillList() {
       );
     });
   };
-      
+
+
+  const handleClick = () => {
+    setToggled(!isToggled)
+    fetch(`http://localhost:9080/people/skills?skillList=${selected}`, {method: "GET", headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            }})
+            .then(response => {return response.json()})
+            .then(data => {
+              var i = 1;
+              var j = 2;
+              data.forEach(element => {
+                var temp ={Code: element.code, Name:element.name, Surname:element.surname, Email:element.email, EmployeeId:element.employeeId,
+                  FriendlyName:element.friendlyName, Title:element.title, BirthDate: element.birthDate}
+                graphTemp.nodes.push({id:i, label: element.name + ' ' + element.surname, title: JSON.stringify(temp,'',2)});
+                element.knows.forEach(knows => {
+                  /*const foundElement = graphTemp.nodes.find(node => node.label === knows.name);*/
+                  var temp = {Code:knows.code, Primary:knows.primary, Experience: knows.experience, Level: knows.level}
+                 /* if(foundElement !== undefined && foundElement !== null){
+                    graphTemp.edges.push({from:i, to:foundElement.id, label: "KNOWS", title: JSON.stringify(temp,'',2) });
+                  } else {*/
+                    graphTemp.nodes.push({id:j, label: knows.name, title: knows.name  });
+                    graphTemp.edges.push({from:i, to:j, label: "KNOWS", title: JSON.stringify(temp,'',2) });
+                  ///}
+                  j++
+                })
+                i = j++;
+              })
+              console.log(graphTemp)
+              setGraph(prev => graphTemp);
+            }); 
+  }
+
+  const collapseAll = (e) => {
+    e.preventDefault();
+    setSkillList(
+      skillList.map((item) =>
+        Object.assign({}, item, {
+          expanded: false,
+        })
+      )
+    );
+  };
+
   const DataTreeView = ({ treeItems }) => {
-    //console.log(treeItems)
     return (
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
@@ -89,14 +175,39 @@ function SkillList() {
     );
   };
        
-  const handleClick = () => {
-    FindSkills();
-  };
+  useEffect(() => {
+    const recursive = (dataList) => {
+      var list = [];
+      dataList.forEach(data => {
+        list.push({nodeId:data.code, name:data.name, children:recursive(data.subSkills)})
+      });
+      return list;
+    }
+
+    fetch(`http://localhost:9080/skills`, {method: "GET", headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        }})
+        .then(response => {return response.json()})
+        .then(response => {
+          setSkillList(recursive(response));
+        });
+  },[])
 
   return (
     <div>
-      <button onClick={handleClick} type="submit">Submit</button>
+      <button onClick={collapseAll}> Collapse all </button>
       <DataTreeView  treeItems={skillList} />
+      {(selected && selected.length > 0) && <button onClick={handleClick}> Send </button>}
+      {isToggled && <VisGraph
+            graph={graph}
+            options={options}
+            events={events}
+            getNetwork={network => {
+              //  if you want access to vis.js network api you can set the state in a parent component using this property
+            }}
+          />
+      }  
     </div>
   );
 }

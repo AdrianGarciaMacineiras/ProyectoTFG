@@ -6,6 +6,7 @@ import FindSkill from './skill/FindSkill'
 import SkillList from './skill/SkillList'
 import FindProject from './project/FindProject'
 import FindPosition from './position/FindPosition'
+import CreatePosition from './position/CreatePosition'
 import FindTeam from './team/FindTeam'
 
 
@@ -41,6 +42,10 @@ function App() {
     navigate("/skillList")
   }
 
+  const navigateToCreatePosition = () => {
+    navigate("/createPosition")
+  }
+
   return (
     <div>
       <Routes>
@@ -51,6 +56,7 @@ function App() {
         <Route path='/findPosition' element={<FindPosition/>} />
         <Route path='/findTeam' element={<FindTeam/>} />
         <Route path='/skillList' element={<SkillList/>} />
+        <Route path='/createPosition' element={<CreatePosition/>} />
       </Routes>
     <div>
       <button onClick={() => navigateToFindPeople()}>Find Person</button>
@@ -60,6 +66,7 @@ function App() {
       <button onClick={() => navigateToFindPosition()}>Find Position</button>
       <button onClick={() => navigateToFindTeam()}>Find Team</button>
       <button onClick={() => navigateToSkillList()}>Skill List</button>
+      <button onClick={() => navigateToCreatePosition()}>Create Position</button>
     </div>
   </div>
   );
