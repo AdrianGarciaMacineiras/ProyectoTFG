@@ -6,7 +6,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
-
+import "../network.css";
+import VisGraph from 'react-vis-graph-wrapper';
 
 function CreatePosition() {
   const [form, setForm] = useState({
@@ -40,17 +41,74 @@ function CreatePosition() {
   const [searchProjectCode, setSearchProjectCode] = useState('');
   const [searchSkill, setSearchSkill] = useState('');
 
+  const graphTemp = {
+    nodes:[],
+    edges:[]
+  };
 
-  var auxList = new Set();
+  const [graph, setGraph] = useState({
+    nodes:[],
+    edges:[]
+  });
 
   const [aux, setAux] = useState([]);
+
+  const options = {
+    layout: {
+        improvedLayout: true
+    },
+    nodes:{
+      shape: "dot",
+      scaling: {min:10,label:false}
+    },
+    edges: {
+      color: "#000000",
+      smooth: {
+        enabled: true,
+        type: "discrete",
+        roundness: 0.5
+      }
+    },
+    groups: {
+      assigned: {color:{background:'red'}, borderWidth:3},
+      candidates: {color:{background:'green'}, borderWidth:3},
+      project: {color:{background:'yellow'}, borderWidth:3},
+    },
+    height: "800px",
+    physics: {
+      barnesHut: {
+        gravitationalConstant: -11500,
+        centralGravity: 0.5,
+        springLength: 270,
+        springConstant: 0.135,
+        avoidOverlap: 0.02
+      },
+      minVelocity: 0.75
+    },
+    configure: {
+      enabled: true,
+      filter: 'physics, layout',
+      showButton: true
+   },
+    interaction: {
+      hover: true,
+      hoverConnectedEdges: true,
+      selectable: true,
+      selectConnectedEdges: true
+    }
+  };
+  
+  const events = {
+    select: function(event) {
+      var { nodes, edges } = event;
+    }
+  };
 
   const getTreeItemsFromData = (treeItems, searchValue) => {
     const filteredItems = treeItems.filter((treeItemData) => {
       var isMatched =  treeItemData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
         getTreeItemsFromData(treeItemData.children, searchValue).length > 0;
-      if(isMatched)
-        auxList.add(treeItemData.nodeId)
+      
       return isMatched;
     });
 
@@ -87,25 +145,12 @@ function CreatePosition() {
     );
   };
 
-  const expandAll = (e) => {
-    e.preventDefault();
-    setSkillList(
-      skillList.map((item) =>
-        Object.assign({}, item, {
-          expanded: true,
-        })
-      )
-    );
-  };
-
-
   const DataTreeView = () => {
     return (
       <div>
         <TreeView
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
-          //defaultExpanded={[... auxList]}
         >
           {getTreeItemsFromData(skillList, searchSkill)}
         </TreeView>
@@ -180,6 +225,42 @@ function CreatePosition() {
     
   }, []);
 
+  const createPosition = (event) => {
+    console.log(JSON.stringify(form,'',2))
+    const requestBody = JSON.stringify(form);
+
+    fetch("http://localhost:9080/position", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: requestBody,
+    })
+      .then(response => response.json())
+      .then(response => {
+        setAux(response);
+        var i = 1
+        var temp = {Code: response.code, Active: response.active, Role: response.role, EndDate: response.closingDate, InitDate: response.openingDate}
+        graphTemp.nodes.push({id:i, label: response.code, title: JSON.stringify(temp,'',2)});
+
+        i++
+        graphTemp.nodes.push({id: i, label: response.projectCode, title: JSON.stringify(response.projectCode,'',2), group:"project" });
+        graphTemp.edges.push({from: i, to: 1, label: "FOR_PROJECT", title: JSON.stringify(response.projectCode,'',2)});
+
+        response.candidates.forEach(element => {
+          i++;
+          graphTemp.nodes.push({id:i, label: element.candidateCode, title: element.candidateCode, group:"candidates" });
+          var temp ={Code: element.code, Status:element.status, IntroductionDate:element.introductionDate, ResolutionDate:element.resolutionDate, CreationDate:element.creationDate}
+          graphTemp.edges.push({from: 1, to: i, label: "CANDIDATE", title: JSON.stringify(temp,'',2)});
+        })
+
+        console.log(graphTemp);
+        setGraph(prev => graphTemp);
+      })
+  };
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setForm({
@@ -200,7 +281,7 @@ function CreatePosition() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(form); // Display the final form data
+    createPosition();
 
     setForm({
       positionCode: '',
@@ -241,7 +322,7 @@ function CreatePosition() {
 
   return (
     <div>
-      <form id="positionForm" onSubmit={handleSubmit}>
+        <form id="positionForm" onSubmit={handleSubmit}>
         <label>
           Position Code:
           <input type="text" value={form.positionCode} onChange={handleInputChange} name="positionCode" />
@@ -359,7 +440,6 @@ function CreatePosition() {
         )}
 
         <button onClick={collapseAll}> Collapse all </button>
-        <button onClick={expandAll}> Expand all </button>
         <br/>
         <input
           type="text"
@@ -372,6 +452,14 @@ function CreatePosition() {
         <br/>
         <button type="submit" form="positionForm">Submit</button>
       </form>
+      <VisGraph
+            graph={graph}
+            options={options}
+            events={events}
+            getNetwork={network => {
+              //  if you want access to vis.js network api you can set the state in a parent component using this property
+            }}
+      /> 
     </div>
   );
 }
