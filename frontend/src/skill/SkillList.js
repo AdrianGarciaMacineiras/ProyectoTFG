@@ -5,7 +5,7 @@ import Checkbox from '@mui/material/Checkbox';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import VisGraph from 'react-vis-graph-wrapper';
-import Mock from "./Mock.json";
+//import Mock from "./Mock.json";
 
 function SkillList() {
 

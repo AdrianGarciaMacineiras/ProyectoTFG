@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import TreeView from '@mui/lab/TreeView';
 import TreeItem from "@mui/lab/TreeItem";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
 import "../network.css";
 import VisGraph from 'react-vis-graph-wrapper';
+import MDBox from "../components/MDBox";
 
 function CreatePosition() {
   const [form, setForm] = useState({
@@ -147,14 +148,14 @@ function CreatePosition() {
 
   const DataTreeView = () => {
     return (
-      <div>
+      <MDBox>
         <TreeView
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
         >
           {getTreeItemsFromData(skillList, searchSkill)}
         </TreeView>
-      </div>
+      </MDBox>
     );
   };
 
@@ -169,9 +170,9 @@ function CreatePosition() {
   
   const SkillsList = () => {
     return (
-      <div>
+      <MDBox>
         {form.skills.map((skill, index) => (
-          <div key={index}>
+          <MDBox key={index}>
             <hr />
             <label>Skill: {skill.skillName}</label>
             <br/>
@@ -183,9 +184,9 @@ function CreatePosition() {
             <br/>
             <button onClick={() => handleRemoveSkill(index)}>Remove</button>
             <hr />
-          </div>
+          </MDBox>
         ))}
-      </div>
+      </MDBox>
     );
   };
 

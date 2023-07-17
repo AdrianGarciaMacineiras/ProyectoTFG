@@ -1,74 +1,138 @@
 import './App.css';
-import {useNavigate, Routes, Route} from 'react-router-dom';
-import FindPerson from './person/FindPerson'
-import FindClient from './client/FindClient'
-import FindSkill from './skill/FindSkill'
-import SkillList from './skill/SkillList'
-import FindProject from './project/FindProject'
-import FindPosition from './position/FindPosition'
-import CreatePosition from './position/CreatePosition'
-import FindTeam from './team/FindTeam'
 
+import CssBaseline from '@mui/material/CssBaseline';
+import Icon from '@mui/material/Icon';
+// @mui material components
+import {ThemeProvider} from '@mui/material/styles';
+import {React, useEffect, useMemo, useState} from 'react';
+// react-router components
+import {Navigate, Route, Routes, useLocation} from 'react-router-dom';
+
+import brandDark from './assets/images/logo-ct-dark.png';
+// Images
+import brandWhite from './assets/images/logo-ct.png';
+// Material Dashboard 2 React themes
+import theme from './assets/theme';
+// Material Dashboard 2 React Dark Mode themes
+import Configurator from './components/Configurator';
+// Material Dashboard 2 React components
+import MDBox from './components/MDBox';
+// Material Dashboard 2 React example components
+import Sidenav from './components/Sidenav';
+// Material Dashboard 2 React contexts
+import {setMiniSidenav, setOpenConfigurator, useMaterialUIController} from './context/index';
+// Material Dashboard 2 React routes
+import routes from './routes';
 
 function App() {
+  const [controller, dispatch] = useMaterialUIController();
 
-  const navigate = useNavigate();
+  const {
+    miniSidenav,
+    direction,
+    layout,
+    openConfigurator,
+    sidenavColor,
+    transparentSidenav,
+    whiteSidenav,
+    darkMode,
+  } = controller;
+  const [onMouseEnter, setOnMouseEnter] = useState(false);
+  const {pathname} = useLocation();
 
-  const navigateToFindPeople = () => {
-    navigate("/findPerson")
-  }
+  // Open sidenav when mouse enter on mini sidenav
+  const handleOnMouseEnter = () => {
+    if (miniSidenav && !onMouseEnter) {
+      setMiniSidenav(dispatch, false);
+      setOnMouseEnter(true);
+    }
+  };
 
-  const navigateToFindClient = () => {
-    navigate("/findClient")
-  }
+  // Close sidenav when mouse leave mini sidenav
+  const handleOnMouseLeave = () => {
+    if (onMouseEnter) {
+      setMiniSidenav(dispatch, true);
+      setOnMouseEnter(false);
+    }
+  };
 
-  const navigateToFindSkill = () => {
-    navigate("/findSkill")
-  }
+  // Change the openConfigurator state
+  const handleConfiguratorOpen = () =>
+      setOpenConfigurator(dispatch, !openConfigurator);
 
-  const navigateToFindProject = () => {
-    navigate("/findProject")
-  }
+  // Setting the dir attribute for the body element
+  useEffect(() => {
+    document.body.setAttribute('dir', direction);
+  }, [direction]);
 
-  const navigateToFindPosition = () => {
-    navigate("/findPosition")
-  }
+  // Setting page scroll to 0 when changing the route
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+    document.scrollingElement.scrollTop = 0;
+  }, [pathname]);
 
-  const navigateToFindTeam = () => {
-    navigate("/findTeam")
-  }
+  const getRoutes = (allRoutes) =>
+    allRoutes.map((route) => {
+    if (route.collapse) {
+      return getRoutes(route.collapse);
+    }
 
-  const navigateToSkillList = () => {
-    navigate("/skillList")
-  }
+    if (route.route) {
+        return <Route exact path={route.route} element={route.component} key={route.key} />;
+      }
 
-  const navigateToCreatePosition = () => {
-    navigate("/createPosition")
-  }
+      return null;
+    });
+
+  const configsButton = (
+    <MDBox
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      width="3.25rem"
+      height="3.25rem"
+      bgColor="white"
+      shadow="sm"
+      borderRadius="50%"
+      position="fixed"
+      right="2rem"
+      bottom="2rem"
+      zIndex={99}
+      color="dark"
+      sx={{ cursor: "pointer" }}
+      onClick={handleConfiguratorOpen}
+    >
+      <Icon fontSize="small" color="inherit">
+        settings
+      </Icon>
+    </MDBox>
+  );
 
   return (
-    <div>
-      <Routes>
-        <Route path='/findPerson' element={<FindPerson/>} />
-        <Route path='/findClient' element={<FindClient/>} />
-        <Route path='/findSkill' element={<FindSkill/>} />
-        <Route path='/findProject' element={<FindProject/>} />
-        <Route path='/findPosition' element={<FindPosition/>} />
-        <Route path='/findTeam' element={<FindTeam/>} />
-        <Route path='/skillList' element={<SkillList/>} />
-        <Route path='/createPosition' element={<CreatePosition/>} />
-      </Routes>
-    <div>
-      <button onClick={() => navigateToFindPeople()}>Find Person</button>
-      <button onClick={() => navigateToFindClient()}>Find Client</button>
-      <button onClick={() => navigateToFindSkill()}>Find Skill</button>
-      <button onClick={() => navigateToFindProject()}>Find Project</button>
-      <button onClick={() => navigateToFindPosition()}>Find Position</button>
-      <button onClick={() => navigateToFindTeam()}>Find Team</button>
-      <button onClick={() => navigateToSkillList()}>Skill List</button>
-      <button onClick={() => navigateToCreatePosition()}>Create Position</button>
-    </div>
-  </div>
+    <ThemeProvider theme={theme}>
+         <CssBaseline />
+         {layout === 'dashboard' && (
+           <>
+             <Sidenav
+        color = {sidenavColor} brand = {
+            (transparentSidenav && !darkMode) || whiteSidenav ?
+                brandDark :
+                brandWhite} brandName = 'Material Dashboard 2'
+               routes={routes}
+               onMouseEnter={handleOnMouseEnter}
+               onMouseLeave={
+        handleOnMouseLeave}
+             />
+             <Configurator />
+             {configsButton}
+           </>
+         )}
+         {layout === "vr" && <Configurator />}
+         <Routes>
+           {getRoutes(routes)}
+           <Route path='*' element={<Navigate to='/findPerson' />} />
+         </Routes>
+       </ThemeProvider>
   );
 }
 

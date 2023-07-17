@@ -1,6 +1,19 @@
 import React, {useState} from 'react';
 import "../network.css";
 import VisGraph from 'react-vis-graph-wrapper';
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+
+// Material Dashboard 2 React components
+import MDBox from "../components/MDBox";
+import MDTypography from "../components/MDTypography";
+import MDButton from "../components/MDButton";
+
+// Material Dashboard 2 React example components
+import DashboardLayout from "../components/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "../components/Navbars/DashboardNavbar";
+import Footer from "../components/Footer";
+import MDInput from '../components/MDInput';
 
 function FindPerson() {
 
@@ -155,19 +168,58 @@ function FindPerson() {
     }
 
   return (
-    <div>
+    <DashboardLayout>
+    <DashboardNavbar />
+    <MDBox pt={6} pb={3}>
+      <Grid container spacing={6}>
+        <Grid item xs={12}>
+          <Card>
+            <MDBox
+              mx={2}
+              mt={-3}
+              py={3}
+              px={2}
+              variant="gradient"
+              bgColor="info"
+              borderRadius="lg"
+              coloredShadow="info"
+            >
+              <MDTypography variant="h6" color="white">
+              Find Person
+            </MDTypography>
+          </MDBox>
+          <MDBox pt={3}>
         <form onSubmit = {handleSubmit}>
-            <div>
-                <label htmlFor="personCode">Person code</label>
-                <input
+            <MDBox>
+                <MDTypography variant="h6" fontWeight="medium">Person code</MDTypography>
+                <MDInput
                     id="personCode"
                     type="text"
                     value = {form.personCode}
                     onChange = {handlePersonCode}/>
-            </div>
-            <button type="submit">Submit</button>
+            </MDBox>
+            <MDButton variant="gradient" color="dark">Submit</MDButton>
          </form>
-         
+         </MDBox>
+         </Card>
+          </Grid>
+         <Grid item xs={12}>
+            <Card>
+              <MDBox
+                mx={2}
+                mt={-3}
+                py={3}
+                px={2}
+                variant="gradient"
+                bgColor="info"
+                borderRadius="lg"
+                coloredShadow="info"
+              >
+                 <MDTypography variant="h6" color="white">
+                  Person Graph
+                </MDTypography>
+                </MDBox>
+              <MDBox pt={3}>
           <VisGraph
             graph={graph}
             options={options}
@@ -176,13 +228,13 @@ function FindPerson() {
               //  if you want access to vis.js network api you can set the state in a parent component using this property
             }}
           /> 
-        
-
-        <pre>{JSON.stringify(graph,'',2)}</pre>
-        <pre>{JSON.stringify(aux,'',2)}</pre>
-
-        
-    </div>
+        </MDBox>
+           </Card>
+          </Grid>
+        </Grid>
+      </MDBox>
+      <Footer />
+    </DashboardLayout>
   );
 }
 
