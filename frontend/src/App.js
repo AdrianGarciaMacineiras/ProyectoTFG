@@ -117,7 +117,7 @@ function App() {
         color = {sidenavColor} brand = {
             (transparentSidenav && !darkMode) || whiteSidenav ?
                 brandDark :
-                brandWhite} brandName = 'Material Dashboard 2'
+                brandWhite} brandName = 'Ubik Service'
                routes={routes}
                onMouseEnter={handleOnMouseEnter}
                onMouseLeave={
