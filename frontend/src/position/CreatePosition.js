@@ -9,6 +9,17 @@ import { format } from 'date-fns';
 import "../network.css";
 import VisGraph from 'react-vis-graph-wrapper';
 import MDBox from "../components/MDBox";
+import MDTypography from "../components/MDTypography";
+import Footer from "../components/Footer";
+import MDButton from "../components/MDButton";
+import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import MDInput from '../components/MDInput';
+import DashboardNavbar from '../components/Navbars/DashboardNavbar';
+import {InputLabel, Select} from "@mui/material";
+import MenuItem from "../assets/theme/components/menu/menuItem";
+import { FormControl } from '@mui/material';
 
 function CreatePosition() {
   const [form, setForm] = useState({
@@ -192,8 +203,8 @@ function CreatePosition() {
 
   useEffect(() => {
     const recursive = (dataList) => {
-      var list = [];
-      dataList.forEach(data => {
+        let list = [];
+        dataList.forEach(data => {
         list.push({ nodeId: data.code, name: data.name, children: recursive(data.subSkills) });
       });
       return list;
@@ -322,146 +333,150 @@ function CreatePosition() {
   };
 
   return (
-    <div>
-        <form id="positionForm" onSubmit={handleSubmit}>
-        <label>
-          Position Code:
-          <input type="text" value={form.positionCode} onChange={handleInputChange} name="positionCode" />
-        </label>
-        <br />
-        <label>
-          Name:
-          <input type="text" value={form.name} onChange={handleInputChange} name="name" />
-        </label>
-        <br />
-        <label>
-          Project Code:
-          <select name="projectCode" value={form.projectCode} onChange={handleInputChange}>
-            <option value="">Select a project name</option>
-              {projectList.filter((project) => project.name.toLowerCase().includes(searchProjectCode.toLowerCase())).map((project) => (
-                <option key={project.code} value={project.code}>
-                {project.name}
-                </option>
-              ))}
-          </select>
-          <input type="text" value={searchProjectCode} onChange={(e) => setSearchProjectCode(e.target.value)} placeholder="Search project code"/>
-        </label>
-        <br />
-        <label>
-          Charge:
-          <select name="charge" value={form.charge} onChange={handleInputChange}>
-            <option value="">Select an option</option>
-            <option value="director">Director</option>
-            <option value="head">Head</option>
-            <option value="unknown">Unknown</option>
-          </select>
-        </label>
-        <br />
-        <label>
-          End Date:
-          <DatePicker
-            selected={closingDate}
-            dateFormat="dd-MM-yyyy"
-            onSelect={(date) => setClosingDate(date)}
-            onChange={(date) => handleInputChange({ target: { name: "closingDate", value: format(date, 'dd-MM-yyyy') } })}
-          />
-        </label>
-        <br/>
-        <label>
-          Init Date:
-          <DatePicker
-            selected={openingDate}
-            dateFormat="dd-MM-yyyy"
-            onSelect={(date) => setOpeningDate(date)}
-            onChange={(date) => handleInputChange({ target: { name: "openingDate", value: format(date, 'dd-MM-yyyy') } })}
-          />
-        </label>
-        <br />
-        <label>
-          Priority:
-          <input type="text" value={form.priority} onChange={handleInputChange} name="priority" />
-        </label>
-        <br />
-        <label>
-          Mode:
-          <select name="mode" value={form.mode} onChange={handleInputChange}>
-            <option value="">Select an option</option>
-            <option value="REMOTE">Remote</option>
-            <option value="PRESENTIAL">Presential</option>
-            <option value="MIX">Mix</option>
-            <option value="UNKNOWN">Unknown</option>
-          </select>
-        </label>
-        <br />
-        <label>
-          Role:
-          <input type="text" value={form.role} onChange={handleInputChange} name="role" />
-        </label>
-        <br />
-        <label>
-          Active:
-          <select name="active" value={form.active} onChange={handleInputChange}>
-            <option value="">Select an option</option>
-            <option value="true">YES</option>
-            <option value="false">NO</option>
-          </select>
-        </label>
-        <br />
+      <DashboardLayout>
+        <DashboardNavbar />
+        <MDBox pt={6} pb={3}>
+          <Grid container spacing={6}>
+              <Grid item xs={12}>
+                  <Card>
+                      <MDBox
+                          mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
+                          bgColor = 'info'
+                          borderRadius = 'lg'
+                          coloredShadow =
+                              'info' > <MDTypography variant = 'h6' color = 'white'>Create Position</MDTypography>
+                      </MDBox>
+                      <form id="positionForm" onSubmit={handleSubmit}>
+                      <MDBox pt = {3}>
+                          <Grid container spacing={6}>
+                              <Grid item xs={6}>
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Position code</MDTypography>
+                                  <MDInput type="text" value={form.positionCode} onChange={handleInputChange} name="positionCode" />
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Project code</MDTypography>
+                                  <FormControl fullWidth>
+                                      <InputLabel>Select a project name</InputLabel>
+                                      <Select name="projectCode" value={form.projectCode} onChange={handleInputChange}>
+                                          {projectList.filter((project) => project.name.toLowerCase().includes(searchProjectCode.toLowerCase())).map((project) => (
+                                            <MenuItem key={project.code} value={project.code}>
+                                            {project.name}
+                                            </MenuItem>
+                                          ))}
+                                      </Select>
+                                  </FormControl>
+                                  <MDInput type="text" value={searchProjectCode} onChange={(e) => setSearchProjectCode(e.target.value)} placeholder="Search project code"/>
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Role</MDTypography>
+                                  <MDInput type="text" value={form.role} onChange={handleInputChange} name="role" />
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Init Date</MDTypography>
+                                  <DatePicker
+                                      selected={openingDate}
+                                      dateFormat="dd-MM-yyyy"
+                                      onSelect={(date) => setOpeningDate(date)}
+                                      onChange={(date) => handleInputChange({ target: { name: "openingDate", value: format(date, 'dd-MM-yyyy') } })}
+                                  />
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Mode</MDTypography>
+                                  <FormControl fullWidth>
+                                    <InputLabel>Select an option</InputLabel>
+                                      <Select name="mode" value={form.mode} onChange={handleInputChange}>
+                                          <MenuItem value="REMOTE">Remote</MenuItem>
+                                          <MenuItem value="PRESENTIAL">Presential</MenuItem>
+                                          <MenuItem value="MIX">Mix</MenuItem>
+                                          <MenuItem value="UNKNOWN">Unknown</MenuItem>
+                                      </Select>
+                                  </FormControl>
+                              </Grid>
+                              <Grid item xs={6}>
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Name</MDTypography>
+                                  <MDInput type="text" value={form.name} onChange={handleInputChange} name="name" />
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Priority</MDTypography>
+                                  <MDInput type="text" value={form.priority} onChange={handleInputChange} name="priority" />
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Charge</MDTypography>
+                                  <FormControl fullWidth>
+                                      <InputLabel id="demo-simple-select-label">Select an option</InputLabel>
+                                      <Select name="charge" value={form.charge} onChange={handleInputChange}>
+                                        <MenuItem value="head">Head</MenuItem>
+                                        <MenuItem value="unknown">Unknown</MenuItem>
+                                      </Select>
+                                  </FormControl>
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>End Date</MDTypography>
+                                  <DatePicker
+                                    selected={closingDate}
+                                    dateFormat="dd-MM-yyyy"
+                                    onSelect={(date) => setClosingDate(date)}
+                                    onChange={(date) => handleInputChange({ target: { name: "closingDate", value: format(date, 'dd-MM-yyyy') } })}
+                                  />
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Active</MDTypography>
+                                  <FormControl fullWidth>
+                                  <InputLabel>Select an option</InputLabel>
+                                  <Select name="active" value={form.active} onChange={handleInputChange}>
 
-        {selectedItem && (
-          <div>
-            <h2>Selected Item: {selectedItem.name}</h2>
-            <label>
-              Level Required:
-              <select value={levelReq} onChange={(e) => setLevelReq(e.target.value)}>
-                <option value="">Select an option</option>
-                <option value="MANDATORY">MANDATORY</option>
-                <option value="NICE_TO_HAVE">NICE TO HAVE</option>
-              </select>
-            </label>
-            <br />
-            <label>
-              Minimum Level:
-              <select value={minLevel} onChange={(e) => setMinLevel(e.target.value)}>
-                <option value="">Select an option</option>
-                <option value="HIGH">HIGH</option>
-                <option value="MEDIUM">MEDIUM</option>
-                <option value="LOW">LOW</option>
-              </select>
-            </label>
-            <br />
-            <label>
-              Minimum Experience:
-              <input type="number" value={minExp} onChange={(e) => setMinExp(parseInt(e.target.value))}/>
-            </label>
-            <br />
-            <button onClick={handleModalSubmit}>Save</button>
-            <button onClick={() => setSelectedItem(null)}>Cancel</button>
-          </div>
-        )}
+                                        <MenuItem value="true">YES</MenuItem>
+                                        <MenuItem value="false">NO</MenuItem>
+                                      </Select>
+                                  </FormControl>
+                                    {selectedItem && (
+                                      <MDBox>
+                                        <h2>Selected Item: {selectedItem.name}</h2>
+                                        <FormControl fullWith>
+                                          <MDTypography variant = 'h6' fontWeight = 'medium'>Level Required</MDTypography>
+                                            <InputLabel>Select an Option</InputLabel>
+                                          <Select value={levelReq} onChange={(e) => setLevelReq(e.target.value)}>
+                                            <MenuItem value="MANDATORY">MANDATORY</MenuItem>
+                                            <MenuItem value="NICE_TO_HAVE">NICE TO HAVE</MenuItem>
+                                          </Select>
+                                        </FormControl>
+                                        <FormControl fullWidth>
+                                            <MDTypography variant = 'h6' fontWeight = 'medium'>Level Required</MDTypography>
+                                            <InputLabel>
+                                                Select an option
+                                            </InputLabel>
+                                              <Select value={minLevel} onChange={(e) => setMinLevel(e.target.value)}>
+                                                <MenuItem value="HIGH">HIGH</MenuItem>
+                                                <MenuItem value="MEDIUM">MEDIUM</MenuItem>
+                                                <MenuItem value="LOW">LOW</MenuItem>
+                                              </Select>
+                                        </FormControl>
+                                        <FormControl fullWidth>
+                                          <MDTypography variant = 'h6' fontWeight = 'medium'>Minimum Experience</MDTypography>
+                                          <MDInput type="number" value={minExp} onChange={(e) => setMinExp(parseInt(e.target.value))}/>
+                                        </FormControl>
+                                        <MDButton onClick={handleModalSubmit}>Save</MDButton>
+                                        <MDButton onClick={() => setSelectedItem(null)}>Cancel</MDButton>
+                                      </MDBox>
+                                    )}
 
-        <button onClick={collapseAll}> Collapse all </button>
-        <br/>
-        <input
-          type="text"
-          value={searchSkill}
-          onChange={(e) => setSearchSkill(e.target.value)}
-          placeholder="Search"
-        />
-        <DataTreeView/>
-        <SkillsList />
-        <br/>
-        <button type="submit" form="positionForm">Submit</button>
-      </form>
-      <VisGraph
-            graph={graph}
-            options={options}
-            events={events}
-            getNetwork={network => {
-              //  if you want access to vis.js network api you can set the state in a parent component using this property
-            }}
-      /> 
-    </div>
+                                    <button onClick={collapseAll}> Collapse all </button>
+                                    <br/>
+                                    <input
+                                      type="text"
+                                      value={searchSkill}
+                                      onChange={(e) => setSearchSkill(e.target.value)}
+                                      placeholder="Search"
+                                    />
+                                    <DataTreeView/>
+                                    <SkillsList />
+                              </Grid>
+                              <Grid item xs={12}>
+                                <MDButton variant="gradient" color="dark">Submit</MDButton>
+                              </Grid>
+                          </Grid>
+                      </MDBox>
+                      </form>
+                      <MDBox>
+                          <VisGraph
+                                graph={graph}
+                                options={options}
+                                events={events}
+                                getNetwork={network => {
+                                  //  if you want access to vis.js network api you can set the state in a parent component using this property
+                                }}
+                          />
+                      </MDBox>
+                  </Card>
+              </Grid>
+          </Grid>
+        </MDBox>
+        <Footer />
+      </DashboardLayout>
   );
 }
 
