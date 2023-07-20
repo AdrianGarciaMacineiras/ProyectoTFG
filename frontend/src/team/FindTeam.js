@@ -160,9 +160,10 @@ function FindTeam() {
                                       <MDBox>
                                           <MDTypography variant="h6" fontWeight="medium">Team code</MDTypography>
                                           <MDInput
-                    id="teamCode"
-                    type="text"
-                    value = {form.teamCode}/>
+                                            id="teamCode"
+                                            type="text"
+                                            value = {form.teamCode}
+                                            onChange = {handleTeamCode}/>
                                       </MDBox>
                                       <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
          </form>
