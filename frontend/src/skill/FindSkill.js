@@ -156,7 +156,7 @@ function FindSkill() {
                     value = {form.skillCode}
                     onChange = {handleSkillCode}/>
             </MDBox>
-            <MDButton variant="gradient" color="dark">Submit</MDButton>
+            <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
          </form>
                           </MDBox>
                       </Card>

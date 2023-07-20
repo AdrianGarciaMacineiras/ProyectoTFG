@@ -141,7 +141,7 @@ function FindClient() {
                       value = {form.clientCode}
                       onChange = {handleClientCode}/>
               </MDBox>
-              <MDButton variant="gradient" color="dark">Submit</MDButton>
+              <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
             </form>
          </MDBox>
          </Card>

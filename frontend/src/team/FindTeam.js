@@ -164,7 +164,7 @@ function FindTeam() {
                     type="text"
                     value = {form.teamCode}/>
                                       </MDBox>
-                                      <MDButton variant="gradient" color="dark">Submit</MDButton>
+                                      <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
          </form>
                           </MDBox>
                       </Card>
