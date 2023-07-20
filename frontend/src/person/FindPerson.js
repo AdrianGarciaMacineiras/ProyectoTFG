@@ -146,7 +146,6 @@ function FindPerson() {
             graphTemp.edges.push({from:1, to:i, label: "CANDIDATE", title: JSON.stringify(temp,'',2), group: 'candidate'});
           });
           
-          console.log(graphTemp);
           setGraph(prev => graphTemp);
         });
 

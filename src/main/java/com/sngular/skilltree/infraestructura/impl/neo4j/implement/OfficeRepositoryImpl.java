@@ -7,6 +7,8 @@ import com.sngular.skilltree.model.Office;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -19,5 +21,11 @@ public class OfficeRepositoryImpl implements OfficeRepository {
     @Override
     public Office findByCode(String officecode) {
         return mapper.fromNode(crud.findByCode(officecode));
+    }
+
+    @Override
+    public List<Office> findAll(){
+        var office = crud.findAll();
+        return mapper.map(office);
     }
 }

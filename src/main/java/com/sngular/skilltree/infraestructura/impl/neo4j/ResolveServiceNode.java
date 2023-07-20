@@ -35,7 +35,6 @@ public class ResolveServiceNode {
     @Named("resolveCodeToSkillNode")
     public SkillNode resolveCodeToSkillNode(final String code) {
         var skillNode = skillCrudRepository.findSkillByCode(code);
-        skillCrudRepository.deleteRequire(code);
         return skillNode;
     }
 

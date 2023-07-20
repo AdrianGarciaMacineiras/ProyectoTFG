@@ -89,7 +89,6 @@ function FindClient() {
           setAux(response);
           var i = 1;
           graphTemp.nodes.push({id:i, label: response.name, title: JSON.stringify(response,'',2)});
-          console.log(graphTemp);
           setGraph(prev => graphTemp);
         });
 
@@ -170,7 +169,7 @@ function FindClient() {
                   getNetwork={network => {
                     //  if you want access to vis.js network api you can set the state in a parent component using this property
                   }}
-                /> 
+                />
                 </MDBox>
            </Card>
           </Grid>

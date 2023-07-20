@@ -1,4 +1,5 @@
 import FindPerson from './person/FindPerson'
+import CreatePerson from './person/CreatePerson'
 import FindClient from './client/FindClient'
 import FindSkill from './skill/FindSkill'
 import SkillList from './skill/SkillList'
@@ -16,6 +17,14 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/findPerson",
     component: <FindPerson />,
+  },
+  {
+    type: "collapse",
+    name: "Create Person",
+    key: "createPerson",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/createPerson",
+    component: <CreatePerson />,
   },
   {
     type: "collapse",

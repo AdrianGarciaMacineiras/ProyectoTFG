@@ -106,7 +106,6 @@ function FindSkill() {
               graphTemp.edges.push({from:idHijo, to: i, label: "REQUIRE"})
             })
           });
-          console.log(graphTemp);
           setGraph(prev => graphTemp);
         });
 

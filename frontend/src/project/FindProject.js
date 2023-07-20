@@ -104,8 +104,7 @@ function FindProject() {
             i++
             graphTemp.nodes.push({id:i, label: response.clientCode , title: JSON.stringify(response.clientCode,'',2)});
             graphTemp.edges.push({from:1, to: i, label:"FOR_CLIENT", title: response.clientCode});
-            
-            console.log(graphTemp);
+
             setGraph(prev => graphTemp);
         });
 

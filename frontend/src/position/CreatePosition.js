@@ -23,22 +23,26 @@ import { FormControl } from '@mui/material';
 
 function CreatePosition() {
   const [form, setForm] = useState({
-    positionCode: '',
+    code: '',
     charge: '',
     closingDate: '',
     openingDate: '',
-    active: '',
+    open: '',
     skills: [],
     name: '',
     projectCode: '',
     priority: '',
     mode: '',
     role: '',
-    managedBy: ''
+    managedBy: '',
+    office:''
   });
 
   const [skillList, setSkillList] = useState([]);
   const [projectList, setProjectList] = useState([]);
+  const [peopleList, setPeopleList] = useState([]);
+  const [officeList, setOfficeList] = useState([]);
+
 
   const [closingDate, setClosingDate] = useState(new Date());
   const [openingDate, setOpeningDate] = useState(new Date());
@@ -51,6 +55,9 @@ function CreatePosition() {
   const [minExp, setMinExp] = useState(0);
 
   const [searchProjectCode, setSearchProjectCode] = useState('');
+  const [searchProjectName, setSearchProjectName] = useState('');
+  const [searchPersonName, setSearchPersonName] = useState('');
+  const [searchOfficeName, setSearchOfficeName] = useState('');
   const [searchSkill, setSearchSkill] = useState('');
 
   const graphTemp = {
@@ -82,9 +89,10 @@ function CreatePosition() {
       }
     },
     groups: {
-      assigned: {color:{background:'red'}, borderWidth:3},
+      managedBy: {color:{background:'red'}, borderWidth:3},
       candidates: {color:{background:'green'}, borderWidth:3},
       project: {color:{background:'yellow'}, borderWidth:3},
+      skill: {color:{background:'pink'}, borderWidth:3}
     },
     height: "800px",
     physics: {
@@ -118,31 +126,39 @@ function CreatePosition() {
 
   const getTreeItemsFromData = (treeItems, searchValue) => {
     const filteredItems = treeItems.filter((treeItemData) => {
-      var isMatched =  treeItemData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+      const isMatched =
+        treeItemData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
         getTreeItemsFromData(treeItemData.children, searchValue).length > 0;
-      
+
       return isMatched;
     });
 
     return filteredItems.map((treeItemData) => {
-      return (
-        <TreeItem
-          key={treeItemData.nodeId}
-          nodeId={treeItemData.nodeId}
-          label={
-            <div
-              onClick={(event) => {
-                event.stopPropagation();
-                handleItemClick(treeItemData);
-              }}
-            >
-              {treeItemData.name}
-            </div>
-          }
-        >
-          {getTreeItemsFromData(treeItemData.children, searchValue)}
-        </TreeItem>
-      );
+      const isMatched =
+        treeItemData.name.toLowerCase().includes(searchValue.toLowerCase());
+
+      if (isMatched) {
+        return (
+          <TreeItem
+            key={treeItemData.nodeId}
+            nodeId={treeItemData.nodeId}
+            label={
+              <div
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleItemClick(treeItemData);
+                }}
+              >
+                {treeItemData.name}
+              </div>
+            }
+          >
+            {getTreeItemsFromData(treeItemData.children, searchValue)}
+          </TreeItem>
+        );
+      }
+
+      return getTreeItemsFromData(treeItemData.children, searchValue);
     });
   };
 
@@ -164,7 +180,7 @@ function CreatePosition() {
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
         >
-          {getTreeItemsFromData(skillList, searchSkill)}
+          {getTreeItemsFromData(skillList, searchSkill, false)}
         </TreeView>
       </MDBox>
     );
@@ -234,11 +250,34 @@ function CreatePosition() {
     .then(response => {
       setProjectList(response);
     });
-    
+
+    fetch(`http://localhost:9080/people`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    }
+    })
+    .then(data => data.json())
+    .then(data => {
+      setPeopleList(data);
+    });
+
+    fetch(`http://localhost:9080/office`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    }
+    })
+    .then(office => office.json())
+    .then(office => {
+      setOfficeList(office);
+    });
   }, []);
 
   const createPosition = (event) => {
-    console.log(JSON.stringify(form,'',2))
+
     const requestBody = JSON.stringify(form);
 
     fetch("http://localhost:9080/position", {
@@ -253,7 +292,7 @@ function CreatePosition() {
       .then(response => {
         setAux(response);
         var i = 1
-        var temp = {Code: response.code, Active: response.active, Role: response.role, EndDate: response.closingDate, InitDate: response.openingDate}
+        var temp = {Code: response.code, Active: response.open, Role: response.role, EndDate: response.closingDate, InitDate: response.openingDate}
         graphTemp.nodes.push({id:i, label: response.code, title: JSON.stringify(temp,'',2)});
 
         i++
@@ -267,7 +306,16 @@ function CreatePosition() {
           graphTemp.edges.push({from: 1, to: i, label: "CANDIDATE", title: JSON.stringify(temp,'',2)});
         })
 
-        console.log(graphTemp);
+        i++;
+        graphTemp.nodes.push({id:i, label: response.managedBy, title: response.managedBy, group:"managedBy" });
+        graphTemp.edges.push({from: i, to: 1, label: "MANAGED", title: JSON.stringify(temp,'',2)});
+
+        response.skills.forEach(element => {
+          i++;
+          var temp ={Skill: element.skill, LevelReq:element.levelReq, MinExp:element.minExp, MinLevel:element.minLevel}
+          graphTemp.nodes.push({id:i, label: element.skill, title: JSON.stringify(temp,'',2), group:"skill" });
+          graphTemp.edges.push({from: 1 , to: i, label: "NEED", title: JSON.stringify(temp,'',2)});
+        })
         setGraph(prev => graphTemp);
       })
   };
@@ -293,21 +341,27 @@ function CreatePosition() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    setGraph({
+      nodes: [],
+      edges: []
+    });
+
     createPosition();
 
     setForm({
-      positionCode: '',
+      code: '',
       charge: '',
       closingDate: '',
       openingDate: '',
-      active: '',
+      open: '',
       skills: [],
       name: '',
       projectCode: '',
       priority: '',
       mode: '',
       role: '',
-      managedBy: ''
+      managedBy: '',
+      office:''
     });
   };
 

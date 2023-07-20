@@ -12,8 +12,5 @@ public interface SkillCrudRepository extends Neo4jRepository<SkillNode, String>,
     @Query("MATCH(n:Skill{code:$skillCode}) RETURN n")
     SkillNode findSkillByCode(String skillCode);
 
-    @Query("MATCH p=()-[r:REQUIRE]->(n:Skill{code:$skillCode}) DELETE r")
-    void deleteRequire(String skillCode);
-
     SkillNode findByName(String skillName);
 }

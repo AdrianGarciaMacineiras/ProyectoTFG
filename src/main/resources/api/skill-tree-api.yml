@@ -1548,6 +1548,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /office:
+    summary: List of offices
+    description: Returns a list of all the offices
+    get:
+      summary: List all offices
+      operationId: getOffices
+      tags:
+        - office
+      responses:
+        '200':
+          description: A paged array of offices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/office"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
 components:
   schemas:
     project:

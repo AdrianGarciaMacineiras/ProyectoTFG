@@ -36,3 +36,5 @@ build/
 /infra/import/
 /infra/logs/
 /infra/plugins/
+/node_modules/
+/.mvn/

@@ -147,9 +147,8 @@ function FindPosition() {
               });
             })
 
-            console.log(graphTemp);
-            setGraph(prev => graphTemp);
-          });
+          setGraph(prev => graphTemp);
+        });
 
   const handlePositionCode = (event) => {
     setForm({
@@ -163,7 +162,7 @@ function FindPosition() {
 
     FindPosition(form.positionCode);
 
-    setForm({positionCode: ''})        
+    setForm({positionCode: ''})
     }
 
   return (
@@ -208,7 +207,7 @@ function FindPosition() {
         //  if you want access to vis.js network api you can set the state in a
         //  parent component using this property
       }
-    } /> 
+    } />
          </MDBox>
          </Card>
         </Grid>
