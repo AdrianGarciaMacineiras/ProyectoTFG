@@ -1,5 +1,8 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.EnumCharge;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.MemberRelationship;
@@ -7,9 +10,6 @@ import com.sngular.skilltree.model.Member;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +24,9 @@ public class ResolveServiceTeamNode {
         for (var memberRelationship : memberRelationshipList){
             var people = mapper.fromNode(memberRelationship.people());
             var member = Member.builder()
-                    .people(people)
-                    .charge(com.sngular.skilltree.model.EnumCharge.valueOf(memberRelationship.charge().name()))
-                    .build();
+                               .people(people)
+                               .charge(memberRelationship.charge().getValue())
+                               .build();
             memberList.add(member);
         }
         return memberList;
@@ -35,11 +35,15 @@ public class ResolveServiceTeamNode {
     @Named("mapToMemberRelationship")
     public List<MemberRelationship> mapToMemberRelationship(List<Member> memberList){
         final List<MemberRelationship> memberRelationshipList = new ArrayList<>();
-        for (var member : memberList){
-            var peopleNode = mapper.toNode(member.people());
-            MemberRelationship memberRelationship = new MemberRelationship(null, peopleNode, EnumCharge.valueOf(member.charge().name()));
-            memberRelationshipList.add(memberRelationship);
-        }
+      for (var member : memberList) {
+        var peopleNode = mapper.toNode(member.people());
+        MemberRelationship memberRelationship = MemberRelationship
+          .builder()
+          .people(peopleNode)
+          .charge(EnumCharge.from(member.charge()))
+          .build();
+        memberRelationshipList.add(memberRelationship);
+      }
         return memberRelationshipList;
     }
 }
