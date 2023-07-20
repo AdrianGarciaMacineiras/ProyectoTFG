@@ -195,7 +195,6 @@ function FindPerson() {
               });
             });
 
-            console.log(graphTemp);
             setGraph(prev => graphTemp);
           });
 
@@ -211,7 +210,7 @@ function FindPerson() {
 
     findPerson(form.personCode);
 
-    setForm({personCode: ''})        
+    setForm({personCode: ''})
     }
 
   return (
@@ -256,7 +255,7 @@ function FindPerson() {
         //  if you want access to vis.js network api you can set the state in a
         //  parent component using this property
       }
-    } /> 
+    } />
         </MDBox > </Card>
           </Grid></Grid>
       </MDBox>

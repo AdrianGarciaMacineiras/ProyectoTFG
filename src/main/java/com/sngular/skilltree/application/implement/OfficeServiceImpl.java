@@ -6,6 +6,8 @@ import com.sngular.skilltree.model.Office;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class OfficeServiceImpl implements OfficeService {
@@ -15,5 +17,10 @@ public class OfficeServiceImpl implements OfficeService {
     @Override
     public Office findByCode(String officeCode) {
         return officeRepository.findByCode(officeCode);
+    }
+
+    @Override
+    public List<Office> findAll(){
+        return officeRepository.findAll();
     }
 }
