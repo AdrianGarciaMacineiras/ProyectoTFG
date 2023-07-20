@@ -4,19 +4,19 @@ import java.time.LocalDate;
 
 public interface PeopleNodeProjection {
 
-    String getCode();
+  String getCode();
 
-    String getName();
+  String getName();
 
-    String getEmployeeId();
+  String getEmployeeId();
 
-    String getSurname();
+  String getSurname();
 
-    LocalDate getBirthDate();
+  LocalDate getBirthDate();
 
-    String getTitle();
+  String getTitle();
 
-    boolean getDeleted();
+  boolean getDeleted();
 
-    boolean getAssignable();
+  boolean getAssignable();
 }

@@ -4,10 +4,10 @@ import com.sngular.skilltree.model.EnumCharge;
 
 public interface MemberRelationshipProjection {
 
-    String getId();
+  String getId();
 
-    EnumCharge getCharge();
+  EnumCharge getCharge();
 
-    PeopleNodeProjection getPeople();
+  PeopleNodeProjection getPeople();
 
 }

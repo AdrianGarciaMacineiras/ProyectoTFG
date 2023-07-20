@@ -1,13 +1,13 @@
 package com.sngular.skilltree.fixtures;
 
+import java.util.List;
+
 import com.sngular.skilltree.CommonFixtures;
 import com.sngular.skilltree.model.EnumCharge;
 import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Team;
 import com.sngular.skilltree.testutil.FileHelper;
-
-import java.util.List;
 
 public class TeamFixtures extends CommonFixtures {
 
@@ -30,10 +30,10 @@ public class TeamFixtures extends CommonFixtures {
                     .build();
 
     public final static Member MEMBER1 =
-            Member.builder()
-                    .charge(EnumCharge.DIRECTOR.name())
-                    .people(PEOPLE_BY_CODE)
-                    .build();
+      Member.builder()
+            .charge(EnumCharge.DIRECTOR.name())
+            .people(PEOPLE_BY_CODE)
+            .build();
 
     public final static Team TEAM_BY_CODE =
             Team.builder()
