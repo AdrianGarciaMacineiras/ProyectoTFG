@@ -12,4 +12,5 @@ public interface TeamCrudRepository extends Neo4jRepository<TeamNode, String>, C
     TeamNode findByCode(String teamCode);
 
     List<TeamProjection> findByDeletedIsFalse();
+
 }

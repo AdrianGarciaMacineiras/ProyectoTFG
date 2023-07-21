@@ -510,7 +510,7 @@ function CreatePosition() {
                                     <SkillsList />
                               </Grid>
                               <Grid item xs={12}>
-                                <MDButton variant="gradient" color="dark">Submit</MDButton>
+                                <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
                               </Grid>
                           </Grid>
                       </MDBox>

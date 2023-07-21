@@ -1,5 +1,9 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.PositionRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ClientCrudRepository;
@@ -15,10 +19,6 @@ import org.neo4j.driver.Record;
 import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
@@ -63,7 +63,8 @@ public class PositionRepositoryImpl implements PositionRepository {
 
   @Override
   public Position findByCode(String positionCode) {
-      return mapper.fromNode(crud.findByCode(positionCode));
+
+    return mapper.fromNode(crud.findByCode(positionCode));
   }
 
     @Override

@@ -8,4 +8,6 @@ public interface CustomTeamRepository {
 
     <T> T findByCodeAndDeletedIsFalse(String code, Class<T> type);
 
+    <T> T findByShortNameAndDeletedIsFalse(String code, Class<T> type);
+
 }

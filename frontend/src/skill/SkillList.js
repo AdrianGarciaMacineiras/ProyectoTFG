@@ -5,6 +5,8 @@ import Checkbox from '@mui/material/Checkbox';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import VisGraph from 'react-vis-graph-wrapper';
+import MDBox from "../components/MDBox";
+import MDButton from "../components/MDButton";
 
 function SkillList() {
 
@@ -192,10 +194,10 @@ function SkillList() {
   },[])
 
   return (
-    <div>
-      <button onClick={collapseAll}> Collapse all </button>
+    <MDBox>
+      <MDButton onClick={collapseAll}> Collapse all </MDButton>
       <DataTreeView  treeItems={skillList} />
-      {(selected && selected.length > 0) && <button onClick={handleClick}> Send </button>}
+      {(selected && selected.length > 0) && <MDButton onClick={handleClick}> Send </MDButton>}
       {isToggled && <VisGraph
             graph={graph}
             options={options}
@@ -205,7 +207,7 @@ function SkillList() {
             }}
           />
       }  
-    </div>
+    </MDBox>
   );
 }
 
