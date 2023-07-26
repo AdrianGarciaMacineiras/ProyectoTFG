@@ -2,13 +2,13 @@ import FindPerson from './person/FindPerson'
 import CreatePerson from './person/CreatePerson'
 import FindClient from './client/FindClient'
 import CreateClient from './client/CreateClient'
+import UpdateClient from './client/UpdateClient'
 import FindSkill from './skill/FindSkill'
 import SkillList from './skill/SkillList'
 import FindProject from './project/FindProject'
 import CreateProject from './project/CreateProject'
 import FindPosition from './position/FindPosition'
 import CreatePosition from './position/CreatePosition'
-import CreateClient from './client/CreateClient'
 import FindTeam from './team/FindTeam'
 import CreateTeam from './team/CreateTeam'
 import Icon from "@mui/material/Icon";
@@ -48,11 +48,11 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Create Client",
-    key: "createClient",
+    name: "Update Client",
+    key: "updateClient",
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/createClient",
-    component: <CreateClient />,
+    route: "/updateClient",
+    component: <UpdateClient />,
   },
   {
     type: "collapse",

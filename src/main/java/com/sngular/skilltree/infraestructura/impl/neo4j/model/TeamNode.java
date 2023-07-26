@@ -27,6 +27,8 @@ public class TeamNode {
 
     private String desc;
 
+    private String shortName;
+
     private List<String> tags;
 
     @Relationship(type = "MEMBER_OF", direction = Relationship.Direction.INCOMING)

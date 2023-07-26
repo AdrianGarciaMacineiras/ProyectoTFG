@@ -8,6 +8,7 @@ import java.util.List;
 @Builder(toBuilder = true)
 public record Team(String code,
                    String name,
+                   String shortName,
                    String description,
                    List<String> tags,
                    List<Member> members,
