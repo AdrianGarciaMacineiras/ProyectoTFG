@@ -1,0 +1,471 @@
+import React, { useEffect, useState } from "react";
+import TreeView from '@mui/lab/TreeView';
+import TreeItem from "@mui/lab/TreeItem";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from 'date-fns';
+import "../network.css";
+import VisGraph from 'react-vis-graph-wrapper';
+import MDBox from "../components/MDBox";
+import MDTypography from "../components/MDTypography";
+import Footer from "../components/Footer";
+import MDButton from "../components/MDButton";
+import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import MDInput from '../components/MDInput';
+import DashboardNavbar from '../components/Navbars/DashboardNavbar';
+import {InputLabel, Select} from "@mui/material";
+import { MenuItem } from "@mui/material";
+import { FormControl } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
+
+const CreateProject = () => {
+    const [skillList, setSkillList] = useState([]);
+    const [clientList, setClientList] = useState([]);
+
+    const [searchClientCode, setSearchClientCode] = useState('');
+
+    const [endDate, setEndDate] = useState(new Date());
+    const [initDate, setInitDate] = useState(new Date());
+
+    const [searchSkill, setSearchSkill] = useState('');
+
+    const [selectedSkills, setSelectedSkills] = useState([]);
+
+  const [form, setForm] = useState({
+    code: '',
+    clientCode: '',
+    tag: '',
+    name: '',
+    desc: '',
+    initDate: '',
+    endDate: '',
+    area: '',
+    domain: '',
+    duration: '',
+    guards: 'NONE',
+    skills: [],
+  });
+
+  const graphTemp = {
+    nodes:[],
+    edges:[]
+  };
+
+  const [graph, setGraph] = useState({
+    nodes:[],
+    edges:[]
+  });
+
+  const [aux, setAux] = useState([]);
+
+  const options = {
+    layout: {
+        improvedLayout: true
+    },
+    nodes:{
+      shape: "dot",
+      scaling: {min:10,label:false}
+    },
+    edges: {
+      color: "#000000",
+      smooth: {
+        enabled: true,
+        type: "discrete",
+        roundness: 0.5
+      }
+    },
+    groups: {
+      client: {color:{background:'red'}, borderWidth:3},
+      skills: {color:{background:'green'}, borderWidth:3}
+    },
+    height: "800px",
+    physics: {
+      barnesHut: {
+        gravitationalConstant: -11500,
+        centralGravity: 0.5,
+        springLength: 270,
+        springConstant: 0.135,
+        avoidOverlap: 0.02
+      },
+      minVelocity: 0.75
+    },
+    configure: {
+      enabled: true,
+      filter: 'physics, layout',
+      showButton: true
+   },
+    interaction: {
+      hover: true,
+      hoverConnectedEdges: true,
+      selectable: true,
+      selectConnectedEdges: true
+    }
+  };
+  
+  const events = {
+    select: function(event) {
+      var { nodes, edges } = event;
+    }
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  useEffect(() => {
+    const recursive = (dataList) => {
+        let list = [];
+        dataList.forEach(data => {
+        list.push({ nodeId: data.code, name: data.name, children: recursive(data.subSkills) });
+      });
+      return list;
+    };
+
+    fetch(`http://localhost:9080/skills`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
+    })
+      .then(response => response.json())
+      .then(response => {
+        const skillsData = recursive(response)
+        setSkillList(skillsData);
+      });
+
+      fetch(`http://localhost:9080/client`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        }
+      })
+        .then(clients => clients.json())
+        .then(clients => {
+          setClientList(clients);
+        });
+
+  }, []);
+
+  const handleRemoveSkill = (index) => {
+    const updatedSkills = [...form.skills];
+    updatedSkills.splice(index, 1);
+    setForm((prevForm) => ({
+      ...prevForm,
+      skills: updatedSkills,
+    }));
+  };
+
+  const SkillsList = () => {
+    return (
+      <MDBox>
+        {form.skills.map((nodeId, index) => (
+          <MDBox key={index}>
+            <hr />
+            <label>Skill: {getNodeNameFromId(skillList, nodeId)}</label>
+            <button onClick={() => handleRemoveSkill(index)}>Remove</button>
+            <hr />
+          </MDBox>
+        ))}
+      </MDBox>
+    );
+  };
+
+  const getNodeNameFromId = (nodes, nodeId) => {
+    for (const node of nodes) {
+      if (node.nodeId === nodeId) {
+        return node.name;
+      } else if (node.children && node.children.length > 0) {
+        const nodeName = getNodeNameFromId(node.children, nodeId);
+        if (nodeName) {
+          return nodeName;
+        }
+      }
+    }
+    return null;
+  };
+
+  const handleAddSelectedSkills = () => {
+    const selectedSkillsData = selectedSkills.map((nodeId) => ({
+      nodeId: nodeId,
+      skillName: getNodeNameFromId(skillList, nodeId),
+    }));
+  
+    setForm((prevForm) => ({
+      ...prevForm,
+      skills: [...prevForm.skills, ...selectedSkillsData.map((data) => data.nodeId)],
+    }));
+  
+    setSelectedSkills([]);
+  };
+  
+  const handleCheckboxChange = (event) => {
+    const nodeId = event.target.name;
+    if (event.target.checked) {
+      setSelectedSkills((prevSelectedSkills) => [...prevSelectedSkills, nodeId]);
+    } else {
+      setSelectedSkills((prevSelectedSkills) => prevSelectedSkills.filter((item) => item !== nodeId));
+    }
+  };
+
+  const getTreeItemsFromData = (treeItems, searchValue) => {
+    const filteredItems = treeItems.filter((treeItemData) => {
+      const isMatched =
+        treeItemData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        getTreeItemsFromData(treeItemData.children, searchValue).length > 0;
+
+      return isMatched;
+    });
+
+    return filteredItems.map((treeItemData) => {
+      const isMatched =
+        treeItemData.name.toLowerCase().includes(searchValue.toLowerCase());
+
+      const isSelected = selectedSkills.includes(treeItemData.nodeId);
+
+      if(isMatched){
+      return (
+        <TreeItem
+          key={treeItemData.nodeId}
+          nodeId={treeItemData.nodeId}
+          label={
+            <div>
+              <input
+                type="checkbox"
+                name={treeItemData.nodeId}
+                checked={isSelected}
+                onChange={handleCheckboxChange}
+              />
+              {treeItemData.name}
+            </div>
+          }
+        >
+          {getTreeItemsFromData(treeItemData.children, searchValue)}
+        </TreeItem>
+      );
+        }
+        return getTreeItemsFromData(treeItemData.children, searchValue);
+    });
+  };
+
+
+  const collapseAll = (e) => {
+    e.preventDefault();
+    setSkillList(
+      skillList.map((item) =>
+        Object.assign({}, item, {
+          expanded: false,
+        })
+      )
+    );
+  };
+
+  const DataTreeView = () => {
+    return (
+      <MDBox>
+        <TreeView
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+        >
+          {getTreeItemsFromData(skillList, searchSkill, false)}
+        </TreeView>
+      </MDBox>
+    );
+  };
+
+  const createProject = (event) => {
+
+    const requestBody = JSON.stringify(form);
+
+    fetch("http://localhost:9080/project", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: requestBody,
+    })
+    .then(response => {return response.json()})
+    .then(response => {
+        setAux(response);
+        var i = 1;
+        var temp ={Code: response.code, Name:response.name, InitDate:response.initDate, Descripcion:response.desc, Area:response.area,
+            Guards:response.guards, Duration:response.duration, Domain: response.domain, Tag: response.tag}
+        graphTemp.nodes.push({id:i, label: response.name , title: JSON.stringify(temp,'',2)});
+
+        i++
+        graphTemp.nodes.push({id:i, label: response.clientCode , title: JSON.stringify(response.clientCode,'',2), groups:"client"});
+        graphTemp.edges.push({from:1, to: i, label:"FOR_CLIENT", title: response.clientCode});
+
+        response.skills.forEach(element => {
+          i++
+          graphTemp.nodes.push({id:i, label: element , title: element, groups:"skills"});
+          graphTemp.edges.push({from:1, to: i, label:"REQUIRE", title: response.clientCode});
+        });
+
+        setGraph(prev => graphTemp);
+      })
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    console.log(form);
+    
+    createProject();
+
+    setGraph({
+      nodes: [],
+      edges: []
+    });
+
+    setForm({
+        code: '',
+        clientCode: '',
+        tag: '',
+        name: '',
+        desc: '',
+        initDate: '',
+        endDate: '',
+        area: '',
+        domain: '',
+        duration: '',
+        guards: 'NONE',
+        skills: [],
+    });
+  };
+
+  return (
+    <DashboardLayout>
+    <DashboardNavbar />
+        <MDBox pt={6} pb={3}>
+            <Grid container spacing={6}>
+                <Grid item xs={12}>
+                     <Card>
+                        <MDBox
+                            mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
+                            bgColor = 'info'
+                            borderRadius = 'lg'
+                            coloredShadow =
+                                'info' > <MDTypography variant = 'h6' color = 'white'>Create Project</MDTypography>
+                        </MDBox>
+                            <form id="projectForm" onSubmit={handleSubmit}>
+                            <MDBox pt = {3}>
+                                <Grid container spacing={6}>
+                                <Grid item xs={6}>
+                               
+                                <MDTypography variant = 'h6' fontWeight = 'medium'>Project code</MDTypography>
+                                  <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" />
+
+                                  <Grid item xs={6}>
+                                    <MDTypography variant="h6" fontWeight="medium">
+                                      Client Name
+                                    </MDTypography>
+                                    <Autocomplete
+                                      options={clientList} 
+                                      getOptionLabel={(client) => client.name} 
+                                      value={clientList.find((client) => client.code === form.clientCode) || null}
+                                      onChange={(event, newValue) => {
+                                        handleInputChange({ target: { name: "clientCode", value: newValue?.code || '' } });
+                                      }}
+                                      renderInput={(params) => (
+                                        <MDInput
+                                          {...params}
+                                          label="Select a client"
+                                          name="clientCode"
+                                        />
+                                      )}
+                                    />
+                                  </Grid>
+                                
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Project name</MDTypography>
+                                  <MDInput type="text" value={form.name} onChange={handleInputChange} name="name" />
+
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Tag</MDTypography>
+                                  <MDInput type="text" value={form.tag} onChange={handleInputChange} name="tag" />
+
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Description</MDTypography>
+                                  <MDInput type="text" value={form.desc} onChange={handleInputChange} name="desc" />
+
+                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Init Date</MDTypography>
+                                  <DatePicker
+                                      selected={initDate}
+                                      dateFormat="dd-MM-yyyy"
+                                      onSelect={(date) => setInitDate(date)}
+                                      onChange={(date) => handleInputChange({ target: { name: "initDate", value: format(date, 'dd-MM-yyyy') } })}
+                                  />
+                                
+                                <MDTypography variant = 'h6' fontWeight = 'medium'>End Date</MDTypography>
+                                <DatePicker
+                                    selected={endDate}
+                                    dateFormat="dd-MM-yyyy"
+                                    onSelect={(date) => setEndDate(date)}
+                                    onChange={(date) => handleInputChange({ target: { name: "endDate", value: format(date, 'dd-MM-yyyy') } })}
+                                  />
+
+                                <MDTypography variant = 'h6' fontWeight = 'medium'>Area</MDTypography>
+                                <MDInput type="text" value={form.area} onChange={handleInputChange} name="area" />
+
+                                <MDTypography variant = 'h6' fontWeight = 'medium'>Domain</MDTypography>
+                                <MDInput type="text" value={form.domain} onChange={handleInputChange} name="domain" />
+
+                                <MDTypography variant = 'h6' fontWeight = 'medium'>Duration</MDTypography>
+                                <MDInput type="text" value={form.duration} onChange={handleInputChange} name="duration" />
+
+                                <MDTypography variant = 'h6' fontWeight = 'medium'>Guard</MDTypography>
+                                  <FormControl fullWidth>
+                                    <InputLabel>Select an option</InputLabel>
+                                      <Select name="guards" value={form.guards} onChange={handleInputChange}>
+                                          <MenuItem value="PASSIVE">Passive</MenuItem>
+                                          <MenuItem value="ACTIVE">Active</MenuItem>
+                                          <MenuItem value="NONE">None</MenuItem>
+                                          <MenuItem value="UNKNOWN">Unknown</MenuItem>
+                                      </Select>
+                                  </FormControl>
+
+                                  <MDButton onClick={collapseAll}> Collapse all </MDButton>
+                                    <br/>
+                                    <input
+                                      type="text"
+                                      value={searchSkill}
+                                      onChange={(e) => setSearchSkill(e.target.value)}
+                                      placeholder="Search"
+                                    />
+                                    <DataTreeView/>
+                                    {selectedSkills && 
+                                        <MDButton onClick={handleAddSelectedSkills}>Add Selected Skills</MDButton>
+                                    }
+                                    {form.skills.length>0 && <SkillsList />}
+                                </Grid>
+                                  <Grid item xs={12}>
+                                    <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
+                                  </Grid>                                
+                                </Grid>
+                            </MDBox>
+                            </form>
+                            <MDBox>
+                          <VisGraph
+                                graph={graph}
+                                options={options}
+                                events={events}
+                                getNetwork={network => {
+                                  //  if you want access to vis.js network api you can set the state in a parent component using this property
+                                }}
+                          />
+                      </MDBox>
+                </Card>
+            </Grid>
+          </Grid>
+        </MDBox>
+    <Footer />
+    </DashboardLayout>
+  );
+};
+
+export default CreateProject;

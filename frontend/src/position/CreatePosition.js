@@ -17,14 +17,12 @@ import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import MDInput from '../components/MDInput';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
-import {InputLabel, Select} from "@mui/material";
-import MenuItem from "../assets/theme/components/menu/menuItem";
-import { FormControl } from '@mui/material';
+import {InputLabel, Select, MenuItem, FormControl} from "@mui/material";
+import Autocomplete from '@mui/material/Autocomplete';
 
 function CreatePosition() {
   const [form, setForm] = useState({
     code: '',
-    charge: '',
     closingDate: '',
     openingDate: '',
     open: '',
@@ -341,16 +339,15 @@ function CreatePosition() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    createPosition();
+
     setGraph({
       nodes: [],
       edges: []
     });
 
-    createPosition();
-
     setForm({
       code: '',
-      charge: '',
       closingDate: '',
       openingDate: '',
       open: '',
@@ -406,18 +403,49 @@ function CreatePosition() {
                               <Grid item xs={6}>
                                   <MDTypography variant = 'h6' fontWeight = 'medium'>Position code</MDTypography>
                                   <MDInput type="text" value={form.positionCode} onChange={handleInputChange} name="positionCode" />
-                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Project code</MDTypography>
-                                  <FormControl fullWidth>
-                                      <InputLabel>Select a project name</InputLabel>
-                                      <Select name="projectCode" value={form.projectCode} onChange={handleInputChange}>
-                                          {projectList.filter((project) => project.name.toLowerCase().includes(searchProjectCode.toLowerCase())).map((project) => (
-                                            <MenuItem key={project.code} value={project.code}>
-                                            {project.name}
-                                            </MenuItem>
-                                          ))}
-                                      </Select>
-                                  </FormControl>
-                                  <MDInput type="text" value={searchProjectCode} onChange={(e) => setSearchProjectCode(e.target.value)} placeholder="Search project code"/>
+
+                                  <Grid item xs={6}>
+                                    <MDTypography variant="h6" fontWeight="medium">
+                                      Project Name
+                                    </MDTypography>
+                                    <Autocomplete
+                                      options={projectList} 
+                                      getOptionLabel={(project) => project.name} 
+                                      value={projectList.find((project) => project.code === form.projectCode) || null}
+                                      onChange={(event, newValue) => {
+                                        handleInputChange({ target: { name: "projectCode", value: newValue?.code || '' } });
+                                      }}
+                                      renderInput={(params) => (
+                                        <MDInput
+                                          {...params}
+                                          label="Select a project"
+                                          name="projectCode"
+                                        />
+                                      )}
+                                    />
+                                  </Grid>
+
+                                  <Grid item xs={6}>
+                                    <MDTypography variant="h6" fontWeight="medium">
+                                      Manager
+                                    </MDTypography>
+                                    <Autocomplete
+                                      options={peopleList} 
+                                      getOptionLabel={(people) => people.name + " " + people.surname} 
+                                      value={peopleList.find((people) => people.code === form.managedBy) || null}
+                                      onChange={(event, newValue) => {
+                                        handleInputChange({ target: { name: "managedBy", value: newValue?.code || '' } });
+                                      }}
+                                      renderInput={(params) => (
+                                        <MDInput
+                                          {...params}
+                                          label="Select a person"
+                                          name="managedBy"
+                                        />
+                                      )}
+                                    />
+                                  </Grid>
+
                                   <MDTypography variant = 'h6' fontWeight = 'medium'>Role</MDTypography>
                                   <MDInput type="text" value={form.role} onChange={handleInputChange} name="role" />
                                   <MDTypography variant = 'h6' fontWeight = 'medium'>Init Date</MDTypography>
@@ -444,13 +472,6 @@ function CreatePosition() {
                                   <MDTypography variant = 'h6' fontWeight = 'medium'>Priority</MDTypography>
                                   <MDInput type="text" value={form.priority} onChange={handleInputChange} name="priority" />
                                   <MDTypography variant = 'h6' fontWeight = 'medium'>Charge</MDTypography>
-                                  <FormControl fullWidth>
-                                      <InputLabel id="demo-simple-select-label">Select an option</InputLabel>
-                                      <Select name="charge" value={form.charge} onChange={handleInputChange}>
-                                        <MenuItem value="head">Head</MenuItem>
-                                        <MenuItem value="unknown">Unknown</MenuItem>
-                                      </Select>
-                                  </FormControl>
                                   <MDTypography variant = 'h6' fontWeight = 'medium'>End Date</MDTypography>
                                   <DatePicker
                                     selected={closingDate}
@@ -462,7 +483,6 @@ function CreatePosition() {
                                   <FormControl fullWidth>
                                   <InputLabel>Select an option</InputLabel>
                                   <Select name="active" value={form.active} onChange={handleInputChange}>
-
                                         <MenuItem value="true">YES</MenuItem>
                                         <MenuItem value="false">NO</MenuItem>
                                       </Select>
@@ -498,7 +518,7 @@ function CreatePosition() {
                                       </MDBox>
                                     )}
 
-                                    <button onClick={collapseAll}> Collapse all </button>
+                                    <MDButton onClick={collapseAll}> Collapse all </MDButton>
                                     <br/>
                                     <input
                                       type="text"
@@ -510,7 +530,7 @@ function CreatePosition() {
                                     <SkillsList />
                               </Grid>
                               <Grid item xs={12}>
-                                <MDButton variant="gradient" color="dark">Submit</MDButton>
+                                <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
                               </Grid>
                           </Grid>
                       </MDBox>

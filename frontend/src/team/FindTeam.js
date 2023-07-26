@@ -113,7 +113,6 @@ function FindTeam() {
             graphTemp.edges.push({from:1, to: i, label: "STRATEGIC"});
           });
 
-          console.log(graphTemp);
           setGraph(prev => graphTemp);
         });
 

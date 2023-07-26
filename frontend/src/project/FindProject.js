@@ -50,13 +50,8 @@ function FindProject() {
         }
       },
       groups: {
-        knows: {color:{background:'red'}, borderWidth:3},
-        interest: {color:{background:'blue'}, borderWidth:3},
-        work_with: {color:{background:'green'}, borderWidth:3},
-        master: {color:{background:'orange'}, borderWidth:3},
-        have_certificate: {color:{background:'yellow'}, borderWidth:3},
-        position: {color:{background:'white'}, borderWidth:3},
-        candidate: {color:{background:'pink'}, borderWidth:3},
+        client: {color:{background:'red'}, borderWidth:3},
+        skills: {color:{background:'green'}, borderWidth:3}
       },
       height: "800px",
       physics: {
@@ -102,8 +97,14 @@ function FindProject() {
             graphTemp.nodes.push({id:i, label: response.name , title: JSON.stringify(temp,'',2)});
 
             i++
-            graphTemp.nodes.push({id:i, label: response.clientCode , title: JSON.stringify(response.clientCode,'',2)});
+            graphTemp.nodes.push({id:i, label: response.clientCode , title: JSON.stringify(response.clientCode,'',2), groups:"client"});
             graphTemp.edges.push({from:1, to: i, label:"FOR_CLIENT", title: response.clientCode});
+
+            response.skills.forEach(element => {
+              i++
+              graphTemp.nodes.push({id:i, label: element , title: element, groups:"skills"});
+              graphTemp.edges.push({from:1, to: i, label:"REQUIRE", title: response.clientCode});
+            });
 
             setGraph(prev => graphTemp);
         });
