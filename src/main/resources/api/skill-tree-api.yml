@@ -1650,9 +1650,10 @@ components:
     guards:
       type: string
       enum:
-        - PASSIVE
-        - ACTIVE
-        - NO_GUARD
+      - PASSIVE
+      - ACTIVE
+      - NONE
+      - UNKNOWN
 
     projectRoles:
       type: object
@@ -2049,7 +2050,7 @@ components:
           type: string
           format: date
         title:
-          $ref: "#/components/schemas/title"
+          type: string
         roles:
           type: array
           items:

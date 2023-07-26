@@ -17,14 +17,14 @@ public class MaintenanceTasks {
 
   private AssignableConfiguration assignableConfiguration;
 
-  @Scheduled(cron = "0 0 * * * *")
+  @Scheduled(cron = "0 * * * * *")
   public void fixMissingDeleted() {
 
     neo4jClient.query("MATCH (n) WHERE n.deleted IS NULL SET n.deleted = false return COUNT(n)").fetch().first()
                .ifPresent(result -> log.debug("Job Set Deleted result :" + result));
   }
 
-  @Scheduled(cron = "0 0 * * * *")
+  @Scheduled(cron = "0 * * * * *")
   public void fixAssignable() {
     final var queryStr = new StringBuilder();
     queryStr.append("""
