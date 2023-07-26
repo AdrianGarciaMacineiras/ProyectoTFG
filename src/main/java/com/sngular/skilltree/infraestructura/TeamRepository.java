@@ -1,10 +1,9 @@
 package com.sngular.skilltree.infraestructura;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.projection.TeamProjection;
-import com.sngular.skilltree.model.Member;
-import com.sngular.skilltree.model.People;
-import com.sngular.skilltree.model.Team;
 import java.util.List;
+
+import com.sngular.skilltree.model.Member;
+import com.sngular.skilltree.model.Team;
 
 public interface TeamRepository {
 

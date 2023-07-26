@@ -7,6 +7,8 @@ public interface TeamView {
 
     String getCode();
 
+    String getShortName();
+
     String getName();
 
     String getDesc();

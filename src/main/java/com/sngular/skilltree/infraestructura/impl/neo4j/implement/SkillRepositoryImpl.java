@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.internal.InternalNode;
 import org.neo4j.driver.types.TypeSystem;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.data.neo4j.core.mapping.Neo4jMappingContext;
 import org.springframework.stereotype.Repository;
@@ -33,6 +34,7 @@ public class SkillRepositoryImpl implements SkillRepository {
     private final Neo4jMappingContext neo4jMappingContext;
 
     @Override
+    @Cacheable
     public List<Skill> findAll() {
         var parentNodeCodes = crud.findAllParents();
         List<Skill> subSkills;
@@ -54,6 +56,7 @@ public class SkillRepositoryImpl implements SkillRepository {
     }
 
     @Override
+    @Cacheable
     public Skill findByCode(String skillcode) {
         var skillNode = crud.findByCode(skillcode);
         List<Skill> subSkills = new ArrayList<>();
@@ -65,12 +68,14 @@ public class SkillRepositoryImpl implements SkillRepository {
     }
 
     @Override
+    @Cacheable
     public Skill findSkill(String skillcode) {
         var skillNode = crud.findByCode(skillcode);
         return new Skill(skillcode, skillNode.getName(), new ArrayList<>());
     }
 
     @Override
+    @Cacheable
     public Skill findByName(String skillname) {
         var skillNode = crud.findByName(skillname);
         return new Skill(skillNode.getCode(), skillname, new ArrayList<>());

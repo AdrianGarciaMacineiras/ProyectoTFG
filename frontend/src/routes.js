@@ -8,6 +8,7 @@ import FindProject from './project/FindProject'
 import CreateProject from './project/CreateProject'
 import FindPosition from './position/FindPosition'
 import CreatePosition from './position/CreatePosition'
+import CreateClient from './client/CreateClient'
 import FindTeam from './team/FindTeam'
 import CreateTeam from './team/CreateTeam'
 import Icon from "@mui/material/Icon";
@@ -28,6 +29,14 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/createPerson",
     component: <CreatePerson />,
+  },
+  {
+    type: "collapse",
+    name: "Create Client",
+    key: "createClient",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/createClient",
+    component: <CreateClient />,
   },
   {
     type: "collapse",

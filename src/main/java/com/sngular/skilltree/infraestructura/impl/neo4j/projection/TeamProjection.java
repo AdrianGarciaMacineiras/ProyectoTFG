@@ -1,26 +1,26 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.projection;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
-
 import java.util.List;
+
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
 
 public interface TeamProjection {
 
-    String getCode();
+  String getCode();
 
-    String getName();
+  String getName();
 
-    String getDesc();
+  String getDesc();
 
-    List<String> getTags();
+  List<String> getTags();
 
-    List<MemberRelationshipProjection> getMembers();
+  List<MemberRelationshipProjection> getMembers();
 
-    List<SkillNode> getUses();
+  List<SkillNode> getUses();
 
-    List<SkillNode> getStrategics();
+  List<SkillNode> getStrategics();
 
-    boolean getDeleted();
+  boolean getDeleted();
 
 
 }

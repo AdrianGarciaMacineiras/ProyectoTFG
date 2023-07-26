@@ -1,5 +1,7 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
+import java.util.List;
+
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveServiceTeamNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.TeamNode;
@@ -10,8 +12,6 @@ import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.Team;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper(config = CommonMapperConfiguration.class, uses = {PeopleNodeMapper.class, SkillNodeMapper.class, ResolveServiceTeamNode.class})
 public interface TeamNodeMapper {
