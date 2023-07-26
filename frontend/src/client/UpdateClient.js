@@ -39,7 +39,12 @@ const UpdateClient = () => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+
+    event.preventDefault();
+
+    console.log("Halo");
+    
     fetch("http://localhost:9080/client", {
       method: "PUT",
       headers: {
@@ -66,22 +71,22 @@ const UpdateClient = () => {
   return (
     <div>
       <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead sx={{ display: "table-header-group" }}>
             <TableRow>
-              <TableCell>Code</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Industry</TableCell>
-              <TableCell>Country</TableCell>
+              <TableCell align="left">Code</TableCell>
+              <TableCell align="left">Name</TableCell>
+              <TableCell align="left">Industry</TableCell>
+              <TableCell align="left">Country</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {clientList.map((client) => (
-              <TableRow key={client.id} onClick={() => handleRowClick(client)}>
-                <TableCell>{client.code}</TableCell>
-                <TableCell>{client.name}</TableCell>
-                <TableCell>{client.industry}</TableCell>
-                <TableCell>{client.country}</TableCell>
+              <TableRow key={client.code} onClick={() => handleRowClick(client)}>
+                <TableCell align="left">{client.code}</TableCell>
+                <TableCell align="left">{client.name}</TableCell>
+                <TableCell align="left">{client.industry}</TableCell>
+                <TableCell align="left">{client.country}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -95,6 +100,7 @@ const UpdateClient = () => {
             label="Code"
             value={updatedClientData.code}
             onChange={handleChange}
+            disabled
           />
           <TextField
             name="name"
@@ -114,7 +120,7 @@ const UpdateClient = () => {
             value={updatedClientData.country}
             onChange={handleChange}
           />
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="button" variant="contained" color="primary" onClick={handleSubmit}>
             Update
           </Button>
         </form>
