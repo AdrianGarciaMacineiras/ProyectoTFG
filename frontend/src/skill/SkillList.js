@@ -7,6 +7,11 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import VisGraph from 'react-vis-graph-wrapper';
 import MDBox from "../components/MDBox";
 import MDButton from "../components/MDButton";
+import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import DashboardNavbar from '../components/Navbars/DashboardNavbar';
+import Footer from "../components/Footer";
 
 function SkillList() {
 
@@ -194,20 +199,32 @@ function SkillList() {
   },[])
 
   return (
-    <MDBox>
-      <MDButton onClick={collapseAll}> Collapse all </MDButton>
-      <DataTreeView  treeItems={skillList} />
-      {(selected && selected.length > 0) && <MDButton onClick={handleClick}> Send </MDButton>}
-      {isToggled && <VisGraph
-            graph={graph}
-            options={options}
-            events={events}
-            getNetwork={network => {
-              //  if you want access to vis.js network api you can set the state in a parent component using this property
-            }}
-          />
-      }  
-    </MDBox>
+    <DashboardLayout>
+    <DashboardNavbar />
+    <MDBox pt={6} pb={3}>
+      <Grid container spacing={6}>
+          <Grid item xs={12}>
+              <Card>
+                <MDBox>
+                  <MDButton onClick={collapseAll}> Collapse all </MDButton>
+                  <DataTreeView  treeItems={skillList} />
+                  {(selected && selected.length > 0) && <MDButton onClick={handleClick}> Send </MDButton>}
+                  {isToggled && <VisGraph
+                        graph={graph}
+                        options={options}
+                        events={events}
+                        getNetwork={network => {
+                          //  if you want access to vis.js network api you can set the state in a parent component using this property
+                        }}
+                      />
+                  }  
+                </MDBox>
+                </Card>
+              </Grid>
+          </Grid>
+        </MDBox>
+        <Footer />
+      </DashboardLayout>
   );
 }
 

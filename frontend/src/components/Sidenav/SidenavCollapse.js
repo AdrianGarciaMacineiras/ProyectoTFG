@@ -15,6 +15,7 @@ copies or substantial portions of the Software.
 */
 
 // prop-types is a library for typechecking of props.
+import Collapse from '@mui/material/Collapse';
 import Icon from '@mui/material/Icon';
 // @mui material components
 import ListItem from '@mui/material/ListItem';
@@ -27,8 +28,10 @@ import {collapseIcon, collapseIconBox, collapseItem, collapseText,} from './styl
 // Material Dashboard 2 React context
 import {useMaterialUIController} from '../../context';
 import PropTypes from 'prop-types';
-
-function SidenavCollapse({icon, name, active, ...rest}) {
+import {NavLink} from 'react-router-dom';
+import { List } from '@mui/material';
+import React from 'react';
+function SidenavCollapse({icon, name, active, children, ...rest}) {
   const [controller] = useMaterialUIController();
   const {
     miniSidenav,
@@ -53,7 +56,7 @@ function SidenavCollapse({icon, name, active, ...rest}) {
         }
       >
         <ListItemIcon
-  sx = {(theme) => collapseIconBox(
+            sx = {(theme) => collapseIconBox(
             theme, {transparentSidenav, whiteSidenav, darkMode, active})} > {typeof icon === 'string' ? (
             <Icon sx={(theme) => collapseIcon(theme, { active })}>{icon}</Icon>
           ) : (
@@ -72,6 +75,38 @@ function SidenavCollapse({icon, name, active, ...rest}) {
             })
           }
         />
+         <ListItem component='li' >
+          <List>
+            {children.map(item => 
+                <ListItem component='li' >
+                    <NavLink key={item.key} to={item.route}>
+                    <MDBox
+                        {...rest}
+                        sx={(theme) =>
+                          collapseItem(theme, {
+                            active,
+                            transparentSidenav,
+                            whiteSidenav,
+                            darkMode,
+                            sidenavColor,
+                          })
+                        }
+                      >
+                      <ListItemText primary={item.name} sx={(theme) =>
+                        collapseText(theme, {
+                          miniSidenav,
+                          transparentSidenav,
+                          whiteSidenav,
+                          active,
+                        })}></ListItemText>
+                    </MDBox>
+                  </NavLink>
+                </ListItem>
+)
+            }
+          </List>
+        </ListItem>
+
       </MDBox>
     </ListItem>
   );

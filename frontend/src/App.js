@@ -73,40 +73,18 @@ function App() {
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
-    if (route.collapse) {
-      return getRoutes(route.collapse);
-    }
-
-    if (route.route) {
+      if (route.collapse) {
+        return getRoutes(route.collapse);
+      }
+      if (route.child && route.child.length > 0) {
+        return getRoutes(route.child);
+      }
+      if (route.route) {
         return <Route exact path={route.route} element={route.component} key={route.key} />;
       }
 
       return null;
     });
-
-  const configsButton = (
-    <MDBox
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="3.25rem"
-      height="3.25rem"
-      bgColor="white"
-      shadow="sm"
-      borderRadius="50%"
-      position="fixed"
-      right="2rem"
-      bottom="2rem"
-      zIndex={99}
-      color="dark"
-      sx={{ cursor: "pointer" }}
-      onClick={handleConfiguratorOpen}
-    >
-      <Icon fontSize="small" color="inherit">
-        settings
-      </Icon>
-    </MDBox>
-  );
 
   return (
     <ThemeProvider theme={theme}>
@@ -114,17 +92,13 @@ function App() {
          {layout === 'dashboard' && (
            <>
              <Sidenav
-        color = {sidenavColor} brand = {
-            (transparentSidenav && !darkMode) || whiteSidenav ?
-                brandDark :
-                brandWhite} brandName = 'Ubik Service'
+        color = {sidenavColor} brand = {brandWhite} brandName = 'Ubik Service'
                routes={routes}
                onMouseEnter={handleOnMouseEnter}
                onMouseLeave={
         handleOnMouseLeave}
              />
              <Configurator />
-             {configsButton}
            </>
          )}
          {layout === "vr" && <Configurator />}
