@@ -104,7 +104,7 @@ function App() {
          {layout === "vr" && <Configurator />}
          <Routes>
            {getRoutes(routes)}
-           <Route path='*' element={<Navigate to='/findPerson' />} />
+           <Route path='*' element={<Navigate to='/' />} />
          </Routes>
        </ThemeProvider>
   );
