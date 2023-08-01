@@ -8,8 +8,14 @@ import {
   TableRow,
   Paper,
   TextField,
-  Button,
 } from '@mui/material';
+import MDBox from '../components/MDBox';
+import MDButton from '../components/MDButton';
+import DashboardNavbar from '../components/Navbars/DashboardNavbar';
+import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import MDTypography from "../components/MDTypography";
 
 const UpdateClient = () => {
   const [clientList, setClientList] = useState([]);
@@ -45,7 +51,7 @@ const UpdateClient = () => {
 
     console.log("Halo");
     
-    fetch("http://localhost:9080/client", {
+    fetch("http://localhost:9080/client/"+updatedClientData.code, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -69,30 +75,20 @@ const UpdateClient = () => {
   };
 
   return (
-    <div>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead sx={{ display: "table-header-group" }}>
-            <TableRow>
-              <TableCell align="left">Code</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Industry</TableCell>
-              <TableCell align="left">Country</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {clientList.map((client) => (
-              <TableRow key={client.code} onClick={() => handleRowClick(client)}>
-                <TableCell align="left">{client.code}</TableCell>
-                <TableCell align="left">{client.name}</TableCell>
-                <TableCell align="left">{client.industry}</TableCell>
-                <TableCell align="left">{client.country}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
+    <DashboardLayout>
+    <DashboardNavbar />
+    <MDBox pt={6} pb={3}>
+      <Grid container spacing={6}>
+          <Grid item xs={12}>
+              <Card>
+                  <MDBox
+                      mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
+                      bgColor = 'info'
+                      borderRadius = 'lg'
+                      coloredShadow =
+                          'info' >
+                    <MDTypography variant = 'h6' color = 'white'>Update Client</MDTypography>
+                  </MDBox>
       {updatedClientData && (
         <form onSubmit={handleSubmit}>
           <TextField
@@ -120,12 +116,36 @@ const UpdateClient = () => {
             value={updatedClientData.country}
             onChange={handleChange}
           />
-          <Button type="button" variant="contained" color="primary" onClick={handleSubmit}>
-            Update
-          </Button>
+          <MDButton variant="contained" color="primary" onClick={handleSubmit}>Update</MDButton>
         </form>
       )}
-    </div>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead sx={{ display: "table-header-group" }}>
+            <TableRow>
+              <TableCell align="left">Code</TableCell>
+              <TableCell align="left">Name</TableCell>
+              <TableCell align="left">Industry</TableCell>
+              <TableCell align="left">Country</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {clientList.map((client) => (
+              <TableRow key={client.code} onClick={() => handleRowClick(client)}>
+                <TableCell align="left">{client.code}</TableCell>
+                <TableCell align="left">{client.name}</TableCell>
+                <TableCell align="left">{client.industry}</TableCell>
+                <TableCell align="left">{client.country}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+            </Card>
+          </Grid>
+      </Grid>
+    </MDBox>
+  </DashboardLayout>
   );
 };
 

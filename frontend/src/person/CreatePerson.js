@@ -738,9 +738,9 @@ const CreatePerson = () => {
               </Card>
             </Grid>
           </Grid>
-        </MDBox>
-        <Footer />
-      </DashboardLayout>
+    </MDBox>
+    <Footer />
+  </DashboardLayout>
   );
 }
 
