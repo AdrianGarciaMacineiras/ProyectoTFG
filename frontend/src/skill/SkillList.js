@@ -12,6 +12,7 @@ import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 import Footer from "../components/Footer";
+import { Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 
 function SkillList() {
 
@@ -20,6 +21,10 @@ function SkillList() {
   const [selected, setSelected] = useState([]);
 
   const [isToggled, setToggled] = useState(false);
+  const [showTable, setShowTable] = useState(false);
+
+  const [tableData, setTableData] = useState([]);
+
 
   var auxList = [];
 
@@ -64,17 +69,6 @@ function SkillList() {
         avoidOverlap: 0.02
       },
       minVelocity: 0.75
-    },
-    configure: {
-      enabled: true,
-      filter: 'physics, layout',
-      showButton: true
-   },
-    interaction: {
-      hover: true,
-      hoverConnectedEdges: true,
-      selectable: true,
-      selectConnectedEdges: true
     }
   };
   
@@ -96,7 +90,7 @@ function SkillList() {
       const foundElement = treeItems.find(element => element.nodeId === nodeId)
       if(foundElement.active){
         foundElement.active = false
-        const items = selected.filter(item => item !== foundElement.nodeId)
+        const items = selected.filter(item => item !== '"'+foundElement.nodeId+'"')
         setSelected(items)
       }else{
         foundElement.active = true
@@ -125,6 +119,59 @@ function SkillList() {
     });
   };
 
+  function TableComponent({ data }) {
+    return (
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell>Surname</TableCell>
+            <TableCell>Email</TableCell>
+            <TableCell>Title</TableCell>
+            <TableCell>EmployeeId</TableCell>
+            <TableCell>FriendlyName</TableCell>
+            <TableCell>BirthDate</TableCell>
+            <TableCell>Knows</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((row, index) => (
+            <TableRow key={index}>
+              <TableCell>{row.Name}</TableCell>
+              <TableCell>{row.Surname}</TableCell>
+              <TableCell>{row.Email}</TableCell>
+              <TableCell>{row.Title}</TableCell>
+              <TableCell>{row.EmployeeId}</TableCell>
+              <TableCell>{row.FriendlyName}</TableCell>
+              <TableCell>{row.BirthDate}</TableCell>
+              <TableCell>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Code</TableCell>
+                    <TableCell>Primary</TableCell>
+                    <TableCell>Experience</TableCell>
+                    <TableCell>Level</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {row.Knows.map((nestedRow, nestedIndex) => (
+                    <TableRow key={nestedIndex}>
+                      <TableCell>{nestedRow.Code}</TableCell>
+                      <TableCell>{nestedRow.Primary}</TableCell>
+                      <TableCell>{nestedRow.Experience}</TableCell>
+                      <TableCell>{nestedRow.Level}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    );
+  }
 
   const handleClick = () => {
     setToggled(!isToggled)
@@ -134,6 +181,22 @@ function SkillList() {
             }})
             .then(response => {return response.json()})
             .then(data => {
+              const tableData = data.map((element) => ({
+                Name: element.name,
+                Surname: element.surname,
+                Email: element.email,
+                Title: element.title,
+                EmployeeId: element.employeeId,
+                FriendlyName: element.friendlyName,
+                BirthDate: element.birthDate,
+                Knows: element.knows.map((knows) => ({
+                  Code: knows.code,
+                  Primary: knows.code,
+                  Experience: knows.experience,
+                  Level: knows.level
+                }))
+              }));
+              setTableData(tableData);
               var i = 1;
               var j = 2;
               data.forEach(element => {
@@ -198,6 +261,11 @@ function SkillList() {
         });
   },[])
 
+  const handleShowTable = () => {
+    setShowTable((prevShowTable) => !prevShowTable);
+  };
+  
+
   return (
     <DashboardLayout>
     <DashboardNavbar />
@@ -209,15 +277,25 @@ function SkillList() {
                   <MDButton onClick={collapseAll}> Collapse all </MDButton>
                   <DataTreeView  treeItems={skillList} />
                   {(selected && selected.length > 0) && <MDButton onClick={handleClick}> Send </MDButton>}
-                  {isToggled && <VisGraph
+
+                  {isToggled && <MDButton onClick={handleShowTable}>
+                      {showTable ? "Show Graph" : "Show Table"}
+                    </MDButton> 
+                  }          
+
+                  {isToggled && (!showTable ? (<VisGraph
                         graph={graph}
                         options={options}
                         events={events}
                         getNetwork={network => {
                           //  if you want access to vis.js network api you can set the state in a parent component using this property
                         }}
-                      />
-                  }  
+                      />) : (
+                        <TableComponent data={tableData} />
+                      )
+                      )
+                  }
+
                 </MDBox>
                 </Card>
               </Grid>
