@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import TreeView from '@mui/lab/TreeView';
 import TreeItem from "@mui/lab/TreeItem";
 import Checkbox from '@mui/material/Checkbox';
+import Collapse from '@mui/material/Collapse';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import VisGraph from 'react-vis-graph-wrapper';
@@ -12,7 +13,11 @@ import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 import Footer from "../components/Footer";
-import { Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
+import { Table, TableHead, TableBody, TableRow, TableCell, IconButton } from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 
 function SkillList() {
 
@@ -120,10 +125,20 @@ function SkillList() {
   };
 
   function TableComponent({ data }) {
+    const [open, setOpen] = useState(false);
     return (
       <Table>
         <TableHead>
           <TableRow>
+            <TableCell width="100" component="th" scope="row">
+              <IconButton
+                aria-label="expand row"
+                size="small"
+                onClick={() => setOpen(!open)}
+              >
+                {open ? <KeyboardDoubleArrowUpIcon /> : <KeyboardDoubleArrowDownIcon />}
+              </IconButton>
+            </TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Surname</TableCell>
             <TableCell>Email</TableCell>
@@ -136,37 +151,54 @@ function SkillList() {
         </TableHead>
         <TableBody>
           {data.map((row, index) => (
-            <TableRow key={index}>
-              <TableCell>{row.Name}</TableCell>
-              <TableCell>{row.Surname}</TableCell>
-              <TableCell>{row.Email}</TableCell>
-              <TableCell>{row.Title}</TableCell>
-              <TableCell>{row.EmployeeId}</TableCell>
-              <TableCell>{row.FriendlyName}</TableCell>
-              <TableCell>{row.BirthDate}</TableCell>
-              <TableCell>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Code</TableCell>
-                    <TableCell>Primary</TableCell>
-                    <TableCell>Experience</TableCell>
-                    <TableCell>Level</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.Knows.map((nestedRow, nestedIndex) => (
-                    <TableRow key={nestedIndex}>
-                      <TableCell>{nestedRow.Code}</TableCell>
-                      <TableCell>{nestedRow.Primary}</TableCell>
-                      <TableCell>{nestedRow.Experience}</TableCell>
-                      <TableCell>{nestedRow.Level}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableCell>
-            </TableRow>
+            <Fragment>
+              <TableRow sx={{ '& > *': { borderBottom: 'unset' } }} key={index}>
+                <TableCell width="100" component="th" scope="row">
+                  <IconButton
+                    aria-label="expand row"
+                    size="small"
+                    onClick={() => setOpen(!open)}
+                  >
+                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                  </IconButton>
+                </TableCell>
+                <TableCell>{row.Name}</TableCell>
+                <TableCell>{row.Surname}</TableCell>
+                <TableCell>{row.Email}</TableCell>
+                <TableCell>{row.Title}</TableCell>
+                <TableCell>{row.EmployeeId}</TableCell>
+                <TableCell>{row.FriendlyName}</TableCell>
+                <TableCell>{row.BirthDate}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+                  <Collapse in={open} timeout="auto" unmountOnExit>
+                    <MDBox sx={{ margin: 1 }}>
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Code</TableCell>
+                            <TableCell>Primary</TableCell>
+                            <TableCell>Experience</TableCell>
+                            <TableCell>Level</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {row.Knows.map((nestedRow, nestedIndex) => (
+                            <TableRow key={nestedIndex}>
+                              <TableCell width="100">{nestedRow.Code}</TableCell>
+                              <TableCell>{nestedRow.Primary}</TableCell>
+                              <TableCell>{nestedRow.Experience}</TableCell>
+                              <TableCell>{nestedRow.Level}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </MDBox>
+                  </Collapse>
+                </TableCell>
+              </TableRow>
+            </Fragment>
           ))}
         </TableBody>
       </Table>
