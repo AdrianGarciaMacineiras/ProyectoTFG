@@ -20,9 +20,10 @@ WORKDIR /var/www/UBIK
 COPY --from=maven /opt/JAVA_APP/target/*.jar ./ubikservice.jar
 
 # CONFIG
-ENV SPRING_PROFILES_ACTIVE=
-ENV SSO_REALM=
-ENV SSO_CLIENT_ID=
+ENV NEO4J_URI=
+ENV NEO4J_USERBNAME=
+ENV NEO4J_PASSWORD=
+ENV LOG_LEVEL=
 
 
 # Minimal healthcheck
