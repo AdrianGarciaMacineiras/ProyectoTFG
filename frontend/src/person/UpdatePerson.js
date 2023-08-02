@@ -19,14 +19,14 @@ import Grid from '@mui/material/Grid';
 import MDTypography from "../components/MDTypography";
 
 const UpdateClient = () => {
-  const [clientList, setClientList] = useState([]);
-  const [updatedClientData, setUpdatedClientData] = useState(null);
+  const [peopleList, setPeopleList] = useState([]);
+  const [updatedPeopleData, setUpdatedPeopleData] = useState(null);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
-    fetch("http://localhost:9080/client", {
+    fetch("http://localhost:9080/people", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -34,16 +34,16 @@ const UpdateClient = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => setClientList(data));
+      .then((data) => setPeopleList(data));
   }, []);
 
-  const handleRowClick = (client) => {
-    setUpdatedClientData(client);
+  const handleRowClick = (people) => {
+    setUpdatedPeopleData(people);
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setUpdatedClientData((prevClientData) => ({
+    setUpdatedPeopleData((prevClientData) => ({
       ...prevClientData,
       [name]: value,
     }));
@@ -53,26 +53,26 @@ const UpdateClient = () => {
 
     event.preventDefault();
 
-    fetch(`http://localhost:9080/client/${updatedClientData.code}`, {
+    fetch(`http://localhost:9080/people/${updatedPeopleData.code}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify(updatedClientData),
+      body: JSON.stringify(updatedPeopleData),
     })
       .then((response) => response.json())
-      .then((updatedClient) => {
-        setClientList((prevClientList) =>
-          prevClientList.map((client) =>
-            client.code === updatedClient.code ? updatedClient : client
+      .then((updatedPeople) => {
+        setPeopleList((prevpeopleList) =>
+          prevpeopleList.map((people) =>
+            people.code === updatedPeople.code ? updatedPeople : people
           )
         );
 
-        setUpdatedClientData(null);
+        setUpdatedPeopleData(null);
       })
       .catch((error) => {
-        console.error('Error updating client:', error);
+        console.error('Error updating people:', error);
       });
   };
 
@@ -87,7 +87,7 @@ const UpdateClient = () => {
   };
 
 
-  const paginatedData = clientList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const paginatedData = peopleList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <DashboardLayout>
@@ -104,31 +104,31 @@ const UpdateClient = () => {
                 'info' >
                 <MDTypography variant='h6' color='white'>Update Client</MDTypography>
               </MDBox>
-              {updatedClientData && (
+              {updatedPeopleData && (
                 <form onSubmit={handleSubmit}>
                   <TextField
                     name="code"
                     label="Code"
-                    value={updatedClientData.code}
+                    value={updatedPeopleData.code}
                     onChange={handleChange}
                     disabled
                   />
                   <TextField
                     name="name"
                     label="Name"
-                    value={updatedClientData.name}
+                    value={updatedPeopleData.name}
                     onChange={handleChange}
                   />
                   <TextField
                     name="industry"
                     label="Industry"
-                    value={updatedClientData.industry}
+                    value={updatedPeopleData.industry}
                     onChange={handleChange}
                   />
                   <TextField
                     name="country"
                     label="Country"
-                    value={updatedClientData.country}
+                    value={updatedPeopleData.country}
                     onChange={handleChange}
                   />
                   <MDButton variant="contained" color="primary" onClick={handleSubmit}>Update</MDButton>
@@ -145,12 +145,12 @@ const UpdateClient = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {paginatedData.map((client) => (
-                      <TableRow key={client.code} onClick={() => handleRowClick(client)}>
-                        <TableCell align="left">{client.code}</TableCell>
-                        <TableCell align="left">{client.name}</TableCell>
-                        <TableCell align="left">{client.industry}</TableCell>
-                        <TableCell align="left">{client.country}</TableCell>
+                    {paginatedData.map((people) => (
+                      <TableRow key={people.code} onClick={() => handleRowClick(people)}>
+                        <TableCell align="left">{people.code}</TableCell>
+                        <TableCell align="left">{people.name}</TableCell>
+                        <TableCell align="left">{people.industry}</TableCell>
+                        <TableCell align="left">{people.country}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -159,7 +159,7 @@ const UpdateClient = () => {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 50]}
                 component="div"
-                count={clientList.length}
+                count={peopleList.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

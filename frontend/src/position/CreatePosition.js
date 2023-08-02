@@ -17,7 +17,7 @@ import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import MDInput from '../components/MDInput';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
-import {InputLabel, Select, MenuItem, FormControl} from "@mui/material";
+import { InputLabel, Select, MenuItem, FormControl } from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
 
 function CreatePosition() {
@@ -33,7 +33,7 @@ function CreatePosition() {
     mode: '',
     role: '',
     managedBy: '',
-    office:''
+    office: ''
   });
 
   const [skillList, setSkillList] = useState([]);
@@ -59,24 +59,24 @@ function CreatePosition() {
   const [searchSkill, setSearchSkill] = useState('');
 
   const graphTemp = {
-    nodes:[],
-    edges:[]
+    nodes: [],
+    edges: []
   };
 
   const [graph, setGraph] = useState({
-    nodes:[],
-    edges:[]
+    nodes: [],
+    edges: []
   });
 
   const [aux, setAux] = useState([]);
 
   const options = {
     layout: {
-        improvedLayout: true
+      improvedLayout: true
     },
-    nodes:{
+    nodes: {
       shape: "dot",
-      scaling: {min:10,label:false}
+      scaling: { min: 10, label: false }
     },
     edges: {
       color: "#000000",
@@ -87,10 +87,10 @@ function CreatePosition() {
       }
     },
     groups: {
-      managedBy: {color:{background:'red'}, borderWidth:3},
-      candidates: {color:{background:'green'}, borderWidth:3},
-      project: {color:{background:'yellow'}, borderWidth:3},
-      skill: {color:{background:'pink'}, borderWidth:3}
+      managedBy: { color: { background: 'red' }, borderWidth: 3 },
+      candidates: { color: { background: 'green' }, borderWidth: 3 },
+      project: { color: { background: 'yellow' }, borderWidth: 3 },
+      skill: { color: { background: 'pink' }, borderWidth: 3 }
     },
     height: "800px",
     physics: {
@@ -102,22 +102,11 @@ function CreatePosition() {
         avoidOverlap: 0.02
       },
       minVelocity: 0.75
-    },
-    configure: {
-      enabled: true,
-      filter: 'physics, layout',
-      showButton: true
-   },
-    interaction: {
-      hover: true,
-      hoverConnectedEdges: true,
-      selectable: true,
-      selectConnectedEdges: true
     }
   };
-  
+
   const events = {
-    select: function(event) {
+    select: function (event) {
       var { nodes, edges } = event;
     }
   };
@@ -192,7 +181,7 @@ function CreatePosition() {
       skills: updatedSkills,
     }));
   };
-  
+
   const SkillsList = () => {
     return (
       <MDBox>
@@ -200,13 +189,13 @@ function CreatePosition() {
           <MDBox key={index}>
             <hr />
             <label>Skill: {skill.skillName}</label>
-            <br/>
+            <br />
             <label>Level Required: {skill.levelReq}</label>
-            <br/>
+            <br />
             <label>Minimum Level: {skill.minLevel}</label>
-            <br/>
+            <br />
             <label>Minimum Experience: {skill.minExp}</label>
-            <br/>
+            <br />
             <button onClick={() => handleRemoveSkill(index)}>Remove</button>
             <hr />
           </MDBox>
@@ -217,8 +206,8 @@ function CreatePosition() {
 
   useEffect(() => {
     const recursive = (dataList) => {
-        let list = [];
-        dataList.forEach(data => {
+      let list = [];
+      dataList.forEach(data => {
         list.push({ nodeId: data.code, name: data.name, children: recursive(data.subSkills) });
       });
       return list;
@@ -238,40 +227,40 @@ function CreatePosition() {
       });
 
     fetch(`http://localhost:9080/project`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*"
-    }
-  })
-    .then(response => response.json())
-    .then(response => {
-      setProjectList(response);
-    });
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
+    })
+      .then(response => response.json())
+      .then(response => {
+        setProjectList(response);
+      });
 
     fetch(`http://localhost:9080/people`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*"
-    }
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
     })
-    .then(data => data.json())
-    .then(data => {
-      setPeopleList(data);
-    });
+      .then(data => data.json())
+      .then(data => {
+        setPeopleList(data);
+      });
 
     fetch(`http://localhost:9080/office`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*"
-    }
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
     })
-    .then(office => office.json())
-    .then(office => {
-      setOfficeList(office);
-    });
+      .then(office => office.json())
+      .then(office => {
+        setOfficeList(office);
+      });
   }, []);
 
   const createPosition = (event) => {
@@ -290,29 +279,29 @@ function CreatePosition() {
       .then(response => {
         setAux(response);
         var i = 1
-        var temp = {Code: response.code, Active: response.open, Role: response.role, EndDate: response.closingDate, InitDate: response.openingDate}
-        graphTemp.nodes.push({id:i, label: response.code, title: JSON.stringify(temp,'',2)});
+        var temp = { Code: response.code, Active: response.open, Role: response.role, EndDate: response.closingDate, InitDate: response.openingDate }
+        graphTemp.nodes.push({ id: i, label: response.code, title: JSON.stringify(temp, '', 2) });
 
         i++
-        graphTemp.nodes.push({id: i, label: response.projectCode, title: JSON.stringify(response.projectCode,'',2), group:"project" });
-        graphTemp.edges.push({from: i, to: 1, label: "FOR_PROJECT", title: JSON.stringify(response.projectCode,'',2)});
+        graphTemp.nodes.push({ id: i, label: response.projectCode, title: JSON.stringify(response.projectCode, '', 2), group: "project" });
+        graphTemp.edges.push({ from: i, to: 1, label: "FOR_PROJECT", title: JSON.stringify(response.projectCode, '', 2) });
 
         response.candidates.forEach(element => {
           i++;
-          graphTemp.nodes.push({id:i, label: element.candidateCode, title: element.candidateCode, group:"candidates" });
-          var temp ={Code: element.code, Status:element.status, IntroductionDate:element.introductionDate, ResolutionDate:element.resolutionDate, CreationDate:element.creationDate}
-          graphTemp.edges.push({from: 1, to: i, label: "CANDIDATE", title: JSON.stringify(temp,'',2)});
+          graphTemp.nodes.push({ id: i, label: element.candidateCode, title: element.candidateCode, group: "candidates" });
+          var temp = { Code: element.code, Status: element.status, IntroductionDate: element.introductionDate, ResolutionDate: element.resolutionDate, CreationDate: element.creationDate }
+          graphTemp.edges.push({ from: 1, to: i, label: "CANDIDATE", title: JSON.stringify(temp, '', 2) });
         })
 
         i++;
-        graphTemp.nodes.push({id:i, label: response.managedBy, title: response.managedBy, group:"managedBy" });
-        graphTemp.edges.push({from: i, to: 1, label: "MANAGED", title: JSON.stringify(temp,'',2)});
+        graphTemp.nodes.push({ id: i, label: response.managedBy, title: response.managedBy, group: "managedBy" });
+        graphTemp.edges.push({ from: i, to: 1, label: "MANAGED", title: JSON.stringify(temp, '', 2) });
 
         response.skills.forEach(element => {
           i++;
-          var temp ={Skill: element.skill, LevelReq:element.levelReq, MinExp:element.minExp, MinLevel:element.minLevel}
-          graphTemp.nodes.push({id:i, label: element.skill, title: JSON.stringify(temp,'',2), group:"skill" });
-          graphTemp.edges.push({from: 1 , to: i, label: "NEED", title: JSON.stringify(temp,'',2)});
+          var temp = { Skill: element.skill, LevelReq: element.levelReq, MinExp: element.minExp, MinLevel: element.minLevel }
+          graphTemp.nodes.push({ id: i, label: element.skill, title: JSON.stringify(temp, '', 2), group: "skill" });
+          graphTemp.edges.push({ from: 1, to: i, label: "NEED", title: JSON.stringify(temp, '', 2) });
         })
         setGraph(prev => graphTemp);
       })
@@ -358,7 +347,7 @@ function CreatePosition() {
       mode: '',
       role: '',
       managedBy: '',
-      office:''
+      office: ''
     });
   };
 
@@ -384,173 +373,189 @@ function CreatePosition() {
   };
 
   return (
-      <DashboardLayout>
-        <DashboardNavbar />
-        <MDBox pt={6} pb={3}>
-          <Grid container spacing={6}>
-              <Grid item xs={12}>
-                  <Card>
-                      <MDBox
-                          mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
-                          bgColor = 'info'
-                          borderRadius = 'lg'
-                          coloredShadow =
-                              'info' > <MDTypography variant = 'h6' color = 'white'>Create Position</MDTypography>
-                      </MDBox>
-                      <form id="positionForm" onSubmit={handleSubmit}>
-                      <MDBox pt = {3}>
-                          <Grid container spacing={6}>
-                              <Grid item xs={6}>
-                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Position code</MDTypography>
-                                  <MDInput type="text" value={form.positionCode} onChange={handleInputChange} name="positionCode" />
+    <DashboardLayout>
+      <DashboardNavbar />
+      <MDBox pt={6} pb={3}>
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox
+                mx={2} mt={-3} py={3} px={2} variant='gradient'
+                bgColor='info'
+                borderRadius='lg'
+                coloredShadow=
+                'info' > <MDTypography variant='h6' color='white'>Create Position</MDTypography>
+              </MDBox>
+              <form id="positionForm" onSubmit={handleSubmit}>
+                <MDBox pt={3}>
+                  <Grid container spacing={6}>
+                    <Grid item xs={6}>
+                      <MDTypography variant='h6' fontWeight='medium'>Position code</MDTypography>
+                      <MDInput type="text" value={form.positionCode} onChange={handleInputChange} name="positionCode" />
 
-                                  <Grid item xs={6}>
-                                    <MDTypography variant="h6" fontWeight="medium">
-                                      Project Name
-                                    </MDTypography>
-                                    <Autocomplete
-                                      options={projectList} 
-                                      getOptionLabel={(project) => project.name} 
-                                      value={projectList.find((project) => project.code === form.projectCode) || null}
-                                      onChange={(event, newValue) => {
-                                        handleInputChange({ target: { name: "projectCode", value: newValue?.code || '' } });
-                                      }}
-                                      renderInput={(params) => (
-                                        <MDInput
-                                          {...params}
-                                          label="Select a project"
-                                          name="projectCode"
-                                        />
-                                      )}
-                                    />
-                                  </Grid>
+                      <Grid item xs={6}>
+                        <MDTypography variant="h6" fontWeight="medium">
+                          Project Name
+                        </MDTypography>
+                        <Autocomplete
+                          options={projectList}
+                          getOptionLabel={(project) => project.name}
+                          value={projectList.find((project) => project.code === form.projectCode) || null}
+                          onChange={(event, newValue) => {
+                            handleInputChange({ target: { name: "projectCode", value: newValue?.code || '' } });
+                          }}
+                          renderInput={(params) => (
+                            <MDInput
+                              {...params}
+                              label="Select a project"
+                              name="projectCode"
+                            />
+                          )}
+                        />
+                      </Grid>
 
-                                  <Grid item xs={6}>
-                                    <MDTypography variant="h6" fontWeight="medium">
-                                      Manager
-                                    </MDTypography>
-                                    <Autocomplete
-                                      options={peopleList} 
-                                      getOptionLabel={(people) => people.name + " " + people.surname} 
-                                      value={peopleList.find((people) => people.code === form.managedBy) || null}
-                                      onChange={(event, newValue) => {
-                                        handleInputChange({ target: { name: "managedBy", value: newValue?.code || '' } });
-                                      }}
-                                      renderInput={(params) => (
-                                        <MDInput
-                                          {...params}
-                                          label="Select a person"
-                                          name="managedBy"
-                                        />
-                                      )}
-                                    />
-                                  </Grid>
+                      <Grid item xs={6}>
+                        <MDTypography variant="h6" fontWeight="medium">
+                          Manager
+                        </MDTypography>
+                        <Autocomplete
+                          options={peopleList}
+                          getOptionLabel={(people) => people.name + " " + people.surname}
+                          value={peopleList.find((people) => people.code === form.managedBy) || null}
+                          onChange={(event, newValue) => {
+                            handleInputChange({ target: { name: "managedBy", value: newValue?.code || '' } });
+                          }}
+                          renderInput={(params) => (
+                            <MDInput
+                              {...params}
+                              label="Select a person"
+                              name="managedBy"
+                            />
+                          )}
+                        />
+                      </Grid>
 
-                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Role</MDTypography>
-                                  <MDInput type="text" value={form.role} onChange={handleInputChange} name="role" />
-                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Init Date</MDTypography>
-                                  <DatePicker
-                                      selected={openingDate}
-                                      dateFormat="dd-MM-yyyy"
-                                      onSelect={(date) => setOpeningDate(date)}
-                                      onChange={(date) => handleInputChange({ target: { name: "openingDate", value: format(date, 'dd-MM-yyyy') } })}
-                                  />
-                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Mode</MDTypography>
-                                  <FormControl fullWidth>
-                                    <InputLabel>Select an option</InputLabel>
-                                      <Select name="mode" value={form.mode} onChange={handleInputChange}>
-                                          <MenuItem value="REMOTE">Remote</MenuItem>
-                                          <MenuItem value="PRESENTIAL">Presential</MenuItem>
-                                          <MenuItem value="MIX">Mix</MenuItem>
-                                          <MenuItem value="UNKNOWN">Unknown</MenuItem>
-                                      </Select>
-                                  </FormControl>
-                              </Grid>
-                              <Grid item xs={6}>
-                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Name</MDTypography>
-                                  <MDInput type="text" value={form.name} onChange={handleInputChange} name="name" />
-                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Priority</MDTypography>
-                                  <MDInput type="text" value={form.priority} onChange={handleInputChange} name="priority" />
-                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Charge</MDTypography>
-                                  <MDTypography variant = 'h6' fontWeight = 'medium'>End Date</MDTypography>
-                                  <DatePicker
-                                    selected={closingDate}
-                                    dateFormat="dd-MM-yyyy"
-                                    onSelect={(date) => setClosingDate(date)}
-                                    onChange={(date) => handleInputChange({ target: { name: "closingDate", value: format(date, 'dd-MM-yyyy') } })}
-                                  />
-                                  <MDTypography variant = 'h6' fontWeight = 'medium'>Active</MDTypography>
-                                  <FormControl fullWidth>
-                                  <InputLabel>Select an option</InputLabel>
-                                  <Select name="active" value={form.active} onChange={handleInputChange}>
-                                        <MenuItem value="true">YES</MenuItem>
-                                        <MenuItem value="false">NO</MenuItem>
-                                      </Select>
-                                  </FormControl>
-                                    {selectedItem && (
-                                      <MDBox>
-                                        <h2>Selected Item: {selectedItem.name}</h2>
-                                        <FormControl fullWith>
-                                          <MDTypography variant = 'h6' fontWeight = 'medium'>Level Required</MDTypography>
-                                            <InputLabel>Select an Option</InputLabel>
-                                          <Select value={levelReq} onChange={(e) => setLevelReq(e.target.value)}>
-                                            <MenuItem value="MANDATORY">MANDATORY</MenuItem>
-                                            <MenuItem value="NICE_TO_HAVE">NICE TO HAVE</MenuItem>
-                                          </Select>
-                                        </FormControl>
-                                        <FormControl fullWidth>
-                                            <MDTypography variant = 'h6' fontWeight = 'medium'>Level Required</MDTypography>
-                                            <InputLabel>
-                                                Select an option
-                                            </InputLabel>
-                                              <Select value={minLevel} onChange={(e) => setMinLevel(e.target.value)}>
-                                                <MenuItem value="HIGH">HIGH</MenuItem>
-                                                <MenuItem value="MEDIUM">MEDIUM</MenuItem>
-                                                <MenuItem value="LOW">LOW</MenuItem>
-                                              </Select>
-                                        </FormControl>
-                                        <FormControl fullWidth>
-                                          <MDTypography variant = 'h6' fontWeight = 'medium'>Minimum Experience</MDTypography>
-                                          <MDInput type="number" value={minExp} onChange={(e) => setMinExp(parseInt(e.target.value))}/>
-                                        </FormControl>
-                                        <MDButton onClick={handleModalSubmit}>Save</MDButton>
-                                        <MDButton onClick={() => setSelectedItem(null)}>Cancel</MDButton>
-                                      </MDBox>
-                                    )}
+                      <MDTypography variant='h6' fontWeight='medium'>Role</MDTypography>
+                      <MDInput type="text" value={form.role} onChange={handleInputChange} name="role" />
+                      <MDTypography variant='h6' fontWeight='medium'>Init Date</MDTypography>
+                      <DatePicker
+                        selected={openingDate}
+                        dateFormat="dd-MM-yyyy"
+                        onSelect={(date) => setOpeningDate(date)}
+                        onChange={(date) => handleInputChange({ target: { name: "openingDate", value: format(date, 'dd-MM-yyyy') } })}
+                      />
+                      <MDTypography variant='h6' fontWeight='medium'>Mode</MDTypography>
+                      <FormControl fullWidth>
+                        <InputLabel>Select an option</InputLabel>
+                        <Select name="mode" value={form.mode} onChange={handleInputChange}>
+                          <MenuItem value="REMOTE">Remote</MenuItem>
+                          <MenuItem value="PRESENTIAL">Presential</MenuItem>
+                          <MenuItem value="MIX">Mix</MenuItem>
+                          <MenuItem value="UNKNOWN">Unknown</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <MDTypography variant='h6' fontWeight='medium'>Name</MDTypography>
+                      <MDInput type="text" value={form.name} onChange={handleInputChange} name="name" />
+                      <MDTypography variant='h6' fontWeight='medium'>Priority</MDTypography>
+                      <MDInput type="text" value={form.priority} onChange={handleInputChange} name="priority" />
+                      <MDTypography variant='h6' fontWeight='medium'>Charge</MDTypography>
+                      <MDTypography variant='h6' fontWeight='medium'>End Date</MDTypography>
+                      <DatePicker
+                        selected={closingDate}
+                        dateFormat="dd-MM-yyyy"
+                        onSelect={(date) => setClosingDate(date)}
+                        onChange={(date) => handleInputChange({ target: { name: "closingDate", value: format(date, 'dd-MM-yyyy') } })}
+                      />
+                      <MDTypography variant='h6' fontWeight='medium'>Active</MDTypography>
+                      <FormControl fullWidth>
+                        <InputLabel>Select an option</InputLabel>
+                        <Select name="active" value={form.active} onChange={handleInputChange}>
+                          <MenuItem value="true">YES</MenuItem>
+                          <MenuItem value="false">NO</MenuItem>
+                        </Select>
+                      </FormControl>
+                      {selectedItem && (
+                        <MDBox>
+                          <h2>Selected Item: {selectedItem.name}</h2>
+                          <FormControl fullWith>
+                            <MDTypography variant='h6' fontWeight='medium'>Level Required</MDTypography>
+                            <InputLabel>Select an Option</InputLabel>
+                            <Select value={levelReq} onChange={(e) => setLevelReq(e.target.value)}>
+                              <MenuItem value="MANDATORY">MANDATORY</MenuItem>
+                              <MenuItem value="NICE_TO_HAVE">NICE TO HAVE</MenuItem>
+                            </Select>
+                          </FormControl>
+                          <FormControl fullWidth>
+                            <MDTypography variant='h6' fontWeight='medium'>Level Required</MDTypography>
+                            <InputLabel>
+                              Select an option
+                            </InputLabel>
+                            <Select value={minLevel} onChange={(e) => setMinLevel(e.target.value)}>
+                              <MenuItem value="HIGH">HIGH</MenuItem>
+                              <MenuItem value="MEDIUM">MEDIUM</MenuItem>
+                              <MenuItem value="LOW">LOW</MenuItem>
+                            </Select>
+                          </FormControl>
+                          <FormControl fullWidth>
+                            <MDTypography variant='h6' fontWeight='medium'>Minimum Experience</MDTypography>
+                            <MDInput type="number" value={minExp} onChange={(e) => setMinExp(parseInt(e.target.value))} />
+                          </FormControl>
+                          <MDButton onClick={handleModalSubmit}>Save</MDButton>
+                          <MDButton onClick={() => setSelectedItem(null)}>Cancel</MDButton>
+                        </MDBox>
+                      )}
 
-                                    <MDButton onClick={collapseAll}> Collapse all </MDButton>
-                                    <br/>
-                                    <input
-                                      type="text"
-                                      value={searchSkill}
-                                      onChange={(e) => setSearchSkill(e.target.value)}
-                                      placeholder="Search"
-                                    />
-                                    <DataTreeView/>
-                                    <SkillsList />
-                              </Grid>
-                              <Grid item xs={12}>
-                                <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
-                              </Grid>
-                          </Grid>
-                      </MDBox>
-                      </form>
-                      <MDBox>
-                          <VisGraph
-                                graph={graph}
-                                options={options}
-                                events={events}
-                                getNetwork={network => {
-                                  //  if you want access to vis.js network api you can set the state in a parent component using this property
-                                }}
-                          />
-                      </MDBox>
-                  </Card>
-              </Grid>
+                      <MDButton onClick={collapseAll}> Collapse all </MDButton>
+                      <br />
+                      <input
+                        type="text"
+                        value={searchSkill}
+                        onChange={(e) => setSearchSkill(e.target.value)}
+                        placeholder="Search"
+                      />
+                      <DataTreeView />
+                      <SkillsList />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
+                    </Grid>
+                  </Grid>
+                </MDBox>
+              </form>
+            </Card>
           </Grid>
-        </MDBox>
-        <Footer />
-      </DashboardLayout>
+        </Grid>
+      </MDBox>
+      <MDBox pt={6} pb={3}>
+
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
+                bgColor='info'
+                borderRadius='lg'
+                coloredShadow='info' >
+                <MDTypography variant='h6' color='white'>Position Graph</MDTypography>
+              </MDBox>
+              <MDBox pt={3}>
+                <VisGraph
+                  graph={graph}
+                  options={options}
+                  events={events}
+                  getNetwork={network => {
+                    //  if you want access to vis.js network api you can set the state in a parent component using this property
+                  }}
+                />
+              </MDBox>
+
+            </Card>
+          </Grid>
+        </Grid>
+      </MDBox>
+      <Footer />
+    </DashboardLayout>
   );
 }
 

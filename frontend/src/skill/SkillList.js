@@ -13,7 +13,7 @@ import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 import Footer from "../components/Footer";
-import { Table, TableHead, TableBody, TableRow, TableCell, IconButton } from '@mui/material';
+import { Table, TableHead, TableBody, TableRow, TableCell, IconButton, TablePagination } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -30,28 +30,29 @@ function SkillList() {
 
   const [tableData, setTableData] = useState([]);
 
+  const [searchSkill, setSearchSkill] = useState('');
 
   var auxList = [];
 
   const graphTemp = {
-    nodes:[],
-    edges:[]
+    nodes: [],
+    edges: []
   };
 
   const [graph, setGraph] = useState({
-    nodes:[],
-    edges:[]
+    nodes: [],
+    edges: []
   });
 
   const [aux, setAux] = useState([]);
 
   const options = {
     layout: {
-        improvedLayout: true
+      improvedLayout: true
     },
-    nodes:{
+    nodes: {
       shape: "dot",
-      scaling: {min:10,label:false}
+      scaling: { min: 10, label: false }
     },
     edges: {
       color: "#000000",
@@ -62,7 +63,7 @@ function SkillList() {
       }
     },
     groups: {
-      mainSkill: {color:{background:'red'}, borderWidth:3},
+      mainSkill: { color: { background: 'red' }, borderWidth: 3 },
     },
     height: "800px",
     physics: {
@@ -76,181 +77,61 @@ function SkillList() {
       minVelocity: 0.75
     }
   };
-  
+
   const events = {
-    select: function(event) {
+    select: function (event) {
       var { nodes, edges } = event;
     }
   };
-  
-  const getTreeItemsFromData = treeItems => {
-    return treeItems.map(treeItemData => {
-      let children = undefined;
-      if (treeItemData.children && treeItemData.children.length > 0) {
-        children = getTreeItemsFromData(treeItemData.children);
+
+  const handleCheckboxChange = (event) => {
+    const nodeId = event.target.value;
+    if (event.target.checked) {
+      setSelected((prevSelected) => [...prevSelected, '"' + nodeId + '"']);
+    } else {
+      setSelected((prevSelected) => prevSelected.filter((item) => item !== '"' + nodeId + '"'));
     }
+  };
 
-    const handleChange = (event, nodeId) => {
-      event.stopPropagation();
-      const foundElement = treeItems.find(element => element.nodeId === nodeId)
-      if(foundElement.active){
-        foundElement.active = false
-        const items = selected.filter(item => item !== '"'+foundElement.nodeId+'"')
-        setSelected(items)
-      }else{
-        foundElement.active = true
-        auxList.push('"'+foundElement.nodeId+'"')
-        setSelected(selected.concat(auxList))
+  const getTreeItemsFromData = (treeItems, searchValue) => {
+    const filteredItems = treeItems.filter((treeItemData) => {
+      const isMatched =
+        treeItemData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        getTreeItemsFromData(treeItemData.children, searchValue).length > 0;
+
+      return isMatched;
+    });
+
+    return filteredItems.map(treeItemData => {
+      const isMatched =
+        treeItemData.name.toLowerCase().includes(searchValue.toLowerCase());
+
+      const isSelected = selected.includes('"' + treeItemData.nodeId + '"');
+
+      if (isMatched) {
+        return (
+          <TreeItem
+            key={treeItemData.nodeId}
+            nodeId={treeItemData.nodeId}
+            label={
+              <>
+                <Checkbox
+                  checked={isSelected}
+                  onChange={handleCheckboxChange}
+                  value={treeItemData.nodeId}
+                />
+                {treeItemData.name}
+              </>
+            }
+          >
+            {getTreeItemsFromData(treeItemData.children, searchValue)}
+          </TreeItem>
+        );
       }
-    };
-
-    return (
-        <TreeItem
-          key={treeItemData.nodeId}
-          nodeId={treeItemData.nodeId}
-          label={
-            <>
-            <Checkbox
-              checked = {treeItemData.active}
-              onChange= {(event)=>handleChange(event,treeItemData.nodeId)}
-              onClick={e => (e.stopPropagation())}
-            />
-            {treeItemData.name}
-            </>
-          }
-          children={children}
-        />
-      );
+      return getTreeItemsFromData(treeItemData.children, searchValue);
     });
   };
 
-  function TableComponent({ data }) {
-    const [open, setOpen] = useState(false);
-    return (
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell width="100" component="th" scope="row">
-              <IconButton
-                aria-label="expand row"
-                size="small"
-                onClick={() => setOpen(!open)}
-              >
-                {open ? <KeyboardDoubleArrowUpIcon /> : <KeyboardDoubleArrowDownIcon />}
-              </IconButton>
-            </TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Surname</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>EmployeeId</TableCell>
-            <TableCell>FriendlyName</TableCell>
-            <TableCell>BirthDate</TableCell>
-            <TableCell>Knows</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((row, index) => (
-            <Fragment>
-              <TableRow sx={{ '& > *': { borderBottom: 'unset' } }} key={index}>
-                <TableCell width="100" component="th" scope="row">
-                  <IconButton
-                    aria-label="expand row"
-                    size="small"
-                    onClick={() => setOpen(!open)}
-                  >
-                    {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                  </IconButton>
-                </TableCell>
-                <TableCell>{row.Name}</TableCell>
-                <TableCell>{row.Surname}</TableCell>
-                <TableCell>{row.Email}</TableCell>
-                <TableCell>{row.Title}</TableCell>
-                <TableCell>{row.EmployeeId}</TableCell>
-                <TableCell>{row.FriendlyName}</TableCell>
-                <TableCell>{row.BirthDate}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
-                  <Collapse in={open} timeout="auto" unmountOnExit>
-                    <MDBox sx={{ margin: 1 }}>
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Code</TableCell>
-                            <TableCell>Primary</TableCell>
-                            <TableCell>Experience</TableCell>
-                            <TableCell>Level</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {row.Knows.map((nestedRow, nestedIndex) => (
-                            <TableRow key={nestedIndex}>
-                              <TableCell width="100">{nestedRow.Code}</TableCell>
-                              <TableCell>{nestedRow.Primary}</TableCell>
-                              <TableCell>{nestedRow.Experience}</TableCell>
-                              <TableCell>{nestedRow.Level}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </MDBox>
-                  </Collapse>
-                </TableCell>
-              </TableRow>
-            </Fragment>
-          ))}
-        </TableBody>
-      </Table>
-    );
-  }
-
-  const handleClick = () => {
-    setToggled(!isToggled)
-    fetch(`http://localhost:9080/people/skills?skillList=${selected}`, {method: "GET", headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*"
-            }})
-            .then(response => {return response.json()})
-            .then(data => {
-              const tableData = data.map((element) => ({
-                Name: element.name,
-                Surname: element.surname,
-                Email: element.email,
-                Title: element.title,
-                EmployeeId: element.employeeId,
-                FriendlyName: element.friendlyName,
-                BirthDate: element.birthDate,
-                Knows: element.knows.map((knows) => ({
-                  Code: knows.code,
-                  Primary: knows.code,
-                  Experience: knows.experience,
-                  Level: knows.level
-                }))
-              }));
-              setTableData(tableData);
-              var i = 1;
-              var j = 2;
-              data.forEach(element => {
-                var temp ={Code: element.code, Name:element.name, Surname:element.surname, Email:element.email, EmployeeId:element.employeeId,
-                  FriendlyName:element.friendlyName, Title:element.title, BirthDate: element.birthDate}
-                graphTemp.nodes.push({id:i, label: element.name + ' ' + element.surname, title: JSON.stringify(temp,'',2)});
-                element.knows.forEach(knows => {
-                  /*const foundElement = graphTemp.nodes.find(node => node.label === knows.name);*/
-                  var temp = {Code:knows.code, Primary:knows.primary, Experience: knows.experience, Level: knows.level}
-                 /* if(foundElement !== undefined && foundElement !== null){
-                    graphTemp.edges.push({from:i, to:foundElement.id, label: "KNOWS", title: JSON.stringify(temp,'',2) });
-                  } else {*/
-                    graphTemp.nodes.push({id:j, label: knows.name, title: knows.name  });
-                    graphTemp.edges.push({from:i, to:j, label: "KNOWS", title: JSON.stringify(temp,'',2) });
-                  ///}
-                  j++
-                })
-                i = j++;
-              })
-              setGraph(prev => graphTemp);
-            }); 
-  }
 
   const collapseAll = (e) => {
     e.preventDefault();
@@ -263,78 +144,287 @@ function SkillList() {
     );
   };
 
-  const DataTreeView = ({ treeItems }) => {
+  const DataTreeView = () => {
     return (
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
       >
-      {getTreeItemsFromData(treeItems)}
+        {getTreeItemsFromData(skillList, searchSkill)}
       </TreeView>
     );
   };
-       
+
+  const NestedTableComponent = ({ data }) => {
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5); 
+
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0); 
+    };
+
+    const paginatedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    return (
+      <>
+        <Table>
+          <TableHead sx={{ display: "table-header-group" }}>
+            <TableRow>
+              <TableCell>Code</TableCell>
+              <TableCell>Primary</TableCell>
+              <TableCell>Experience</TableCell>
+              <TableCell>Level</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {paginatedData.map((row, index) => (
+              <TableRow key={index}>
+                <TableCell style={{ width: "5%" }}>{row.Code}</TableCell>
+                <TableCell>{row.Primary}</TableCell>
+                <TableCell>{row.Experience}</TableCell>
+                <TableCell>{row.Level}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25, 50]} 
+          component="div"
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </>
+    );
+  };
+
+
+
+  const DataPerson = ({ row }) => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Fragment>
+        <TableRow sx={{ '& > *': { borderBottom: 'unset' } }} key={row.index}>
+          <TableCell>
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpen(!open)}
+              style={{ width: "5%" }}
+            >
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          <TableCell scope="row">{row.Name}</TableCell>
+          <TableCell>{row.Surname}</TableCell>
+          <TableCell>{row.Email}</TableCell>
+          <TableCell>{row.Title}</TableCell>
+          <TableCell>{row.EmployeeId}</TableCell>
+          <TableCell>{row.FriendlyName}</TableCell>
+          <TableCell>{row.BirthDate}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <MDBox sx={{ margin: 1 }}>
+                <NestedTableComponent data={row.Knows} />
+              </MDBox>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+      </Fragment>
+    );
+  };
+
+  function TableComponent({ data }) {
+    const [open, setOpen] = useState(false);
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
+
+    const paginatedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+    return (
+      <>
+        <Table sx={{ minWidth: 650 }}>
+          <TableHead sx={{ display: "table-header-group" }}>
+            <TableRow>
+              <TableCell width="100" component="th" scope="row">
+                <IconButton
+                  aria-label="expand row"
+                  size="small"
+                  onClick={() => setOpen(!open)}
+                >
+                  {open ? <KeyboardDoubleArrowUpIcon /> : <KeyboardDoubleArrowDownIcon />}
+                </IconButton>
+              </TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Surname</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>EmployeeId</TableCell>
+              <TableCell>FriendlyName</TableCell>
+              <TableCell>BirthDate</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {paginatedData.map((row, index) => (
+              <DataPerson key={index} row={row} />
+            ))}
+          </TableBody>
+        </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          component="div"
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </>
+    );
+  }
+
+  const handleClick = () => {
+    setToggled(!isToggled)
+    fetch(`http://localhost:9080/people/skills?skillList=${selected}`, {
+      method: "GET", headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
+    })
+      .then(response => { return response.json() })
+      .then(data => {
+        const tableData = data.map((element) => ({
+          Name: element.name,
+          Surname: element.surname,
+          Email: element.email,
+          Title: element.title,
+          EmployeeId: element.employeeId,
+          FriendlyName: element.friendlyName,
+          BirthDate: element.birthDate,
+          Knows: element.knows.map((knows) => ({
+            Code: knows.code,
+            Primary: knows.primary?.toString(),
+            Experience: knows.experience,
+            Level: knows.level
+          }))
+        }));
+        setTableData(tableData);
+        var i = 1;
+        var j = 2;
+        data.forEach(element => {
+          var temp = {
+            Code: element.code, Name: element.name, Surname: element.surname, Email: element.email, EmployeeId: element.employeeId,
+            FriendlyName: element.friendlyName, Title: element.title, BirthDate: element.birthDate
+          }
+          graphTemp.nodes.push({ id: i, label: element.name + ' ' + element.surname, title: JSON.stringify(temp, '', 2) });
+          element.knows.forEach(knows => {
+            /*const foundElement = graphTemp.nodes.find(node => node.label === knows.name);*/
+            var temp = { Code: knows.code, Primary: knows.primary, Experience: knows.experience, Level: knows.level }
+            /* if(foundElement !== undefined && foundElement !== null){
+               graphTemp.edges.push({from:i, to:foundElement.id, label: "KNOWS", title: JSON.stringify(temp,'',2) });
+             } else {*/
+            graphTemp.nodes.push({ id: j, label: knows.name, title: knows.name });
+            graphTemp.edges.push({ from: i, to: j, label: "KNOWS", title: JSON.stringify(temp, '', 2) });
+            ///}
+            j++
+          })
+          i = j++;
+        })
+        setGraph(prev => graphTemp);
+      });
+  }
+
   useEffect(() => {
     const recursive = (dataList) => {
       var list = [];
       dataList.forEach(data => {
-        list.push({nodeId:data.code, name:data.name, children:recursive(data.subSkills)})
+        list.push({ nodeId: data.code, name: data.name, children: recursive(data.subSkills) })
       });
       return list;
     }
 
-    fetch(`http://localhost:9080/skills`, {method: "GET", headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        }})
-        .then(response => {return response.json()})
-        .then(response => {
-          setSkillList(recursive(response));
-        });
-  },[])
+    fetch(`http://localhost:9080/skills`, {
+      method: "GET", headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      }
+    })
+      .then(response => { return response.json() })
+      .then(response => {
+        setSkillList(recursive(response));
+      });
+  }, [])
 
   const handleShowTable = () => {
     setShowTable((prevShowTable) => !prevShowTable);
   };
-  
+
 
   return (
     <DashboardLayout>
-    <DashboardNavbar />
-    <MDBox pt={6} pb={3}>
-      <Grid container spacing={6}>
+      <DashboardNavbar />
+      <MDBox pt={6} pb={3}>
+        <Grid container spacing={6}>
           <Grid item xs={12}>
-              <Card>
-                <MDBox>
-                  <MDButton onClick={collapseAll}> Collapse all </MDButton>
-                  <DataTreeView  treeItems={skillList} />
-                  {(selected && selected.length > 0) && <MDButton onClick={handleClick}> Send </MDButton>}
+            <Card>
+              <MDBox>
+                <MDButton onClick={collapseAll}> Collapse all </MDButton>
+                <br />
+                <input
+                  type="text"
+                  value={searchSkill}
+                  onChange={(e) => setSearchSkill(e.target.value)}
+                  placeholder="Search"
+                />
+                <DataTreeView />
+                {(selected && selected.length > 0) && <MDButton color="black" onClick={handleClick}> Submit </MDButton>}
 
-                  {isToggled && <MDButton onClick={handleShowTable}>
-                      {showTable ? "Show Graph" : "Show Table"}
-                    </MDButton> 
-                  }          
+                {isToggled && <MDButton onClick={handleShowTable}>
+                  {showTable ? "Show Graph" : "Show Table"}
+                </MDButton>
+                }
 
-                  {isToggled && (!showTable ? (<VisGraph
-                        graph={graph}
-                        options={options}
-                        events={events}
-                        getNetwork={network => {
-                          //  if you want access to vis.js network api you can set the state in a parent component using this property
-                        }}
-                      />) : (
-                        <TableComponent data={tableData} />
-                      )
-                      )
-                  }
+                {isToggled && (!showTable ? (<VisGraph
+                  graph={graph}
+                  options={options}
+                  events={events}
+                  getNetwork={network => {
+                    //  if you want access to vis.js network api you can set the state in a parent component using this property
+                  }}
+                />) : (
+                  <TableComponent data={tableData} />
+                )
+                )
+                }
 
-                </MDBox>
-                </Card>
-              </Grid>
+              </MDBox>
+            </Card>
           </Grid>
-        </MDBox>
-        <Footer />
-      </DashboardLayout>
+        </Grid>
+      </MDBox>
+      <Footer />
+    </DashboardLayout>
   );
 }
 

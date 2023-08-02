@@ -123,8 +123,8 @@ const routes = [
   },
   {
     type: 'title',
-    name: 'Client',
-    key: 'client',
+    name: 'Team',
+    key: 'team',
     icon: <Icon fontSize='small'>euro</Icon>,
     child: [{
       type: 'collapse',

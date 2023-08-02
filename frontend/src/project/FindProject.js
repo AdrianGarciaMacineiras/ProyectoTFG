@@ -63,17 +63,6 @@ function FindProject() {
           avoidOverlap: 0.02
         },
         minVelocity: 0.75
-      },
-      configure: {
-        enabled: true,
-        filter: 'physics, layout',
-        showButton: true
-     },
-      interaction: {
-        hover: true,
-        hoverConnectedEdges: true,
-        selectable: true,
-        selectConnectedEdges: true
       }
     };
     
