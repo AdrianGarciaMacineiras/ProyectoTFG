@@ -1,22 +1,18 @@
 import './App.css';
 
 import CssBaseline from '@mui/material/CssBaseline';
-import Icon from '@mui/material/Icon';
 // @mui material components
 import {ThemeProvider} from '@mui/material/styles';
-import {React, useEffect, useMemo, useState} from 'react';
+import {React, useEffect, useState} from 'react';
 // react-router components
 import {Navigate, Route, Routes, useLocation} from 'react-router-dom';
 
-import brandDark from './assets/images/logo-ct-dark.png';
 // Images
 import brandWhite from './assets/images/logo-ct.png';
 // Material Dashboard 2 React themes
 import theme from './assets/theme';
 // Material Dashboard 2 React Dark Mode themes
 import Configurator from './components/Configurator';
-// Material Dashboard 2 React components
-import MDBox from './components/MDBox';
 // Material Dashboard 2 React example components
 import Sidenav from './components/Sidenav';
 // Material Dashboard 2 React contexts
@@ -32,10 +28,7 @@ function App() {
     direction,
     layout,
     openConfigurator,
-    sidenavColor,
-    transparentSidenav,
-    whiteSidenav,
-    darkMode,
+    sidenavColor
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const {pathname} = useLocation();
@@ -55,10 +48,6 @@ function App() {
       setOnMouseEnter(false);
     }
   };
-
-  // Change the openConfigurator state
-  const handleConfiguratorOpen = () =>
-      setOpenConfigurator(dispatch, !openConfigurator);
 
   // Setting the dir attribute for the body element
   useEffect(() => {

@@ -1,5 +1,7 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
+import java.util.List;
+
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveServiceNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.CertificateRelationship;
@@ -11,11 +13,10 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleView.Kn
 import com.sngular.skilltree.model.Certificate;
 import com.sngular.skilltree.model.Knows;
 import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.Skill;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper(config = CommonMapperConfiguration.class, uses = {ResolveServiceNode.class, SkillNodeMapper.class})
 public interface PeopleNodeMapper {
@@ -33,6 +34,7 @@ public interface PeopleNodeMapper {
         //@Mapping(target = "noProjects", source = "noProjects", qualifiedByName = {"resolveServiceNode", "mapToProjectString"})
     People fromNode(PeopleNode peopleNode);
 
+    @Mapping(target = "work_with", source = "workWith")
     People fromView(PeopleView peopleNode);
 
     @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
@@ -67,4 +69,8 @@ public interface PeopleNodeMapper {
     KnowsRelationship knowsToKnowsRelationship(Knows knows);
 
     List<People> map(List<PeopleView> all);
+
+    @Mapping(target = "code", source = "code")
+    @Mapping(target = "name", source = "name")
+    Skill map(PeopleView.SkillView skillView);
 }
