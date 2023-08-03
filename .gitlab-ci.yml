@@ -1,12 +1,29 @@
 stages:
+- node
 - build
 - docker
 - deploy
 
+node:
+  stage: node
+  tags:
+  - node
+  script:
+  - echo "Building..."
+  - cd frontend
+  - npm ci --legacy-peer-deps
+  - npm run build
+  - echo "Building ended"
+  artifacts:
+    paths:
+    - frontend/build
+    reports:
+      dotenv: vars.env
+
 build:
   stage: build
   tags:
-    - maven
+  - maven
   script:
   - echo "Building..."
   - mvn $MAVEN_REMOTE_OPTS verify -DskipTests
