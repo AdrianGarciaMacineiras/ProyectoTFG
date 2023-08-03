@@ -17,8 +17,6 @@ node:
   artifacts:
     paths:
     - frontend/public
-    reports:
-      dotenv: vars.env
 
 build:
   stage: build
