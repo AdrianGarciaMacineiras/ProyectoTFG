@@ -16,7 +16,7 @@ node:
   - echo "Building ended"
   artifacts:
     paths:
-    - frontend/build
+    - frontend/public
     reports:
       dotenv: vars.env
 
