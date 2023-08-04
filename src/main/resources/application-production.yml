@@ -6,5 +6,5 @@ spring:
   neo4j:
     uri: ${NEO4J_URI}
     authentication:
-      username: ${NEO4J_USERBNAME}
+      username: ${NEO4J_USERNAME}
       password: ${NEO4J_PASSWORD}
