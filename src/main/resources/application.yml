@@ -1,0 +1,11 @@
+spring:
+  neo4j:
+    uri: bolt://localhost:7689
+    authentication:
+      username: neo4j
+      password: neo4jtfg
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

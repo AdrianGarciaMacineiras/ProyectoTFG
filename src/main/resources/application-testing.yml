@@ -1,0 +1,15 @@
+logging:
+  level:
+    org.springframework:${LOG_LEVEL}
+    com.sngular:${LOG_LEVEL}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+spring:
+  neo4j:
+    uri: bolt://192.168.252.83:7687
+    authentication:
+      username: neo4j
+      password: zDk#2729xbV6V

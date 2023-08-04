@@ -1,5 +1,7 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
+import java.util.List;
+
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveServiceNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.CertificateRelationship;
@@ -11,11 +13,10 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleView.Kn
 import com.sngular.skilltree.model.Certificate;
 import com.sngular.skilltree.model.Knows;
 import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.Skill;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper(config = CommonMapperConfiguration.class, uses = {ResolveServiceNode.class, SkillNodeMapper.class})
 public interface PeopleNodeMapper {
@@ -33,10 +34,12 @@ public interface PeopleNodeMapper {
         //@Mapping(target = "noProjects", source = "noProjects", qualifiedByName = {"resolveServiceNode", "mapToProjectString"})
     People fromNode(PeopleNode peopleNode);
 
-    People fromView(PeopleView peopleNode);
+  @Mapping(target = "work_with", source = "workWith")
+  People fromView(PeopleView peopleNode);
 
     @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "code", source = "skillNode.code")
+    @Mapping(target = "name", source = "skillNode.name")
     Certificate certificateRelationshipToCertificate(CertificateRelationship certificateRelationship);
 
     @Mapping(target = "skillNode", source = "code", qualifiedByName = {"resolveServiceNode", "resolveCodeToSkillNode"})
@@ -51,17 +54,23 @@ public interface PeopleNodeMapper {
     @Mapping(target = "id", source = "id", qualifiedByName = {"resolveServiceNode", "resolveId"})
     Role roleToRole1(com.sngular.skilltree.model.Role role);
 
-    @Mapping(target = "code", source = "skill.code")
+  @Mapping(target = "code", source = "skill.code")
+  @Mapping(target = "name", source = "skill.name")
     Knows knowsRelationshipToKnows(KnowsRelationship knowsRelationship);
 
-    @Mapping(target = "code", source = "skill.code")
-    Knows knowsViewToKnows(KnowsView knowsView);
+  @Mapping(target = "code", source = "skill.code")
+  @Mapping(target = "name", source = "skill.name")
+  Knows knowsViewToKnows(KnowsView knowsView);
 
-    List<Knows> knowsRelationshipListToKnowsList(List<KnowsRelationship> list);
+  List<Knows> knowsRelationshipListToKnowsList(List<KnowsRelationship> list);
 
-    @Mapping(target = "skill", source = "code", qualifiedByName = {"resolveServiceNode", "resolveCodeToSkillNode"})
-    @Mapping(target = "id", source = "id", qualifiedByName = {"resolveServiceNode", "resolveId"})
-    KnowsRelationship knowsToKnowsRelationship(Knows knows);
+  @Mapping(target = "skill", source = "code", qualifiedByName = {"resolveServiceNode", "resolveCodeToSkillNode"})
+  @Mapping(target = "id", source = "id", qualifiedByName = {"resolveServiceNode", "resolveId"})
+  KnowsRelationship knowsToKnowsRelationship(Knows knows);
 
-    List<People> map(List<PeopleView> all);
+  List<People> map(List<PeopleView> all);
+
+  @Mapping(target = "code", source = "code")
+  @Mapping(target = "name", source = "name")
+  Skill map(PeopleView.SkillView skillView);
 }

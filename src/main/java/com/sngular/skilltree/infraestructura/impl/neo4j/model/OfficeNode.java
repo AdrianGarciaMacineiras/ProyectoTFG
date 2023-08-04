@@ -25,6 +25,6 @@ public class OfficeNode {
 
     private boolean deleted;
 
-    private boolean principal;
+    //private boolean principal;
 
 }

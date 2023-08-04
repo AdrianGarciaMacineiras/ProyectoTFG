@@ -15,6 +15,7 @@ import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Team;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
@@ -51,8 +52,16 @@ public class TeamRepositoryImpl implements TeamRepository {
         return mapper.fromNode(crud.save(teamNode));
     }
 
-    @Override
-    public Team findByCode(String teamcode) { return mapper.fromNode(crud.findByCode(teamcode)); }
+  @Override
+  public Team findByCode(String teamcode) {
+    final TeamView teamView;
+    if (NumberUtils.isCreatable(teamcode)) {
+      teamView = crud.findByCodeAndDeletedIsFalse(teamcode, TeamView.class);
+    } else {
+      teamView = crud.findByShortNameAndDeletedIsFalse(teamcode, TeamView.class);
+    }
+    return mapper.map(teamView);
+  }
 
     @Override
     public List<Member> getMembers(String teamcode) {
@@ -67,11 +76,11 @@ public class TeamRepositoryImpl implements TeamRepository {
 
                     var member = queryResult.get("r");
 
-                    return Member.builder()
-                                 .id(member.get("id").asString())
-                                 .charge(NULL.equalsIgnoreCase(member.get("charge").asString()) ? null : member.get("charge").asString())
-                                 .people(person)
-                                 .build();
+                  return Member.builder()
+                               .id(member.get("id").asString())
+                               .charge(NULL.equalsIgnoreCase(member.get("charge").asString()) ? null : member.get("charge").asString())
+                               .people(person)
+                               .build();
 
                 })
                 .all());

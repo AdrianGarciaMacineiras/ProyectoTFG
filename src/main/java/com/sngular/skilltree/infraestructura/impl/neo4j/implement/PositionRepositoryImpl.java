@@ -1,5 +1,9 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.PositionRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ClientCrudRepository;
@@ -15,10 +19,6 @@ import org.neo4j.driver.Record;
 import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
@@ -51,10 +51,10 @@ public class PositionRepositoryImpl implements PositionRepository {
       throw new EntityNotFoundException("Project", projectNode.getCode());
     }
 
-    var officeNode = officeCrud.findByCode(position.office().code());
+    /*var officeNode = officeCrud.findByCode(position.office().code());
     if (Objects.isNull(officeNode) || officeNode.isDeleted()) {
       throw new EntityNotFoundException("Office", officeNode.getCode());
-    }
+    }*/
 
     var positionNode = crud.save(mapper.toNode(position));
 
@@ -63,7 +63,8 @@ public class PositionRepositoryImpl implements PositionRepository {
 
   @Override
   public Position findByCode(String positionCode) {
-      return mapper.fromNode(crud.findByCode(positionCode));
+
+    return mapper.fromNode(crud.findByCode(positionCode));
   }
 
     @Override
@@ -82,7 +83,7 @@ public class PositionRepositoryImpl implements PositionRepository {
     @Override
     public List<Position> getPeopleAssignedPositions(String peopleCode) {
 
-        var query = String.format("MATCH(p:People{code:%d})-[r:ASSIGN]-(s:Position) RETURN s.code", peopleCode);
+      var query = String.format("MATCH(p:People{code:%d})-[r:COVER]-(s:Position) RETURN s.code", peopleCode);
 
         var positionCodes = client
                 .query(query)
@@ -98,7 +99,7 @@ public class PositionRepositoryImpl implements PositionRepository {
 
   @Override
   public List<PositionAssignment> getPeopleAssignedToPosition(String positionCode) {
-    var query = String.format("MATCH(p:People)-[r:ASSIGN]-(s:Position{code:'%s'}) RETURN p,r",positionCode);
+    var query = String.format("MATCH(p:People)-[r:COVER]-(s:Position{code:'%s'}) RETURN p,r", positionCode);
 
     return new ArrayList<>(client
             .query(query)
@@ -109,14 +110,14 @@ public class PositionRepositoryImpl implements PositionRepository {
 
               var assign = record.get("r");
 
-              return  PositionAssignment.builder()
-                      .assignDate(assign.get("assignDate").asLocalDate())
-                      .id(assign.get("id").asString())
-                      .assigned(person)
-                      .role(assign.get("role").asString())
-                      .dedication(assign.get("dedication").asInt())
-                      .endDate(NULL.equalsIgnoreCase(assign.get("endDate").asString()) ? null : assign.get("endDate").asLocalDate())
-                      .build();
+              return PositionAssignment.builder()
+                                       .assignDate(NULL.equalsIgnoreCase(assign.get("assignDate").asString()) ? null : assign.get("assignDate").asLocalDate())
+                                       .id(assign.get("id").asString())
+                                       .assigned(person)
+                                       .role(assign.get("role").asString())
+                                       //.dedication(Objects.isNull(assign.get("dedication").asInt()) ? null : assign.get("dedication").asInt())
+                                       .endDate(NULL.equalsIgnoreCase(assign.get("endDate").asString()) ? null : assign.get("endDate").asLocalDate())
+                                       .build();
 
             })
             .all());
@@ -126,13 +127,13 @@ public class PositionRepositoryImpl implements PositionRepository {
   private static People getPeople(Record result) {
     var people = result.get("p");
     return People.builder()
-            .name(people.get("name").asString())
-            .surname(people.get("surname").asString())
-            .employeeId(people.get("employeeId").asString())
-            .birthDate(people.get("birthDate").asLocalDate())
-            .code(people.get("code").asString())
-            .deleted(people.get("deleted").asBoolean())
-            .build();
+                 .name(people.get("name").asString())
+                 .surname(people.get("surname").asString())
+                 .employeeId(people.get("employeeId").asString())
+                 .birthDate(NULL.equalsIgnoreCase(people.get("birthDate").asString()) ? null : people.get("birthDate").asLocalDate())
+                 .code(people.get("code").asString())
+                 .deleted(people.get("deleted").asBoolean())
+                 .build();
   }
 
 }

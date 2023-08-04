@@ -1,13 +1,15 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import java.util.List;
+
 import com.sngular.skilltree.infraestructura.ClientRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ClientCrudRepository;
-import com.sngular.skilltree.model.Client;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.ClientNodeMapper;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.ClientNode;
+import com.sngular.skilltree.model.Client;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -27,7 +29,13 @@ public class ClientRepositoryImpl implements ClientRepository {
 
     @Override
     public Client findByCode(String clientCode) {
-        return mapper.fromNode(crud.findByCode(clientCode));
+      ClientNode clientNode;
+      if (NumberUtils.isCreatable(clientCode)) {
+        clientNode = crud.findByCode(clientCode);
+      } else {
+        clientNode = crud.findByName(clientCode);
+      }
+      return mapper.fromNode(clientNode);
     }
 
     @Override

@@ -1,0 +1,10 @@
+logging:
+  level:
+    org.springframework:${LOG_LEVEL}
+    com.sngular:${LOG_LEVEL}
+spring:
+  neo4j:
+    uri: ${NEO4J_URI}
+    authentication:
+      username: ${NEO4J_USERBNAME}
+      password: ${NEO4J_PASSWORD}
