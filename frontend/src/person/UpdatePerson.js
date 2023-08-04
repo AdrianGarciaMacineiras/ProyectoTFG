@@ -86,7 +86,7 @@ const UpdatePerson = () => {
     role = 'tabpanel'
     hidden =
         {value !==
-         index} id = {`simple-tabpanel-${index}`} aria - labelledby = {`simple-tab-${index}`} {...other} > {value ===
+         index} id = {`simple-tabpanel-${index}`} aria-labelledby = {`simple-tab-${index}`} {...other} > {value ===
                                                                                                                 index &&
                                                                                                             (<MDBox sx = {
                                                                                                               {
@@ -146,11 +146,8 @@ const UpdatePerson = () => {
                                                                                                                <KeyboardArrowDownIcon />
   }
   </IconButton>
-          </TableCell><TableCell align = 'left'>{row.code}<
-      /TableCell>
-          <TableCell align="left">{row.name}</TableCell><
-      TableCell align = 'left'>{row.surname}<
-      /TableCell>
+          </TableCell><TableCell align = 'left'>{row.code}</TableCell>
+          <TableCell align="left">{row.name}</TableCell><TableCell align = 'left'>{row.surname}</TableCell>
           <TableCell align="left">{row.employeeId}</TableCell>
       <TableCell align = 'left'>{row.birthDate}</TableCell>
         </TableRow>
@@ -169,8 +166,7 @@ const UpdatePerson = () => {
         }
       }>< Tabs
   value = {valor} onChange = {(event, newValue) =>
-                                  handleChangeTab(event, newValue, row)} aria -
-      label = 'basic tabs example' > < Tab label = 'Knows' {
+                                  handleChangeTab(event, newValue, row)} aria-label = 'basic tabs example' > < Tab label = 'Knows' {
     ...a11yProps(0)
   }
   />
@@ -247,14 +243,13 @@ const handleChangeRowsPerPage = (event) => {
       <Table sx =
        {
          { minWidth: 650 }
-       } aria -
-           label = 'simple table'><TableHead sx = {
+       } aria-label = 'simple table'><TableHead sx = {
                     {
                       display: 'table-header-group'
                     }
                   }><TableRow>
       <TableCell width = '100' component = 'th' scope = 'row'>< IconButton
-  aria - label = 'expand row'
+  aria-label = 'expand row'
   size = 'small'
   onClick =
       {() => setOpen(!open)} >
@@ -264,35 +259,30 @@ const handleChangeRowsPerPage = (event) => {
                       </TableCell>
       <TableCell align = 'left' onClick = {() => handleSortChange('code')}>
       <strong>{
-          orderBy === 'code' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}<
-          /strong>
+          orderBy === 'code' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
                         Code
                       </TableCell>
       <TableCell align = 'left' onClick = {() => handleSortChange('name')}>
       <strong>{
-          orderBy === 'name' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}<
-          /strong>
+          orderBy === 'name' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
                         Name
                       </TableCell>
       <TableCell align = 'left' onClick = {() => handleSortChange('surname')}>
       <strong>{
           orderBy === 'surname' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
-                                  null}<
-          /strong>
+                                  null}</strong>
                         Surname
                       </TableCell>
       <TableCell align =
            'left' onClick = {() => handleSortChange('employeeId')}><strong>{
           orderBy === 'employeeId' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
-                                     null}<
-          /strong>
+                                     null}</strong>
                         EmployeeId
                       </TableCell>
       <TableCell align = 'left' onClick = {() => handleSortChange('birthDate')}>
       <strong>{
           orderBy === 'birthDate' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
-                                    null}<
-          /strong>
+                                    null}</strong>
                         Birth date
                       </TableCell>
       </TableRow>

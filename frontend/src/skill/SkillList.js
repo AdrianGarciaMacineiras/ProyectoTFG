@@ -203,7 +203,7 @@ function SkillList() {
       { '& > *': {borderBottom: 'unset'} }} key={row.index}>
           <TableCell>
             <IconButton
-    aria - label = 'expand row'
+    aria-label = 'expand row'
     size = 'small'
                           onClick={() => setOpen(!open)}
                           style={{
@@ -263,7 +263,7 @@ function SkillList() {
             <TableRow>
               <TableCell width='100' component='th' scope='row'>
                 <IconButton
-    aria - label = 'expand row'
+    aria-label = 'expand row'
     size = 'small'
                   onClick={() => setOpen(!open)}
                 >

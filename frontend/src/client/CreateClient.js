@@ -111,8 +111,7 @@ const ClientForm = () => {
                    Client</MDTypography>
                   </MDBox>
       <form onSubmit = {handleSubmit}><MDBox pt = {3}>
-      <MDTypography variant = 'h6' fontWeight = 'medium'>Code: <
-          /MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>Code: </MDTypography>
           <MDInput
             type="text"
             id="code"
@@ -123,24 +122,24 @@ const ClientForm = () => {
           />
       </MDBox>
         <MDBox>
-          <MDTypography htmlFor="name">Name:</MDTypography><
-      MDInput
+          <MDTypography htmlFor="name">Name:</MDTypography>
+          <MDInput
   type = 'text'
   id = 'name'
   name = 'name'
   value = {clientData.name} onChange = {handleChange} required / >
       </MDBox>
         <MDBox>
-          <MDTypography htmlFor="industry">Industry:</MDTypography><
-      MDInput
+          <MDTypography htmlFor="industry">Industry:</MDTypography>
+          <MDInput
   type = 'text'
   id = 'industry'
   name = 'industry'
   value = {clientData.industry} onChange = {handleChange} required / >
       </MDBox>
         <MDBox>
-          <MDTypography htmlFor="country">Country:</MDTypography><
-      MDInput
+          <MDTypography htmlFor="country">Country:</MDTypography>
+          <MDInput
   type = 'text'
   id = 'country'
   name = 'country'
@@ -157,8 +156,7 @@ const ClientForm = () => {
           bgColor = 'info'
           borderRadius = 'lg'
           coloredShadow = 'info' >
-        <MDTypography variant = 'h6' color = 'white'>Client Graph</MDTypography><
-      /MDBox>
+        <MDTypography variant = 'h6' color = 'white'>Client Graph</MDTypography></MDBox>
                 <MDBox pt = {3}>    
                   {graph && (
                     <VisGraph
@@ -166,9 +164,7 @@ const ClientForm = () => {
                       options={options}
                       events={events}
                       getNetwork={network => {
-                        / /
-          if you want access to vis.js network api you can set the state in
-      a parent component using this property
+
 }
 }
 />
@@ -176,8 +172,7 @@ const ClientForm = () => {
                   </MDBox > </Card>
             </Grid>
     </Grid>
-        </MDBox><Footer /><
-    /DashboardLayout>
+        </MDBox><Footer /></DashboardLayout>
   );
 };
 
