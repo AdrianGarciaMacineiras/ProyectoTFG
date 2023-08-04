@@ -6,24 +6,10 @@ management:
   endpoints:
     web:
       exposure:
-        include=*
+        include: "*"
 spring:
   neo4j:
     uri: bolt://192.168.252.83:7687
     authentication:
       username: neo4j
       password: zDk#2729xbV6V
-  security:
-    saml2:
-      relyingparty:
-        registration:
-          okta:
-            signing:
-              credentials:
-              - private-key-location: classpath:local.key
-                certificate-location: classpath:local.crt
-            singlelogout:
-              binding: POST
-              response-url: "{baseUrl}/logout/saml2/slo"
-            assertingparty:
-              metadata-uri: "classpath:metadata/metadata-idp.xml"

@@ -2,11 +2,6 @@ logging:
   level:
     org.springframework:${LOG_LEVEL}
     com.sngular:${LOG_LEVEL}
-management:
-  endpoints:
-    web:
-      exposure:
-        include=*
 spring:
   neo4j:
     uri: ${NEO4J_URI}
