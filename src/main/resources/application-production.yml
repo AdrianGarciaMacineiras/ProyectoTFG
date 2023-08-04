@@ -1,0 +1,29 @@
+logging:
+  level:
+    org.springframework:${LOG_LEVEL}
+    com.sngular:${LOG_LEVEL}
+management:
+  endpoints:
+    web:
+      exposure:
+        include=*
+spring:
+  neo4j:
+    uri: ${NEO4J_URI}
+    authentication:
+      username: ${NEO4J_USERBNAME}
+      password: ${NEO4J_PASSWORD}
+  security:
+    saml2:
+      relyingparty:
+        registration:
+          okta:
+            signing:
+              credentials:
+              - private-key-location: classpath:local.key
+                certificate-location: classpath:local.crt
+            singlelogout:
+              binding: POST
+              response-url: "{baseUrl}/logout/saml2/slo"
+            assertingparty:
+              metadata-uri: "classpath:metadata/metadata-idp.xml"
