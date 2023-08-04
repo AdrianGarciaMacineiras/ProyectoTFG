@@ -263,7 +263,7 @@ const CreatePerson =
                     FriendlyName: response.friendlyName,
                     Title: response.title,
                     BirthDate: response.birthDate
-                  } graphTemp.nodes.push({
+                  }; graphTemp.nodes.push({
                     id: i,
                     label: response.name + ' ' + response.surname,
                     title: JSON.stringify(temp, '', 2)
@@ -275,7 +275,7 @@ const CreatePerson =
                       Primary: element.primary,
                       Experience: element.experience,
                       Level: element.level
-                    } graphTemp.nodes.push({
+                    }; graphTemp.nodes.push({
                       id: i,
                       label: element.name,
                       title: JSON.stringify(temp, '', 2),
@@ -325,7 +325,7 @@ const CreatePerson =
                       Name: element.name,
                       Comments: element.comments,
                       Date: element.date
-                    } graphTemp.nodes.push({
+                    }; graphTemp.nodes.push({
                       id: i,
                       label: element.code,
                       title: JSON.stringify(temp, '', 2),
@@ -515,8 +515,7 @@ const CreatePerson =
               </MDBox>
         <form id = 'personForm'><Grid container spacing = {6}>
         <Grid item xs = {6}><MDBox pt = {3}>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Person Code: <
-            /MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Person Code: </MDTypography>
                       <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" />
         </MDBox>
                     <MDBox>
@@ -544,13 +543,11 @@ const CreatePerson =
           {target: {name: 'birthDate', value: format(date, 'dd-MM-yyyy')}})
     } />
                     </MDBox > <MDBox>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Title: <
-            /MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Title: </MDTypography>
                       <MDInput type="text" value={form.title} onChange={handleInputChange} name="title" />
         </MDBox>
                   </Grid><Grid item xs = {6}><MDBox>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Roles: <
-            /MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Roles: </MDTypography>
                       {!isAddRoleVisible && (
                         <MDBox>
                           <MDButton variant="gradient" color="dark" onClick={handleShowAddRoleForm}>Add Role</MDButton>
@@ -565,8 +562,7 @@ const CreatePerson =
            (e) => setRoleForm({...roleForm, role: e.target.value})
          } />
                           </MDBox><MDBox>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Category: <
-            /MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Category: </MDTypography>
                             <MDInput type="text" value={roleForm.category} onChange={(e) => setRoleForm({ ...roleForm, category: e.target.value })} />
         </MDBox>
                           <MDBox>
@@ -621,9 +617,7 @@ bgColor = 'info'
 borderRadius = 'lg'
 coloredShadow =
     'info' >
-    <MDTypography variant = 'h6' color = 'white'>Select element: {selectedNode
-                                                                      .name}<
-        /MDTypography>
+    <MDTypography variant = 'h6' color = 'white'>Select element: {selectedNode.name}</MDTypography>
                           <FormGroup>
                             <FormControlLabel
                               label="Knows"
@@ -693,9 +687,7 @@ coloredShadow =
                     coloredShadow =
                         'info' >
                         <MDTypography variant = 'h6' color =
-                             'white'>Knows Form: {selectedNode
-                                                      .name}<
-                            /MDTypography>
+                             'white'>Knows Form: {selectedNode.name}</MDTypography>
                           <FormControl fullWidth>
                             <InputLabel variant="standard" id="requiredLevelLabel">Level Required:</InputLabel><
                         Select
@@ -743,9 +735,7 @@ coloredShadow =
                               coloredShadow =
                                   'info' >
                                   <MDTypography variant = 'h6' color =
-                                       'white'>Certificate Form: {selectedNode
-                                                                      .name}<
-                                      /MDTypography>
+                                       'white'>Certificate Form: {selectedNode.name}</MDTypography>
                           <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
                             bgColor='info'
                             borderRadius='lg'
@@ -790,8 +780,7 @@ coloredShadow =
                               coloredShadow =
                                   'info' >
                                   <MDTypography variant = 'h6' color = 'white'>
-                                      Person Graph<
-                                          /MDTypography>
+                                      Person Graph</MDTypography>
               </MDBox>
                                   <MDBox pt = {3}>< VisGraph
                               graph = {graph} options = {options} events =
@@ -807,8 +796,7 @@ coloredShadow =
                                   </Card>
           </Grid>
                                   </Grid>
-      </MDBox><Footer /><
-                                  /DashboardLayout>
+      </MDBox><Footer /></DashboardLayout>
   );
 }
 
