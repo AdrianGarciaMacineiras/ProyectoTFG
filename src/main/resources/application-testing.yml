@@ -2,6 +2,8 @@ logging:
   level:
     org.springframework: ${LOG_LEVEL}
     com.sngular: ${LOG_LEVEL}
+server:
+  port: 8080
 management:
   endpoints:
     web:
