@@ -1,10 +1,35 @@
 package com.sngular.skilltree.contract;
 
+import static com.sngular.skilltree.fixtures.PersonFixtures.LIST_PERSON_JSON;
+import static com.sngular.skilltree.fixtures.PersonFixtures.PATCH_PERSON_BY_CODE_JSON;
+import static com.sngular.skilltree.fixtures.PersonFixtures.PEOPLE_BY_CODE;
+import static com.sngular.skilltree.fixtures.PersonFixtures.PEOPLE_LIST;
+import static com.sngular.skilltree.fixtures.PersonFixtures.PERSON_BY_CODE_JSON;
+import static com.sngular.skilltree.fixtures.PersonFixtures.UPDATED_PEOPLE_BY_CODE;
+import static com.sngular.skilltree.fixtures.PersonFixtures.UPDATED_PERSON_BY_CODE_JSON;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.sngular.skilltree.CommonTestConfiguration;
-import com.sngular.skilltree.application.*;
+import com.sngular.skilltree.application.ClientService;
+import com.sngular.skilltree.application.OfficeService;
+import com.sngular.skilltree.application.PeopleService;
+import com.sngular.skilltree.application.PositionService;
+import com.sngular.skilltree.application.ProjectService;
+import com.sngular.skilltree.application.ResolveService;
+import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.application.updater.PeopleUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
-import com.sngular.skilltree.contract.mapper.*;
+import com.sngular.skilltree.contract.mapper.CandidateMapper;
+import com.sngular.skilltree.contract.mapper.CandidateMapperImpl;
+import com.sngular.skilltree.contract.mapper.PeopleMapper;
+import com.sngular.skilltree.contract.mapper.PeopleMapperImpl;
+import com.sngular.skilltree.contract.mapper.PositionMapper;
+import com.sngular.skilltree.contract.mapper.PositionMapperImpl;
 import com.sngular.skilltree.model.People;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -17,12 +42,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import static com.sngular.skilltree.fixtures.PersonFixtures.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @WebMvcTest(controllers = PeopleController.class)
@@ -101,11 +120,12 @@ class PeopleControllerTest {
   void patchPerson() throws Exception {
     when(peopleUpdater.patch(anyString(), any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                    .patch("/person/1")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .content(PATCH_PERSON_BY_CODE_JSON))
-            .andExpect(content().json(PATCH_PERSON_BY_CODE_JSON));
+                      .patch("/person/1")
+                      .contentType(MediaType.APPLICATION_JSON)
+                      .accept(MediaType.APPLICATION_JSON)
+                      .content(PATCH_PERSON_BY_CODE_JSON))
+           .andDo(log())
+           .andExpect(content().json(PATCH_PERSON_BY_CODE_JSON));
   }
 
   @Test

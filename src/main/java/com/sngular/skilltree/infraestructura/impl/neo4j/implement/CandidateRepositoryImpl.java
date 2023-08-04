@@ -29,11 +29,11 @@ import static com.sngular.skilltree.model.EnumStatus.QUALIFICATION;
 @RequiredArgsConstructor
 public class CandidateRepositoryImpl implements CandidateRepository {
 
-    public static final String ADVANCED = "'ADVANCED'";
+    public static final String ADVANCED = "'advanced'";
 
-    private static final List<String> LOW_LEVEL_LIST = List.of("'LOW'", "'MIDDLE'", ADVANCED);
+  private static final List<String> LOW_LEVEL_LIST = List.of("'low'", "'middle'", ADVANCED);
 
-    private static final List<String> MID_LEVEL_LIST = List.of("'MIDDLE'", ADVANCED);
+  private static final List<String> MID_LEVEL_LIST = List.of("'middle'", ADVANCED);
 
     private static final List<String> HIGH_LEVEL_LIST = List.of(ADVANCED);
 
@@ -140,12 +140,11 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                 }
             }
         }
-
+      //+"AND p.assignable = TRUE "
         var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
-                " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) " +
-                "AND ANY (lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair.skillcode}))" +
-                "AND p.assignable = TRUE )" +
-                " RETURN DISTINCT p", String.join(",", filter));
+                                  " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) " +
+                                  "AND ANY (lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair.skillcode})))" +
+                                  " RETURN DISTINCT p", String.join(",", filter));
 
         var peopleList = client.query(query).fetchAs(People.class)
                 .mappedBy(getTypeSystemRecordPeopleBiFunction())
@@ -169,9 +168,10 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         var candidateList = new ArrayList<Candidate>();
 
         for (var people: peopleList) {
-            var candidateQuery = String.format("MATCH(p:People{code:%s}),(n:Position{code:'%s'})" +
-                    "CREATE (n)-[r:CANDIDATE{code:'%s',status:'%s',creationDate:date('%s')}]->(p)" +
-                    "RETURN p,r.code,r.status,r.creationDate,n.code,ID(r)", people.code(), positionCode, people.code() + "-" + people.employeeId(), QUALIFICATION, LocalDate.now());
+          var candidateQuery = String.format("MATCH(p:People{code:'%s'}),(n:Position{code:'%s'})" +
+                                             "CREATE (n)-[r:CANDIDATE{code:'%s',status:'%s',creationDate:date('%s')}]->(p)" +
+                                             "RETURN p,r.code,r.status,r.creationDate,n.code,ID(r)", people.code(), positionCode, people.code() + "-" + people.employeeId(),
+                                             QUALIFICATION, LocalDate.now());
 
             var candidate = client.query(candidateQuery).fetchAs(Candidate.class)
                                   .mappedBy((TypeSystem t, Record result) -> getCandidateBuilder(result).build())
@@ -207,9 +207,9 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         }
 
         var query = String.format("MATCH(p:People),(s:Position)" +
-                        "WHERE p.code=%s AND s.code='%s'" +
-                        "CREATE(s)-[r:ASSIGN{assignDate:date('%s'), role:'%s', dedication:100}]->(p)",
-                peopleCode, positionCode, LocalDate.now(), position.getRole());
+                                  "WHERE p.code=%s AND s.code='%s'" +
+                                  "CREATE(s)-[r:COVER{assignDate:date('%s'), role:'%s', dedication:100}]->(p)",
+                                  peopleCode, positionCode, LocalDate.now(), position.getRole());
         client.query(query).run();
 
         var queryStatusOK = String.format("MATCH(p:People)-[r:CANDIDATE]-(s:Position) " +
@@ -273,11 +273,11 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     private static People getPeople(Record result) {
         var people = result.get("p");
         return People.builder()
-                .name(people.get("name").asString())
-                .surname(people.get("surname").asString())
-                .employeeId(people.get("employeeId").asString())
-                .birthDate(people.get("birthDate").asLocalDate())
-                .code(people.get("code").asString())
+                     .name(people.get("name").asString())
+                     .surname(people.get("surname").asString())
+                     .employeeId(people.get("employeeId").asString())
+                     .birthDate(NULL.equalsIgnoreCase(result.get("birthDate").asString()) ? null : result.get("birthDate").asLocalDate())
+                     .code(people.get("code").asString())
                      .deleted(people.get("deleted").asBoolean())
                      .build();
     }
@@ -289,14 +289,14 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     private static BiFunction<TypeSystem, Record, People> getTypeSystemRecordPeopleBiFunction() {
         return (TypeSystem t, Record result) -> {
             var people = result.get("p");
-            return People.builder()
-                    .name(people.get("name").asString())
-                    .surname(people.get("surname").asString())
-                    .employeeId(people.get("employeeId").asString())
-                    .birthDate(people.get("birthDate").asLocalDate())
-                    .code(people.get("code").asString())
-                         .deleted(people.get("deleted").asBoolean())
-                         .build();
+          return People.builder()
+                       .name(people.get("name").asString())
+                       .surname(people.get("surname").asString())
+                       .employeeId(people.get("employeeId").asString())
+                       .birthDate(NULL.equalsIgnoreCase(result.get("birthDate").asString()) ? null : result.get("birthDate").asLocalDate())
+                       .code(people.get("code").asString())
+                       .deleted(people.get("deleted").asBoolean())
+                       .build();
         };
     }
 

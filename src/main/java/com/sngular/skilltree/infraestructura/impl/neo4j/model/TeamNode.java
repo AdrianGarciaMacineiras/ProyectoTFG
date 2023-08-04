@@ -1,15 +1,18 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateTimeConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.neo4j.core.convert.ConvertWith;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.schema.Relationship;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,28 +20,32 @@ import java.util.List;
 @NoArgsConstructor
 public class TeamNode {
 
-    @Id
-    private String code;
+  @Id
+  private String code;
 
-    private String name;
+  private String name;
 
-    private String desc;
+  private String desc;
 
-    private List<String> tags;
+  private String shortName;
 
-    @Relationship(type = "MEMBER_OF", direction = Relationship.Direction.INCOMING)
-    private List<MemberRelationship> members;
+  private List<String> tags;
 
-    @Relationship(type = "USE", direction = Relationship.Direction.OUTGOING)
-    private List<SkillNode> uses;
+  @Relationship(type = "MEMBER_OF", direction = Relationship.Direction.INCOMING)
+  private List<MemberRelationship> members;
 
-    @Relationship(type = "STRATEGIC", direction = Relationship.Direction.OUTGOING)
-    private List<SkillNode> strategics;
+  @Relationship(type = "USE", direction = Relationship.Direction.OUTGOING)
+  private List<SkillNode> uses;
 
-    private boolean deleted;
+  @Relationship(type = "STRATEGIC", direction = Relationship.Direction.OUTGOING)
+  private List<SkillNode> strategics;
 
-    @LastModifiedDate
-    private LocalDateTime lastUpdated;
+  private boolean deleted;
+
+  @LastModifiedDate
+  @Property(name = "_lastUpdated", readOnly = true)
+  @ConvertWith(converter = LocalDateTimeConverter.class)
+  private LocalDateTime lastUpdated;
 
 
 }

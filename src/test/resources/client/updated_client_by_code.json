@@ -3,8 +3,6 @@
   "name": "Inditex",
   "industry": "TECH",
   "country": "Spain",
-  "principalOffice": "itxhq",
-  "hQ": "Santiago",
   "offices": [
     {
       "code": "itxhq",

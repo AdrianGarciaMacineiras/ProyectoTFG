@@ -1548,6 +1548,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /office:
+    summary: List of offices
+    description: Returns a list of all the offices
+    get:
+      summary: List all offices
+      operationId: getOffices
+      tags:
+      - office
+      responses:
+        '200':
+          description: A paged array of offices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/office"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
 components:
   schemas:
     project:
@@ -1622,9 +1650,10 @@ components:
     guards:
       type: string
       enum:
-        - PASSIVE
-        - ACTIVE
-        - NO_GUARD
+      - PASSIVE
+      - ACTIVE
+      - NONE
+      - UNKNOWN
 
     projectRoles:
       type: object
@@ -1694,8 +1723,8 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/positionAssignment"
-        open:
-          type: boolean
+        active:
+          type: string
 
     patchedPosition:
       type: object
@@ -1751,10 +1780,6 @@ components:
         industry:
           type: string
         country:
-          type: string
-        principalOffice:
-          type: string
-        HQ:
           type: string
         offices:
           type: array
@@ -1958,13 +1983,15 @@ components:
                 type: string
               code:
                 type: string
+              name:
+                type: string
               level:
                 type: string
                 enum:
-                  - ADVANCED
-                  - MIDDLE
-                  - LOW
-                  - UNKNOWN
+                - ADVANCED
+                - MIDDLE
+                - LOW
+                - UNKNOWN
               experience:
                 type: integer
                 format: int32
@@ -2023,7 +2050,7 @@ components:
           type: string
           format: date
         title:
-          $ref: "#/components/schemas/title"
+          type: string
         roles:
           type: array
           items:

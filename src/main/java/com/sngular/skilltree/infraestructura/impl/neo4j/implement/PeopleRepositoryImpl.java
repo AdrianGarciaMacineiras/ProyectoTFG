@@ -1,5 +1,7 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import java.util.List;
+
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
@@ -7,10 +9,9 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleView;
 import com.sngular.skilltree.model.People;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -35,12 +36,24 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
     @Override
     public People findByCode(String personCode) {
-        return mapper.fromNode(crud.findByCodeAndDeletedIsFalse(personCode));
+        final PeopleNode people;
+        if (NumberUtils.isCreatable(personCode)) {
+            people = crud.findByCodeAndDeletedIsFalse(personCode);
+        } else {
+            people = crud.findByEmployeeIdAndDeletedIsFalse(personCode);
+        }
+        return mapper.fromNode(people);
     }
 
     @Override
     public People findPeopleByCode(String personCode) {
-        return mapper.fromNode(crud.findPeopleByCode(personCode));
+        final PeopleNode people;
+        if (NumberUtils.isCreatable(personCode)) {
+            people = crud.findByCode(personCode, PeopleNode.class);
+        } else {
+            people = crud.findByEmployeeId(personCode);
+        }
+        return mapper.fromNode(people);
     }
 
     @Override

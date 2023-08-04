@@ -18,24 +18,31 @@ import org.mapstruct.Named;
 @Mapper(config = CommonMapperConfiguration.class, uses = {PeopleMapper.class, ResolveService.class})
 public interface TeamMapper {
 
-    TeamDTO toTeamDTO(Team team);
+  TeamDTO toTeamDTO(Team team);
 
-    @AfterMapping
-    default void setTags(Team team, @MappingTarget TeamDTO teamDto) {
-        teamDto.setTags( team.tags() );
+  @AfterMapping
+  default void setTags(Team team, @MappingTarget TeamDTO teamDto) {
+    teamDto.setTags(team.tags());
+  }
+
+  List<MemberDTO> toMember(List<Member> members);
+
+  default MemberDTO.Charge toCharge(String charge) {
+    if (Objects.isNull(charge)) {
+      charge = "unknown";
     }
+    return MemberDTO.Charge.valueOf(charge.toUpperCase());
+  }
 
-    List<MemberDTO> toMember(List<Member> members);
+  MemberDTO toMemberDTO(Member members);
 
-    MemberDTO toMemberDTO(Member members);
+  Member toMember(MemberDTO membersDTO);
 
-    Member toMember(MemberDTO membersDTO);
+  Team toTeam(TeamDTO teamDTO);
 
-    Team toTeam(TeamDTO teamDTO);
+  List<TeamDTO> toTeamsDTO(Collection<Team> teams);
 
-    List<TeamDTO> toTeamsDTO (Collection<Team> teams);
-
-    Team toTeam(PatchedTeamDTO patchedTeamDTO);
+  Team toTeam(PatchedTeamDTO patchedTeamDTO);
 
     @Named("patch")
     default Team patch(Team newTeam, Team oldTeam) {

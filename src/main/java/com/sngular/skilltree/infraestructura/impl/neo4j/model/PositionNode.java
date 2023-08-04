@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.data.neo4j.core.convert.ConvertWith;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.time.LocalDate;
@@ -26,12 +27,14 @@ public class PositionNode {
 
     private boolean deleted;
 
-    private boolean open;
+  private String active;
 
-    @ConvertWith(converter = LocalDateConverter.class)
+  @ConvertWith(converter = LocalDateConverter.class)
+  @Property("initDate")
     private LocalDate openingDate;
 
-    @ConvertWith(converter = LocalDateConverter.class)
+  @ConvertWith(converter = LocalDateConverter.class)
+  @Property("endDate")
     private LocalDate closingDate;
 
     private String priority;
@@ -39,7 +42,8 @@ public class PositionNode {
     @ConvertWith(converter = EnumModeConverter.class)
     private EnumMode mode;
 
-    private String role;
+  @Property("charge")
+  private String role;
 
     @Relationship(type="FOR_PROJECT", direction = Relationship.Direction.OUTGOING)
     private ProjectNode project;
@@ -53,7 +57,7 @@ public class PositionNode {
     @Relationship(type = "NEED", direction = Relationship.Direction.OUTGOING)
     private List<PositionSkillsRelationship> skills;
 
-    @Relationship(type = "CANDIDATE", direction = Relationship.Direction.INCOMING)
+  @Relationship(type = "CANDIDATE", direction = Relationship.Direction.OUTGOING)
     private List<CandidateRelationship> candidates;
 
 }

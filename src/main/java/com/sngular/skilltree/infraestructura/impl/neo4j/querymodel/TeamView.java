@@ -5,17 +5,19 @@ import java.util.List;
 
 public interface TeamView {
 
-    String getCode();
+  String getCode();
 
-    String getName();
+  String getShortName();
 
-    String getDesc();
+  String getName();
 
-    List<String> getTags();
+  String getDesc();
 
-    List<Member> getMembers();
+  List<String> getTags();
 
-    List<SkillView> getUses();
+  List<Member> getMembers();
+
+  List<SkillView> getUses();
 
     List<SkillView> getStrategics();
 
