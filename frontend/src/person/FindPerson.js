@@ -67,7 +67,7 @@ function FindPerson() {
   };
 
   const findPerson = (personCode) =>
-      fetch(`http://localhost:9080/person/${personCode}`, {
+      fetch(`//${window.location.hostname}/person/${personCode}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ function FindPerson() {
               Title: response.title,
               BirthDate: response.birthDate
             };
-             graphTemp.nodes.push({
+            graphTemp.nodes.push({
               id: i,
               label: response.name + ' ' + response.surname,
               title: JSON.stringify(temp, '', 2)
@@ -101,7 +101,7 @@ function FindPerson() {
                 Experience: element.experience,
                 Level: element.level
               };
-               graphTemp.nodes.push({
+              graphTemp.nodes.push({
                 id: i,
                 label: element.name,
                 title: JSON.stringify(temp, '', 2),
@@ -144,7 +144,7 @@ function FindPerson() {
                 Comments: element.comments,
                 Date: element.date
               };
-               graphTemp.nodes.push({
+              graphTemp.nodes.push({
                 id: i,
                 label: element.code,
                 title: JSON.stringify(temp, '', 2),
@@ -169,7 +169,7 @@ function FindPerson() {
                   Dedication: element.dedication,
                   Role: element.role
                 };
-                 graphTemp.edges.push({
+                graphTemp.edges.push({
                   from: 1,
                   to: i,
                   label: 'COVER',
@@ -186,7 +186,7 @@ function FindPerson() {
                 CreationDate: element.creationDate,
                 Status: element.status
               };
-               graphTemp.edges.push({
+              graphTemp.edges.push({
                 from: 1,
                 to: i,
                 label: 'CANDIDATE',
@@ -224,13 +224,12 @@ function FindPerson() {
     mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
     bgColor = 'info'
     borderRadius = 'lg'
-    coloredShadow =
-        'info' > <MDTypography variant = 'h6' color = 'white'>Find
-                     Person</MDTypography>
+    coloredShadow = 'info' > <MDTypography variant = 'h6' color = 'white'>Find
+    Person</MDTypography>
           </MDBox><MDBox pt = {3}>
         <form onSubmit = {handleSubmit}><MDBox>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Person code
-        </MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Person code<
+            /MDTypography>
                 <MDInput
                     id="personCode"
                     type="text"
@@ -246,9 +245,8 @@ function FindPerson() {
     bgColor = 'info'
     borderRadius = 'lg'
     coloredShadow = 'info' > <MDTypography variant = 'h6' color = 'white'>Person
-                                 Graph</MDTypography>
-                </MDBox>
-        <MDBox pt = {3}>< VisGraph
+    Graph</MDTypography>
+                </MDBox><MDBox pt = {3}>< VisGraph
     graph = {graph} options = {options} events = {events} getNetwork =
     {
       network => {
@@ -259,8 +257,7 @@ function FindPerson() {
         </MDBox > </Card>
           </Grid></Grid>
       </MDBox>
-        <Footer />
-        </DashboardLayout>
+        <Footer />< /DashboardLayout>
   );
 }
 

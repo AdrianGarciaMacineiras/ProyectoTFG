@@ -63,7 +63,7 @@ function FindPosition() {
   };
 
   const FindPosition = (positionCode) =>
-      fetch(`http://localhost:9080/position/${positionCode}`, {
+      fetch(`//${window.location.hostname}/position/${positionCode}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ function FindPosition() {
                 Dedication: element.dedication,
                 Role: element.role
               };
-               graphTemp.nodes.push({
+              graphTemp.nodes.push({
                 id: i,
                 label: element.assigned,
                 title: JSON.stringify(element.assigned, '', 2),
@@ -147,8 +147,8 @@ function FindPosition() {
               });
             })
 
-          setGraph(prev => graphTemp);
-        });
+            setGraph(prev => graphTemp);
+          });
 
   const handlePositionCode = (event) => {
     setForm({
@@ -176,12 +176,12 @@ function FindPosition() {
     mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
     bgColor = 'info'
     borderRadius = 'lg'
-    coloredShadow =
-        'info' > <MDTypography variant = 'h6' color = 'white'>Find
-                     Position</MDTypography>
+    coloredShadow = 'info' > <MDTypography variant = 'h6' color = 'white'>Find
+    Position</MDTypography>
           </MDBox><MDBox pt = {3}>
         <form onSubmit = {handleSubmit}><MDBox>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Position code</MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Position code<
+            /MDTypography>
                 <MDInput
                     id="positionCode"
                     type="text"
@@ -196,11 +196,10 @@ function FindPosition() {
     mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
     bgColor = 'info'
     borderRadius = 'lg'
-    coloredShadow = 'info' >
-        <MDTypography variant = 'h6' color = 'white'>Position
-            Graph</MDTypography>
-                </MDBox><MDBox pt = {3}><
-        VisGraph
+    coloredShadow =
+        'info' > <MDTypography variant = 'h6' color = 'white'>Position
+    Graph</MDTypography>
+                </MDBox><MDBox pt = {3}>< VisGraph
     graph = {graph} options = {options} events = {events} getNetwork =
     {
       network => {
@@ -208,13 +207,10 @@ function FindPosition() {
         //  parent component using this property
       }
     } />
-         </MDBox>
-         </Card>
-        </Grid>
-        </Grid>
+         </MDBox > </Card>
+        </Grid></Grid>
       </MDBox>
-        <Footer />
-      </DashboardLayout>
+        <Footer />< /DashboardLayout>
   );
 }
 

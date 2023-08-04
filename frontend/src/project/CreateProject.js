@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from "react";
+import 'react-datepicker/dist/react-datepicker.css';
+import '../network.css';
+
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
-import TreeItem from "@mui/lab/TreeItem";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { format } from 'date-fns';
-import "../network.css";
-import VisGraph from 'react-vis-graph-wrapper';
-import MDBox from "../components/MDBox";
-import MDTypography from "../components/MDTypography";
-import Footer from "../components/Footer";
-import MDButton from "../components/MDButton";
-import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import {Checkbox, FormControl, InputLabel, MenuItem, Select} from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
+import {format} from 'date-fns';
+import React, {useEffect, useState} from 'react';
+import DatePicker from 'react-datepicker';
+import VisGraph from 'react-vis-graph-wrapper';
+
+import Footer from '../components/Footer';
+import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import MDBox from '../components/MDBox';
+import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
+import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
-import { Checkbox, InputLabel, Select } from "@mui/material";
-import { MenuItem } from "@mui/material";
-import { FormControl } from '@mui/material';
-import Autocomplete from '@mui/material/Autocomplete';
 
 const CreateProject = () => {
   const [skillList, setSkillList] = useState([]);
@@ -67,14 +67,14 @@ const CreateProject = () => {
       improvedLayout: true
     },
     nodes: {
-      shape: "dot",
+      shape: 'dot',
       scaling: { min: 10, label: false }
     },
     edges: {
-      color: "#000000",
+      color: '#000000',
       smooth: {
         enabled: true,
-        type: "discrete",
+        type: 'discrete',
         roundness: 0.5
       }
     },
@@ -82,7 +82,7 @@ const CreateProject = () => {
       client: { color: { background: 'red' }, borderWidth: 3 },
       skills: { color: { background: 'green' }, borderWidth: 3 }
     },
-    height: "800px",
+    height: '800px',
     physics: {
       barnesHut: {
         gravitationalConstant: -11500,
@@ -115,11 +115,11 @@ const CreateProject = () => {
       return list;
     };
 
-    fetch(`http://localhost:9080/skills`, {
-      method: "GET",
+    fetch(`//${window.location.hostname}/skills`, {
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
     })
       .then(response => response.json())
@@ -128,11 +128,11 @@ const CreateProject = () => {
         setSkillList(skillsData);
       });
 
-    fetch(`http://localhost:9080/client`, {
-      method: "GET",
+    fetch(`//${window.location.hostname}/client`, {
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
     })
       .then(clients => clients.json())
@@ -271,11 +271,11 @@ const CreateProject = () => {
 
     const requestBody = JSON.stringify(form);
 
-    fetch("http://localhost:9080/project", {
-      method: "POST",
+    fetch(`//${window.location.hostname}/project`, {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       },
       body: requestBody,
     })
@@ -290,13 +290,13 @@ const CreateProject = () => {
         graphTemp.nodes.push({ id: i, label: response.name, title: JSON.stringify(temp, '', 2) });
 
         i++
-        graphTemp.nodes.push({ id: i, label: response.clientCode, title: JSON.stringify(response.clientCode, '', 2), groups: "client" });
-        graphTemp.edges.push({ from: 1, to: i, label: "FOR_CLIENT", title: response.clientCode });
+        graphTemp.nodes.push({ id: i, label: response.clientCode, title: JSON.stringify(response.clientCode, '', 2), groups: 'client' });
+        graphTemp.edges.push({ from: 1, to: i, label: 'FOR_CLIENT', title: response.clientCode });
 
         response.skills.forEach(element => {
           i++
-          graphTemp.nodes.push({ id: i, label: element, title: element, groups: "skills" });
-          graphTemp.edges.push({ from: 1, to: i, label: "REQUIRE", title: response.clientCode });
+          graphTemp.nodes.push({ id: i, label: element, title: element, groups: 'skills' });
+          graphTemp.edges.push({ from: 1, to: i, label: 'REQUIRE', title: response.clientCode });
         });
 
         setGraph(prev => graphTemp);
@@ -345,7 +345,7 @@ const CreateProject = () => {
                 coloredShadow=
                 'info' > <MDTypography variant='h6' color='white'>Create Project</MDTypography>
               </MDBox>
-              <form id="projectForm" onSubmit={handleSubmit}>
+              <form id='projectForm' onSubmit={handleSubmit}>
                 <MDBox pt={3}>
                   <Grid container spacing={6}>
                     <Grid item xs={6}>
@@ -354,7 +354,7 @@ const CreateProject = () => {
                       <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" />
 
                       <Grid item xs={6}>
-                        <MDTypography variant="h6" fontWeight="medium">
+                        <MDTypography variant='h6' fontWeight='medium'>
                           Client Name
                         </MDTypography>
                         <Autocomplete
@@ -405,7 +405,7 @@ const CreateProject = () => {
 
                     <Grid item xs={6}>
                       <MDTypography variant='h6' fontWeight='medium'>Domain</MDTypography>
-                      <MDInput type="text" value={form.domain} onChange={handleInputChange} name="domain" />
+                      <MDInput type='text' value={form.domain} onChange={handleInputChange} name='domain' />
 
                       <MDTypography variant='h6' fontWeight='medium'>Duration</MDTypography>
                       <MDInput type="text" value={form.duration} onChange={handleInputChange} name="duration" />
@@ -413,10 +413,10 @@ const CreateProject = () => {
                       <MDTypography variant='h6' fontWeight='medium'>Guard</MDTypography>
                       <FormControl fullWidth>
                         <InputLabel>Select an option</InputLabel>
-                        <Select name="guards" value={form.guards} onChange={handleInputChange}>
-                          <MenuItem value="PASSIVE">Passive</MenuItem>
+                        <Select name='guards' value={form.guards} onChange={handleInputChange}>
+                          <MenuItem value='PASSIVE'>Passive</MenuItem>
                           <MenuItem value="ACTIVE">Active</MenuItem>
-                          <MenuItem value="NONE">None</MenuItem>
+                          <MenuItem value='NONE'>None</MenuItem>
                           <MenuItem value="UNKNOWN">Unknown</MenuItem>
                         </Select>
                       </FormControl>
@@ -424,10 +424,10 @@ const CreateProject = () => {
                       <MDButton onClick={collapseAll}> Collapse all </MDButton>
                       <br />
                       <input
-                        type="text"
+                        type='text'
                         value={searchSkill}
                         onChange={(e) => setSearchSkill(e.target.value)}
-                        placeholder="Search"
+                        placeholder='Search'
                       />
                       <DataTreeView />
                       {selectedSkills &&

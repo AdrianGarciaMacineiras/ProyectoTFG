@@ -1,22 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TextField,
-  TablePagination
-} from '@mui/material';
-import MDBox from '../components/MDBox';
-import MDButton from '../components/MDButton';
-import DashboardNavbar from '../components/Navbars/DashboardNavbar';
-import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField} from '@mui/material';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import MDTypography from "../components/MDTypography";
+import React, {useEffect, useState} from 'react';
+
+import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import MDBox from '../components/MDBox';
+import MDButton from '../components/MDButton';
+import MDTypography from '../components/MDTypography';
+import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 
 const UpdateClient = () => {
   const [clientList, setClientList] = useState([]);
@@ -26,11 +17,11 @@ const UpdateClient = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
-    fetch("http://localhost:9080/client", {
-      method: "GET",
+    fetch(`//${window.location.hostname}/client`, {
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       },
     })
       .then((response) => response.json())
@@ -53,11 +44,11 @@ const UpdateClient = () => {
 
     event.preventDefault();
 
-    fetch(`http://localhost:9080/client/${updatedClientData.code}`, {
-      method: "PUT",
+    fetch(`//${window.location.hostname}/client/${updatedClientData.code}`, {
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       },
       body: JSON.stringify(updatedClientData),
     })
@@ -107,15 +98,15 @@ const UpdateClient = () => {
               {updatedClientData && (
                 <form onSubmit={handleSubmit}>
                   <TextField
-                    name="code"
-                    label="Code"
+                    name='code'
+                    label='Code'
                     value={updatedClientData.code}
                     onChange={handleChange}
                     disabled
                   />
                   <TextField
-                    name="name"
-                    label="Name"
+                    name='name'
+                    label='Name'
                     value={updatedClientData.name}
                     onChange={handleChange}
                   />
@@ -126,8 +117,8 @@ const UpdateClient = () => {
                     onChange={handleChange}
                   />
                   <TextField
-                    name="country"
-                    label="Country"
+                    name='country'
+                    label='Country'
                     value={updatedClientData.country}
                     onChange={handleChange}
                   />
@@ -139,18 +130,18 @@ const UpdateClient = () => {
                   <TableHead sx={{ display: "table-header-group" }}>
                     <TableRow>
                       <TableCell align="left">Code</TableCell>
-                      <TableCell align="left">Name</TableCell>
+                      <TableCell align='left'>Name</TableCell>
                       <TableCell align="left">Industry</TableCell>
-                      <TableCell align="left">Country</TableCell>
+                      <TableCell align='left'>Country</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {paginatedData.map((client) => (
                       <TableRow key={client.code} onClick={() => handleRowClick(client)}>
                         <TableCell align="left">{client.code}</TableCell>
-                        <TableCell align="left">{client.name}</TableCell>
+                        <TableCell align='left'>{client.name}</TableCell>
                         <TableCell align="left">{client.industry}</TableCell>
-                        <TableCell align="left">{client.country}</TableCell>
+                        <TableCell align='left'>{client.country}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

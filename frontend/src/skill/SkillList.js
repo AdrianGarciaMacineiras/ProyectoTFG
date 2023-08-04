@@ -1,26 +1,26 @@
-import { useEffect, useState, Fragment } from "react";
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
-import TreeItem from "@mui/lab/TreeItem";
+import {IconButton, Table, TableBody, TableCell, TableHead, TablePagination, TableRow} from '@mui/material';
+import Card from '@mui/material/Card';
 import Checkbox from '@mui/material/Checkbox';
 import Collapse from '@mui/material/Collapse';
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import VisGraph from 'react-vis-graph-wrapper';
-import MDBox from "../components/MDBox";
-import MDButton from "../components/MDButton";
-import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
-import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
+import {Fragment, useEffect, useState} from 'react';
+import VisGraph from 'react-vis-graph-wrapper';
+
+import Footer from '../components/Footer';
+import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import MDBox from '../components/MDBox';
+import MDButton from '../components/MDButton';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
-import Footer from "../components/Footer";
-import { Table, TableHead, TableBody, TableRow, TableCell, IconButton, TablePagination } from '@mui/material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 
 function SkillList() {
-
   const [skillList, setSkillList] = useState([]);
 
   const [selected, setSelected] = useState([]);
@@ -34,38 +34,23 @@ function SkillList() {
 
   var auxList = [];
 
-  const graphTemp = {
-    nodes: [],
-    edges: []
-  };
+  const graphTemp = {nodes: [], edges: []};
 
-  const [graph, setGraph] = useState({
-    nodes: [],
-    edges: []
-  });
+  const [graph, setGraph] = useState({nodes: [], edges: []});
 
   const [aux, setAux] = useState([]);
 
   const options = {
-    layout: {
-      improvedLayout: true
-    },
-    nodes: {
-      shape: "dot",
-      scaling: { min: 10, label: false }
-    },
+    layout: {improvedLayout: true},
+    nodes: {shape: 'dot', scaling: {min: 10, label: false}},
     edges: {
-      color: "#000000",
-      smooth: {
-        enabled: true,
-        type: "discrete",
-        roundness: 0.5
-      }
+      color: '#000000',
+      smooth: {enabled: true, type: 'discrete', roundness: 0.5}
     },
     groups: {
-      mainSkill: { color: { background: 'red' }, borderWidth: 3 },
+      mainSkill: {color: {background: 'red'}, borderWidth: 3},
     },
-    height: "800px",
+    height: '800px',
     physics: {
       barnesHut: {
         gravitationalConstant: -11500,
@@ -79,8 +64,8 @@ function SkillList() {
   };
 
   const events = {
-    select: function (event) {
-      var { nodes, edges } = event;
+    select: function(event) {
+      var {nodes, edges} = event;
     }
   };
 
@@ -89,36 +74,36 @@ function SkillList() {
     if (event.target.checked) {
       setSelected((prevSelected) => [...prevSelected, '"' + nodeId + '"']);
     } else {
-      setSelected((prevSelected) => prevSelected.filter((item) => item !== '"' + nodeId + '"'));
+      setSelected(
+          (prevSelected) =>
+              prevSelected.filter((item) => item !== '"' + nodeId + '"'));
     }
   };
 
   const getTreeItemsFromData = (treeItems, searchValue) => {
     const filteredItems = treeItems.filter((treeItemData) => {
       const isMatched =
-        treeItemData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        getTreeItemsFromData(treeItemData.children, searchValue).length > 0;
+          treeItemData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+          getTreeItemsFromData(treeItemData.children, searchValue).length > 0;
 
       return isMatched;
     });
 
     return filteredItems.map(treeItemData => {
       const isMatched =
-        treeItemData.name.toLowerCase().includes(searchValue.toLowerCase());
+          treeItemData.name.toLowerCase().includes(searchValue.toLowerCase());
 
       const isSelected = selected.includes('"' + treeItemData.nodeId + '"');
 
       if (isMatched) {
         return (
           <TreeItem
-            key={treeItemData.nodeId}
-            nodeId={treeItemData.nodeId}
-            label={
-              <>
-                <Checkbox
+        key = {treeItemData.nodeId} nodeId = {treeItemData.nodeId} label = {
+          <>< Checkbox
                   checked={isSelected}
                   onChange={handleCheckboxChange}
-                  value={treeItemData.nodeId}
+                  value={
+          treeItemData.nodeId}
                 />
                 {treeItemData.name}
               </>
@@ -147,7 +132,8 @@ function SkillList() {
   const DataTreeView = () => {
     return (
       <TreeView
-        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultCollapseIcon={<ExpandMoreIcon />
+      }
         defaultExpandIcon={<ChevronRightIcon />}
       >
         {getTreeItemsFromData(skillList, searchSkill)}
@@ -171,7 +157,7 @@ function SkillList() {
     const paginatedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
     return (
-      <>
+      <Fragment>
         <Table>
           <TableHead sx={{ display: "table-header-group" }}>
             <TableRow>
@@ -194,37 +180,39 @@ function SkillList() {
         </Table>
 
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25, 50]} 
-          component="div"
+    rowsPerPageOptions = {[5, 10, 25, 50]} component = 'div'
           count={data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+          onRowsPerPageChange={
+      handleChangeRowsPerPage}
         />
-      </>
+      </Fragment>
     );
   };
 
 
 
-  const DataPerson = ({ row }) => {
+  const DataPerson = ({row}) => {
     const [open, setOpen] = useState(false);
 
     return (
       <Fragment>
-        <TableRow sx={{ '& > *': { borderBottom: 'unset' } }} key={row.index}>
+        <TableRow sx={
+      { '& > *': {borderBottom: 'unset'} }} key={row.index}>
           <TableCell>
             <IconButton
-              aria-label="expand row"
-              size="small"
-              onClick={() => setOpen(!open)}
-              style={{ width: "5%" }}
+    aria - label = 'expand row'
+    size = 'small'
+                          onClick={() => setOpen(!open)}
+                          style={{
+      width: '5%' }}
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell scope="row">{row.Name}</TableCell>
+          <TableCell scope='row'>{row.Name}</TableCell>
           <TableCell>{row.Surname}</TableCell>
           <TableCell>{row.Email}</TableCell>
           <TableCell>{row.Title}</TableCell>
@@ -233,10 +221,13 @@ function SkillList() {
           <TableCell>{row.BirthDate}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-              <MDBox sx={{ margin: 1 }}>
-                <NestedTableComponent data={row.Knows} />
+          <TableCell style={
+      { paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+            <Collapse in={open} timeout='auto' unmountOnExit>
+              <MDBox sx={{
+      margin: 1 }}>
+                <NestedTableComponent data={
+      row.Knows} />
               </MDBox>
             </Collapse>
           </TableCell>
@@ -245,7 +236,7 @@ function SkillList() {
     );
   };
 
-  function TableComponent({ data }) {
+  function TableComponent({data}) {
     const [open, setOpen] = useState(false);
 
     const [page, setPage] = useState(0);
@@ -260,17 +251,20 @@ function SkillList() {
       setPage(0);
     };
 
-    const paginatedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    const paginatedData =
+        data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
     return (
       <>
-        <Table sx={{ minWidth: 650 }}>
-          <TableHead sx={{ display: "table-header-group" }}>
+        <Table sx={{
+      minWidth: 650 }}>
+          <TableHead sx={{
+      display: 'table-header-group' }}>
             <TableRow>
-              <TableCell width="100" component="th" scope="row">
+              <TableCell width='100' component='th' scope='row'>
                 <IconButton
-                  aria-label="expand row"
-                  size="small"
+    aria - label = 'expand row'
+    size = 'small'
                   onClick={() => setOpen(!open)}
                 >
                   {open ? <KeyboardDoubleArrowUpIcon /> : <KeyboardDoubleArrowDownIcon />}
@@ -288,12 +282,11 @@ function SkillList() {
           <TableBody>
             {paginatedData.map((row, index) => (
               <DataPerson key={index} row={row} />
-            ))}
-          </TableBody>
-        </Table>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25, 50]}
-          component="div"
+            ))
+  }
+  </TableBody>
+        </Table>< TablePagination
+  rowsPerPageOptions = {[5, 10, 25, 50]} component = 'div'
           count={data.length}
           rowsPerPage={rowsPerPage}
           page={page}
@@ -302,83 +295,112 @@ function SkillList() {
         />
       </>
     );
-  }
+}
 
-  const handleClick = () => {
-    setToggled(!isToggled)
-    fetch(`http://localhost:9080/people/skills?skillList=${selected}`, {
-      method: "GET", headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      }
-    })
-      .then(response => { return response.json() })
-      .then(data => {
-        const tableData = data.map((element) => ({
-          Name: element.name,
-          Surname: element.surname,
-          Email: element.email,
-          Title: element.title,
-          EmployeeId: element.employeeId,
-          FriendlyName: element.friendlyName,
-          BirthDate: element.birthDate,
-          Knows: element.knows.map((knows) => ({
-            Code: knows.code,
-            Primary: knows.primary?.toString(),
-            Experience: knows.experience,
-            Level: knows.level
-          }))
-        }));
-        setTableData(tableData);
-        var i = 1;
-        var j = 2;
-        data.forEach(element => {
-          var temp = {
-            Code: element.code, Name: element.name, Surname: element.surname, Email: element.email, EmployeeId: element.employeeId,
-            FriendlyName: element.friendlyName, Title: element.title, BirthDate: element.birthDate
-          }
-          graphTemp.nodes.push({ id: i, label: element.name + ' ' + element.surname, title: JSON.stringify(temp, '', 2) });
-          element.knows.forEach(knows => {
-            /*const foundElement = graphTemp.nodes.find(node => node.label === knows.name);*/
-            var temp = { Code: knows.code, Primary: knows.primary, Experience: knows.experience, Level: knows.level }
-            /* if(foundElement !== undefined && foundElement !== null){
-               graphTemp.edges.push({from:i, to:foundElement.id, label: "KNOWS", title: JSON.stringify(temp,'',2) });
-             } else {*/
-            graphTemp.nodes.push({ id: j, label: knows.name, title: knows.name });
-            graphTemp.edges.push({ from: i, to: j, label: "KNOWS", title: JSON.stringify(temp, '', 2) });
-            ///}
-            j++
+const handleClick =
+    () => {
+      setToggled(!isToggled)
+      fetch(
+          `//${window.location.hostname}/people/skills?skillList=${selected}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            }
           })
-          i = j++;
-        })
-        setGraph(prev => graphTemp);
-      });
-  }
-
-  useEffect(() => {
-    const recursive = (dataList) => {
-      var list = [];
-      dataList.forEach(data => {
-        list.push({ nodeId: data.code, name: data.name, children: recursive(data.subSkills) })
-      });
-      return list;
+          .then(response => {return response.json()})
+          .then(data => {
+            const tableData = data.map(
+                (element) => ({
+                  Name: element.name,
+                  Surname: element.surname,
+                  Email: element.email,
+                  Title: element.title,
+                  EmployeeId: element.employeeId,
+                  FriendlyName: element.friendlyName,
+                  BirthDate: element.birthDate,
+                  Knows: element.knows.map((knows) => ({
+                                             Code: knows.code,
+                                             Primary: knows.primary?.toString(),
+                                             Experience: knows.experience,
+                                             Level: knows.level
+                                           }))
+                }));
+            setTableData(tableData);
+            var i = 1;
+            var j = 2;
+            data.forEach(element => {
+              var temp = {
+                Code: element.code,
+                Name: element.name,
+                Surname: element.surname,
+                Email: element.email,
+                EmployeeId: element.employeeId,
+                FriendlyName: element.friendlyName,
+                Title: element.title,
+                BirthDate: element.birthDate
+              };
+              graphTemp.nodes.push({
+                id: i,
+                label: element.name + ' ' + element.surname,
+                title: JSON.stringify(temp, '', 2)
+              });
+              element.knows.forEach(knows => {
+                /*const foundElement = graphTemp.nodes.find(node => node.label
+                 * === knows.name);*/
+                var temp = {
+                  Code: knows.code,
+                  Primary: knows.primary,
+                  Experience: knows.experience,
+                  Level: knows.level
+                } /* if(foundElement !== undefined && foundElement !== null){
+                     graphTemp.edges.push({from:i, to:foundElement.id, label:
+                   "KNOWS", title: JSON.stringify(temp,'',2) }); } else {*/
+                           graphTemp.nodes.push(
+                               {id: j, label: knows.name, title: knows.name});
+                graphTemp.edges.push({
+                  from: i,
+                  to: j,
+                  label: 'KNOWS',
+                  title: JSON.stringify(temp, '', 2)
+                });
+                ///}
+                j++
+              })
+              i = j++;
+            })
+            setGraph(prev => graphTemp);
+          });
     }
 
-    fetch(`http://localhost:9080/skills`, {
-      method: "GET", headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
+useEffect(() => {
+  const recursive =
+      (dataList) => {
+        var list = [];
+        dataList.forEach(data => {list.push({
+                           nodeId: data.code,
+                           name: data.name,
+                           children: recursive(data.subSkills)
+                         })});
+        return list;
       }
-    })
-      .then(response => { return response.json() })
-      .then(response => {
-        setSkillList(recursive(response));
-      });
-  }, [])
 
-  const handleShowTable = () => {
-    setShowTable((prevShowTable) => !prevShowTable);
-  };
+                    fetch(`//${window.location.hostname}/skills`, {
+                      method: 'GET',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                      }
+                    })
+                        .then(response => {return response.json()})
+                        .then(response => {
+                          setSkillList(recursive(response));
+                        });
+}, [])
+
+const handleShowTable = () => {
+  setShowTable((prevShowTable) => !prevShowTable);
+};
 
 
   return (
@@ -392,13 +414,13 @@ function SkillList() {
                 <MDButton onClick={collapseAll}> Collapse all </MDButton>
                 <br />
                 <input
-                  type="text"
+  type = 'text'
                   value={searchSkill}
                   onChange={(e) => setSearchSkill(e.target.value)}
-                  placeholder="Search"
+                  placeholder='Search'
                 />
                 <DataTreeView />
-                {(selected && selected.length > 0) && <MDButton color="black" onClick={handleClick}> Submit </MDButton>}
+                {(selected && selected.length > 0) && <MDButton color='black' onClick={handleClick}> Submit </MDButton>}
 
                 {isToggled && <MDButton onClick={handleShowTable}>
                   {showTable ? "Show Graph" : "Show Table"}
@@ -409,9 +431,11 @@ function SkillList() {
                   graph={graph}
                   options={options}
                   events={events}
-                  getNetwork={network => {
-                    //  if you want access to vis.js network api you can set the state in a parent component using this property
-                  }}
+                  getNetwork={
+  network => {
+    //  if you want access to vis.js network api you can set the state in a
+    //  parent component using this property
+  }}
                 />) : (
                   <TableComponent data={tableData} />
                 )

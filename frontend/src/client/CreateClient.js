@@ -84,7 +84,7 @@ const ClientForm = () => {
 
     const requestBody = JSON.stringify(form);
 
-    fetch("http://localhost:9080/client", {
+    fetch(`//${window.location.hostname}/client`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

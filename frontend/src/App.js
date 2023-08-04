@@ -16,7 +16,7 @@ import Configurator from './components/Configurator';
 // Material Dashboard 2 React example components
 import Sidenav from './components/Sidenav';
 // Material Dashboard 2 React contexts
-import {setMiniSidenav, setOpenConfigurator, useMaterialUIController} from './context/index';
+import {setMiniSidenav, useMaterialUIController} from './context/index';
 // Material Dashboard 2 React routes
 import routes from './routes';
 
@@ -27,7 +27,6 @@ function App() {
     miniSidenav,
     direction,
     layout,
-    openConfigurator,
     sidenavColor
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
