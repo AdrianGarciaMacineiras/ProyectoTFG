@@ -63,13 +63,14 @@ function FindPosition() {
   };
 
   const FindPosition = (positionCode) =>
-      fetch(`//${window.location.hostname}/position/${positionCode}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      })
+      fetch(
+          `http://${window.location.hostname}:9080/position/${positionCode}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            }
+          })
           .then(response => {return response.json()})
           .then(response => {
             setAux(response);

@@ -206,7 +206,7 @@ function CreatePosition() {
           return list;
         };
 
-        fetch(`//${window.location.hostname}/skills`, {
+        fetch(`http://${window.location.hostname}:9080/skills`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -219,7 +219,7 @@ function CreatePosition() {
               setSkillList(skillsData);
             });
 
-        fetch(`//${window.location.hostname}/project`, {
+        fetch(`http://${window.location.hostname}:9080/project`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -231,7 +231,7 @@ function CreatePosition() {
               setProjectList(response);
             });
 
-        fetch(`//${window.location.hostname}/people`, {
+        fetch(`http://${window.location.hostname}:9080/people`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -243,7 +243,7 @@ function CreatePosition() {
               setPeopleList(data);
             });
 
-        fetch(`//${window.location.hostname}/office`, {
+        fetch(`http://${window.location.hostname}:9080/office`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -259,7 +259,7 @@ function CreatePosition() {
   const createPosition = (event) => {
         const requestBody = JSON.stringify(form);
 
-        fetch(`//${window.location.hostname}/position`, {
+        fetch(`http://${window.location.hostname}:9080/position`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

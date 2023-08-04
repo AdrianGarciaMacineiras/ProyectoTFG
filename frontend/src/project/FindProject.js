@@ -55,7 +55,7 @@ function FindProject() {
   };
 
   const findProject = (projectCode) =>
-      fetch(`//${window.location.hostname}/project/${projectCode}`, {
+      fetch(`http://${window.location.hostname}:9080/project/${projectCode}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

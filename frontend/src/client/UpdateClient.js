@@ -17,7 +17,7 @@ const UpdateClient = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
-    fetch(`//${window.location.hostname}/client`, {
+    fetch(`http://${window.location.hostname}:9080/client`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ const UpdateClient = () => {
 
     event.preventDefault();
 
-    fetch(`//${window.location.hostname}/client/${updatedClientData.code}`, {
+    fetch(`http://${window.location.hostname}:9080/client/${updatedClientData.code}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

@@ -203,7 +203,7 @@ function SkillList() {
       { '& > *': {borderBottom: 'unset'} }} key={row.index}>
           <TableCell>
             <IconButton
-    aria-label = 'expand row'
+    aria - label = 'expand row'
     size = 'small'
                           onClick={() => setOpen(!open)}
                           style={{
@@ -263,7 +263,7 @@ function SkillList() {
             <TableRow>
               <TableCell width='100' component='th' scope='row'>
                 <IconButton
-    aria-label = 'expand row'
+    aria - label = 'expand row'
     size = 'small'
                   onClick={() => setOpen(!open)}
                 >
@@ -301,7 +301,9 @@ const handleClick =
     () => {
       setToggled(!isToggled)
       fetch(
-          `//${window.location.hostname}/people/skills?skillList=${selected}`, {
+          `http://${window.location.hostname}:9080/people/skills?skillList=${
+              selected}`,
+          {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -385,7 +387,7 @@ useEffect(() => {
         return list;
       }
 
-                    fetch(`//${window.location.hostname}/skills`, {
+                    fetch(`http://${window.location.hostname}:9080/skills`, {
                       method: 'GET',
                       headers: {
                         'Content-Type': 'application/json',

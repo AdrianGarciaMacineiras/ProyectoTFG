@@ -53,35 +53,41 @@ function FindSkill() {
       selectConnectedEdges: true
     }
   };
-    
-    const events = {
-      select: function(event) {
-        var { nodes, edges } = event;
-      }
-    };
 
-    const FindSkill = (skillCode) =>
-	    fetch(`//${window.location.hostname}/skills/${skillCode}`, {method: "GET", headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-          }})
-        .then(response => {return response.json()})
-        .then(response => {
-          setAux(response);
-          var i = 1
-          var temp = {Name: response.name, Code: response.code}
-          graphTemp.nodes.push({id:i, label: response.name, title: JSON.stringify(temp,'',2), group:"mainSkill"});
-          response.subSkills?.forEach(element => {
-            i++;
-            var idHijo = i;
-            var temp = {Name: element.name, Code: element.code}
-            graphTemp.nodes.push({id:idHijo, label: element.name, title: JSON.stringify(temp,'',2)});
-            graphTemp.edges.push({from:1, to: i, label: "REQUIRE"})
-            element.subSkills.forEach(subskill => {
+  const events = {
+    select: function(event) {
+      var {nodes, edges} = event;
+    }
+  };
+
+  const FindSkill = (skillCode) =>
+      fetch(`http://${window.location.hostname}:9080/skills/${skillCode}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      })
+          .then(response => {return response.json()})
+          .then(response => {
+            setAux(response);
+            var i = 1
+            var temp = {
+              Name: response.name,
+              Code: response.code
+            } graphTemp.nodes.push({
+              id: i,
+              label: response.name,
+              title: JSON.stringify(temp, '', 2),
+              group: 'mainSkill'
+            });
+            response.subSkills?.forEach(element => {
               i++;
               var idHijo = i;
-              var temp = {Name: element.name, Code: element.code};
-              graphTemp.nodes.push({
+              var temp = {
+                Name: element.name,
+                Code: element.code
+              } graphTemp.nodes.push({
                 id: idHijo,
                 label: element.name,
                 title: JSON.stringify(temp, '', 2)
@@ -89,18 +95,28 @@ function FindSkill() {
               graphTemp.edges.push({from: 1, to: i, label: 'REQUIRE'})
               element.subSkills.forEach(subskill => {
                 i++;
-                var temp = {Name: subskill.name, Code: subskill.code};
+                var idHijo = i;
+                var temp = {Name: element.name, Code: element.code};
                 graphTemp.nodes.push({
-                  id: i,
-                  label: subskill.name,
+                  id: idHijo,
+                  label: element.name,
                   title: JSON.stringify(temp, '', 2)
                 });
-                graphTemp.edges.push({from: idHijo, to: i, label: 'REQUIRE'})
-              })
+                graphTemp.edges.push({from: 1, to: i, label: 'REQUIRE'})
+                element.subSkills.forEach(subskill => {
+                  i++;
+                  var temp = {Name: subskill.name, Code: subskill.code};
+                  graphTemp.nodes.push({
+                    id: i,
+                    label: subskill.name,
+                    title: JSON.stringify(temp, '', 2)
+                  });
+                  graphTemp.edges.push({from: idHijo, to: i, label: 'REQUIRE'})
+                })
+              });
+              setGraph(prev => graphTemp);
             });
-            setGraph(prev => graphTemp);
           });
-        });
   const handleSkillCode = (event) => {
     setForm({
       ...form,
@@ -124,44 +140,46 @@ function FindSkill() {
                   <Grid item xs={12}>
                       <Card>
                           <MDBox
-    mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
-    bgColor = 'info'
-    borderRadius = 'lg'
-    coloredShadow = 'info' > <MDTypography variant = 'h6' color = 'white'>Find
-    Skill</MDTypography>
+  mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
+  bgColor = 'info'
+  borderRadius = 'lg'
+  coloredShadow = 'info' > <MDTypography variant = 'h6' color = 'white'>Find
+  Skill</MDTypography>
                           </MDBox><MDBox pt = {3}>
-        <form onSubmit = {handleSubmit}><MDBox>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Skill code</MDTypography>
+      <form onSubmit = {handleSubmit}><MDBox>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>Skill code<
+          /MDTypography>
                 <MDInput
                     id="skillCode"
                     type="text"
                     value = {form.skillCode}
                     onChange = {handleSkillCode}/>
-        </MDBox>
+      </MDBox>
             <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
-        </form>
+      </form>
                           </MDBox>
-        </Card>
+      </Card>
                   </Grid><Grid item xs = {12}><Card>< MDBox
-    mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
-    bgColor = 'info'
-    borderRadius = 'lg'
-    coloredShadow = 'info' > <MDTypography variant = 'h6' color = 'white'>Skill
-    Graph</MDTypography>
+  mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
+  bgColor = 'info'
+  borderRadius = 'lg'
+  coloredShadow = 'info' > <MDTypography variant = 'h6' color = 'white'>Skill
+  Graph</MDTypography>
                           </MDBox><MDBox pt = {3}><
-        VisGraph
-    graph = {graph} options = {options} events = {events} getNetwork =
-    {
-      network => {
-        //  if you want access to vis.js network api you can set the state in a
-        //  parent component using this property
-      }
-    } />
+      VisGraph
+  graph = {graph} options = {options} events = {events} getNetwork =
+  {
+    network => {
+      //  if you want access to vis.js network api you can set the state in a
+      //  parent component using this property
+    }
+  } />
 
                           </MDBox > </Card>
                   </Grid>
-        </Grid>
-          </MDBox><Footer /></DashboardLayout>
+      </Grid>
+          </MDBox><Footer /><
+      /DashboardLayout>
   );
 }
 
