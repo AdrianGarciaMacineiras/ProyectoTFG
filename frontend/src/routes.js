@@ -3,14 +3,22 @@ import Icon from '@mui/material/Icon';
 import CreateClient from './client/CreateClient'
 import FindClient from './client/FindClient'
 import UpdateClient from './client/UpdateClient'
+
 import CreatePerson from './person/CreatePerson'
 import FindPerson from './person/FindPerson'
+import UpdatePerson from './person/UpdatePerson'
+import UpdatePersonForm from './person/UpdatePersonForm'
+
 import CreatePosition from './position/CreatePosition'
 import FindPosition from './position/FindPosition'
+
 import CreateProject from './project/CreateProject'
 import FindProject from './project/FindProject'
+
 import FindSkill from './skill/FindSkill'
+
 import SkillList from './skill/SkillList'
+
 import CreateTeam from './team/CreateTeam'
 import FindTeam from './team/FindTeam'
 
@@ -36,6 +44,22 @@ const routes = [
         icon: <Icon fontSize='small'>assignment</Icon>,
         route: '/createPerson',
         component: <CreatePerson />,
+      },
+      {
+        type: 'collapse',
+        name: 'Update Person',
+        key: 'updatePerson',
+        icon: <Icon fontSize='small'>assignment</Icon>,
+        route: '/updatePerson',
+        component: <UpdatePerson />,
+      },
+      {
+        type: 'hidden',
+        name: 'Update Person Form',
+        key: 'updatePersonForm',
+        icon: <Icon fontSize='small'>assignment</Icon>,
+        route: '/updatePersonForm/:code',
+        component: <UpdatePersonForm />,
       }
     ]
   },

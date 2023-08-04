@@ -93,7 +93,7 @@ function FindSkill() {
           var i = 1
           var temp = {Name: response.name, Code: response.code}
           graphTemp.nodes.push({id:i, label: response.name, title: JSON.stringify(temp,'',2), group:"mainSkill"});
-          response.subSkills.forEach(element => {
+          response.subSkills?.forEach(element => {
             i++;
             var idHijo = i;
             var temp = {Name: element.name, Code: element.code}

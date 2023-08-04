@@ -24,14 +24,14 @@ import ListItemText from '@mui/material/ListItemText';
 // Material Dashboard 2 React components
 import MDBox from '../../components/MDBox';
 // Custom styles for the SidenavCollapse
-import {collapseIcon, collapseIconBox, collapseItem, collapseText,} from './styles/sidenavCollapse';
+import { collapseIcon, collapseIconBox, collapseItem, collapseText, } from './styles/sidenavCollapse';
 // Material Dashboard 2 React context
-import {useMaterialUIController} from '../../context';
+import { useMaterialUIController } from '../../context';
 import PropTypes from 'prop-types';
-import {NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { List } from '@mui/material';
 import React from 'react';
-function SidenavCollapse({icon, name, active, children, ...rest}) {
+function SidenavCollapse({ icon, name, active, children, ...rest }) {
   const [controller] = useMaterialUIController();
   const {
     miniSidenav,
@@ -40,6 +40,8 @@ function SidenavCollapse({icon, name, active, children, ...rest}) {
     darkMode,
     sidenavColor
   } = controller;
+
+  const filteredChildren = children.filter(item => item.type !== 'hidden');
 
   return (
     <ListItem component='li'>
@@ -56,12 +58,12 @@ function SidenavCollapse({icon, name, active, children, ...rest}) {
         }
       >
         <ListItemIcon
-            sx = {(theme) => collapseIconBox(
-            theme, {transparentSidenav, whiteSidenav, darkMode, active})} > {typeof icon === 'string' ? (
-            <Icon sx={(theme) => collapseIcon(theme, { active })}>{icon}</Icon>
-          ) : (
-            icon
-          )}
+          sx={(theme) => collapseIconBox(
+            theme, { transparentSidenav, whiteSidenav, darkMode, active })} > {typeof icon === 'string' ? (
+              <Icon sx={(theme) => collapseIcon(theme, { active })}>{icon}</Icon>
+            ) : (
+              icon
+            )}
         </ListItemIcon>
 
         <ListItemText
@@ -75,34 +77,34 @@ function SidenavCollapse({icon, name, active, children, ...rest}) {
             })
           }
         />
-         <ListItem component='li' >
+        <ListItem component='li' >
           <List>
-            {children.map(item => 
-                <ListItem component='li' >
-                    <NavLink key={item.key} to={item.route}>
-                    <MDBox
-                        {...rest}
-                        sx={(theme) =>
-                          collapseItem(theme, {
-                            active,
-                            transparentSidenav,
-                            whiteSidenav,
-                            darkMode,
-                            sidenavColor,
-                          })
-                        }
-                      >
-                      <ListItemText primary={item.name} sx={(theme) =>
-                        collapseText(theme, {
-                          miniSidenav,
-                          transparentSidenav,
-                          whiteSidenav,
-                          active,
-                        })}></ListItemText>
-                    </MDBox>
-                  </NavLink>
-                </ListItem>
-)
+            {filteredChildren.map(item => 
+              <ListItem component='li' >
+                <NavLink key={item.key} to={item.route}>
+                  <MDBox
+                    {...rest}
+                    sx={(theme) =>
+                      collapseItem(theme, {
+                        active,
+                        transparentSidenav,
+                        whiteSidenav,
+                        darkMode,
+                        sidenavColor,
+                      })
+                    }
+                  >
+                    <ListItemText primary={item.name} sx={(theme) =>
+                      collapseText(theme, {
+                        miniSidenav,
+                        transparentSidenav,
+                        whiteSidenav,
+                        active,
+                      })}></ListItemText>
+                  </MDBox>
+                </NavLink>
+              </ListItem>
+            )
             }
           </List>
         </ListItem>

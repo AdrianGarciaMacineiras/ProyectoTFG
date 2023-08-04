@@ -89,7 +89,7 @@ function FindProject() {
             graphTemp.nodes.push({id:i, label: response.clientCode , title: JSON.stringify(response.clientCode,'',2), groups:"client"});
             graphTemp.edges.push({from:1, to: i, label:"FOR_CLIENT", title: response.clientCode});
 
-            response.skills.forEach(element => {
+            response.skills?.forEach(element => {
               i++
               graphTemp.nodes.push({id:i, label: element , title: element, groups:"skills"});
               graphTemp.edges.push({from:1, to: i, label:"REQUIRE", title: response.clientCode});

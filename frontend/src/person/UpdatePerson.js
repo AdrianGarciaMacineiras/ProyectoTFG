@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import {
   Table,
   TableBody,
@@ -8,22 +8,39 @@ import {
   TableRow,
   Paper,
   TextField,
-  TablePagination
+  TablePagination,
+  IconButton
 } from '@mui/material';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import MDBox from '../components/MDBox';
-import MDButton from '../components/MDButton';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
+import Collapse from '@mui/material/Collapse';
 import MDTypography from "../components/MDTypography";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import PropTypes from 'prop-types';
+import NestedKnows from './NestedKnows';
+import NestedWorkWith from './NestedWorkWith';
+import NestedInterest from './NestedInterest';
+import NestedMaster from './NestedMaster';
+import NestedCertificate from './NestedCertificate';
+import { useNavigate } from 'react-router-dom';
 
-const UpdateClient = () => {
+
+const UpdatePerson = () => {
+
   const [peopleList, setPeopleList] = useState([]);
-  const [updatedPeopleData, setUpdatedPeopleData] = useState(null);
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
+
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:9080/people", {
@@ -34,22 +51,24 @@ const UpdateClient = () => {
       },
     })
       .then((response) => response.json())
-      .then((data) => setPeopleList(data));
+      .then((data) => setPeopleList(
+        data.map((person) => ({
+          ...person,
+          open: false,
+          tabValue: 0
+        }))
+      )
+      );
   }, []);
 
-  const handleRowClick = (people) => {
-    setUpdatedPeopleData(people);
+  const navigate = useNavigate();
+
+  const handleRowClick = (row) => {
+    navigate(`/updatePersonForm/${row.employeeId}`); 
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setUpdatedPeopleData((prevClientData) => ({
-      ...prevClientData,
-      [name]: value,
-    }));
-  };
 
-  const handleSubmit = (event) => {
+  /*const handleSubmit = (event) => {
 
     event.preventDefault();
 
@@ -68,26 +87,144 @@ const UpdateClient = () => {
             people.code === updatedPeople.code ? updatedPeople : people
           )
         );
-
-        setUpdatedPeopleData(null);
       })
       .catch((error) => {
         console.error('Error updating people:', error);
       });
+  };*/
+
+  function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <MDBox sx={{ p: 3 }}>
+            <MDTypography>{children}</MDTypography>
+          </MDBox>
+        )}
+      </div>
+    );
+  }
+
+  CustomTabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
   };
 
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+
+  const handleChangeTab = (event, newValue, row) => {
+    setPeopleList((prevPeopleList) =>
+      prevPeopleList.map((person) =>
+        person.code === row.code ? { ...person, tabValue: newValue } : person
+      )
+    );
+  };
+
+
+  const DataPerson = ({ row }) => {
+    const isOpen = row.open;
+    const valor = row.tabValue;
+
+
+    return (
+      <Fragment>
+        <TableRow sx={{ '& > *': { borderBottom: 'unset' } }} key={row.index} onClick={() => handleRowClick(row)}>
+          <TableCell>
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => {
+                setPeopleList((prevPeopleList) =>
+                  prevPeopleList.map((person) =>
+                    person.code === row.code ? { ...person, open: !isOpen } : person
+                  )
+                );
+              }}
+              style={{ width: "5%" }}
+            >
+              {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          <TableCell align="left">{row.code}</TableCell>
+          <TableCell align="left">{row.name}</TableCell>
+          <TableCell align="left">{row.surname}</TableCell>
+          <TableCell align="left">{row.employeeId}</TableCell>
+          <TableCell align="left">{row.birthDate}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+            <Collapse in={isOpen} timeout="auto" unmountOnExit>
+              <MDBox sx={{ margin: 1 }}>
+                <MDBox sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                  <Tabs
+                    value={valor}
+                    onChange={(event, newValue) => handleChangeTab(event, newValue, row)}
+                    aria-label="basic tabs example"
+                  >
+                    <Tab label="Knows" {...a11yProps(0)} />
+                    <Tab label="WorkWith" {...a11yProps(1)} />
+                    <Tab label="Masters" {...a11yProps(2)} />
+                    <Tab label="Interests" {...a11yProps(3)} />
+                    <Tab label="Certificates" {...a11yProps(4)} />
+                  </Tabs>
+                </MDBox>
+                <CustomTabPanel value={valor} index={0}>
+                  <NestedKnows data={row.knows} />
+                </CustomTabPanel>
+                <CustomTabPanel value={valor} index={1}>
+                  <NestedWorkWith data={row.work_with} />
+                </CustomTabPanel>
+                <CustomTabPanel value={valor} index={2}>
+                  <NestedMaster data={row.master} />
+                </CustomTabPanel>
+                <CustomTabPanel value={valor} index={3}>
+                  <NestedInterest data={row.interest} />
+                </CustomTabPanel>
+                <CustomTabPanel value={valor} index={4}>
+                  <NestedCertificate data={row.certificates} />
+                </CustomTabPanel>
+              </MDBox>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+      </Fragment>
+    );
+  };
+
+  const [orderBy, setOrderBy] = useState('code'); 
+  const [sortDirection, setSortDirection] = useState('asc'); 
+
+  const handleSortChange = (column) => {
+    if (orderBy === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setOrderBy(column);
+      setSortDirection('asc');
+    }
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(parseInt(event.target.value, 50));
     setPage(0);
   };
-
-
-  const paginatedData = peopleList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <DashboardLayout>
@@ -102,57 +239,60 @@ const UpdateClient = () => {
                 borderRadius='lg'
                 coloredShadow=
                 'info' >
-                <MDTypography variant='h6' color='white'>Update Client</MDTypography>
+                <MDTypography variant='h6' color='white'>Update Person</MDTypography>
               </MDBox>
-              {updatedPeopleData && (
-                <form onSubmit={handleSubmit}>
-                  <TextField
-                    name="code"
-                    label="Code"
-                    value={updatedPeopleData.code}
-                    onChange={handleChange}
-                    disabled
-                  />
-                  <TextField
-                    name="name"
-                    label="Name"
-                    value={updatedPeopleData.name}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    name="industry"
-                    label="Industry"
-                    value={updatedPeopleData.industry}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    name="country"
-                    label="Country"
-                    value={updatedPeopleData.country}
-                    onChange={handleChange}
-                  />
-                  <MDButton variant="contained" color="primary" onClick={handleSubmit}>Update</MDButton>
-                </form>
-              )}
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead sx={{ display: "table-header-group" }}>
                     <TableRow>
-                      <TableCell align="left">Code</TableCell>
-                      <TableCell align="left">Name</TableCell>
-                      <TableCell align="left">Industry</TableCell>
-                      <TableCell align="left">Country</TableCell>
+                      <TableCell width="100" component="th" scope="row">
+                        <IconButton
+                          aria-label="expand row"
+                          size="small"
+                          onClick={() => setOpen(!open)}
+                        >
+                          {open ? <KeyboardDoubleArrowUpIcon /> : <KeyboardDoubleArrowDownIcon />}
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="left" onClick={() => handleSortChange('code')}>
+                        <strong>{orderBy === 'code' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+                        Code
+                      </TableCell>
+                      <TableCell align="left" onClick={() => handleSortChange('name')}>
+                        <strong>{orderBy === 'name' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+                        Name
+                      </TableCell>
+                      <TableCell align="left" onClick={() => handleSortChange('surname')}>
+                        <strong>{orderBy === 'surname' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+                        Surname
+                      </TableCell>
+                      <TableCell align="left" onClick={() => handleSortChange('employeeId')}>
+                        <strong>{orderBy === 'employeeId' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+                        EmployeeId
+                      </TableCell>
+                      <TableCell align="left" onClick={() => handleSortChange('birthDate')}>
+                        <strong>{orderBy === 'birthDate' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+                        Birth date
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {paginatedData.map((people) => (
-                      <TableRow key={people.code} onClick={() => handleRowClick(people)}>
-                        <TableCell align="left">{people.code}</TableCell>
-                        <TableCell align="left">{people.name}</TableCell>
-                        <TableCell align="left">{people.industry}</TableCell>
-                        <TableCell align="left">{people.country}</TableCell>
-                      </TableRow>
-                    ))}
+                    {peopleList
+                      .slice()
+                      .sort((a, b) => {
+                        const aValue = a[orderBy];
+                        const bValue = b[orderBy];
+
+                        if (sortDirection === 'asc') {
+                          return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+                        } else {
+                          return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+                        }
+                      })
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map((row, index) => (
+                        <DataPerson key={index} row={row} />
+                      ))}
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -173,4 +313,4 @@ const UpdateClient = () => {
   );
 };
 
-export default UpdateClient;
+export default UpdatePerson;

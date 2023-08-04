@@ -216,7 +216,7 @@ const CreateTeam = () => {
           var temp = {Code: response.code, Name: response.name, Description: response.description, Tags: response.tags}      
           graphTemp.nodes.push({id: i, label: response.name, title: JSON.stringify(temp, '', 2), group: "team"})  
           
-          response.members.forEach(element=>{
+          response.members?.forEach(element=>{
             i++
             var temp ={Code: element.people.code, Name:element.people.name, Surname:element.people.surname, Email:element.people.email, EmployeeId:element.people.employeeId,
                 FriendlyName:element.people.friendlyName, Title:element.people.title, BirthDate: element.people.birthDate}
@@ -224,12 +224,12 @@ const CreateTeam = () => {
               graphTemp.edges.push({from:i, to: 1, label: "MEMBER_OF", title: element.charge});
           });
           
-          /*response.strategics.forEach(element=>{
+          response.strategics?.forEach(element=>{
             i++
             var temp = {Name: element.name, Code: element.code}
             graphTemp.nodes.push({id:i, label: element.name, title: JSON.stringify(temp,'',2), group:"skills"});
             graphTemp.edges.push({from:1, to: i, label: "STRATEGIC"});
-          });*/
+          });
 
           setGraph(prev => graphTemp);
         })
