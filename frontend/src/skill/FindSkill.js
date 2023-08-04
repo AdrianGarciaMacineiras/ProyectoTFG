@@ -75,7 +75,8 @@ function FindSkill() {
             var temp = {
               Name: response.name,
               Code: response.code
-            } graphTemp.nodes.push({
+            };
+             graphTemp.nodes.push({
               id: i,
               label: response.name,
               title: JSON.stringify(temp, '', 2),
@@ -87,7 +88,8 @@ function FindSkill() {
               var temp = {
                 Name: element.name,
                 Code: element.code
-              } graphTemp.nodes.push({
+              };
+               graphTemp.nodes.push({
                 id: idHijo,
                 label: element.name,
                 title: JSON.stringify(temp, '', 2)
@@ -147,8 +149,7 @@ function FindSkill() {
   Skill</MDTypography>
                           </MDBox><MDBox pt = {3}>
       <form onSubmit = {handleSubmit}><MDBox>
-      <MDTypography variant = 'h6' fontWeight = 'medium'>Skill code<
-          /MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>Skill code</MDTypography>
                 <MDInput
                     id="skillCode"
                     type="text"
@@ -178,8 +179,7 @@ function FindSkill() {
                           </MDBox > </Card>
                   </Grid>
       </Grid>
-          </MDBox><Footer /><
-      /DashboardLayout>
+          </MDBox><Footer /></DashboardLayout>
   );
 }
 

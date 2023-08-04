@@ -188,7 +188,7 @@ const CreateTeam =
                 Name: response.name,
                 Description: response.description,
                 Tags: response.tags
-              } graphTemp.nodes.push({
+              }; graphTemp.nodes.push({
                 id: i,
                 label: response.name,
                 title: JSON.stringify(temp, '', 2),
@@ -196,7 +196,7 @@ const CreateTeam =
               })
 
               response.members?.forEach(element => {
-                i++ var temp = {
+                i++; var temp = {
                   Code: element.people.code,
                   Name: element.people.name,
                   Surname: element.people.surname,
@@ -205,7 +205,7 @@ const CreateTeam =
                   FriendlyName: element.people.friendlyName,
                   Title: element.people.title,
                   BirthDate: element.people.birthDate
-                } graphTemp.nodes.push({
+                }; graphTemp.nodes.push({
                   id: i,
                   label: element.people.name + ' ' + element.people.surname,
                   title: JSON.stringify(temp, '', 2),
@@ -220,10 +220,10 @@ const CreateTeam =
               });
 
               response.strategics?.forEach(element => {
-                i++ var temp = {
+                i++; var temp = {
                   Name: element.name,
                   Code: element.code
-                } graphTemp.nodes.push({
+                }; graphTemp.nodes.push({
                   id: i,
                   label: element.name,
                   title: JSON.stringify(temp, '', 2),
@@ -400,8 +400,7 @@ const CreateTeam =
               </MDBox></Card>
           </Grid>
     </Grid>
-      </MDBox><Footer /><
-    /DashboardLayout>
+      </MDBox><Footer /></DashboardLayout>
     );
 };
 

@@ -73,7 +73,7 @@ function FindTeam() {
               Name: response.name,
               Description: response.description,
               Tags: response.tags
-            } graphTemp.nodes.push({
+            }; graphTemp.nodes.push({
               id: i,
               label: response.name,
               title: JSON.stringify(temp, '', 2),
@@ -81,7 +81,7 @@ function FindTeam() {
             })
 
             response.members?.forEach(element => {
-              i++ var temp = {
+              i++; var temp = {
                 Code: element.people.code,
                 Name: element.people.name,
                 Surname: element.people.surname,
@@ -90,7 +90,7 @@ function FindTeam() {
                 FriendlyName: element.people.friendlyName,
                 Title: element.people.title,
                 BirthDate: element.people.birthDate
-              } graphTemp.nodes.push({
+              }; graphTemp.nodes.push({
                 id: i,
                 label: element.people.name + ' ' + element.people.surname,
                 title: JSON.stringify(temp, '', 2),
@@ -102,10 +102,10 @@ function FindTeam() {
             });
 
             response.strategics?.forEach(element => {
-              i++ var temp = {
+              i++; var temp = {
                 Name: element.name,
                 Code: element.code
-              } graphTemp.nodes.push({
+              }; graphTemp.nodes.push({
                 id: i,
                 label: element.name,
                 title: JSON.stringify(temp, '', 2),
@@ -145,8 +145,7 @@ function FindTeam() {
     Team</MDTypography>
                           </MDBox><MDBox pt = {3}>
         <form onSubmit = {handleSubmit}><MDBox>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Team code<
-            /MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Team code</MDTypography>
                                           <MDInput
                                             id="teamCode"
                                             type="text"
@@ -175,8 +174,7 @@ function FindTeam() {
                           </MDBox > </Card>
                   </Grid>
         </Grid>
-          </MDBox><Footer /><
-        /DashboardLayout>
+          </MDBox><Footer /></DashboardLayout>
   );
 }
 
