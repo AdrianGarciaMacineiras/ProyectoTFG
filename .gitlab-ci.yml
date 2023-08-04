@@ -26,7 +26,7 @@ build:
   - node
   script:
   - echo "Building..."
-  - ls
+  - ls frontend
   - mvn $MAVEN_REMOTE_OPTS verify -DskipTests
   - echo "POM_VERSION=$(mvn -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -q)" > vars.env
   - echo "Building ended"
