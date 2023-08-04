@@ -87,7 +87,7 @@ function FindPosition() {
               title: JSON.stringify(temp, '', 2)
             });
 
-            response.assignedPeople.forEach(element => {
+            response.assignedPeople?.forEach(element => {
               i++;
               var temp = {
                 AssignDate: element.assignDate,
@@ -124,7 +124,7 @@ function FindPosition() {
               title: JSON.stringify(response.projectCode, '', 2)
             });
 
-            response.candidates.forEach(element => {
+            response.candidates?.forEach(element => {
               i++;
               graphTemp.nodes.push({
                 id: i,

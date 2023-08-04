@@ -53,33 +53,31 @@ function FindSkill() {
       selectConnectedEdges: true
     }
   };
+    
+    const events = {
+      select: function(event) {
+        var { nodes, edges } = event;
+      }
+    };
 
-  const events = {
-    select: function(event) {
-      var {nodes, edges} = event;
-    }
-  };
-
-  const FindSkill = (skillCode) =>
-      fetch(`//${window.location.hostname}/skills/${skillCode}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      })
-          .then(response => {return response.json()})
-          .then(response => {
-            setAux(response);
-            var i = 1
-            var temp = {Name: response.name, Code: response.code};
-            graphTemp.nodes.push({
-              id: i,
-              label: response.name,
-              title: JSON.stringify(temp, '', 2),
-              group: 'mainSkill'
-            });
-            response.subSkills.forEach(element => {
+    const FindSkill = (skillCode) =>
+	    fetch(`//${window.location.hostname}/skills/${skillCode}`, {method: "GET", headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          }})
+        .then(response => {return response.json()})
+        .then(response => {
+          setAux(response);
+          var i = 1
+          var temp = {Name: response.name, Code: response.code}
+          graphTemp.nodes.push({id:i, label: response.name, title: JSON.stringify(temp,'',2), group:"mainSkill"});
+          response.subSkills?.forEach(element => {
+            i++;
+            var idHijo = i;
+            var temp = {Name: element.name, Code: element.code}
+            graphTemp.nodes.push({id:idHijo, label: element.name, title: JSON.stringify(temp,'',2)});
+            graphTemp.edges.push({from:1, to: i, label: "REQUIRE"})
+            element.subSkills.forEach(subskill => {
               i++;
               var idHijo = i;
               var temp = {Name: element.name, Code: element.code};
@@ -102,7 +100,7 @@ function FindSkill() {
             });
             setGraph(prev => graphTemp);
           });
-
+        });
   const handleSkillCode = (event) => {
     setForm({
       ...form,
@@ -110,13 +108,13 @@ function FindSkill() {
     });
   };
 
-    const handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     FindSkill(form.skillCode);
 
     setForm({skillCode: ''})        
-    }
+  }
 
   return (
       <DashboardLayout>
@@ -133,8 +131,7 @@ function FindSkill() {
     Skill</MDTypography>
                           </MDBox><MDBox pt = {3}>
         <form onSubmit = {handleSubmit}><MDBox>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Skill code<
-            /MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Skill code</MDTypography>
                 <MDInput
                     id="skillCode"
                     type="text"
@@ -164,8 +161,7 @@ function FindSkill() {
                           </MDBox > </Card>
                   </Grid>
         </Grid>
-          </MDBox><Footer /><
-        /DashboardLayout>
+          </MDBox><Footer /></DashboardLayout>
   );
 }
 

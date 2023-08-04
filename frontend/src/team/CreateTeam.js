@@ -1,7 +1,7 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import '../network.css';
 
-import {Cancel, Tag} from '@mui/icons-material';
+import {Cancel} from '@mui/icons-material';
 import {FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography} from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import Card from '@mui/material/Card';
@@ -20,7 +20,6 @@ import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 
 const CreateTeam =
     () => {
-      const [selectedPerson, setSelectedPerson] = useState(null);
       const [selectedPersonId, setSelectedPersonId] = useState(null);
 
 
@@ -180,24 +179,31 @@ const CreateTeam =
           },
           body: requestBody,
         })
-            .then(response => {return response.json()})
-            .then(response => {
-              setAux(response);
-              var i = 1;
-              var temp = {
-                Code: response.code,
-                Name: response.name,
-                Description: response.description,
-                Tags: response.tags
-              } graphTemp.nodes.push({
-                id: i,
-                label: response.name,
-                title: JSON.stringify(temp, '', 2),
-                group: 'team'
-              })
+        .then(response => {return response.json()})
+        .then(response => {
+          setAux(response);
+          var i = 1;
+          var temp = {Code: response.code, Name: response.name, Description: response.description, Tags: response.tags}      
+          graphTemp.nodes.push({id: i, label: response.name, title: JSON.stringify(temp, '', 2), group: "team"})  
+          
+          response.members?.forEach(element=>{
+            i++
+            var temp ={Code: element.people.code, Name:element.people.name, Surname:element.people.surname, Email:element.people.email, EmployeeId:element.people.employeeId,
+                FriendlyName:element.people.friendlyName, Title:element.people.title, BirthDate: element.people.birthDate}
+              graphTemp.nodes.push({id:i, label: element.people.name + ' ' + element.people.surname, title: JSON.stringify(temp,'',2), group: "members"});
+              graphTemp.edges.push({from:i, to: 1, label: "MEMBER_OF", title: element.charge});
+          });
+          
+          response.strategics?.forEach(element=>{
+            i++
+            var temp = {Name: element.name, Code: element.code}
+            graphTemp.nodes.push({id:i, label: element.name, title: JSON.stringify(temp,'',2), group:"skills"});
+            graphTemp.edges.push({from:1, to: i, label: "STRATEGIC"});
+          });
 
               response.members.forEach(element => {
-                i++ var temp = {
+                i++;
+                var temp = {
                   Code: element.people.code,
                   Name: element.people.name,
                   Surname: element.people.surname,
@@ -206,7 +212,8 @@ const CreateTeam =
                   FriendlyName: element.people.friendlyName,
                   Title: element.people.title,
                   BirthDate: element.people.birthDate
-                } graphTemp.nodes.push({
+                }; 
+                graphTemp.nodes.push({
                   id: i,
                   label: element.people.name + ' ' + element.people.surname,
                   title: JSON.stringify(temp, '', 2),
@@ -362,8 +369,7 @@ const CreateTeam =
               </MDBox></Card>
           </Grid>
     </Grid>
-      </MDBox><Footer /><
-    /DashboardLayout>
+      </MDBox><Footer /></DashboardLayout>
     );
 };
 

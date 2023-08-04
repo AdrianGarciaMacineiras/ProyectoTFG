@@ -97,7 +97,7 @@ function FindProject() {
               title: response.clientCode
             });
 
-            response.skills.forEach(element => {
+            response.skills?.forEach(element => {
               i++
               graphTemp.nodes.push(
                   {id: i, label: element, title: element, groups: 'skills'});
