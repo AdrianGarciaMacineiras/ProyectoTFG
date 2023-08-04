@@ -10,12 +10,12 @@
 	</parent>
 	<groupId>com.sngular</groupId>
 	<artifactId>ubikservice</artifactId>
-	<version>1.1.1</version>
+	<version>1.2.4</version>
 	<name>SkillTree</name>
 	<description>SkillTree Gateway for Sngular Skills Management</description>
 	<properties>
 		<java.version>20</java.version>
-        <spring-cloud.version>2022.0.3</spring-cloud.version>
+		<spring-cloud.version>2022.0.3</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -85,11 +85,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.projectreactor</groupId>
-			<artifactId>reactor-core</artifactId>
-			<version>3.4.24</version>
-		</dependency>
-		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 			<version>1.5.5.Final</version>
@@ -120,7 +115,12 @@
 			<artifactId>commons-collections4</artifactId>
 			<version>4.4</version>
 		</dependency>
-  </dependencies>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
+		</dependency>
+	</dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -157,7 +157,7 @@
 			<plugin>
 				<groupId>com.sngular</groupId>
 				<artifactId>scs-multiapi-maven-plugin</artifactId>
-				<version>4.8.4</version>
+				<version>4.9.6</version>
 				<executions>
 					<execution>
 						<id>openapi</id>
