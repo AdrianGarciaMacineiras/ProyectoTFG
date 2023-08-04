@@ -1,0 +1,3 @@
+@Library('sngular') _
+
+buildProject()
