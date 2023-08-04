@@ -1,0 +1,16 @@
+spring:
+  neo4j:
+    uri: bolt://localhost:7689
+    authentication:
+      username: neo4j
+      password: neo4jtfg
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+assignable:
+  configuration:
+    titles: EC,DI,BM
+    jobCodeList: "S0002S","S0004S","S1302S","S0406S","S0419S","S0002P","S1120S","S1119M","BEL-ADM","S1115S","BL0002","S0009S"
+    shortTeamNames: "AFL","TG","SYS","BD","HF","HR","COM","EXCO","OPC"
