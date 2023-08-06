@@ -19,6 +19,7 @@ import Grid from '@mui/material/Grid';
 import MDInput from '../components/MDInput';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 import { Select, MenuItem, InputLabel, FormControl, FormGroup, FormControlLabel } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const CreatePerson = () => {
   const [form, setForm] = useState({
@@ -71,6 +72,8 @@ const CreatePerson = () => {
     category: "",
     initDate: new Date()
   })
+
+  const navigate = useNavigate();
 
   const graphTemp = {
     nodes: [],
@@ -310,15 +313,14 @@ const CreatePerson = () => {
         });
         setGraph(prev => graphTemp);
       });
+      
+    navigate(`/listClients`);
 
   }
 
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log(skillList);
-    console.log(form);
 
     createPerson();
 

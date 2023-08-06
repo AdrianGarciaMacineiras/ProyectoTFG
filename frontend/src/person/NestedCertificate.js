@@ -22,9 +22,7 @@ const NestedCertificate = ({ data }) => {
       setPage(0);
     };
 
-    const paginatedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
-
+    const paginatedData = data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
     
     return (
       <>
@@ -37,7 +35,7 @@ const NestedCertificate = ({ data }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedData.map((row, index) => (
+            {paginatedData?.map((row, index) => (
               <TableRow key={index}>
                 <TableCell style={{ width: "5%" }}>{row.code}</TableCell>
                 <TableCell style={{ width: "5%" }}>{row.comments}</TableCell>
@@ -50,7 +48,7 @@ const NestedCertificate = ({ data }) => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 50]}
           component="div"
-          count={data.length}
+          count={data?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

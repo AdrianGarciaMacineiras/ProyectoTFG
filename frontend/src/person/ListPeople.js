@@ -7,9 +7,9 @@ import {
   TableHead,
   TableRow,
   Paper,
-  TextField,
   TablePagination,
-  IconButton
+  IconButton,
+  Tooltip
 } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -24,6 +24,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import Update from '@mui/icons-material/Update';
+import Clear from '@mui/icons-material/Clear';
+import Add from '@mui/icons-material/Add';
 import PropTypes from 'prop-types';
 import NestedKnows from './NestedKnows';
 import NestedWorkWith from './NestedWorkWith';
@@ -33,7 +36,7 @@ import NestedCertificate from './NestedCertificate';
 import { useNavigate } from 'react-router-dom';
 
 
-const UpdatePerson = () => {
+const ListPeople = () => {
 
   const [peopleList, setPeopleList] = useState([]);
 
@@ -41,6 +44,8 @@ const UpdatePerson = () => {
   const [rowsPerPage, setRowsPerPage] = useState(50);
 
   const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:9080/people", {
@@ -61,12 +66,28 @@ const UpdatePerson = () => {
       );
   }, []);
 
-  const navigate = useNavigate();
 
-  const handleRowClick = (row) => {
-    navigate(`/updatePersonForm/${row.employeeId}`); 
+  const handleAdd = () => {
+    navigate(`/createPerson`);
   };
 
+  const handleUpdate = (event, employeeId) => {
+    event.preventDefault();
+    navigate(`/updatePersonForm/${employeeId}`);
+  };
+
+  const handleDelete = (event, employeeId) => {
+    event.preventDefault();
+    fetch(`http://localhost:9080/person/${employeeId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    }).then(() => {
+      window.location.reload();
+    });
+  };
 
   /*const handleSubmit = (event) => {
 
@@ -142,28 +163,52 @@ const UpdatePerson = () => {
 
     return (
       <Fragment>
-        <TableRow sx={{ '& > *': { borderBottom: 'unset' } }} key={row.index} onClick={() => handleRowClick(row)}>
+        <TableRow sx={{ '& > *': { borderBottom: 'unset' } }} key={row.index}>
           <TableCell>
-            <IconButton
-              aria-label="expand row"
-              size="small"
-              onClick={() => {
-                setPeopleList((prevPeopleList) =>
-                  prevPeopleList.map((person) =>
-                    person.code === row.code ? { ...person, open: !isOpen } : person
-                  )
-                );
-              }}
-              style={{ width: "5%" }}
-            >
-              {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
+            <Tooltip title="Expand row">
+              <IconButton
+                aria-label="expand row"
+                size="small"
+                onClick={() => {
+                  setPeopleList((prevPeopleList) =>
+                    prevPeopleList.map((person) =>
+                      person.code === row.code ? { ...person, open: !isOpen } : person
+                    )
+                  );
+                }}
+                style={{ width: "5%" }}
+              >
+                {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </IconButton>
+            </Tooltip>
           </TableCell>
           <TableCell align="left">{row.code}</TableCell>
           <TableCell align="left">{row.name}</TableCell>
           <TableCell align="left">{row.surname}</TableCell>
           <TableCell align="left">{row.employeeId}</TableCell>
           <TableCell align="left">{row.birthDate}</TableCell>
+          <TableCell>
+            <Tooltip title="Update element">
+              <IconButton
+                aria-label="update row"
+                size="small"
+                onClick={(event) => handleUpdate(event, row.employeeId)}
+              >
+                {<Update />}
+              </IconButton>
+            </Tooltip>
+          </TableCell>
+          <TableCell>
+            <Tooltip title="Delete item">
+              <IconButton
+                aria-label="clear row"
+                size="small"
+                onClick={(event) => handleDelete(event, row.employeeId)}
+              >
+                {<Clear />}
+              </IconButton>
+            </Tooltip>
+          </TableCell>
         </TableRow>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
@@ -205,8 +250,8 @@ const UpdatePerson = () => {
     );
   };
 
-  const [orderBy, setOrderBy] = useState('code'); 
-  const [sortDirection, setSortDirection] = useState('asc'); 
+  const [orderBy, setOrderBy] = useState('code');
+  const [sortDirection, setSortDirection] = useState('asc');
 
   const handleSortChange = (column) => {
     if (orderBy === column) {
@@ -237,9 +282,19 @@ const UpdatePerson = () => {
                 mx={2} mt={-3} py={3} px={2} variant='gradient'
                 bgColor='info'
                 borderRadius='lg'
-                coloredShadow=
-                'info' >
-                <MDTypography variant='h6' color='white'>Update Person</MDTypography>
+                coloredShadow='info'
+                display="flex"
+                justifyContent="space-between" 
+                alignItems="center" 
+              >
+                <MDTypography variant='h6' color='white'>People List</MDTypography>
+                <MDBox display="flex" justifyContent="flex-end">
+                  <Tooltip title="Add item">
+                    <IconButton aria-label="add row" size="small" onClick={handleAdd}>
+                      <Add />
+                    </IconButton>
+                  </Tooltip>
+                </MDBox>
               </MDBox>
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -313,4 +368,4 @@ const UpdatePerson = () => {
   );
 };
 
-export default UpdatePerson;
+export default ListPeople;

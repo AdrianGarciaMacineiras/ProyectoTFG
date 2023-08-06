@@ -62,6 +62,12 @@ public interface PeopleNodeMapper {
 
     List<Knows> knowsRelationshipListToKnowsList(List<KnowsRelationship> list);
 
+    List<Certificate> certificateViewListToCertificateList(List<PeopleView.CertificateView> certificateViewList);
+
+    @Mapping(target = "code", source = "skillNode.code")
+    @Mapping(target = "name", source = "skillNode.name")
+    Certificate certificateViewToCertificate(PeopleView.CertificateView certificateView);
+
     @Mapping(target = "skill", source = "code", qualifiedByName = {"resolveServiceNode", "resolveCodeToSkillNode"})
     @Mapping(target = "id", source = "id", qualifiedByName = {"resolveServiceNode", "resolveId"})
     KnowsRelationship knowsToKnowsRelationship(Knows knows);

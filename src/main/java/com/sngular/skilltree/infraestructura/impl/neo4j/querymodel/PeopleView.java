@@ -22,6 +22,17 @@ public interface PeopleView {
 
     List<AssignedView> getAssign();
 
+    List<CertificateView> getCertificates();
+
+    interface CertificateView{
+
+        SkillView getSkillNode();
+
+        String getComments();
+
+        LocalDate getDate();
+    }
+
     interface KnowsView {
         String getId();
 
