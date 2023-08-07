@@ -36,6 +36,7 @@ build/
 /infra/import/
 /infra/logs/
 /infra/plugins/
+.DS_Store
 /node_modules/
 /.mvn/
 
