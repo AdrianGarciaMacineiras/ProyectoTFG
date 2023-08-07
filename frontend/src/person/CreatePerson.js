@@ -1,26 +1,24 @@
-import 'react-datepicker/dist/react-datepicker.css';
-import '../network.css';
-
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import TreeItem from '@mui/lab/TreeItem';
+import React, { useEffect, useState } from "react";
 import TreeView from '@mui/lab/TreeView';
-import { FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select } from '@mui/material';
-import Card from '@mui/material/Card';
-import Checkbox from '@mui/material/Checkbox';
-import Grid from '@mui/material/Grid';
-import {format} from 'date-fns';
-import React, {useEffect, useState} from 'react';
-import DatePicker from 'react-datepicker';
+import TreeItem from "@mui/lab/TreeItem";
+import Checkbox from "@mui/material/Checkbox";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from 'date-fns';
+import "../network.css";
 import VisGraph from 'react-vis-graph-wrapper';
-
-import Footer from '../components/Footer';
+import MDBox from "../components/MDBox";
+import MDTypography from "../components/MDTypography";
+import Footer from "../components/Footer";
+import MDButton from "../components/MDButton";
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
-import MDBox from '../components/MDBox';
-import MDButton from '../components/MDButton';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
 import MDInput from '../components/MDInput';
-import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
+import { Select, MenuItem, InputLabel, FormControl, FormGroup, FormControlLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const CreatePerson = () => {
@@ -268,13 +266,13 @@ const CreatePerson = () => {
 
     fetch(`http://${window.location.hostname}:9080people`, {
       method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*"
-            },
-            body: requestBody,
-          })
- .then(response => { return response.json() })
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: requestBody,
+    })
+      .then(response => { return response.json() })
       .then(response => {
         setAux(response);
         let i = 1;
