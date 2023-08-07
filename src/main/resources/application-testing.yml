@@ -1,14 +1,9 @@
+server:
+  port: 8080
 logging:
   level:
     org.springframework: ${LOG_LEVEL}
     com.sngular: ${LOG_LEVEL}
-server:
-  port: 8080
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
 spring:
   neo4j:
     uri: bolt://192.168.252.83:7687
