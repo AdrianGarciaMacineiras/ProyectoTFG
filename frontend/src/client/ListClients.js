@@ -46,7 +46,7 @@ const UpdateClient =
 
       const handleDelete = (event, name) => {
         event.preventDefault();
-        fetch(`http://http://${window.location.hostname}:9080/client/${name}`, {
+        fetch(`http://${window.location.hostname}:9080/client/${name}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ const UpdateClient =
                         <TableCell>
                           <Tooltip title='Update element'>
                             <IconButton
-                aria-label = 'update row'
+                aria - label = 'update row'
                 size = 'small'
                               onClick={(event) => handleUpdate(event, client.name)}
                             >
@@ -152,7 +152,8 @@ const UpdateClient =
               />
     </Card>
           </Grid></Grid>
-      </MDBox></DashboardLayout>
+      </MDBox><
+    /DashboardLayout>
   );
 };
 

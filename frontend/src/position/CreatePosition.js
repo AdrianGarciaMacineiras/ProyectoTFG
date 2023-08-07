@@ -256,7 +256,7 @@ function CreatePosition() {
               setSkillList(skillsData);
             });
 
-        fetch(`http://http://${window.location.hostname}:9080/project`, {
+        fetch(`http://${window.location.hostname}:9080/project`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -268,7 +268,7 @@ function CreatePosition() {
               setProjectList(response);
             });
 
-        fetch(`http://http://${window.location.hostname}:9080/people`, {
+        fetch(`http://${window.location.hostname}:9080/people`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -280,7 +280,7 @@ function CreatePosition() {
               setPeopleList(data);
             });
 
-        fetch(`http://http://${window.location.hostname}:9080/office`, {
+        fetch(`http://${window.location.hostname}:9080/office`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -296,7 +296,7 @@ function CreatePosition() {
   const createPosition = (event) => {
         const requestBody = JSON.stringify(form);
 
-        fetch('http://http://${window.location.hostname}:9080/position', {
+        fetch('http://${window.location.hostname}:9080/position', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -314,7 +314,8 @@ function CreatePosition() {
                 Role: response.role,
                 EndDate: response.closingDate,
                 InitDate: response.openingDate
-              }; graphTemp.nodes.push({
+              };
+              graphTemp.nodes.push({
                 id: i,
                 label: response.code,
                 title: JSON.stringify(temp, '', 2)
@@ -348,7 +349,8 @@ function CreatePosition() {
                   IntroductionDate: element.introductionDate,
                   ResolutionDate: element.resolutionDate,
                   CreationDate: element.creationDate
-                }; graphTemp.edges.push({
+                };
+                graphTemp.edges.push({
                   from: 1,
                   to: i,
                   label: 'CANDIDATE',
@@ -377,7 +379,8 @@ function CreatePosition() {
                   LevelReq: element.levelReq,
                   MinExp: element.minExp,
                   MinLevel: element.minLevel
-                }; graphTemp.nodes.push({
+                };
+                graphTemp.nodes.push({
                   id: i,
                   label: element.skill,
                   title: JSON.stringify(temp, '', 2),
@@ -490,7 +493,8 @@ function CreatePosition() {
                       </Grid >
 
                 <Grid item xs = {6}>
-                <MDTypography variant = 'h6' fontWeight = 'medium'>Manager</MDTypography>
+                <MDTypography variant = 'h6' fontWeight = 'medium'>Manager<
+                          /MDTypography>
                         <Autocomplete
                           options={peopleList}
                           getOptionLabel={(people) => people.name + " " + people.surname}
@@ -507,34 +511,40 @@ function CreatePosition() {
       } />
                       </Grid >
 
-                    <MDTypography variant = 'h6' fontWeight = 'medium'>
-                        Role</MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>
+          Role</MDTypography>
                                     <MDInput type="text" value={form.role} onChange={handleInputChange} name="role" />
-                    <MDTypography variant = 'h6' fontWeight = 'medium'>Init Date</MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>Init
+          Date</MDTypography>
                       <DatePicker
                         selected={openingDate}
                         dateFormat="dd-MM-yyyy"
                         onSelect={(date) => setOpeningDate(date)}
                         onChange={(date) => handleInputChange({ target: { name: "openingDate", value: format(date, 'dd-MM-yyyy') } })}
                       />
-                      <MDTypography variant = 'h6' fontWeight = 'medium'>Mode</MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>
+          Mode</MDTypography>
                       <FormControl fullWidth>
                         <InputLabel>Select an option</InputLabel>
-                        <Select name = 'mode' value = {form.mode} onChange = {handleInputChange}>
-                          <MenuItem value = 'REMOTE'>Remote</MenuItem>
+      <Select name = 'mode' value = {form.mode} onChange = {handleInputChange}>
+      <MenuItem value = 'REMOTE'>
+          Remote</MenuItem>
                           <MenuItem value="PRESENTIAL">Presential</MenuItem>
-                          <MenuItem value = 'MIX'>Mix</MenuItem>
+      <MenuItem value = 'MIX'>
+          Mix</MenuItem>
                           <MenuItem value="UNKNOWN">Unknown</MenuItem>
-                        </Select>
+      </Select>
                       </FormControl>
-                    </Grid>
+      </Grid>
                     <Grid item xs={6}>
                       <MDTypography variant='h6' fontWeight='medium'>Name</MDTypography>
       <MDInput type = 'text' value = {form.name} onChange =
            {handleInputChange} name = 'name' />
-      <MDTypography variant = 'h6' fontWeight = 'medium'>Priority</MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>
+          Priority</MDTypography>
                       <MDInput type="text" value={form.priority} onChange={handleInputChange} name="priority" />
-      <MDTypography variant = 'h6' fontWeight = 'medium'>Charge</MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>
+          Charge</MDTypography>
                       <MDTypography variant='h6' fontWeight='medium'>End Date</MDTypography><
       DatePicker
   selected = {closingDate} dateFormat = 'dd-MM-yyyy'
@@ -543,7 +553,8 @@ function CreatePosition() {
        {target: {name: 'closingDate', value: format(date, 'dd-MM-yyyy')}})
   } />
                       <MDTypography variant='h6' fontWeight='medium'>Active</MDTypography >
-      <FormControl fullWidth><InputLabel>Select an option</InputLabel>
+      <FormControl fullWidth><InputLabel>Select an option<
+          /InputLabel>
                         <Select name="active" value={form.active} onChange={handleInputChange}>
                           <MenuItem value="true">YES</MenuItem>
       <MenuItem value = 'false'>NO</MenuItem>
@@ -553,21 +564,25 @@ function CreatePosition() {
                         <MDBox>
                           <h2>Selected Item: {selectedItem.name}</h2>
       <FormControl fullWith>
-      <MDTypography variant = 'h6' fontWeight = 'medium'>Level Required</MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>Level Required<
+          /MDTypography>
                             <InputLabel>Select an Option</InputLabel>
       <Select value = {levelReq} onChange =
            {(e) => setLevelReq(e.target.value)}>
-      <MenuItem value = 'MANDATORY'>MANDATORY</MenuItem>
+      <MenuItem value = 'MANDATORY'>MANDATORY<
+          /MenuItem>
                               <MenuItem value="NICE_TO_HAVE">NICE TO HAVE</MenuItem>
       </Select>
                           </FormControl><FormControl fullWidth>
-      <MDTypography variant = 'h6' fontWeight = 'medium'>Level Required</MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>Level Required<
+          /MDTypography>
                             <InputLabel>
                               Select an option
                             </InputLabel>
       <Select value = {minLevel} onChange =
            {(e) => setMinLevel(e.target.value)}>
-      <MenuItem value = 'HIGH'>HIGH</MenuItem>
+      <MenuItem value = 'HIGH'>HIGH<
+          /MenuItem>
                               <MenuItem value="MEDIUM">MEDIUM</MenuItem>
       <MenuItem value = 'LOW'>
           LOW</MenuItem>
@@ -579,7 +594,8 @@ function CreatePosition() {
        {(e) => setMinExp(parseInt(e.target.value))
        } />
                           </FormControl>
-      <MDButton onClick = {handleModalSubmit}>Save</MDButton>
+      <MDButton onClick = {handleModalSubmit}>Save<
+          /MDButton>
                           <MDButton onClick={() => setSelectedItem(null)}>Cancel</MDButton>
       </MDBox>
                       )}
@@ -617,7 +633,8 @@ function CreatePosition() {
 
       </Card>
           </Grid></Grid>
-      </MDBox><Footer /></DashboardLayout>
+      </MDBox><Footer /><
+      /DashboardLayout>
   );
 }
 

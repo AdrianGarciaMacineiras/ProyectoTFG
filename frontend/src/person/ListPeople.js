@@ -64,26 +64,22 @@ const ListPeople =
 
       const handleDelete = (event, employeeId) => {
         event.preventDefault();
-        fetch(
-            `http://http://${window.location.hostname}:9080/person/${
-                employeeId}`,
-            {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-              },
-            })
-            .then(() => {
-              window.location.reload();
-            });
+        fetch(`http://${window.location.hostname}:9080/person/${employeeId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        }).then(() => {
+          window.location.reload();
+        });
       };
 
       /*const handleSubmit = (event) => {
 
         event.preventDefault();
 
-        fetch(`http://http://${window.location.hostname}:9080/people/${updatedPeopleData.code}`, {
+        fetch(`http://${window.location.hostname}:9080/people/${updatedPeopleData.code}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -109,16 +105,15 @@ const ListPeople =
 
     return (
       <div
-    role = 'tabpanel'
-    hidden =
-        {value !== index} id = {`simple-tabpanel-${index}`} aria-labelledby = {`simple-tab-${
-                                                                                    index}`} {...other} > {value ===
-                                                                                                               index &&
-                                                                                                           (<MDBox sx = {
-                                                                                                             {
-                                                                                                               p: 3
-                                                                                                             }
-                                                                                                           }><MDTypography>{children}</MDTypography>
+        role = 'tabpanel'
+        hidden = {value !== index}
+        id = {`simple-tabpanel-${index}`}
+        aria-labelledby = {`simple-tab-${index}`} {...other} > {value === index &&
+          (<MDBox sx = {
+            {
+              p: 3
+            }
+          }><MDTypography>{children}</MDTypography>
           </MDBox>)}</div>
     );
   }
@@ -172,11 +167,11 @@ const ListPeople =
       }
       </IconButton>
             </Tooltip></TableCell>
-          <TableCell align="left">{row.code}</TableCell>
-          <TableCell align = 'left'>{row.name}</TableCell>
-          <TableCell align="left">{row.surname}</TableCell>
-          <TableCell align = 'left'>{row.employeeId}</TableCell>
-          <TableCell align="left">{row.birthDate}</TableCell>
+              <TableCell align="left">{row.code}</TableCell>
+              <TableCell align = 'left'>{row.name}</TableCell>
+              <TableCell align="left">{row.surname}</TableCell>
+              <TableCell align = 'left'>{row.employeeId}</TableCell>
+              <TableCell align="left">{row.birthDate}</TableCell>
           <TableCell><Tooltip title = 'Update element'>< IconButton
       aria-label = 'update row'
       size = 'small'
@@ -208,22 +203,22 @@ const ListPeople =
             {
               borderBottom: 1, borderColor: 'divider'
             }
-          }><Tabs
-value = {valor} onChange = {(event, newValue) =>
-                                handleChangeTab(event, newValue, row)} aria-label = 'basic tabs example'> <Tab label = 'Knows' {
-  ...a11yProps(0)
-}
-/>
-                    <Tab label="WorkWith" {...a11yProps(1)} / > < Tab label =
-    'Masters' {
-  ...a11yProps(2)
-}
-/>
-                    <Tab label="Interests" {...a11yProps(3)} / > <
-    Tab label = 'Certificates' {
-  ...a11yProps(4)
-} />
-                  </Tabs>
+          }><Tabs value = {valor} onChange = {(event, newValue) =>
+                                handleChangeTab(event, newValue, row)} aria-label = 'basic tabs example'>
+              <Tab label = 'Knows' {
+                  ...a11yProps(0)
+                }
+                />
+              <Tab label="WorkWith" {...a11yProps(1)} / > < Tab label =
+                    'Masters' {
+                  ...a11yProps(2)
+                }
+                />
+              <Tab label="Interests" {...a11yProps(3)} / > <
+                    Tab label = 'Certificates' {
+                  ...a11yProps(4)
+                } />
+                </Tabs>
                 </MDBox>
                 <CustomTabPanel value={valor} index={0}>
                   <NestedKnows data={row.knows} />

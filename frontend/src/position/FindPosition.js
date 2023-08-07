@@ -181,8 +181,7 @@ function FindPosition() {
     Position</MDTypography>
           </MDBox><MDBox pt = {3}>
         <form onSubmit = {handleSubmit}><MDBox>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Position code<
-            /MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Position code</MDTypography>
                 <MDInput
                     id="positionCode"
                     type="text"
@@ -211,7 +210,7 @@ function FindPosition() {
          </MDBox > </Card>
         </Grid></Grid>
       </MDBox>
-        <Footer />< /DashboardLayout>
+        <Footer /></DashboardLayout>
   );
 }
 

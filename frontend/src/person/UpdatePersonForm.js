@@ -326,7 +326,7 @@ const UpdatePersonForm = () => {
       return list;
     };
 
-    fetch(`http://http://${window.location.hostname}:9080/skills`, {
+    fetch(`http://${window.location.hostname}:9080/skills`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -339,14 +339,13 @@ const UpdatePersonForm = () => {
           setSkillList(skillsData);
         });
 
-    fetch(
-        `http://http://${window.location.hostname}:9080/person/${employeeId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          },
-        })
+    fetch(`http://${window.location.hostname}:9080/person/${employeeId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    })
         .then((response) => response.json())
         .then((data) => {
           const formattedBirthDate = data.birthDate ?

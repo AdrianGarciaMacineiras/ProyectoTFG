@@ -142,8 +142,7 @@ function FindProject() {
     Project</MDTypography>
                           </MDBox><MDBox pt = {3}>
         <form onSubmit = {handleSubmit}><MDBox>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Project code<
-            /MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Project code</MDTypography>
                 <MDInput
                     id="projectCode"
                     type="text"
@@ -173,8 +172,7 @@ function FindProject() {
                           </MDBox > </Card>
                   </Grid>
         </Grid>
-          </MDBox><Footer /><
-        /DashboardLayout>
+          </MDBox><Footer /></DashboardLayout>
   );
 }
 
