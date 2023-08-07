@@ -58,7 +58,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
     @Override
     public boolean deleteByCode(String personCode) {
-        var node = crud.findByCode(personCode, PeopleNode.class);
+        var node = crud.findByEmployeeId(personCode);
         node.setDeleted(true);
         crud.save(node);
         return true;

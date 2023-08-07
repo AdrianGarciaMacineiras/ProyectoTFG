@@ -37,7 +37,10 @@ const UpdatePersonForm = () => {
     certificates: [],
   });
 
-  const { code } = useParams();
+  const [updatedPerson, setUpdatedPerson] = useState(null);
+
+
+  const { employeeId } = useParams();
 
   const [skillList, setSkillList] = useState([]);
   const [searchSkill, setSearchSkill] = useState('');
@@ -220,7 +223,7 @@ const UpdatePersonForm = () => {
       minLevel: knowsForm.minLevel,
       minExp: knowsForm.minExp,
     };
-    setForm((prevForm) => ({
+    setUpdatedPerson((prevForm) => ({
       ...prevForm,
       knows: [...prevForm.knows, newKnowsItem],
     }));
@@ -240,7 +243,7 @@ const UpdatePersonForm = () => {
       comments: certificateForm.comments,
       date: format(certificateForm.date, "dd-MM-yyyy"),
     };
-    setForm((prevForm) => ({
+    setUpdatedPerson((prevForm) => ({
       ...prevForm,
       certificates: [...prevForm.certificates, newCertificateItem],
     }));
@@ -254,76 +257,17 @@ const UpdatePersonForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setForm({
-      ...form,
+    setUpdatedPerson({
+      ...updatedPerson,
+      code: form.code,
+      employeeId: form.employeeId,
       [name]: value,
     });
   };
 
-  const createPerson = () => {
-
-    const requestBody = JSON.stringify(form);
-
-    fetch("http://localhost:9080/people", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      },
-      body: requestBody,
-    })
-      .then(response => { return response.json() })
-      .then(response => {
-        setAux(response);
-        var i = 1;
-        var temp = {
-          Code: response.code, Name: response.name, Surname: response.surname, Email: response.email, EmployeeId: response.employeeId,
-          FriendlyName: response.friendlyName, Title: response.title, BirthDate: response.birthDate
-        }
-        graphTemp.nodes.push({ id: i, label: response.name + ' ' + response.surname, title: JSON.stringify(temp, '', 2) });
-        response.knows?.forEach(element => {
-          i++;
-          var temp = { Code: element.code, Primary: element.primary, Experience: element.experience, Level: element.level }
-          graphTemp.nodes.push({ id: i, label: element.name, title: JSON.stringify(temp, '', 2), group: 'knows', value: element.experience * 150 });
-          graphTemp.edges.push({ from: 1, to: i, label: "KNOWS" });
-        });
-
-        response.interest?.forEach(element => {
-          i++;
-          graphTemp.nodes.push({ id: i, label: element, title: element, group: 'interest', value: 10 });
-          graphTemp.edges.push({ from: 1, to: i, label: "INTEREST" });
-        });
-
-        response.work_with?.forEach(element => {
-          i++;
-          graphTemp.nodes.push({ id: i, label: element, title: element, group: 'work_with' });
-          graphTemp.edges.push({ from: 1, to: i, label: "WORK_WITH" });
-        });
-
-        response.master?.forEach(element => {
-          i++;
-          graphTemp.nodes.push({ id: i, label: element, title: element, group: 'master' });
-          graphTemp.edges.push({ from: 1, to: i, label: "MASTER" });
-        });
-        response.certificates?.forEach(element => {
-          i++;
-          var temp = { Code: element.code, Name: element.name, Comments: element.comments, Date: element.date }
-          graphTemp.nodes.push({ id: i, label: element.code, title: JSON.stringify(temp, '', 2), group: 'have_certificate' });
-          graphTemp.edges.push({ from: 1, to: i, label: "HAVE_CERTIFICATE" });
-        });
-        setGraph(prev => graphTemp);
-      });
-
-  }
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log(skillList);
-    console.log(form);
-
-    createPerson();
 
     setForm({
       code: '',
@@ -362,7 +306,7 @@ const UpdatePersonForm = () => {
       category: roleForm.category,
       initDate: format(roleForm.initDate, "dd-MM-yyyy"),
     };
-    setForm((prevForm) => ({
+    setUpdatedPerson((prevForm) => ({
       ...prevForm,
       roles: [...prevForm.roles, newRoleItem],
     }));
@@ -376,7 +320,7 @@ const UpdatePersonForm = () => {
   };
 
   const handleRemoveFromArray = (arrayName, nodeId) => {
-    setForm((prevForm) => ({
+    setUpdatedPerson((prevForm) => ({
       ...prevForm,
       [arrayName]: prevForm[arrayName].filter((element) => element.nodeId !== nodeId),
     }));
@@ -409,7 +353,7 @@ const UpdatePersonForm = () => {
         setSkillList(skillsData);
       });
     
-      fetch(`http://localhost:9080/person/${code}`, {
+      fetch(`http://localhost:9080/person/${employeeId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -418,12 +362,28 @@ const UpdatePersonForm = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+
+        const formattedBirthDate = data.birthDate ? format(new Date(data.birthDate), "dd-MM-yyyy") : format(new Date(), "dd-MM-yyyy");
+
         setForm({
           code: data.code,
           employeeId: data.employeeId,
           name: data.name,
           surname: data.surname,
-          birthDate: format(new Date(data.birthDate), "dd-MM-yyyy"),
+          birthDate: formattedBirthDate,
+          title: data.title,
+          roles: data.roles || [],
+          knows: data.knows || [],
+          work_with: data.work_with || [],
+          master: data.master || [],
+          interest: data.interest || [],
+          certificates: data.certificates || [],
+        });
+
+        setUpdatedPerson({
+          name: data.name,
+          surname: data.surname,
+          birthDate: formattedBirthDate,
           title: data.title,
           roles: data.roles || [],
           knows: data.knows || [],
@@ -434,7 +394,7 @@ const UpdatePersonForm = () => {
         });
       });
     
-  }, [code]);
+  }, [employeeId]);
 
 
   const handleNodeSelect = (event, item) => {
@@ -502,6 +462,10 @@ const UpdatePersonForm = () => {
     );
   };
 
+  if (!form.employeeId) {
+    return <div>Loading...</div>;
+}
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -530,11 +494,11 @@ const UpdatePersonForm = () => {
                     </MDBox>
                     <MDBox>
                       <MDTypography variant='h6' fontWeight='medium'>Name:</MDTypography>
-                      <MDInput type="text" value={form.name} onChange={handleInputChange} name="name" />
+                      <MDInput type="text" value={updatedPerson.name} onChange={handleInputChange} name="name" />
                     </MDBox>
                     <MDBox>
                       <MDTypography variant='h6' fontWeight='medium'>Surname:</MDTypography>
-                      <MDInput type="text" value={form.surname} onChange={handleInputChange} name="surname" />
+                      <MDInput type="text" value={updatedPerson.surname} onChange={handleInputChange} name="surname" />
                     </MDBox>
                     <MDBox>
                       <MDTypography variant='h6' fontWeight='medium'>Birth Date:</MDTypography>
@@ -547,7 +511,7 @@ const UpdatePersonForm = () => {
                     </MDBox>
                     <MDBox>
                       <MDTypography variant='h6' fontWeight='medium'>Title:</MDTypography>
-                      <MDInput type="text" value={form.title} onChange={handleInputChange} name="title" />
+                      <MDInput type="text" value={updatedPerson.title} onChange={handleInputChange} name="title" />
                     </MDBox>
                   </Grid>
                   <Grid item xs={6}>
@@ -583,12 +547,12 @@ const UpdatePersonForm = () => {
                           </MDBox>
                         </MDBox>
                       )}
-                      {form.roles?.length > 0 && (
+                      {updatedPerson.roles?.length > 0 && (
                         <MDBox>
                           <MDButton variant="gradient" color="dark" onClick={handleShowRoleList}>Show Role List</MDButton>
                           {isShowRoleListVisible && (
                             <MDBox>
-                              {form.roles.map((role, index) => (
+                              {updatedPerson.roles.map((role, index) => (
                                 <MDBox key={index}>
                                   <MDTypography variant='h6' fontWeight='medium'>Role: {role.role}</MDTypography>
                                   <MDTypography variant='h6' fontWeight='medium'>Category: {role.category}</MDTypography>

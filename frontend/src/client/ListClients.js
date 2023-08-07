@@ -1,20 +1,36 @@
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TablePagination,
+  IconButton,
+  Tooltip
+} from '@mui/material';
+import MDBox from '../components/MDBox';
+import DashboardNavbar from '../components/Navbars/DashboardNavbar';
+import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import React, {useEffect, useState} from 'react';
+import MDTypography from "../components/MDTypography";
+import Update from '@mui/icons-material/Update';
+import Clear from '@mui/icons-material/Clear';
+import Add from '@mui/icons-material/Add';
+import { useNavigate } from 'react-router-dom';
 
-import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
-import MDBox from '../components/MDBox';
-import MDButton from '../components/MDButton';
-import MDTypography from '../components/MDTypography';
-import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 
 const UpdateClient = () => {
   const [clientList, setClientList] = useState([]);
-  const [updatedClientData, setUpdatedClientData] = useState(null);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     fetch(`http://${window.location.hostname}:9080/client`, {
@@ -28,45 +44,27 @@ const UpdateClient = () => {
       .then((data) => setClientList(data));
   }, []);
 
-  const handleRowClick = (client) => {
-    setUpdatedClientData(client);
+  const handleAdd = () => {
+    navigate(`/createClient`);
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setUpdatedClientData((prevClientData) => ({
-      ...prevClientData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (event) => {
-
+  const handleUpdate = (event, name) => {
     event.preventDefault();
+    navigate(`/updateClientForm/${name}`);
+  };
 
-    fetch(`http://${window.location.hostname}:9080/client/${updatedClientData.code}`, {
-      method: 'PUT',
+  const handleDelete = (event, name) => {
+    event.preventDefault();
+    fetch(`http://localhost:9080/client/${name}`, {
+      method: "DELETE",
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },
-      body: JSON.stringify(updatedClientData),
-    })
-      .then((response) => response.json())
-      .then((updatedClient) => {
-        setClientList((prevClientList) =>
-          prevClientList.map((client) =>
-            client.code === updatedClient.code ? updatedClient : client
-          )
-        );
-
-        setUpdatedClientData(null);
-      })
-      .catch((error) => {
-        console.error('Error updating client:', error);
-      });
+    }).then(() => {
+      window.location.reload();
+    });
   };
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -91,40 +89,20 @@ const UpdateClient = () => {
                 mx={2} mt={-3} py={3} px={2} variant='gradient'
                 bgColor='info'
                 borderRadius='lg'
-                coloredShadow=
-                'info' >
-                <MDTypography variant='h6' color='white'>Update Client</MDTypography>
+                coloredShadow='info'
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <MDTypography variant='h6' color='white'>List Clients</MDTypography>
+                <MDBox display="flex" justifyContent="flex-end">
+                  <Tooltip title="Add item">
+                    <IconButton aria-label="add row" size="small" onClick={handleAdd}>
+                      <Add />
+                    </IconButton>
+                  </Tooltip>
+                </MDBox>
               </MDBox>
-              {updatedClientData && (
-                <form onSubmit={handleSubmit}>
-                  <TextField
-                    name='code'
-                    label='Code'
-                    value={updatedClientData.code}
-                    onChange={handleChange}
-                    disabled
-                  />
-                  <TextField
-                    name='name'
-                    label='Name'
-                    value={updatedClientData.name}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    name="industry"
-                    label="Industry"
-                    value={updatedClientData.industry}
-                    onChange={handleChange}
-                  />
-                  <TextField
-                    name='country'
-                    label='Country'
-                    value={updatedClientData.country}
-                    onChange={handleChange}
-                  />
-                  <MDButton variant="contained" color="primary" onClick={handleSubmit}>Update</MDButton>
-                </form>
-              )}
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead sx={{ display: "table-header-group" }}>
@@ -137,11 +115,33 @@ const UpdateClient = () => {
                   </TableHead>
                   <TableBody>
                     {paginatedData.map((client) => (
-                      <TableRow key={client.code} onClick={() => handleRowClick(client)}>
+                      <TableRow key={client.code}>
                         <TableCell align="left">{client.code}</TableCell>
                         <TableCell align='left'>{client.name}</TableCell>
                         <TableCell align="left">{client.industry}</TableCell>
-                        <TableCell align='left'>{client.country}</TableCell>
+                        <TableCell align="left">{client.country}</TableCell>
+                        <TableCell>
+                          <Tooltip title="Update element">
+                            <IconButton
+                              aria-label="update row"
+                              size="small"
+                              onClick={(event) => handleUpdate(event, client.name)}
+                            >
+                              {<Update />}
+                            </IconButton>
+                          </Tooltip>
+                        </TableCell>
+                        <TableCell>
+                          <Tooltip title="Delete item">
+                            <IconButton
+                              aria-label="clear row"
+                              size="small"
+                              onClick={(event) => handleDelete(event, client.name)}
+                            >
+                              {<Clear />}
+                            </IconButton>
+                          </Tooltip>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

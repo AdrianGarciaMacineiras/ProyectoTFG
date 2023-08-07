@@ -21,6 +21,8 @@ import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
+import { Select, MenuItem, InputLabel, FormControl, FormGroup, FormControlLabel } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const CreatePerson =
     () => {
@@ -72,7 +74,12 @@ const CreatePerson =
       const [roleForm, setRoleForm] =
           useState({role: '', category: '', initDate: new Date()})
 
-      const graphTemp = {nodes: [], edges: []};
+  const navigate = useNavigate();
+
+  const graphTemp = {
+    nodes: [],
+    edges: []
+  };
 
       const [graph, setGraph] = useState({nodes: [], edges: []});
 
@@ -339,79 +346,9 @@ const CreatePerson =
                   });
                   setGraph(prev => graphTemp);
                 });
-          }
+          };
 
 
-      const handleSubmit = (event) => {
-        event.preventDefault();
-
-        console.log(skillList);
-        console.log(form);
-
-        createPerson();
-
-        setForm({
-          code: '',
-          employeeId: '',
-          name: '',
-          surname: '',
-          birthDate: '',
-          title: '',
-          roles: [],
-          knows: [],
-          work_with: [],
-          master: [],
-          interest: [],
-          certificates: [],
-        });
-      };
-
-      const handleShowAddRoleForm = () => {
-        setIsAddRoleVisible(true);
-      };
-
-      const handleCancelAddRole = (e) => {
-        e.preventDefault();
-        setIsAddRoleVisible(false);
-        setRoleForm({
-          role: '',
-          category: '',
-          date: new Date(),
-        });
-      };
-
-      const handleAddRoleSubmit = (e) => {
-        e.preventDefault();
-        const newRoleItem = {
-          role: roleForm.role,
-          category: roleForm.category,
-          initDate: format(roleForm.initDate, 'dd-MM-yyyy'),
-        };
-        setForm((prevForm) => ({
-                  ...prevForm,
-                  roles: [...prevForm.roles, newRoleItem],
-                }));
-        setRoleForm({
-          role: '',
-          category: '',
-          date: new Date(),
-        });
-
-        setIsAddRoleVisible(false);
-      };
-
-      const handleRemoveFromArray = (arrayName, nodeId) => {
-        setForm((prevForm) => ({
-                  ...prevForm,
-                  [arrayName]: prevForm[arrayName].filter(
-                      (element) => element.nodeId !== nodeId),
-                }));
-      };
-
-      const handleShowRoleList = (e) => {
-        e.preventDefault();
-        setIsShowRoleListVisible(!isShowRoleListVisible);
-      };
 
       useEffect(() => {
         const recursive = (dataList) => {
@@ -441,12 +378,103 @@ const CreatePerson =
       }, []);
 
 
-      const handleNodeSelect = (event, item) => {
-        setSelectedNode(item);
-        setShowCheckboxes(true);
-        setShowKnowsForm(false);
-        setShowCertificateForm(false);
-      };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    createPerson();
+
+    setForm({
+      code: '',
+      employeeId: '',
+      name: '',
+      surname: '',
+      birthDate: '',
+      title: '',
+      roles: [],
+      knows: [],
+      work_with: [],
+      master: [],
+      interest: [],
+      certificates: [],
+    });
+  };
+
+  const handleShowAddRoleForm = () => {
+    setIsAddRoleVisible(true);
+  };
+
+  const handleCancelAddRole = (e) => {
+    e.preventDefault();
+    setIsAddRoleVisible(false);
+    setRoleForm({
+      role: "",
+      category: "",
+      date: new Date(),
+    });
+  };
+
+  const handleAddRoleSubmit = (e) => {
+    e.preventDefault();
+    const newRoleItem = {
+      role: roleForm.role,
+      category: roleForm.category,
+      initDate: format(roleForm.initDate, "dd-MM-yyyy"),
+    };
+    setForm((prevForm) => ({
+      ...prevForm,
+      roles: [...prevForm.roles, newRoleItem],
+    }));
+    setRoleForm({
+      role: "",
+      category: "",
+      date: new Date(),
+    });
+
+    setIsAddRoleVisible(false);
+  };
+
+  const handleRemoveFromArray = (arrayName, nodeId) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      [arrayName]: prevForm[arrayName].filter((element) => element.nodeId !== nodeId),
+    }));
+  };
+
+  const handleShowRoleList = (e) => {
+    e.preventDefault();
+    setIsShowRoleListVisible(!isShowRoleListVisible);
+  };
+
+  useEffect(() => {
+    const recursive = (dataList) => {
+      var list = [];
+      dataList.forEach((data) => {
+        list.push({ nodeId: data.code, name: data.name, children: recursive(data.subSkills) });
+      });
+      return list;
+    };
+
+    fetch(`http://localhost:9080/skills`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        const skillsData = recursive(response);
+        setSkillList(skillsData);
+      });
+  }, []);
+
+
+  const handleNodeSelect = (event, item) => {
+    setSelectedNode(item);
+    setShowCheckboxes(true);
+    setShowKnowsForm(false);
+    setShowCertificateForm(false);
+  };
 
   const getTreeItemsFromData = (treeItems, searchValue) => {
     const filteredItems = treeItems.filter((treeItemData) => {

@@ -40,7 +40,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 
     @Override
     public boolean deleteByCode(String clientCode) {
-        var node = crud.findByCode(clientCode);
+        var node = crud.findByName(clientCode);
         node.setDeleted(true);
         crud.save(node);
         return true;

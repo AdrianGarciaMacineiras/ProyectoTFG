@@ -12,15 +12,23 @@ import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
+import { useNavigate } from 'react-router-dom';
 
 const ClientForm = () => {
   const [clientData, setClientData] =
       useState({code: '', name: '', industry: '', country: ''});
   const [graph, setGraph] = useState(null);
 
+  const navigate = useNavigate();
+
   const options = {
-    layout: {improvedLayout: true},
-    nodes: {shape: 'dot', scaling: {min: 10, label: false}},
+    layout: {
+      improvedLayout: true
+    },
+    nodes: {
+      shape: "dot",
+      scaling: { min: 10, label: false }
+    },
     edges: {
       color: '#000000',
       smooth: {enabled: true, type: 'discrete', roundness: 0.5}
@@ -36,7 +44,11 @@ const ClientForm = () => {
       },
       minVelocity: 0.75
     },
-    configure: {enabled: true, filter: 'physics, layout', showButton: true},
+    configure: {
+      enabled: true,
+      filter: 'physics, layout',
+      showButton: true
+    },
     interaction: {
       hover: true,
       hoverConnectedEdges: true,
@@ -46,8 +58,8 @@ const ClientForm = () => {
   };
 
   const events = {
-    select: function(event) {
-      var {nodes, edges} = event;
+    select: function (event) {
+      var { nodes, edges } = event;
     }
   };
 
@@ -74,17 +86,20 @@ const ClientForm = () => {
       },
       body: requestBody,
     })
-        .then(response => response.json())
-        .then(response => {
-          setGraph({
-            nodes: [{
-              id: 1,
-              label: response.name,
-              title: JSON.stringify(response, '', 2)
-            }],
-            edges: []
-          });
-        });
+    .then(response => response.json())
+    .then(response => {
+      setGraph({
+        nodes: [{
+          id: 1,
+          label: response.name,
+          title: JSON.stringify(response, '', 2)
+        }],
+        edges: []
+      });
+    });
+
+    navigate(`/listClients`);
+
   };
 
   const handleSubmit = (e) => {
@@ -97,82 +112,94 @@ const ClientForm = () => {
 
   return (
     <DashboardLayout>
-    <DashboardNavbar />
-    <MDBox pt={6} pb={3}>
-      <Grid container spacing={6}>
+      <DashboardNavbar />
+      <MDBox pt={6} pb={3}>
+        <Grid container spacing={6}>
           <Grid item xs={12}>
-              <Card>
-                  <MDBox
-  mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
-  bgColor = 'info'
-  borderRadius = 'lg'
-  coloredShadow =
-      'info' > <MDTypography variant = 'h6' color = 'white'>Create
-                   Client</MDTypography>
-                  </MDBox>
-      <form onSubmit = {handleSubmit}><MDBox pt = {3}>
-      <MDTypography variant = 'h6' fontWeight = 'medium'>Code: </MDTypography>
-          <MDInput
-            type="text"
-            id="code"
-            name="code"
-            value={clientData.code}
-            onChange={handleChange}
-            required
-          />
+            <Card>
+              <MDBox
+                mx={2} mt={-3} py={3} px={2} variant='gradient'
+                bgColor='info'
+                borderRadius='lg'
+                coloredShadow=
+                'info' > <MDTypography variant='h6' color='white'>Create Client</MDTypography>
+              </MDBox>
+              <form onSubmit={handleSubmit}>
+                <MDBox pt={3}>
+                  <MDTypography variant='h6' fontWeight='medium'>Code:</MDTypography>
+                  <MDInput
+                    type="text"
+                    id="code"
+                    name="code"
+                    value={clientData.code}
+                    onChange={handleChange}
+                    required
+                  />
+                </MDBox>
+                <MDBox>
+                  <MDTypography htmlFor="name">Name:</MDTypography>
+                  <MDInput
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={clientData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </MDBox>
+                <MDBox>
+                  <MDTypography htmlFor="industry">Industry:</MDTypography>
+                  <MDInput
+                    type="text"
+                    id="industry"
+                    name="industry"
+                    value={clientData.industry}
+                    onChange={handleChange}
+                    required
+                  />
+                </MDBox>
+                <MDBox>
+                  <MDTypography htmlFor="country">Country:</MDTypography>
+                  <MDInput
+                    type="text"
+                    id="country"
+                    name="country"
+                    value={clientData.country}
+                    onChange={handleChange}
+                    required
+                  />
+                </MDBox>
+                <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
+              </form>
+            </Card>
+          </Grid>
+          <Grid item xs={12}>
+            <Card>
+              < MDBox
+                mx={2} mt={-3} py={3} px={2} variant='gradient'
+                bgColor='info'
+                borderRadius='lg'
+                coloredShadow='info' >
+                <MDTypography variant='h6' color='white'>Client Graph</MDTypography>
+              </MDBox>
+              <MDBox pt={3}>
+                {graph && (
+                  <VisGraph
+                    graph={graph}
+                    options={options}
+                    events={events}
+                    getNetwork={network => {
+                      // if you want access to vis.js network api you can set the state in a parent component using this property
+                    }}
+                  />
+                )}
+              </MDBox>
+            </Card>
+          </Grid>
+        </Grid>
       </MDBox>
-        <MDBox>
-          <MDTypography htmlFor="name">Name:</MDTypography>
-          <MDInput
-  type = 'text'
-  id = 'name'
-  name = 'name'
-  value = {clientData.name} onChange = {handleChange} required / >
-      </MDBox>
-        <MDBox>
-          <MDTypography htmlFor="industry">Industry:</MDTypography>
-          <MDInput
-  type = 'text'
-  id = 'industry'
-  name = 'industry'
-  value = {clientData.industry} onChange = {handleChange} required / >
-      </MDBox>
-        <MDBox>
-          <MDTypography htmlFor="country">Country:</MDTypography>
-          <MDInput
-  type = 'text'
-  id = 'country'
-  name = 'country'
-  value = {clientData.country} onChange = {handleChange} required / >
-      </MDBox>
-        <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
-      </form>
-      </Card>
-      </Grid>
-    <Grid item xs = {12}>
-      <Card>
-        < MDBox
-          mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
-          bgColor = 'info'
-          borderRadius = 'lg'
-          coloredShadow = 'info' >
-        <MDTypography variant = 'h6' color = 'white'>Client Graph</MDTypography></MDBox>
-                <MDBox pt = {3}>    
-                  {graph && (
-                    <VisGraph
-                      graph={graph}
-                      options={options}
-                      events={events}
-                      getNetwork={network => {
-
-}
-}
-/>
-                  )}
-                  </MDBox > </Card>
-            </Grid>
-    </Grid>
-        </MDBox><Footer /></DashboardLayout>
+      <Footer />
+    </DashboardLayout>
   );
 };
 

@@ -2,11 +2,12 @@ import Icon from '@mui/material/Icon';
 
 import CreateClient from './client/CreateClient'
 import FindClient from './client/FindClient'
-import UpdateClient from './client/UpdateClient'
+import ListClients from './client/ListClients'
+import UpdateClientForm from './client/UpdateClientForm'
 
 import CreatePerson from './person/CreatePerson'
 import FindPerson from './person/FindPerson'
-import UpdatePerson from './person/UpdatePerson'
+import ListPeople from './person/ListPeople'
 import UpdatePersonForm from './person/UpdatePersonForm'
 
 import CreatePosition from './position/CreatePosition'
@@ -54,18 +55,18 @@ const routes = [
       },
       {
         type: 'collapse',
-        name: 'Update',
-        key: 'updatePerson',
+        name: 'List',
+        key: 'listPeople',
         icon: <Icon fontSize='small'>assignment</Icon>,
-        route: '/updatePerson',
-        component: <UpdatePerson />,
+        route: '/listPeople',
+        component: <ListPeople />,
       },
       {
         type: 'hidden',
         name: 'Update Form',
         key: 'updatePersonForm',
         icon: <Icon fontSize='small'>assignment</Icon>,
-        route: '/updatePersonForm/:code',
+        route: '/updatePersonForm/:employeeId',
         component: <UpdatePersonForm />,
       }
     ]
@@ -94,13 +95,22 @@ const routes = [
     },
     {
       type: 'collapse',
-      name: 'Update',
-      key: 'updateClient',
+      name: 'List',
+      key: 'listClients',
       icon: <Icon fontSize='small'>table_view</Icon>,
-      route: '/updateClient',
-      component: <UpdateClient />,
+      route: '/listClients',
+      component: <ListClients />,
       child: []
-    }]
+    },
+    {
+      type: 'hidden',
+      name: 'Update Client Form',
+      key: 'updateClientForm',
+      icon: <Icon fontSize='small'>assignment</Icon>,
+      route: '/updateClientForm/:name',
+      component: <UpdateClientForm />,
+    }
+  ]
   },
   {
     type: 'title',
