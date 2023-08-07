@@ -1,5 +1,7 @@
 package com.sngular.skilltree.common.config;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +26,7 @@ public class MaintenanceTasks {
                .ifPresent(result -> log.debug("Job Set Deleted result :" + result));
   }
 
-  @Scheduled(cron = "0 0 * * * *")
+  @Scheduled(cron = "0 * * * * *")
   public void fixAssignable() {
     final var queryStr = new StringBuilder();
     queryStr.append("""
@@ -35,12 +37,24 @@ public class MaintenanceTasks {
     assignableConfiguration
       .getTitles()
       .forEach(title -> queryStr.append(" and not m.title =~\"").append(title).append(".*\" "));
-    queryStr.append("and not pr.name in [").append(String.join(",", assignableConfiguration.getJobCodeList())).append("] ");
-    queryStr.append("and not t.shortName in [").append(String.join(",", assignableConfiguration.getShortTeamNames())).append("] ");
+    queryStr.append("and not pr.name in [").append(strJoin(assignableConfiguration.getJobCodeList(), ',')).append("] ");
+    queryStr.append("and not t.shortName in [").append(strJoin(assignableConfiguration.getShortTeamNames(), ',')).append("] ");
     queryStr.append("""
                       SET m.assignable = true
                       RETURN true""");
 
     neo4jClient.query(queryStr.toString()).fetch().first().ifPresent(result -> log.debug("Job Set Assignable result :" + result));
+  }
+
+  private String strJoin(final List<String> strList, final char delimiter) {
+    final var srtBuilder = new StringBuilder();
+    final var strListIt = strList.iterator();
+    while (strListIt.hasNext()) {
+      srtBuilder.append(strListIt.next());
+      if (strListIt.hasNext()) {
+        srtBuilder.append(delimiter);
+      }
+    }
+    return srtBuilder.toString();
   }
 }
