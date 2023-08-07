@@ -1,16 +1,17 @@
-import { useParams } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import "../network.css";
-import MDBox from "../components/MDBox";
-import MDTypography from "../components/MDTypography";
-import Footer from "../components/Footer";
-import MDButton from "../components/MDButton";
-import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import '../network.css';
+
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
+import React, {useEffect, useState} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+
+import Footer from '../components/Footer';
+import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import MDBox from '../components/MDBox';
+import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
+import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
-import { useNavigate } from 'react-router-dom';
 
 
 const UpdateClientForm = () => {
@@ -28,11 +29,11 @@ const UpdateClientForm = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:9080/client/${name}`, {
-            method: "GET",
+        fetch(`http://http://${window.location.hostname}:9080:9080/client/${name}`, {
+            method: 'GET',
             headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
             },
         })
             .then((response) => response.json())
@@ -65,11 +66,11 @@ const UpdateClientForm = () => {
 
         event.preventDefault();
 
-        fetch(`http://localhost:9080/client/${clientData.name}`, {
-            method: "PUT",
+        fetch(`http://http://${window.location.hostname}:9080:9080/client/${clientData.name}`, {
+            method: 'PUT',
             headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
             },
             body: JSON.stringify(updatedClientData),
         })
@@ -112,9 +113,9 @@ const UpdateClientForm = () => {
                                 <MDBox>
                                     <MDTypography htmlFor="name">Name:</MDTypography>
                                     <MDInput
-                                        type="text"
-                                        id="name"
-                                        name="name"
+                                        type='text'
+                                        id='name'
+                                        name='name'
                                         value={clientData.name}
                                         onChange={handleChange}
                                         disabled
@@ -123,15 +124,15 @@ const UpdateClientForm = () => {
                                 <MDBox>
                                     <MDTypography htmlFor="industry">Industry:</MDTypography>
                                     <MDInput
-                                        type="text"
-                                        id="industry"
-                                        name="industry"
+                                        type='text'
+                                        id='industry'
+                                        name='industry'
                                         value={updatedClientData.industry}
                                         onChange={handleChange}
                                     />
                                 </MDBox>
                                 <MDBox>
-                                    <MDTypography htmlFor="country">Country:</MDTypography>
+                                    <MDTypography htmlFor='country'>Country:</MDTypography>
                                     <MDInput
                                         type="text"
                                         id="country"

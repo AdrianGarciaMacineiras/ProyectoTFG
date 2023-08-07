@@ -1,25 +1,27 @@
-import React, { useEffect, useState } from "react";
+import 'react-datepicker/dist/react-datepicker.css';
+import '../network.css';
+
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
-import TreeItem from "@mui/lab/TreeItem";
-import Checkbox from "@mui/material/Checkbox";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { format } from 'date-fns';
-import "../network.css";
-import VisGraph from 'react-vis-graph-wrapper';
-import MDBox from "../components/MDBox";
-import MDTypography from "../components/MDTypography";
-import Footer from "../components/Footer";
-import MDButton from "../components/MDButton";
-import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import {FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select} from '@mui/material';
 import Card from '@mui/material/Card';
+import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
+import {format} from 'date-fns';
+import React, {useEffect, useState} from 'react';
+import DatePicker from 'react-datepicker';
+import {useParams} from 'react-router-dom';
+import VisGraph from 'react-vis-graph-wrapper';
+
+import Footer from '../components/Footer';
+import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import MDBox from '../components/MDBox';
+import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
+import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
-import { Select, MenuItem, InputLabel, FormControl, FormGroup, FormControlLabel } from '@mui/material';
-import { useParams } from 'react-router-dom';
 
 const UpdatePersonForm = () => {
   const [form, setForm] = useState({
@@ -40,7 +42,7 @@ const UpdatePersonForm = () => {
   const [updatedPerson, setUpdatedPerson] = useState(null);
 
 
-  const { employeeId } = useParams();
+  const {employeeId} = useParams();
 
   const [skillList, setSkillList] = useState([]);
   const [searchSkill, setSearchSkill] = useState('');
@@ -62,60 +64,42 @@ const UpdatePersonForm = () => {
   const [tempCertificates, setTempCertificates] = useState(false);
 
   const [knowsForm, setKnowsForm] = useState({
-    LevelRequired: "",
-    minLevel: "",
-    minExp: "",
+    LevelRequired: '',
+    minLevel: '',
+    minExp: '',
   });
 
   const [certificateForm, setCertificateForm] = useState({
-    comments: "",
+    comments: '',
     date: new Date(),
   });
 
-  const [roleForm, setRoleForm] = useState({
-    role: "",
-    category: "",
-    initDate: new Date()
-  })
+  const [roleForm, setRoleForm] =
+      useState({role: '', category: '', initDate: new Date()})
 
-  const graphTemp = {
-    nodes: [],
-    edges: []
-  };
+  const graphTemp = {nodes: [], edges: []};
 
-  const [graph, setGraph] = useState({
-    nodes: [],
-    edges: []
-  });
+  const [graph, setGraph] = useState({nodes: [], edges: []});
 
   const [aux, setAux] = useState([]);
 
   const options = {
-    layout: {
-      improvedLayout: true
-    },
-    nodes: {
-      shape: "dot",
-      scaling: { min: 10, label: false }
-    },
+    layout: {improvedLayout: true},
+    nodes: {shape: 'dot', scaling: {min: 10, label: false}},
     edges: {
-      color: "#000000",
-      smooth: {
-        enabled: true,
-        type: "discrete",
-        roundness: 0.5
-      }
+      color: '#000000',
+      smooth: {enabled: true, type: 'discrete', roundness: 0.5}
     },
     groups: {
-      knows: { color: { background: 'red' }, borderWidth: 3 },
-      interest: { color: { background: 'blue' }, borderWidth: 3 },
-      work_with: { color: { background: 'green' }, borderWidth: 3 },
-      master: { color: { background: 'orange' }, borderWidth: 3 },
-      have_certificate: { color: { background: 'yellow' }, borderWidth: 3 },
-      position: { color: { background: 'white' }, borderWidth: 3 },
-      candidate: { color: { background: 'pink' }, borderWidth: 3 },
+      knows: {color: {background: 'red'}, borderWidth: 3},
+      interest: {color: {background: 'blue'}, borderWidth: 3},
+      work_with: {color: {background: 'green'}, borderWidth: 3},
+      master: {color: {background: 'orange'}, borderWidth: 3},
+      have_certificate: {color: {background: 'yellow'}, borderWidth: 3},
+      position: {color: {background: 'white'}, borderWidth: 3},
+      candidate: {color: {background: 'pink'}, borderWidth: 3},
     },
-    height: "800px",
+    height: '800px',
     physics: {
       barnesHut: {
         gravitationalConstant: -11500,
@@ -126,11 +110,7 @@ const UpdatePersonForm = () => {
       },
       minVelocity: 0.75
     },
-    configure: {
-      enabled: true,
-      filter: 'physics, layout',
-      showButton: true
-    },
+    configure: {enabled: true, filter: 'physics, layout', showButton: true},
     interaction: {
       hover: true,
       hoverConnectedEdges: true,
@@ -140,38 +120,38 @@ const UpdatePersonForm = () => {
   };
 
   const events = {
-    select: function (event) {
-      var { nodes, edges } = event;
+    select: function(event) {
+      var {nodes, edges} = event;
     }
   };
 
   const handleCheckboxChange = (event, arrayName) => {
-    const { checked } = event.target;
+    const {checked} = event.target;
 
-    if (arrayName === "interest") {
+    if (arrayName === 'interest') {
       setTempInterest(checked);
     }
-    if (arrayName === "master") {
+    if (arrayName === 'master') {
       setTempMaster(checked);
     }
-    if (arrayName === "work_with") {
+    if (arrayName === 'work_with') {
       setTempWorkWith(checked);
     }
-    if (arrayName === "knows") {
+    if (arrayName === 'knows') {
       setShowKnowsForm(true);
       setTempKnows(checked);
     }
-    if (arrayName === "certificates") {
+    if (arrayName === 'certificates') {
       setShowCertificateForm(true);
       setTempCertificates(checked);
     }
-
   };
 
-  const handleCancel = () => {
-    setShowCheckboxes(!showCheckboxes);
-    setSelectedNode(null);
-  }
+  const handleCancel =
+      () => {
+        setShowCheckboxes(!showCheckboxes);
+        setSelectedNode(null);
+      }
 
   const handleAddToArray = () => {
     if (showKnowsForm || showCertificateForm) {
@@ -182,21 +162,21 @@ const UpdatePersonForm = () => {
 
     if (tempInterest) {
       setForm((prevForm) => ({
-        ...prevForm,
-        interest: [...prevForm.interest, selectedNode.nodeId],
-      }));
+                ...prevForm,
+                interest: [...prevForm.interest, selectedNode.nodeId],
+              }));
     }
     if (tempMaster) {
       setForm((prevForm) => ({
-        ...prevForm,
-        master: [...prevForm.master, selectedNode.nodeId],
-      }));
+                ...prevForm,
+                master: [...prevForm.master, selectedNode.nodeId],
+              }));
     }
     if (tempWorkWith) {
       setForm((prevForm) => ({
-        ...prevForm,
-        work_with: [...prevForm.work_with, selectedNode.nodeId],
-      }));
+                ...prevForm,
+                work_with: [...prevForm.work_with, selectedNode.nodeId],
+              }));
     }
     if (tempKnows) {
       setShowKnowsForm(true);
@@ -224,14 +204,14 @@ const UpdatePersonForm = () => {
       minExp: knowsForm.minExp,
     };
     setUpdatedPerson((prevForm) => ({
-      ...prevForm,
-      knows: [...prevForm.knows, newKnowsItem],
-    }));
+                       ...prevForm,
+                       knows: [...prevForm.knows, newKnowsItem],
+                     }));
     setShowKnowsForm(false);
     setKnowsForm({
-      LevelRequired: "MANDATORY",
-      minLevel: "HIGH",
-      minExp: "",
+      LevelRequired: 'MANDATORY',
+      minLevel: 'HIGH',
+      minExp: '',
     });
     setShowKnowsForm(false);
   };
@@ -241,22 +221,23 @@ const UpdatePersonForm = () => {
     const newCertificateItem = {
       code: selectedNode.nodeId,
       comments: certificateForm.comments,
-      date: format(certificateForm.date, "dd-MM-yyyy"),
+      date: format(certificateForm.date, 'dd-MM-yyyy'),
     };
-    setUpdatedPerson((prevForm) => ({
-      ...prevForm,
-      certificates: [...prevForm.certificates, newCertificateItem],
-    }));
+    setUpdatedPerson(
+        (prevForm) => ({
+          ...prevForm,
+          certificates: [...prevForm.certificates, newCertificateItem],
+        }));
     setShowCertificateForm(false);
     setCertificateForm({
-      comments: "",
+      comments: '',
       date: new Date(),
     });
     setShowCertificateForm(false);
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const {name, value} = e.target;
     setUpdatedPerson({
       ...updatedPerson,
       code: form.code,
@@ -293,8 +274,8 @@ const UpdatePersonForm = () => {
     e.preventDefault();
     setIsAddRoleVisible(false);
     setRoleForm({
-      role: "",
-      category: "",
+      role: '',
+      category: '',
       date: new Date(),
     });
   };
@@ -304,15 +285,15 @@ const UpdatePersonForm = () => {
     const newRoleItem = {
       role: roleForm.role,
       category: roleForm.category,
-      initDate: format(roleForm.initDate, "dd-MM-yyyy"),
+      initDate: format(roleForm.initDate, 'dd-MM-yyyy'),
     };
     setUpdatedPerson((prevForm) => ({
-      ...prevForm,
-      roles: [...prevForm.roles, newRoleItem],
-    }));
+                       ...prevForm,
+                       roles: [...prevForm.roles, newRoleItem],
+                     }));
     setRoleForm({
-      role: "",
-      category: "",
+      role: '',
+      category: '',
       date: new Date(),
     });
 
@@ -321,9 +302,10 @@ const UpdatePersonForm = () => {
 
   const handleRemoveFromArray = (arrayName, nodeId) => {
     setUpdatedPerson((prevForm) => ({
-      ...prevForm,
-      [arrayName]: prevForm[arrayName].filter((element) => element.nodeId !== nodeId),
-    }));
+                       ...prevForm,
+                       [arrayName]: prevForm[arrayName].filter(
+                           (element) => element.nodeId !== nodeId),
+                     }));
   };
 
   const handleShowRoleList = (e) => {
@@ -335,65 +317,72 @@ const UpdatePersonForm = () => {
     const recursive = (dataList) => {
       var list = [];
       dataList.forEach((data) => {
-        list.push({ nodeId: data.code, name: data.name, children: recursive(data.subSkills) });
+        list.push({
+          nodeId: data.code,
+          name: data.name,
+          children: recursive(data.subSkills)
+        });
       });
       return list;
     };
 
-    fetch(`http://localhost:9080/skills`, {
-      method: "GET",
+    fetch(`http://http://${window.location.hostname}:9080:9080/skills`, {
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       },
     })
-      .then((response) => response.json())
-      .then((response) => {
-        const skillsData = recursive(response);
-        setSkillList(skillsData);
-      });
-    
-      fetch(`http://localhost:9080/person/${employeeId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-
-        const formattedBirthDate = data.birthDate ? format(new Date(data.birthDate), "dd-MM-yyyy") : format(new Date(), "dd-MM-yyyy");
-
-        setForm({
-          code: data.code,
-          employeeId: data.employeeId,
-          name: data.name,
-          surname: data.surname,
-          birthDate: formattedBirthDate,
-          title: data.title,
-          roles: data.roles || [],
-          knows: data.knows || [],
-          work_with: data.work_with || [],
-          master: data.master || [],
-          interest: data.interest || [],
-          certificates: data.certificates || [],
+        .then((response) => response.json())
+        .then((response) => {
+          const skillsData = recursive(response);
+          setSkillList(skillsData);
         });
 
-        setUpdatedPerson({
-          name: data.name,
-          surname: data.surname,
-          birthDate: formattedBirthDate,
-          title: data.title,
-          roles: data.roles || [],
-          knows: data.knows || [],
-          work_with: data.work_with || [],
-          master: data.master || [],
-          interest: data.interest || [],
-          certificates: data.certificates || [],
+    fetch(
+        `http://http://${window.location.hostname}:9080:9080/person/${
+            employeeId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          const formattedBirthDate = data.birthDate ?
+              format(new Date(data.birthDate), 'dd-MM-yyyy') :
+              format(new Date(), 'dd-MM-yyyy');
+
+          setForm({
+            code: data.code,
+            employeeId: data.employeeId,
+            name: data.name,
+            surname: data.surname,
+            birthDate: formattedBirthDate,
+            title: data.title,
+            roles: data.roles || [],
+            knows: data.knows || [],
+            work_with: data.work_with || [],
+            master: data.master || [],
+            interest: data.interest || [],
+            certificates: data.certificates || [],
+          });
+
+          setUpdatedPerson({
+            name: data.name,
+            surname: data.surname,
+            birthDate: formattedBirthDate,
+            title: data.title,
+            roles: data.roles || [],
+            knows: data.knows || [],
+            work_with: data.work_with || [],
+            master: data.master || [],
+            interest: data.interest || [],
+            certificates: data.certificates || [],
+          });
         });
-      });
-    
   }, [employeeId]);
 
 
@@ -404,25 +393,26 @@ const UpdatePersonForm = () => {
     setShowCertificateForm(false);
   };
 
-  const getTreeItemsFromData = (treeItems, searchValue) => {
-    const filteredItems = treeItems.filter((treeItemData) => {
-      const isMatched =
-        treeItemData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        getTreeItemsFromData(treeItemData.children, searchValue).length > 0;
+  const getTreeItemsFromData =
+      (treeItems, searchValue) => {
+        const filteredItems = treeItems.filter((treeItemData) => {
+          const isMatched = treeItemData.name.toLowerCase().includes(
+                                searchValue.toLowerCase()) ||
+              getTreeItemsFromData(treeItemData.children, searchValue).length >
+                  0;
 
-      return isMatched;
-    });
+          return isMatched;
+        });
 
     return filteredItems.map((treeItemData) => {
       const isMatched =
-        treeItemData.name.toLowerCase().includes(searchValue.toLowerCase());
+          treeItemData.name.toLowerCase().includes(searchValue.toLowerCase());
 
       if (isMatched) {
         return (
           <TreeItem
-            key={treeItemData.nodeId}
-            nodeId={treeItemData.nodeId}
-            label={
+        key = {treeItemData.nodeId} nodeId = {treeItemData.nodeId} label =
+        {
               <div onClick={(event) => handleNodeSelect(event, treeItemData)}>
                 {treeItemData.name}
               </div>
@@ -432,21 +422,17 @@ const UpdatePersonForm = () => {
             {getTreeItemsFromData(treeItemData.children, searchValue)}
           </TreeItem>
         );
-      }
+        }
 
-      return getTreeItemsFromData(treeItemData.children, searchValue);
-    });
+        return getTreeItemsFromData(treeItemData.children, searchValue);
+      });
   };
 
   const collapseAll = (e) => {
-    e.preventDefault();
-    setSkillList(
-      skillList.map((item) =>
-        Object.assign({}, item, {
-          expanded: false,
-        })
-      )
-    );
+      e.preventDefault();
+      setSkillList(skillList.map((item) => Object.assign({}, item, {
+        expanded: false,
+      })));
   };
 
   const DataTreeView = () => {
@@ -463,93 +449,93 @@ const UpdatePersonForm = () => {
   };
 
   if (!form.employeeId) {
-    return <div>Loading...</div>;
+      return <div>Loading...<
+                 /div>;
 }
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox pt={6} pb={3}>
-        <Grid container spacing={6}>
-          <Grid item xs={12}>
-            <Card>
-              <MDBox
-                mx={2} mt={-3} py={3} px={2} variant='gradient'
-                bgColor='info'
-                borderRadius='lg'
-                coloredShadow=
-                'info' >
-                <MDTypography variant='h6' color='white'>Create Person</MDTypography>
+          <MDBox pt = {6} pb = {3}><Grid container spacing = {6}>
+          <Grid item xs = {12}><Card>< MDBox
+      mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
+      bgColor = 'info'
+      borderRadius = 'lg'
+      coloredShadow =
+          'info' > <MDTypography variant = 'h6' color = 'white'>Create
+                       Person</MDTypography>
               </MDBox>
-              <form id="personForm">
-                <Grid container spacing={6}>
-                  <Grid item xs={6}>
-                    <MDBox pt={3}>
-                      <MDTypography variant='h6' fontWeight='medium'>Person Code:</MDTypography>
+          <form id = 'personForm'><Grid container spacing = {6}>
+          <Grid item xs = {6}><MDBox pt = {3}>
+          <MDTypography variant = 'h6' fontWeight = 'medium'>Person Code: <
+              /MDTypography>
                       <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" disabled/>
-                    </MDBox>
+          </MDBox>
                     <MDBox>
                       <MDTypography variant='h6' fontWeight='medium'>Employee ID:</MDTypography>
-                      <MDInput type="text" value={form.employeeId} onChange={handleInputChange} name="employeeId" />
-                    </MDBox>
+          <MDInput type = 'text' value = {form.employeeId} onChange =
+               {handleInputChange} name = 'employeeId' />
+          </MDBox>
                     <MDBox>
                       <MDTypography variant='h6' fontWeight='medium'>Name:</MDTypography>
-                      <MDInput type="text" value={updatedPerson.name} onChange={handleInputChange} name="name" />
-                    </MDBox>
+          <MDInput type = 'text' value = {updatedPerson.name} onChange =
+               {handleInputChange} name = 'name' />
+          </MDBox>
                     <MDBox>
                       <MDTypography variant='h6' fontWeight='medium'>Surname:</MDTypography>
-                      <MDInput type="text" value={updatedPerson.surname} onChange={handleInputChange} name="surname" />
-                    </MDBox>
+          <MDInput type = 'text' value = {updatedPerson.surname} onChange =
+               {handleInputChange} name = 'surname' />
+          </MDBox>
                     <MDBox>
-                      <MDTypography variant='h6' fontWeight='medium'>Birth Date:</MDTypography>
-                      <DatePicker
-                        selected={birthDate}
-                        dateFormat="dd-MM-yyyy"
-                        onSelect={(date) => setBirthDate(date)}
-                        onChange={(date) => handleInputChange({ target: { name: "birthDate", value: format(date, 'dd-MM-yyyy') } })}
-                      />
-                    </MDBox>
-                    <MDBox>
-                      <MDTypography variant='h6' fontWeight='medium'>Title:</MDTypography>
+                      <MDTypography variant='h6' fontWeight='medium'>Birth Date:</MDTypography><
+          DatePicker
+      selected = {birthDate} dateFormat = 'dd-MM-yyyy'
+      onSelect = {(date) => setBirthDate(date)} onChange =
+      {(date) => handleInputChange(
+           {target: {name: 'birthDate', value: format(date, 'dd-MM-yyyy')}})
+      } />
+                    </MDBox > <MDBox>
+          <MDTypography variant = 'h6' fontWeight = 'medium'>Title: <
+              /MDTypography>
                       <MDInput type="text" value={updatedPerson.title} onChange={handleInputChange} name="title" />
-                    </MDBox>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <MDBox>
-                      <MDTypography variant='h6' fontWeight='medium'>Roles:</MDTypography>
+          </MDBox>
+                  </Grid><Grid item xs = {6}><MDBox>
+          <MDTypography variant = 'h6' fontWeight = 'medium'>Roles: <
+              /MDTypography>
                       {!isAddRoleVisible && (
                         <MDBox>
                           <MDButton variant="gradient" color="dark" onClick={handleShowAddRoleForm}>Add Role</MDButton>
-                        </MDBox>
+          </MDBox>
                       )}
                       {isAddRoleVisible && (
                         <MDBox>
                           <MDBox>
                             <MDTypography variant='h6' fontWeight='medium'>Role:</MDTypography>
-                            <MDInput type="text" value={roleForm.role} onChange={(e) => setRoleForm({ ...roleForm, role: e.target.value })} />
-                          </MDBox>
-                          <MDBox>
-                            <MDTypography variant='h6' fontWeight='medium'>Category:</MDTypography>
+          <MDInput type = 'text' value = {roleForm.role} onChange =
+           {(e) => setRoleForm({...roleForm, role: e.target.value})
+           } />
+                          </MDBox><MDBox>
+          <MDTypography variant = 'h6' fontWeight = 'medium'>Category: <
+              /MDTypography>
                             <MDInput type="text" value={roleForm.category} onChange={(e) => setRoleForm({ ...roleForm, category: e.target.value })} />
-                          </MDBox>
+          </MDBox>
                           <MDBox>
-                            <MDTypography variant='h6' fontWeight='medium'>Init Date:</MDTypography>
-                            <DatePicker
-                              selected={roleForm.initDate}
-                              dateFormat="dd-MM-yyyy"
+                            <MDTypography variant='h6' fontWeight='medium'>Init Date:</MDTypography><
+          DatePicker
+      selected = {roleForm.initDate} dateFormat = 'dd-MM-yyyy'
                               onSelect={(date) => setRoleForm({ ...roleForm, initDate: date })}
                               onChange={(date) => setRoleForm({ ...roleForm, initDate: date })}
                             />
                           </MDBox>
                           <MDBox>
-                            <MDButton variant="gradient" color="dark" onClick={(e) => handleAddRoleSubmit(e)}>Save</MDButton>
+                            <MDButton variant='gradient' color='dark' onClick={(e) => handleAddRoleSubmit(e)}>Save</MDButton>
                             <MDButton variant="gradient" color="dark" onClick={handleCancelAddRole}>Cancel</MDButton>
                           </MDBox>
                         </MDBox>
                       )}
                       {updatedPerson.roles?.length > 0 && (
                         <MDBox>
-                          <MDButton variant="gradient" color="dark" onClick={handleShowRoleList}>Show Role List</MDButton>
+                          <MDButton variant='gradient' color='dark' onClick={handleShowRoleList}>Show Role List</MDButton>
                           {isShowRoleListVisible && (
                             <MDBox>
                               {updatedPerson.roles.map((role, index) => (
@@ -557,36 +543,36 @@ const UpdatePersonForm = () => {
                                   <MDTypography variant='h6' fontWeight='medium'>Role: {role.role}</MDTypography>
                                   <MDTypography variant='h6' fontWeight='medium'>Category: {role.category}</MDTypography>
                                   <MDTypography variant='h6' fontWeight='medium'>Init Date: {role.initDate}</MDTypography>
-                                  <MDButton variant="gradient" color="dark" onClick={() => handleRemoveFromArray("roles", index)}>Remove</MDButton>
+                                  <MDButton variant='gradient' color='dark' onClick={() => handleRemoveFromArray('roles', index)}>Remove</MDButton>
                                 </MDBox>
                               ))}
                             </MDBox>
                           )}
                         </MDBox>
-                      )}
-                    </MDBox>
+                      )
+      }</MDBox>
                     <MDBox>
                       <MDButton variant="gradient" color="dark" onClick={collapseAll}> Collapse all </MDButton>
-                      <MDBox>
-                        <MDInput
-                          type="text"
-                          value={searchSkill}
-                          onChange={(e) => setSearchSkill(e.target.value)}
-                          placeholder="Search"
-                        />
-                      </MDBox>
+      <MDBox>< MDInput
+  type = 'text'
+  value = {searchSkill} onChange =
+      {(e) => setSearchSkill(e.target.value)} placeholder =
+          'Search' / > </MDBox>
                       <DataTreeView />
-                    </MDBox>
+      </MDBox>
 
                     {selectedNode && showCheckboxes && (
                       <Grid item xs={6}>
-                        <br />
-                        <MDBox
-                          mx={2} mt={-3} py={3} px={2} variant='gradient'
-                          bgColor='info'
-                          borderRadius='lg'
-                          coloredShadow='info' >
-                          <MDTypography variant='h6' color='white'>Select element: {selectedNode.name}</MDTypography>
+                        <br /><
+      MDBox
+  mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
+  bgColor = 'info'
+  borderRadius = 'lg'
+  coloredShadow =
+      'info' >
+      <MDTypography variant = 'h6' color = 'white'>Select element: {selectedNode
+                                                                        .name}<
+          /MDTypography>
                           <FormGroup>
                             <FormControlLabel
                               label="Knows"
@@ -595,8 +581,8 @@ const UpdatePersonForm = () => {
                                   checked={tempKnows}
                                   onChange={(e) => handleCheckboxChange(e, "knows")}
                                   value={selectedNode.nodeId}
-                                />}
-                            />
+                                />
+} />
                             <FormControlLabel
                               label="Work With"
                               control={
@@ -604,8 +590,9 @@ const UpdatePersonForm = () => {
                                   checked={tempWorkWith}
                                   onChange={(e) => handleCheckboxChange(e, "work_with")}
                                   value={selectedNode.nodeId}
-                                />}
-                            />
+                                / >
+}
+/>
                             <FormControlLabel
                               label="Interest"
                               control={
@@ -613,8 +600,9 @@ const UpdatePersonForm = () => {
                                   checked={tempInterest}
                                   onChange={(e) => handleCheckboxChange(e, "interest")}
                                   value={selectedNode.nodeId}
-                                />}
-                            />
+                                / >
+}
+/>
                             <FormControlLabel
                               label="Master"
                               control={
@@ -622,8 +610,9 @@ const UpdatePersonForm = () => {
                                   checked={tempMaster}
                                   onChange={(e) => handleCheckboxChange(e, "master")}
                                   value={selectedNode.nodeId}
-                                />}
-                            />
+                                / >
+}
+/>
                             <FormControlLabel
                               label="Certificate"
                               control={
@@ -631,45 +620,50 @@ const UpdatePersonForm = () => {
                                   checked={tempCertificates}
                                   onChange={(e) => handleCheckboxChange(e, "certificates")}
                                   value={selectedNode.nodeId}
-                                />}
+                                / >
+}
                             />
                           </FormGroup>
                           <MDButton onClick={handleAddToArray}>Add</MDButton>
                           <MDButton onClick={handleCancel}>Cancel</MDButton>
                         </MDBox>
                       </Grid>
-                    )}
+                    )
+                            }
 
                     {selectedNode && showKnowsForm && (
                       <Grid item xs={6}>
                         <br />
                         <MDBox
-                          mx={2} mt={-3} py={3} px={2} variant='gradient'
-                          bgColor='info'
-                          borderRadius='lg'
-                          coloredShadow='info'>
-                          <MDTypography variant='h6' color='white'>Knows Form: {selectedNode.name}</MDTypography>
+                    mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
+                    bgColor = 'info'
+                    borderRadius = 'lg'
+                    coloredShadow =
+                        'info' >
+                        <MDTypography variant = 'h6' color =
+                             'white'>Knows Form: {selectedNode
+                                                      .name}<
+                            /MDTypography>
                           <FormControl fullWidth>
-                            <InputLabel variant="standard" id="requiredLevelLabel">Level Required:</InputLabel>
-                            <Select
-                              labelId="requiredLevelLabel"
-                              value={knowsForm.LevelRequired}
-                              label="Level"
+                            <InputLabel variant="standard" id="requiredLevelLabel">Level Required:</InputLabel><
+                        Select
+                    labelId = 'requiredLevelLabel'
+                    value = {knowsForm.LevelRequired} label = 'Level'
                               onChange={(e) => setKnowsForm({ ...knowsForm, LevelRequired: e.target.value })}
                             >
-                              <MenuItem value="MANDATORY">Mandatory</MenuItem>
+                              <MenuItem value='MANDATORY'>Mandatory</MenuItem>
                               <MenuItem value="NICE_TO_HAVE">Nice to have</MenuItem>
                             </Select>
                           </FormControl>
                           <FormControl fullWidth>
-                            <InputLabel variant="standard" id="minLevelLabel">Min Level:</InputLabel>
+                            <InputLabel variant='standard' id='minLevelLabel'>Min Level:</InputLabel>
                             <Select
                               labelId="minLevelLabel"
                               value={knowsForm.minLevel}
                               onChange={(e) => setKnowsForm({ ...knowsForm, minLevel: e.target.value })}
                             >
                               <MenuItem value="HIGH">High</MenuItem>
-                              <MenuItem value="MEDIUM">Medium</MenuItem>
+                              <MenuItem value='MEDIUM'>Medium</MenuItem>
                               <MenuItem value="LOW">Low</MenuItem>
                             </Select>
                           </FormControl>
@@ -690,20 +684,26 @@ const UpdatePersonForm = () => {
                       <Grid item xs={6}>
                         <br />
                         <MDBox
-                          mx={2} mt={-3} py={3} px={2} variant='gradient'
-                          bgColor='info'
-                          borderRadius='lg'
-                          coloredShadow='info'>
-                          <MDTypography variant='h6' color='white'>Certificate Form:{selectedNode.name}</MDTypography>
+                              mx = {2} mt = {-3} py = {3} px = {2} variant =
+                                  'gradient'
+                              bgColor = 'info'
+                              borderRadius = 'lg'
+                              coloredShadow =
+                                  'info' >
+                                  <MDTypography variant = 'h6' color =
+                                       'white'>Certificate Form: {selectedNode
+                                                                      .name}<
+                                      /MDTypography>
                           <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
                             bgColor='info'
                             borderRadius='lg'
                             coloredShadow='info' >
-                            <MDTypography variant='h6' fontWeight='medium'>Comments:</MDTypography>
-                            <MDInput
-                              type="text"
+                            <MDTypography variant='h6' fontWeight='medium'>Comments:</MDTypography><
+                                  MDInput
+                              type = 'text'
                               value={certificateForm.comments}
-                              onChange={(e) => setCertificateForm({ ...certificateForm, comments: e.target.value })}
+                              onChange={
+  (e) => setCertificateForm({...certificateForm, comments: e.target.value})}
                             />
                           </MDBox>
                           <MDBox>
@@ -719,7 +719,7 @@ const UpdatePersonForm = () => {
                         </MDBox>
                       </Grid>
                     )}
-                    <MDButton color="black" onClick={handleSubmit}>Submit</MDButton>
+                    <MDButton color='black' onClick={handleSubmit}>Submit</MDButton>
                   </Grid>
                 </Grid>
               </form>
@@ -733,28 +733,30 @@ const UpdatePersonForm = () => {
           <Grid item xs={12}>
             <Card>
               <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
-                bgColor='info'
-                borderRadius='lg'
-                coloredShadow='info' >
-                <MDTypography variant='h6' color='white'>Person Graph</MDTypography>
+                              bgColor = 'info'
+                              borderRadius = 'lg'
+                              coloredShadow =
+                                  'info' >
+                                  <MDTypography variant = 'h6' color = 'white'>
+                                      Person Graph<
+                                          /MDTypography>
               </MDBox>
-              <MDBox pt={3}>
-                <VisGraph
-                  graph={graph}
-                  options={options}
-                  events={events}
-                  getNetwork={network => {
-                    //  if you want access to vis.js network api you can set the state in a parent component using this property
-                  }}
-                />
-              </MDBox>
+                                  <MDBox pt = {3}>< VisGraph
+                              graph = {graph} options = {options} events =
+                                  {events} getNetwork = {
+                                    network => {
+                                      //  if you want access to vis.js network
+                                      //  api you can set the state in a parent
+                                      //  component using this property
+                                    }
+                                  } />
+              </MDBox >
 
-            </Card>
+                                  </Card>
           </Grid>
-        </Grid>
-      </MDBox>
-      <Footer />
-    </DashboardLayout>
+                                  </Grid>
+      </MDBox><Footer /><
+                                  /DashboardLayout>
   );
 }
 
