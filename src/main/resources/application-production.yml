@@ -1,6 +1,6 @@
 logging:
   level:
-    org.springframework: DEBUG
+    org.springframework: ${LOG_LEVEL}
 spring:
   neo4j:
     uri: ${NEO4J_URI}

@@ -1,5 +1,7 @@
 package com.sngular.skilltree.contract;
 
+import java.util.List;
+
 import com.sngular.skilltree.api.PeopleApi;
 import com.sngular.skilltree.api.PersonApi;
 import com.sngular.skilltree.api.model.CandidateDTO;
@@ -14,13 +16,9 @@ import com.sngular.skilltree.contract.mapper.PositionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@RestController
 @RequiredArgsConstructor
-public class PeopleController implements PeopleApi, PersonApi {
+public class PeopleController extends AbstractController implements PeopleApi, PersonApi {
 
     private final PeopleService peopleService;
 

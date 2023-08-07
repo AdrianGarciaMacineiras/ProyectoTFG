@@ -4,19 +4,14 @@ import com.sngular.skilltree.api.CandidateApi;
 import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedCandidateDTO;
 import com.sngular.skilltree.application.CandidateService;
-import com.sngular.skilltree.application.PositionService;
 import com.sngular.skilltree.application.updater.CandidateUpdater;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@RestController
 @RequiredArgsConstructor
-public class CandidateController implements CandidateApi {
+public class CandidateController extends AbstractController implements CandidateApi {
 
     private final CandidateService candidateService;
 

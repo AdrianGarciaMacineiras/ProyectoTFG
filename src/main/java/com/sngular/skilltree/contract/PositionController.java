@@ -1,25 +1,21 @@
 package com.sngular.skilltree.contract;
 
+import java.util.List;
+
 import com.sngular.skilltree.api.PositionApi;
 import com.sngular.skilltree.api.model.CandidateDTO;
 import com.sngular.skilltree.api.model.PatchedPositionDTO;
 import com.sngular.skilltree.api.model.PositionDTO;
-import com.sngular.skilltree.api.model.PositionSkillDTO;
 import com.sngular.skilltree.application.PositionService;
 import com.sngular.skilltree.application.updater.PositionUpdater;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
 import com.sngular.skilltree.contract.mapper.PositionMapper;
-import com.sngular.skilltree.model.Position;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@RestController
 @RequiredArgsConstructor
-public class PositionController implements PositionApi {
+public class PositionController extends AbstractController implements PositionApi {
 
     private final PositionService positionService;
 
