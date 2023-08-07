@@ -111,7 +111,7 @@ const ListPeople =
       <div
     role = 'tabpanel'
     hidden =
-        {value !== index} id = {`simple-tabpanel-${index}`} aria - labelledby = {`simple-tab-${
+        {value !== index} id = {`simple-tabpanel-${index}`} aria-labelledby = {`simple-tab-${
                                                                                     index}`} {...other} > {value ===
                                                                                                                index &&
                                                                                                            (<MDBox sx = {
@@ -171,17 +171,14 @@ const ListPeople =
                                                                                                               <KeyboardArrowDownIcon />
       }
       </IconButton>
-            </Tooltip><
-          /TableCell>
-          <TableCell align="left">{row.code}</TableCell><
-          TableCell align = 'left'>{row.name}<
-          /TableCell>
-          <TableCell align="left">{row.surname}</TableCell><
-          TableCell align = 'left'>{row.employeeId}<
-          /TableCell>
+            </Tooltip></TableCell>
+          <TableCell align="left">{row.code}</TableCell>
+          <TableCell align = 'left'>{row.name}</TableCell>
+          <TableCell align="left">{row.surname}</TableCell>
+          <TableCell align = 'left'>{row.employeeId}</TableCell>
           <TableCell align="left">{row.birthDate}</TableCell>
           <TableCell><Tooltip title = 'Update element'>< IconButton
-      aria - label = 'update row'
+      aria-label = 'update row'
       size = 'small'
       onClick = {(event) => handleUpdate(event, row.employeeId)} >
           {<Update />}</IconButton>
@@ -211,10 +208,9 @@ const ListPeople =
             {
               borderBottom: 1, borderColor: 'divider'
             }
-          }>< Tabs
+          }><Tabs
 value = {valor} onChange = {(event, newValue) =>
-                                handleChangeTab(event, newValue, row)} aria -
-    label = 'basic tabs example' > < Tab label = 'Knows' {
+                                handleChangeTab(event, newValue, row)} aria-label = 'basic tabs example'> <Tab label = 'Knows' {
   ...a11yProps(0)
 }
 />
@@ -290,8 +286,7 @@ const handleChangeRowsPerPage = (event) => {
   justifyContent = 'space-between'
   alignItems =
       'center' >
-      <MDTypography variant = 'h6' color = 'white'>People List<
-          /MDTypography>
+      <MDTypography variant = 'h6' color = 'white'>People List</MDTypography>
                 <MDBox display="flex" justifyContent="flex-end">
                   <Tooltip title="Add item">
                     <IconButton aria-label="add row" size="small" onClick={handleAdd}>
@@ -303,14 +298,12 @@ const handleChangeRowsPerPage = (event) => {
       <Table sx =
        {
          { minWidth: 650 }
-       } aria -
-           label = 'simple table'><TableHead sx = {
+       } aria-label = 'simple table'><TableHead sx = {
         {
           display: 'table-header-group'
         }
-      }><TableRow><TableCell width = '100' component = 'th' scope = 'row'><
-      IconButton
-  aria - label = 'expand row'
+      }><TableRow><TableCell width = '100' component = 'th' scope = 'row'><IconButton
+  aria-label = 'expand row'
   size = 'small'
   onClick =
       {() => setOpen(!open)} >
@@ -320,35 +313,30 @@ const handleChangeRowsPerPage = (event) => {
                       </TableCell>
       <TableCell align = 'left' onClick = {() => handleSortChange('code')}>
       <strong>{
-          orderBy === 'code' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}<
-          /strong>
+          orderBy === 'code' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
                         Code
                       </TableCell>
       <TableCell align = 'left' onClick = {() => handleSortChange('name')}>
       <strong>{
-          orderBy === 'name' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}<
-          /strong>
+          orderBy === 'name' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
                         Name
                       </TableCell>
       <TableCell align = 'left' onClick = {() => handleSortChange('surname')}>
       <strong>{
           orderBy === 'surname' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
-                                  null}<
-          /strong>
+                                  null}</strong>
                         Surname
                       </TableCell>
       <TableCell align =
            'left' onClick = {() => handleSortChange('employeeId')}><strong>{
           orderBy === 'employeeId' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
-                                     null}<
-          /strong>
+                                     null}</strong>
                         EmployeeId
                       </TableCell>
       <TableCell align = 'left' onClick = {() => handleSortChange('birthDate')}>
       <strong>{
           orderBy === 'birthDate' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
-                                    null}<
-          /strong>
+                                    null}</strong>
                         Birth date
                       </TableCell>
       </TableRow>

@@ -117,7 +117,7 @@ const UpdateClient =
                         <TableCell>
                           <Tooltip title='Update element'>
                             <IconButton
-                aria - label = 'update row'
+                aria-label = 'update row'
                 size = 'small'
                               onClick={(event) => handleUpdate(event, client.name)}
                             >
@@ -152,8 +152,7 @@ const UpdateClient =
               />
     </Card>
           </Grid></Grid>
-      </MDBox><
-    /DashboardLayout>
+      </MDBox></DashboardLayout>
   );
 };
 
