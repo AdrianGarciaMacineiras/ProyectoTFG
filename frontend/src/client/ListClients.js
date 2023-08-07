@@ -34,10 +34,10 @@ const UpdateClient = () => {
 
   useEffect(() => {
     fetch(`http://${window.location.hostname}:9080/client`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
     })
       .then((response) => response.json())
@@ -58,8 +58,8 @@ const UpdateClient = () => {
     fetch(`http://localhost:9080/client/${name}`, {
       method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
     }).then(() => {
       window.location.reload();
@@ -108,16 +108,16 @@ const UpdateClient = () => {
                   <TableHead sx={{ display: "table-header-group" }}>
                     <TableRow>
                       <TableCell align="left">Code</TableCell>
-                      <TableCell align='left'>Name</TableCell>
+                      <TableCell align="left">Name</TableCell>
                       <TableCell align="left">Industry</TableCell>
-                      <TableCell align='left'>Country</TableCell>
+                      <TableCell align="left">Country</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {paginatedData.map((client) => (
                       <TableRow key={client.code}>
                         <TableCell align="left">{client.code}</TableCell>
-                        <TableCell align='left'>{client.name}</TableCell>
+                        <TableCell align="left">{client.name}</TableCell>
                         <TableCell align="left">{client.industry}</TableCell>
                         <TableCell align="left">{client.country}</TableCell>
                         <TableCell>

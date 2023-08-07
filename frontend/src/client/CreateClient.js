@@ -15,8 +15,12 @@ import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 import { useNavigate } from 'react-router-dom';
 
 const ClientForm = () => {
-  const [clientData, setClientData] =
-      useState({code: '', name: '', industry: '', country: ''});
+  const [clientData, setClientData] = useState({
+    code: '',
+    name: '',
+    industry: '',
+    country: ''
+  });
   const [graph, setGraph] = useState(null);
 
   const navigate = useNavigate();
@@ -30,10 +34,14 @@ const ClientForm = () => {
       scaling: { min: 10, label: false }
     },
     edges: {
-      color: '#000000',
-      smooth: {enabled: true, type: 'discrete', roundness: 0.5}
+      color: "#000000",
+      smooth: {
+        enabled: true,
+        type: "discrete",
+        roundness: 0.5
+      }
     },
-    height: '800px',
+    height: "800px",
     physics: {
       barnesHut: {
         gravitationalConstant: -11500,
@@ -59,13 +67,16 @@ const ClientForm = () => {
 
   const events = {
     select: function (event) {
-      var { nodes, edges } = event;
+      let { nodes, edges } = event;
     }
   };
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
-    setClientData((prevState) => ({...prevState, [name]: value}));
+    const { name, value } = e.target;
+    setClientData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   const createClient = () => {
@@ -107,7 +118,12 @@ const ClientForm = () => {
 
     createClient();
 
-    setClientData({code: '', name: '', industry: '', country: ''});
+    setClientData({
+      code: '',
+      name: '',
+      industry: '',
+      country: ''
+    });
   };
 
   return (
