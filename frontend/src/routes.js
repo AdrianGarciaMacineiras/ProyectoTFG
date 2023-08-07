@@ -31,15 +31,22 @@ const routes = [
     child: [
       {
         type: 'collapse',
-        name: 'Find Person',
+        name: 'Find by Code',
         key: 'findPerson',
         icon: <Icon fontSize='small'>dashboard</Icon>,
         route: '/findPerson',
         component: <FindPerson />,
-      },
-      {
+      },{
         type: 'collapse',
-        name: 'Create Person',
+        name: 'Find by Skills',
+        key: 'skill-list',
+        icon: <Icon fontSize='small'>login</Icon>,
+        route: '/skillList',
+        component: <SkillList />,
+        child: []
+      },{
+        type: 'collapse',
+        name: 'Create',
         key: 'createPerson',
         icon: <Icon fontSize='small'>assignment</Icon>,
         route: '/createPerson',
@@ -47,7 +54,7 @@ const routes = [
       },
       {
         type: 'collapse',
-        name: 'Update Person',
+        name: 'Update',
         key: 'updatePerson',
         icon: <Icon fontSize='small'>assignment</Icon>,
         route: '/updatePerson',
@@ -55,7 +62,7 @@ const routes = [
       },
       {
         type: 'hidden',
-        name: 'Update Person Form',
+        name: 'Update Form',
         key: 'updatePersonForm',
         icon: <Icon fontSize='small'>assignment</Icon>,
         route: '/updatePersonForm/:code',
@@ -70,7 +77,15 @@ const routes = [
     icon: <Icon fontSize='small'>handshake</Icon>,
     child: [{
       type: 'collapse',
-      name: 'Create Client',
+      name: 'Find',
+      key: 'findClient',
+      icon: <Icon fontSize='small'>table_view</Icon>,
+      route: '/findClient',
+      component: <FindClient />,
+      child: []
+    },{
+      type: 'collapse',
+      name: 'Create',
       key: 'createClient',
       icon: <Icon fontSize='small'>assignment</Icon>,
       route: '/createClient',
@@ -79,16 +94,7 @@ const routes = [
     },
     {
       type: 'collapse',
-      name: 'Find Client',
-      key: 'findClient',
-      icon: <Icon fontSize='small'>table_view</Icon>,
-      route: '/findClient',
-      component: <FindClient />,
-      child: []
-    },
-    {
-      type: 'collapse',
-      name: 'Update Client',
+      name: 'Update',
       key: 'updateClient',
       icon: <Icon fontSize='small'>table_view</Icon>,
       route: '/updateClient',
@@ -104,7 +110,7 @@ const routes = [
     child: [
       {
         type: 'collapse',
-        name: 'Find Project',
+        name: 'Find',
         key: 'findProject',
         icon: <Icon fontSize='small'>format_textdirection_r_to_l</Icon>,
         route: '/findProject',
@@ -113,7 +119,7 @@ const routes = [
       },
       {
         type: 'collapse',
-        name: 'Create Project',
+        name: 'Create',
         key: 'createProject',
         icon: <Icon fontSize='small'>assignment</Icon>,
         route: '/createProject',
@@ -128,7 +134,7 @@ const routes = [
     icon: <Icon fontSize='small'>badge</Icon>,
     child: [{
       type: 'collapse',
-      name: 'Find Position',
+      name: 'Find',
       key: 'findPosition',
       icon: <Icon fontSize='small'>notifications</Icon>,
       route: '/findPosition',
@@ -137,7 +143,7 @@ const routes = [
     },
     {
       type: 'collapse',
-      name: 'Create Position',
+      name: 'Create',
       key: 'createPosition',
       icon: <Icon fontSize='small'>assignment</Icon>,
       route: '/createPosition',
@@ -152,7 +158,7 @@ const routes = [
     icon: <Icon fontSize='small'>euro</Icon>,
     child: [{
       type: 'collapse',
-      name: 'Find Team',
+      name: 'Find',
       key: 'findTeam',
       icon: <Icon fontSize='small'>person</Icon>,
       route: '/findTeam',
@@ -161,7 +167,7 @@ const routes = [
     },
     {
       type: 'collapse',
-      name: 'Create Team',
+      name: 'Create',
       key: 'createTeam',
       icon: <Icon fontSize='small'>person</Icon>,
       route: '/createTeam',
@@ -182,14 +188,6 @@ const routes = [
       icon: <Icon fontSize='small'>receipt_long</Icon>,
       route: '/findSkill',
       component: <FindSkill />,
-      child: []
-    },{
-      type: 'collapse',
-      name: 'Skill List',
-      key: 'skill-list',
-      icon: <Icon fontSize='small'>login</Icon>,
-      route: '/skillList',
-      component: <SkillList />,
       child: []
     }]
   }
