@@ -18,7 +18,6 @@ public class WebSecurityConfig {
                 .allowedMethods(CorsConfiguration.ALL)
                 .allowedHeaders(CorsConfiguration.ALL)
                 .allowedOriginPatterns(CorsConfiguration.ALL);
-        ;
       }
     };
   }
