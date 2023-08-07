@@ -10,11 +10,9 @@ import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
 @RequiredArgsConstructor
-public class SkillController implements SkillsApi {
+public class SkillController extends AbstractController implements SkillsApi {
 
   private final SkillService skillService;
 

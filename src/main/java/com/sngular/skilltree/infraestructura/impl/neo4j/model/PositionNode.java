@@ -1,5 +1,8 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.EnumModeConverter;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateConverter;
 import lombok.Getter;
@@ -10,9 +13,6 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.schema.Relationship;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -45,7 +45,7 @@ public class PositionNode {
     @Property("charge")
     private String role;
 
-    @Relationship(type="FOR_PROJECT", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type = "FOR_PROJECT", direction = Relationship.Direction.OUTGOING)
     private ProjectNode project;
 
     @Relationship(type = "IN", direction = Relationship.Direction.OUTGOING)

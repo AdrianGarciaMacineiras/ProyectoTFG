@@ -23,28 +23,28 @@ public class ResolveServiceTeamNode {
     public List<Member> mapToMember(List<MemberRelationship> memberRelationshipList){
         final List<Member> memberList = new ArrayList<>();
         for (var memberRelationship : memberRelationshipList){
-            var people = mapper.fromNode(memberRelationship.people());
-            var member = Member.builder()
-                    .people(people)
-                    .charge(Objects.isNull(memberRelationship.charge())? EnumCharge.UNKNOWN.getValue() : memberRelationship.charge().getValue())
-                    .build();
-            memberList.add(member);
+          var people = mapper.fromNode(memberRelationship.people());
+          var member = Member.builder()
+                             .people(people)
+                             .charge(Objects.isNull(memberRelationship.charge()) ? EnumCharge.UNKNOWN.getValue() : memberRelationship.charge().getValue())
+                             .build();
+          memberList.add(member);
         }
-        return memberList;
+      return memberList;
     }
 
-    @Named("mapToMemberRelationship")
-    public List<MemberRelationship> mapToMemberRelationship(List<Member> memberList){
-        final List<MemberRelationship> memberRelationshipList = new ArrayList<>();
-        for (var member : memberList) {
-            var peopleNode = mapper.toNode(member.people());
-            MemberRelationship memberRelationship = MemberRelationship
-                    .builder()
-                    .people(peopleNode)
-                    .charge(EnumCharge.from(member.charge()))
-                    .build();
-            memberRelationshipList.add(memberRelationship);
-        }
-        return memberRelationshipList;
+  @Named("mapToMemberRelationship")
+  public List<MemberRelationship> mapToMemberRelationship(List<Member> memberList) {
+    final List<MemberRelationship> memberRelationshipList = new ArrayList<>();
+    for (var member : memberList) {
+      var peopleNode = mapper.toNode(member.people());
+      MemberRelationship memberRelationship = MemberRelationship
+        .builder()
+        .people(peopleNode)
+        .charge(EnumCharge.from(member.charge()))
+        .build();
+      memberRelationshipList.add(memberRelationship);
     }
+    return memberRelationshipList;
+  }
 }

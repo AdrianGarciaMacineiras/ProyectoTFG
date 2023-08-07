@@ -1555,7 +1555,7 @@ paths:
       summary: List all offices
       operationId: getOffices
       tags:
-        - office
+      - office
       responses:
         '200':
           description: A paged array of offices
@@ -1988,10 +1988,10 @@ components:
               level:
                 type: string
                 enum:
-                  - ADVANCED
-                  - MIDDLE
-                  - LOW
-                  - UNKNOWN
+                - ADVANCED
+                - MIDDLE
+                - LOW
+                - UNKNOWN
               experience:
                 type: integer
                 format: int32

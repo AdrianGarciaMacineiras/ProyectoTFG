@@ -1,5 +1,13 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import com.sngular.skilltree.infraestructura.SkillRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.SkillCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.SkillNodeMapper;
@@ -18,8 +26,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.data.neo4j.core.mapping.Neo4jMappingContext;
 import org.springframework.stereotype.Repository;
-
-import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -40,7 +46,7 @@ public class SkillRepositoryImpl implements SkillRepository {
         List<Skill> subSkills;
         List<Skill> skills = new ArrayList<>();
         List<SkillNode> skillNodeList = new ArrayList<>();
-        for(String parentNode : parentNodeCodes){
+        for (String parentNode : parentNodeCodes) {
             skillNodeList.add(crud.findByCode(parentNode));
         }
         for (SkillNode skillNode : skillNodeList) {
@@ -85,7 +91,7 @@ public class SkillRepositoryImpl implements SkillRepository {
     public List<StrategicTeamSkill> getStrategicSkillsUse() {
 
         var query = "MATCH (t:Team)-[k:STRATEGIC]-(s:Skill)-[r:WORK_WITH]-(p:People)--(t)\n " +
-                "RETURN t.name as teamName, collect(s.name) as skillList, count(s), collect(p) as teamMembers";
+                    "RETURN t.name as teamName, collect(s.name) as skillList, count(s), collect(p) as teamMembers";
 
         var result = new ArrayList<>(client
                 .query(query)

@@ -1,5 +1,17 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
+import static com.sngular.skilltree.model.EnumStatus.QUALIFICATION;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.BiFunction;
+
 import com.sngular.skilltree.common.exceptions.AssignUnableException;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.CandidateCrudRepository;
@@ -18,13 +30,6 @@ import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.*;
-import java.util.function.BiFunction;
-
-import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
-import static com.sngular.skilltree.model.EnumStatus.QUALIFICATION;
-
 @Repository
 @RequiredArgsConstructor
 public class CandidateRepositoryImpl implements CandidateRepository {
@@ -40,6 +45,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     private static final List<String> CANDIDATE_OPEN_STATUS = List.of("'KO'", "'OK'", "'UNKNOWN'");
 
     public static final String NULL = "null";
+
+    public static final String BIRTH_DATE = "birthDate";
 
     private final CandidateCrudRepository crud;
 
@@ -140,11 +147,12 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                 }
             }
         }
-        //+"AND p.assignable = TRUE "
+
         var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
-                " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) " +
-                "AND ANY (lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair.skillcode})))" +
-                " RETURN DISTINCT p", String.join(",", filter));
+                                  " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) " +
+                                  "AND ANY (lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair.skillcode}))" +
+                                  "AND p.assignable = TRUE )" +
+                                  " RETURN DISTINCT p", String.join(",", filter));
 
         var peopleList = client.query(query).fetchAs(People.class)
                 .mappedBy(getTypeSystemRecordPeopleBiFunction())
@@ -272,11 +280,11 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     private static People getPeople(Record result) {
         var people = result.get("p");
         return People.builder()
-                .name(people.get("name").asString())
-                .surname(people.get("surname").asString())
-                .employeeId(people.get("employeeId").asString())
-                .birthDate(NULL.equalsIgnoreCase(result.get("birthDate").asString()) ? null : result.get("birthDate").asLocalDate())
-                .code(people.get("code").asString())
+                     .name(people.get("name").asString())
+                     .surname(people.get("surname").asString())
+                     .employeeId(people.get("employeeId").asString())
+                     .birthDate(NULL.equalsIgnoreCase(result.get(BIRTH_DATE).asString()) ? null : result.get(BIRTH_DATE).asLocalDate())
+                     .code(people.get("code").asString())
                      .deleted(people.get("deleted").asBoolean())
                      .build();
     }
@@ -289,13 +297,13 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         return (TypeSystem t, Record result) -> {
             var people = result.get("p");
             return People.builder()
-                    .name(people.get("name").asString())
-                    .surname(people.get("surname").asString())
-                    .employeeId(people.get("employeeId").asString())
-                    .birthDate(NULL.equalsIgnoreCase(result.get("birthDate").asString()) ? null : result.get("birthDate").asLocalDate())
-                    .code(people.get("code").asString())
-                    .deleted(people.get("deleted").asBoolean())
-                    .build();
+                         .name(people.get("name").asString())
+                         .surname(people.get("surname").asString())
+                         .employeeId(people.get("employeeId").asString())
+                         .birthDate(NULL.equalsIgnoreCase(result.get(BIRTH_DATE).asString()) ? null : result.get(BIRTH_DATE).asLocalDate())
+                         .code(people.get("code").asString())
+                         .deleted(people.get("deleted").asBoolean())
+                         .build();
         };
     }
 

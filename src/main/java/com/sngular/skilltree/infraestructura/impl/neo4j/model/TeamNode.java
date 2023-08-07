@@ -42,10 +42,10 @@ public class TeamNode {
 
     private boolean deleted;
 
-  @LastModifiedDate
-  @Property(name = "_lastUpdated", readOnly = true)
-  @ConvertWith(converter = LocalDateTimeConverter.class)
-  private LocalDateTime lastUpdated;
+    @LastModifiedDate
+    @Property(name = "_lastUpdated", readOnly = true)
+    @ConvertWith(converter = LocalDateTimeConverter.class)
+    private LocalDateTime lastUpdated;
 
 
 }

@@ -43,7 +43,7 @@ public class TeamRepositoryImpl implements TeamRepository {
     @Override
     public Team save(Team team) {
         var teamNode = mapper.toNode(team);
-        for (var member : teamNode.getMembers()){
+        for (var member : teamNode.getMembers()) {
             var peopleNode = peopleCrudRepository.findByCode(member.people().getCode(), PeopleNode.class);
             if (Objects.isNull(peopleNode) || peopleNode.isDeleted()) {
                 throw new EntityNotFoundException("People", peopleNode.getCode());
@@ -66,24 +66,24 @@ public class TeamRepositoryImpl implements TeamRepository {
     @Override
     public List<Member> getMembers(String teamcode) {
 
-        var query = String.format("MATCH(t:Team{code:'%s'})-[r:MEMBER_OF]-(p:People) RETURN p,r",teamcode);
+        var query = String.format("MATCH(t:Team{code:'%s'})-[r:MEMBER_OF]-(p:People) RETURN p,r", teamcode);
 
         return new ArrayList<>(client.query(query)
-                .fetchAs(Member.class)
-                .mappedBy((TypeSystem t, Record queryResult) -> {
+                                     .fetchAs(Member.class)
+                                     .mappedBy((TypeSystem t, Record queryResult) -> {
 
-                    People person = getPeople(queryResult);
+                                         People person = getPeople(queryResult);
 
-                    var member = queryResult.get("r");
+                                         var member = queryResult.get("r");
 
-                    return Member.builder()
-                            .id(member.get("id").asString())
-                            .charge(NULL.equalsIgnoreCase(member.get("charge").asString()) ? null : member.get("charge").asString())
-                            .people(person)
-                            .build();
+                                         return Member.builder()
+                                                      .id(member.get("id").asString())
+                                                      .charge(NULL.equalsIgnoreCase(member.get("charge").asString()) ? null : member.get("charge").asString())
+                                                      .people(person)
+                                                      .build();
 
-                })
-                .all());
+                                     })
+                                     .all());
     }
 
     @Override

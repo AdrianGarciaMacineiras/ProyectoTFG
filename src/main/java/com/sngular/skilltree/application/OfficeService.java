@@ -1,12 +1,12 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.model.Office;
-
 import java.util.List;
+
+import com.sngular.skilltree.model.Office;
 
 public interface OfficeService {
 
-    Office findByCode(String officeCode);
+  Office findByCode(String officeCode);
 
-    List<Office> findAll();
+  List<Office> findAll();
 }

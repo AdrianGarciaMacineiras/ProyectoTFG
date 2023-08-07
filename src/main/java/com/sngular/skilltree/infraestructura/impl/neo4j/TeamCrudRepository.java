@@ -9,8 +9,8 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 public interface TeamCrudRepository extends Neo4jRepository<TeamNode, String>, CustomTeamRepository {
 
-    TeamNode findByCode(String teamCode);
+  TeamNode findByCode(String teamCode);
 
-    List<TeamProjection> findByDeletedIsFalse();
+  List<TeamProjection> findByDeletedIsFalse();
 
 }

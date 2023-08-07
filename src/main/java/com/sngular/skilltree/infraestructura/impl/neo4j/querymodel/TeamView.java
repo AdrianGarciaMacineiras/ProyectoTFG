@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface TeamView {
 
-    String getCode();
+  String getCode();
 
     String getShortName();
 

@@ -4,14 +4,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import com.sngular.skilltree.api.model.*;
+import com.sngular.skilltree.api.model.MemberDTO;
+import com.sngular.skilltree.api.model.PatchedTeamDTO;
+import com.sngular.skilltree.api.model.TeamDTO;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.Team;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
@@ -22,14 +23,15 @@ public interface TeamMapper {
 
     @AfterMapping
     default void setTags(Team team, @MappingTarget TeamDTO teamDto) {
-        teamDto.setTags( team.tags() );
+        teamDto.setTags(team.tags());
     }
 
     List<MemberDTO> toMember(List<Member> members);
 
     default MemberDTO.Charge toCharge(String charge) {
-        if(Objects.isNull(charge))
+        if (Objects.isNull(charge)) {
             charge = "unknown";
+        }
         return MemberDTO.Charge.valueOf(charge.toUpperCase());
     }
 
@@ -39,7 +41,7 @@ public interface TeamMapper {
 
     Team toTeam(TeamDTO teamDTO);
 
-    List<TeamDTO> toTeamsDTO (Collection<Team> teams);
+    List<TeamDTO> toTeamsDTO(Collection<Team> teams);
 
     Team toTeam(PatchedTeamDTO patchedTeamDTO);
 
