@@ -21,9 +21,10 @@ COPY --from=maven /opt/JAVA_APP/target/*.jar ./ubikservice.jar
 
 # CONFIG
 ENV NEO4J_URI=
-ENV NEO4J_USERBNAME=
+ENV NEO4J_USERNAME=
 ENV NEO4J_PASSWORD=
 ENV LOG_LEVEL=
+ENV PRING_PROFILES_ACTIVE=
 
 
 # Minimal healthcheck
