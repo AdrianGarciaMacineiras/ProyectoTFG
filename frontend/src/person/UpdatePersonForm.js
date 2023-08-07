@@ -326,7 +326,7 @@ const UpdatePersonForm = () => {
       return list;
     };
 
-    fetch(`http://http://${window.location.hostname}:9080:9080/skills`, {
+    fetch(`http://http://${window.location.hostname}:9080/skills`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -340,9 +340,7 @@ const UpdatePersonForm = () => {
         });
 
     fetch(
-        `http://http://${window.location.hostname}:9080:9080/person/${
-            employeeId}`,
-        {
+        `http://http://${window.location.hostname}:9080/person/${employeeId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -463,10 +461,9 @@ const UpdatePersonForm = () => {
       borderRadius = 'lg'
       coloredShadow =
           'info' > <MDTypography variant = 'h6' color = 'white'>Create
-                       Person</MDTypography>
-              </MDBox>
-          <form id = 'personForm'><Grid container spacing = {6}>
-          <Grid item xs = {6}><MDBox pt = {3}>
+      Person</MDTypography>
+              </MDBox><form id = 'personForm'>
+          <Grid container spacing = {6}><Grid item xs = {6}><MDBox pt = {3}>
           <MDTypography variant = 'h6' fontWeight = 'medium'>Person Code: <
               /MDTypography>
                       <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" disabled/>

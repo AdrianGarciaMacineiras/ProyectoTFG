@@ -29,7 +29,7 @@ const UpdateClientForm = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://http://${window.location.hostname}:9080:9080/client/${name}`, {
+        fetch(`http://http://${window.location.hostname}:9080/client/${name}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const UpdateClientForm = () => {
 
         event.preventDefault();
 
-        fetch(`http://http://${window.location.hostname}:9080:9080/client/${clientData.name}`, {
+        fetch(`http://http://${window.location.hostname}:9080/client/${clientData.name}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

@@ -65,7 +65,7 @@ const ListPeople =
       const handleDelete = (event, employeeId) => {
         event.preventDefault();
         fetch(
-            `http://http://${window.location.hostname}:9080:9080/person/${
+            `http://http://${window.location.hostname}:9080/person/${
                 employeeId}`,
             {
               method: 'DELETE',
@@ -83,7 +83,7 @@ const ListPeople =
 
         event.preventDefault();
 
-        fetch(`http://http://${window.location.hostname}:9080:9080/people/${updatedPeopleData.code}`, {
+        fetch(`http://http://${window.location.hostname}:9080/people/${updatedPeopleData.code}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

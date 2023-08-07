@@ -256,7 +256,7 @@ function CreatePosition() {
               setSkillList(skillsData);
             });
 
-        fetch(`http://http://${window.location.hostname}:9080:9080/project`, {
+        fetch(`http://http://${window.location.hostname}:9080/project`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -268,7 +268,7 @@ function CreatePosition() {
               setProjectList(response);
             });
 
-        fetch(`http://http://${window.location.hostname}:9080:9080/people`, {
+        fetch(`http://http://${window.location.hostname}:9080/people`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -280,7 +280,7 @@ function CreatePosition() {
               setPeopleList(data);
             });
 
-        fetch(`http://http://${window.location.hostname}:9080:9080/office`, {
+        fetch(`http://http://${window.location.hostname}:9080/office`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -296,7 +296,7 @@ function CreatePosition() {
   const createPosition = (event) => {
         const requestBody = JSON.stringify(form);
 
-        fetch('http://http://${window.location.hostname}:9080:9080/position', {
+        fetch('http://http://${window.location.hostname}:9080/position', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -512,23 +512,24 @@ function CreatePosition() {
           Role</MDTypography>
                       <MDInput type="text" value={form.role} onChange={handleInputChange} name="role" />
       <MDTypography variant = 'h6' fontWeight = 'medium'>Init
-          Date</MDTypography>
+  Date<
+      /MDTypography>
                       <DatePicker
                         selected={openingDate}
                         dateFormat="dd-MM-yyyy"
                         onSelect={(date) => setOpeningDate(date)}
                         onChange={(date) => handleInputChange({ target: { name: "openingDate", value: format(date, 'dd-MM-yyyy') } })}
                       />
-      <MDTypography variant = 'h6' fontWeight = 'medium'>
-          Mode</MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>Mode<
+          /MDTypography>
                       <FormControl fullWidth>
                         <InputLabel>Select an option</InputLabel>
       <Select name = 'mode' value = {form.mode} onChange = {handleInputChange}>
-      <MenuItem value = 'REMOTE'>
-          Remote</MenuItem>
+      <MenuItem value = 'REMOTE'>Remote<
+          /MenuItem>
                           <MenuItem value="PRESENTIAL">Presential</MenuItem>
-      <MenuItem value = 'MIX'>
-          Mix</MenuItem>
+      <MenuItem value = 'MIX'>Mix<
+          /MenuItem>
                           <MenuItem value="UNKNOWN">Unknown</MenuItem>
       </Select>
                       </FormControl>
@@ -537,11 +538,11 @@ function CreatePosition() {
                       <MDTypography variant='h6' fontWeight='medium'>Name</MDTypography>
       <MDInput type = 'text' value = {form.name} onChange =
            {handleInputChange} name = 'name' />
-      <MDTypography variant = 'h6' fontWeight = 'medium'>
-          Priority</MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>Priority<
+          /MDTypography>
                       <MDInput type="text" value={form.priority} onChange={handleInputChange} name="priority" />
-      <MDTypography variant = 'h6' fontWeight = 'medium'>
-          Charge</MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>Charge<
+          /MDTypography>
                       <MDTypography variant='h6' fontWeight='medium'>End Date</MDTypography><
       DatePicker
   selected = {closingDate} dateFormat = 'dd-MM-yyyy'
@@ -618,9 +619,8 @@ function CreatePosition() {
   bgColor = 'info'
   borderRadius = 'lg'
   coloredShadow = 'info' > <MDTypography variant = 'h6' color = 'white'>Position
-                               Graph</MDTypography>
-              </MDBox>
-      <MDBox pt = {3}>< VisGraph
+  Graph</MDTypography>
+              </MDBox><MDBox pt = {3}>< VisGraph
   graph = {graph} options = {options} events = {events} getNetwork = {
     network => {
       //  if you want access to vis.js network api you can set the state in a

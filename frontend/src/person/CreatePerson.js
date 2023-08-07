@@ -425,7 +425,7 @@ const CreatePerson =
           return list;
         };
 
-        fetch(`http://http://${window.location.hostname}:9080:9080/skills`, {
+        fetch(`http://http://${window.location.hostname}:9080/skills`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -511,12 +511,10 @@ const CreatePerson =
     mx = {2} mt = {-3} py = {3} px = {2} variant = 'gradient'
     bgColor = 'info'
     borderRadius = 'lg'
-    coloredShadow =
-        'info' > <MDTypography variant = 'h6' color = 'white'>Create
-                     Person</MDTypography>
-              </MDBox>
-        <form id = 'personForm'><Grid container spacing = {6}>
-        <Grid item xs = {6}><MDBox pt = {3}>
+    coloredShadow = 'info' > <MDTypography variant = 'h6' color = 'white'>Create
+    Person</MDTypography>
+              </MDBox><form id = 'personForm'>
+        <Grid container spacing = {6}><Grid item xs = {6}><MDBox pt = {3}>
         <MDTypography variant = 'h6' fontWeight = 'medium'>Person Code: <
             /MDTypography>
                       <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" />

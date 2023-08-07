@@ -46,19 +46,15 @@ const UpdateClient =
 
       const handleDelete = (event, name) => {
         event.preventDefault();
-        fetch(
-            `http://http://${window.location.hostname}:9080:9080/client/${
-                name}`,
-            {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-              },
-            })
-            .then(() => {
-              window.location.reload();
-            });
+        fetch(`http://http://${window.location.hostname}:9080/client/${name}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        }).then(() => {
+          window.location.reload();
+        });
       };
 
       const handleChangePage = (event, newPage) => {
