@@ -54,10 +54,6 @@ function CreatePosition() {
   const [minLevel, setMinLevel] = useState('');
   const [minExp, setMinExp] = useState(0);
 
-  const [searchProjectCode, setSearchProjectCode] = useState('');
-  const [searchProjectName, setSearchProjectName] = useState('');
-  const [searchPersonName, setSearchPersonName] = useState('');
-  const [searchOfficeName, setSearchOfficeName] = useState('');
   const [searchSkill, setSearchSkill] = useState('');
 
   const graphTemp = {nodes: [], edges: []};
@@ -296,7 +292,7 @@ function CreatePosition() {
   const createPosition = (event) => {
         const requestBody = JSON.stringify(form);
 
-        fetch('http://${window.location.hostname}:9080/position', {
+        fetch(`http://${window.location.hostname}:9080/position`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -493,8 +489,7 @@ function CreatePosition() {
                       </Grid >
 
                 <Grid item xs = {6}>
-                <MDTypography variant = 'h6' fontWeight = 'medium'>Manager<
-                          /MDTypography>
+                <MDTypography variant = 'h6' fontWeight = 'medium'>Manager</MDTypography>
                         <Autocomplete
                           options={peopleList}
                           getOptionLabel={(people) => people.name + " " + people.surname}
@@ -553,8 +548,7 @@ function CreatePosition() {
        {target: {name: 'closingDate', value: format(date, 'dd-MM-yyyy')}})
   } />
                       <MDTypography variant='h6' fontWeight='medium'>Active</MDTypography >
-      <FormControl fullWidth><InputLabel>Select an option<
-          /InputLabel>
+      <FormControl fullWidth><InputLabel>Select an option</InputLabel>
                         <Select name="active" value={form.active} onChange={handleInputChange}>
                           <MenuItem value="true">YES</MenuItem>
       <MenuItem value = 'false'>NO</MenuItem>
@@ -564,25 +558,21 @@ function CreatePosition() {
                         <MDBox>
                           <h2>Selected Item: {selectedItem.name}</h2>
       <FormControl fullWith>
-      <MDTypography variant = 'h6' fontWeight = 'medium'>Level Required<
-          /MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>Level Required</MDTypography>
                             <InputLabel>Select an Option</InputLabel>
       <Select value = {levelReq} onChange =
            {(e) => setLevelReq(e.target.value)}>
-      <MenuItem value = 'MANDATORY'>MANDATORY<
-          /MenuItem>
+      <MenuItem value = 'MANDATORY'>MANDATORY</MenuItem>
                               <MenuItem value="NICE_TO_HAVE">NICE TO HAVE</MenuItem>
       </Select>
                           </FormControl><FormControl fullWidth>
-      <MDTypography variant = 'h6' fontWeight = 'medium'>Level Required<
-          /MDTypography>
+      <MDTypography variant = 'h6' fontWeight = 'medium'>Level Required</MDTypography>
                             <InputLabel>
                               Select an option
                             </InputLabel>
       <Select value = {minLevel} onChange =
            {(e) => setMinLevel(e.target.value)}>
-      <MenuItem value = 'HIGH'>HIGH<
-          /MenuItem>
+      <MenuItem value = 'HIGH'>HIGH</MenuItem>
                               <MenuItem value="MEDIUM">MEDIUM</MenuItem>
       <MenuItem value = 'LOW'>
           LOW</MenuItem>
@@ -594,8 +584,7 @@ function CreatePosition() {
        {(e) => setMinExp(parseInt(e.target.value))
        } />
                           </FormControl>
-      <MDButton onClick = {handleModalSubmit}>Save<
-          /MDButton>
+      <MDButton onClick = {handleModalSubmit}>Save</MDButton>
                           <MDButton onClick={() => setSelectedItem(null)}>Cancel</MDButton>
       </MDBox>
                       )}
@@ -633,8 +622,7 @@ function CreatePosition() {
 
       </Card>
           </Grid></Grid>
-      </MDBox><Footer /><
-      /DashboardLayout>
+      </MDBox><Footer /></DashboardLayout>
   );
 }
 

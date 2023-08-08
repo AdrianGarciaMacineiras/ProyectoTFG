@@ -518,8 +518,7 @@ const CreatePerson =
     Person</MDTypography>
               </MDBox><form id = 'personForm'>
         <Grid container spacing = {6}><Grid item xs = {6}><MDBox pt = {3}>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Person Code: <
-            /MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Person Code: </MDTypography>
                       <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" />
         </MDBox>
                     <MDBox>
@@ -547,13 +546,11 @@ const CreatePerson =
           {target: {name: 'birthDate', value: format(date, 'dd-MM-yyyy')}})
     } />
                     </MDBox > <MDBox>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Title: <
-            /MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Title: </MDTypography>
                       <MDInput type="text" value={form.title} onChange={handleInputChange} name="title" />
         </MDBox>
                   </Grid><Grid item xs = {6}><MDBox>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Roles: <
-            /MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Roles: </MDTypography>
                       {!isAddRoleVisible && (
                         <MDBox>
                           <MDButton variant="gradient" color="dark" onClick={handleShowAddRoleForm}>Add Role</MDButton>
@@ -568,8 +565,7 @@ const CreatePerson =
            (e) => setRoleForm({...roleForm, role: e.target.value})
          } />
                           </MDBox><MDBox>
-        <MDTypography variant = 'h6' fontWeight = 'medium'>Category: <
-            /MDTypography>
+        <MDTypography variant = 'h6' fontWeight = 'medium'>Category: </MDTypography>
                             <MDInput type="text" value={roleForm.category} onChange={(e) => setRoleForm({ ...roleForm, category: e.target.value })} />
         </MDBox>
                           <MDBox>

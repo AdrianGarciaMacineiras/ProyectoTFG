@@ -80,16 +80,19 @@ const UpdateClientForm = () => {
 
     };
 
-    if (!clientData.name) {
-        return <div>Loading...</div>;
-    }
-
     return (
         <DashboardLayout>
             <DashboardNavbar />
             <MDBox pt={6} pb={3}>
                 <Grid container spacing={6}>
                     <Grid item xs={12}>
+                        {(!clientData.name ? (<Card><MDBox
+                                mx={2} mt={-3} py={3} px={2} variant='gradient'
+                                bgColor='info'
+                                borderRadius='lg'
+                                coloredShadow=
+                                'info' > <MDTypography variant='h6' color='white'>Loading...</MDTypography>
+                            </MDBox></Card>):(
                         <Card>
                             <MDBox
                                 mx={2} mt={-3} py={3} px={2} variant='gradient'
@@ -144,6 +147,7 @@ const UpdateClientForm = () => {
                                 <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
                             </form>
                         </Card>
+                        ))}
                     </Grid>
                 </Grid>
             </MDBox>
