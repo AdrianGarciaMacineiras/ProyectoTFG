@@ -1,27 +1,7 @@
 package com.sngular.skilltree.contract;
 
-import static com.sngular.skilltree.fixtures.CandidateFixtures.CANDIDATE_BY_CODE;
-import static com.sngular.skilltree.fixtures.CandidateFixtures.CANDIDATE_BY_CODE_JSON;
-import static com.sngular.skilltree.fixtures.CandidateFixtures.CANDIDATE_LIST;
-import static com.sngular.skilltree.fixtures.CandidateFixtures.LIST_CANDIDATE_JSON;
-import static com.sngular.skilltree.fixtures.CandidateFixtures.PATCH_CANDIDATE_BY_CODE_JSON;
-import static com.sngular.skilltree.fixtures.CandidateFixtures.UPDATED_CANDIDATE_BY_CODE;
-import static com.sngular.skilltree.fixtures.CandidateFixtures.UPDATED_CANDIDATE_BY_CODE_JSON;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.sngular.skilltree.CommonTestConfiguration;
-import com.sngular.skilltree.application.CandidateService;
-import com.sngular.skilltree.application.ClientService;
-import com.sngular.skilltree.application.OfficeService;
-import com.sngular.skilltree.application.PeopleService;
-import com.sngular.skilltree.application.PositionService;
-import com.sngular.skilltree.application.ProjectService;
-import com.sngular.skilltree.application.ResolveService;
-import com.sngular.skilltree.application.SkillService;
+import com.sngular.skilltree.application.*;
 import com.sngular.skilltree.application.updater.CandidateUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
@@ -38,6 +18,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static com.sngular.skilltree.fixtures.CandidateFixtures.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @WebMvcTest(controllers = CandidateController.class)
@@ -57,7 +44,7 @@ class CandidateControllerTest {
     void getCandidateByCode() throws Exception {
         when(candidateService.findByCode(anyString())).thenReturn(CANDIDATE_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                                .get("/candidate/c1120")
+                        .get("/api/candidate/c1120")
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(CANDIDATE_BY_CODE_JSON));
@@ -67,7 +54,7 @@ class CandidateControllerTest {
     void shouldGetCandidateByCodeFail() throws Exception {
         when(candidateService.findByCode(anyString())).thenThrow(new EntityNotFoundException("Candidate", "pc1124"));
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate/pc1124")
+                        .get("/api/candidate/pc1124")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -76,7 +63,7 @@ class CandidateControllerTest {
     void shouldDeleteCandidateBySuccess() throws Exception{
         when(candidateService.deleteByCode(anyString())).thenReturn(true);
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/candidate/pc1120")
+                        .delete("/api/candidate/pc1120")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful());
     }
@@ -85,7 +72,7 @@ class CandidateControllerTest {
     void shouldDeleteCandidateFail() throws Exception{
         when(candidateService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("Candidate", "pc1120"));
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/candidate/pc1120")
+                        .delete("/api/candidate/pc1120")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -94,7 +81,7 @@ class CandidateControllerTest {
     void updateCandidate() throws Exception {
         when(candidateUpdater.update(anyString(),any(Candidate.class))).thenReturn(UPDATED_CANDIDATE_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/candidate/c1120")
+                        .put("/api/candidate/c1120")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(UPDATED_CANDIDATE_BY_CODE_JSON))
@@ -105,7 +92,7 @@ class CandidateControllerTest {
     void patchCandidate() throws Exception{
         when(candidateUpdater.patch(anyString(),any(Candidate.class))).thenReturn(UPDATED_CANDIDATE_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch("/candidate/c1120")
+                        .patch("/api/candidate/c1120")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(PATCH_CANDIDATE_BY_CODE_JSON))

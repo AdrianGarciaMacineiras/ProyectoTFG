@@ -20,7 +20,6 @@ import static com.sngular.skilltree.fixtures.TeamFixtures.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,7 +40,7 @@ class TeamControllerTest {
     void getTeamByCode() throws Exception{
         when(teamService.findByCode(anyString())).thenReturn(TEAM_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/team/team1120")
+                        .get("/api/team/team1120")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(TEAM_BY_CODE_JSON));
@@ -51,7 +50,7 @@ class TeamControllerTest {
     void shouldDeleteTeamBySuccess() throws Exception{
         when(teamService.deleteByCode(anyString())).thenReturn(true);
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/team/team1120")
+                        .delete("/api/team/team1120")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful());
     }
@@ -60,7 +59,7 @@ class TeamControllerTest {
     void shouldDeleteTeamFail() throws Exception{
         when(teamService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("Opportunity", "itxtl1"));
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/team/team1120")
+                        .delete("/api/team/team1120")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -69,7 +68,7 @@ class TeamControllerTest {
     void updateTeam() throws Exception {
         when(teamUpdater.update(anyString(),any(Team.class))).thenReturn(UPDATED_TEAM_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/team/team1120")
+                        .put("/api/team/team1120")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(UPDATED_TEAM_BY_CODE_JSON))
@@ -81,7 +80,7 @@ class TeamControllerTest {
     void addTeam() throws Exception {
         when(teamService.create(any(Team.class))).thenReturn(TEAM_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/team")
+                        .post("/api/team")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(TEAM_BY_CODE_JSON))
@@ -93,7 +92,7 @@ class TeamControllerTest {
     void patchTeam() throws Exception {
         when(teamUpdater.patch(anyString(),any(Team.class))).thenReturn(UPDATED_TEAM_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch("/team/team1120")
+                        .patch("/api/team/team1120")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(PATCHED_TEAM_BY_CODE_JSON))
@@ -104,7 +103,7 @@ class TeamControllerTest {
     void getTeams() throws Exception {
         when(teamService.getAll()).thenReturn(TEAM_LIST);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/team")
+                        .get("/api/team")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(LIST_TEAM_JSON));
     }

@@ -1,7 +1,18 @@
 import Add from '@mui/icons-material/Add';
 import Clear from '@mui/icons-material/Clear';
 import Update from '@mui/icons-material/Update';
-import {IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip} from '@mui/material';
+import {
+    IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TablePagination,
+    TableRow,
+    Tooltip
+} from '@mui/material';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import React, {useEffect, useState} from 'react';
@@ -24,7 +35,7 @@ const UpdateClient =
 
 
       useEffect(() => {
-        fetch(`http://${window.location.hostname}:9080/client`, {
+          fetch(`http://${window.location.hostname}:9080/api/client`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -46,7 +57,7 @@ const UpdateClient =
 
       const handleDelete = (event, name) => {
         event.preventDefault();
-        fetch(`http://${window.location.hostname}:9080/client/${name}`, {
+          fetch(`http://${window.location.hostname}:9080/api/client/${name}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

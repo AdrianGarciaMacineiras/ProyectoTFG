@@ -1,35 +1,10 @@
 package com.sngular.skilltree.contract;
 
-import static com.sngular.skilltree.fixtures.PersonFixtures.LIST_PERSON_JSON;
-import static com.sngular.skilltree.fixtures.PersonFixtures.PATCH_PERSON_BY_CODE_JSON;
-import static com.sngular.skilltree.fixtures.PersonFixtures.PEOPLE_BY_CODE;
-import static com.sngular.skilltree.fixtures.PersonFixtures.PEOPLE_LIST;
-import static com.sngular.skilltree.fixtures.PersonFixtures.PERSON_BY_CODE_JSON;
-import static com.sngular.skilltree.fixtures.PersonFixtures.UPDATED_PEOPLE_BY_CODE;
-import static com.sngular.skilltree.fixtures.PersonFixtures.UPDATED_PERSON_BY_CODE_JSON;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.sngular.skilltree.CommonTestConfiguration;
-import com.sngular.skilltree.application.ClientService;
-import com.sngular.skilltree.application.OfficeService;
-import com.sngular.skilltree.application.PeopleService;
-import com.sngular.skilltree.application.PositionService;
-import com.sngular.skilltree.application.ProjectService;
-import com.sngular.skilltree.application.ResolveService;
-import com.sngular.skilltree.application.SkillService;
+import com.sngular.skilltree.application.*;
 import com.sngular.skilltree.application.updater.PeopleUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
-import com.sngular.skilltree.contract.mapper.CandidateMapper;
-import com.sngular.skilltree.contract.mapper.CandidateMapperImpl;
-import com.sngular.skilltree.contract.mapper.PeopleMapper;
-import com.sngular.skilltree.contract.mapper.PeopleMapperImpl;
-import com.sngular.skilltree.contract.mapper.PositionMapper;
-import com.sngular.skilltree.contract.mapper.PositionMapperImpl;
+import com.sngular.skilltree.contract.mapper.*;
 import com.sngular.skilltree.model.People;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -42,6 +17,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static com.sngular.skilltree.fixtures.PersonFixtures.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @WebMvcTest(controllers = PeopleController.class)
@@ -61,7 +44,7 @@ class PeopleControllerTest {
   void getPersonByCode() throws Exception {
     when(peopleService.findByCode(anyString())).thenReturn(PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                    .get("/person/1")
+                    .get("/api/person/1")
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(content().json(PERSON_BY_CODE_JSON));
   }
@@ -70,7 +53,7 @@ class PeopleControllerTest {
   void shouldGetPersonByCodeFail() throws Exception {
     when(peopleService.findByCode(anyString())).thenThrow(new EntityNotFoundException("People", "5"));
     mockMvc.perform(MockMvcRequestBuilders
-                    .get("/person/5")
+                    .get("/api/person/5")
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
   }
@@ -79,7 +62,7 @@ class PeopleControllerTest {
   void shouldDeletePersonBySuccess() throws Exception{
     when(peopleService.deleteByCode(anyString())).thenReturn(true);
     mockMvc.perform(MockMvcRequestBuilders
-                    .delete("/person/1")
+                    .delete("/api/person/1")
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().is2xxSuccessful());
   }
@@ -88,7 +71,7 @@ class PeopleControllerTest {
   void shouldDeletePersonFail() throws Exception{
     when(peopleService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("People", "1"));
     mockMvc.perform(MockMvcRequestBuilders
-                    .delete("/person/1")
+                    .delete("/api/person/1")
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
   }
@@ -97,7 +80,7 @@ class PeopleControllerTest {
   void updatePerson() throws Exception {
     when(peopleUpdater.update(anyString(), any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                    .put("/person/1")
+                    .put("/api/person/1")
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .content(PERSON_BY_CODE_JSON))
@@ -109,7 +92,7 @@ class PeopleControllerTest {
   void addPerson() throws Exception {
     when(peopleService.create(any(People.class))).thenReturn(PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                            .post("/people")
+                    .post("/api/people")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .content(PERSON_BY_CODE_JSON))
@@ -120,7 +103,7 @@ class PeopleControllerTest {
   void patchPerson() throws Exception {
     when(peopleUpdater.patch(anyString(), any(People.class))).thenReturn(UPDATED_PEOPLE_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                      .patch("/person/1")
+                    .patch("/api/person/1")
                       .contentType(MediaType.APPLICATION_JSON)
                       .accept(MediaType.APPLICATION_JSON)
                       .content(PATCH_PERSON_BY_CODE_JSON))
@@ -132,7 +115,7 @@ class PeopleControllerTest {
   void getPeople() throws Exception {
     when(peopleService.getAll()).thenReturn(PEOPLE_LIST);
     mockMvc.perform(MockMvcRequestBuilders
-                            .get("/people")
+                    .get("/api/people")
                             .accept(MediaType.APPLICATION_JSON))
             .andExpect(content().json(LIST_PERSON_JSON));
   }

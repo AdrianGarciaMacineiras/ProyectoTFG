@@ -5,7 +5,18 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import Update from '@mui/icons-material/Update';
-import {IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip} from '@mui/material';
+import {
+    IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TablePagination,
+    TableRow,
+    Tooltip
+} from '@mui/material';
 import Card from '@mui/material/Card';
 import Collapse from '@mui/material/Collapse';
 import Grid from '@mui/material/Grid';
@@ -39,7 +50,7 @@ const ListPeople =
       const navigate = useNavigate();
 
       useEffect(() => {
-        fetch(`http://${window.location.hostname}:9080/people`, {
+          fetch(`http://${window.location.hostname}:9080/api/people`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -64,7 +75,7 @@ const ListPeople =
 
       const handleDelete = (event, employeeId) => {
         event.preventDefault();
-        fetch(`http://${window.location.hostname}:9080/person/${employeeId}`, {
+          fetch(`http://${window.location.hostname}:9080/api/person/${employeeId}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -79,7 +90,7 @@ const ListPeople =
 
         event.preventDefault();
 
-        fetch(`http://${window.location.hostname}:9080/people/${updatedPeopleData.code}`, {
+        fetch(`http://${window.location.hostname}:9080/api/people/${updatedPeopleData.code}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

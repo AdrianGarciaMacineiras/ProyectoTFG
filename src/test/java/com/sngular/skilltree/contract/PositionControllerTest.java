@@ -43,7 +43,7 @@ class PositionControllerTest {
   void getOpportunityByCode() throws Exception {
     when(positionService.findByCode(anyString())).thenReturn(POSITION_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                      .get("/position/itxtl1")
+                    .get("/api/position/itxtl1")
                       .accept(MediaType.APPLICATION_JSON))
            .andExpect(status().is2xxSuccessful())
            .andExpect(content().json(POSITION_BY_CODE_JSON));
@@ -53,7 +53,7 @@ class PositionControllerTest {
   void shouldDeleteOpportunityBySuccess() throws Exception {
     when(positionService.deleteByCode(anyString())).thenReturn(true);
     mockMvc.perform(MockMvcRequestBuilders
-                      .delete("/position/itxtl1")
+                    .delete("/api/position/itxtl1")
                       .accept(MediaType.APPLICATION_JSON))
            .andExpect(status().is2xxSuccessful());
   }
@@ -62,7 +62,7 @@ class PositionControllerTest {
   void shouldDeleteOpportunityFail() throws Exception {
     when(positionService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("Opportunity", "itxtl1"));
     mockMvc.perform(MockMvcRequestBuilders
-                      .delete("/position/itxtl1")
+                    .delete("/api/position/itxtl1")
                       .accept(MediaType.APPLICATION_JSON))
            .andExpect(status().isNotFound());
   }
@@ -71,7 +71,7 @@ class PositionControllerTest {
   void updateOpportunity() throws Exception {
     when(positionUpdater.update(anyString(), any(Position.class))).thenReturn(UPDATED_POSITION_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                      .put("/position/itxtl1")
+                    .put("/api/position/itxtl1")
                       .contentType(MediaType.APPLICATION_JSON)
                       .accept(MediaType.APPLICATION_JSON)
                       .content(UPDATED_POSITION_BY_CODE_JSON))
@@ -83,7 +83,7 @@ class PositionControllerTest {
   void addOpportunity() throws Exception {
     when(positionService.create(any(Position.class))).thenReturn(POSITION_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                      .post("/position")
+                    .post("/api/position")
                       .contentType(MediaType.APPLICATION_JSON)
                       .accept(MediaType.APPLICATION_JSON)
                       .content(POSITION_BY_CODE_JSON))
@@ -95,7 +95,7 @@ class PositionControllerTest {
   void patchOpportunity() throws Exception {
     when(positionUpdater.patch(anyString(), any(Position.class))).thenReturn(UPDATED_POSITION_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                      .patch("/position/itxtl1")
+                    .patch("/api/position/itxtl1")
                       .contentType(MediaType.APPLICATION_JSON)
                       .accept(MediaType.APPLICATION_JSON)
                       .content(PATCH_POSITION_BY_CODE_JSON))
@@ -106,7 +106,7 @@ class PositionControllerTest {
   void getOpportunities() throws Exception {
     when(positionService.getAll()).thenReturn(POSITION_LIST);
     mockMvc.perform(MockMvcRequestBuilders
-                      .get("/position")
+                    .get("/api/position")
                       .accept(MediaType.APPLICATION_JSON))
            .andExpect(content().json(LIST_POSITION_JSON));
   }

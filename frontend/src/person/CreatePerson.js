@@ -428,7 +428,7 @@ const CreatePerson =
           return list;
         };
 
-        fetch(`http://${window.location.hostname}:9080/skills`, {
+          fetch(`http://${window.location.hostname}:9080/api/skills`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

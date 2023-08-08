@@ -115,7 +115,7 @@ const CreateProject = () => {
       return list;
     };
 
-    fetch(`http://${window.location.hostname}:9080/skills`, {
+    fetch(`http://${window.location.hostname}:9080/api/skills`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ const CreateProject = () => {
         setSkillList(skillsData);
       });
 
-    fetch(`http://${window.location.hostname}:9080/client`, {
+    fetch(`http://${window.location.hostname}:9080/api/client`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -271,7 +271,7 @@ const CreateProject = () => {
 
     const requestBody = JSON.stringify(form);
 
-    fetch(`http://${window.location.hostname}:9080/project`, {
+    fetch(`http://${window.location.hostname}:9080/api/project`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

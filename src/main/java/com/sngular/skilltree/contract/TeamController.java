@@ -1,31 +1,30 @@
 package com.sngular.skilltree.contract;
 
-import java.util.List;
-
 import com.sngular.skilltree.api.TeamApi;
 import com.sngular.skilltree.api.model.MemberDTO;
 import com.sngular.skilltree.api.model.PatchedTeamDTO;
 import com.sngular.skilltree.api.model.TeamDTO;
 import com.sngular.skilltree.application.TeamService;
 import com.sngular.skilltree.application.updater.TeamUpdater;
-import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.contract.mapper.TeamMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+@RestController
 @RequiredArgsConstructor
-public class TeamController extends AbstractController implements TeamApi {
+public class TeamController implements TeamApi {
 
-  private final TeamService teamService;
+    private final TeamService teamService;
 
-  private final TeamUpdater teamUpdater;
+    private final TeamUpdater teamUpdater;
 
-  private final TeamMapper teamMapper;
+    private final TeamMapper teamMapper;
 
-  private final PeopleMapper peopleMapper;
-
-  @Override
+    @Override
     public ResponseEntity<List<TeamDTO>> getTeams(){
         var teamList = teamService.getAll();
         return ResponseEntity.ok(teamMapper.toTeamsDTO(teamList));
@@ -76,3 +75,4 @@ public class TeamController extends AbstractController implements TeamApi {
     }
 
 }
+

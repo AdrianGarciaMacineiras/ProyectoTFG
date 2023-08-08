@@ -2,7 +2,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../network.css';
 
 import {Cancel} from '@mui/icons-material';
-import {FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography} from '@mui/material';
+import {FormControl, InputLabel, MenuItem, Select, Stack, TextField} from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
@@ -116,7 +116,7 @@ const CreateTeam =
       };
 
       useEffect(() => {
-        fetch(`http://${window.location.hostname}:9080/people`, {
+          fetch(`http://${window.location.hostname}:9080/api/people`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -171,7 +171,7 @@ const CreateTeam =
         const requestBody = JSON.stringify(form);
         console.log(requestBody);
 
-        fetch(`http://${window.location.hostname}:9080/team`, {
+          fetch(`http://${window.location.hostname}:9080/api/team`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -61,7 +61,7 @@ function FindSkill() {
   };
 
   const FindSkill = (skillCode) =>
-      fetch(`http://${window.location.hostname}:9080/skills/${skillCode}`, {
+      fetch(`http://${window.location.hostname}:9080/api/skills/${skillCode}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

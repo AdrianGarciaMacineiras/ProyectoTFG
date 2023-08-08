@@ -202,7 +202,7 @@ function CreatePosition() {
           return list;
         };
 
-        fetch(`http://${window.location.hostname}:9080/skills`, {
+      fetch(`http://${window.location.hostname}:9080/api/skills`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -215,7 +215,7 @@ function CreatePosition() {
               setSkillList(skillsData);
             });
 
-        fetch(`http://${window.location.hostname}:9080/project`, {
+      fetch(`http://${window.location.hostname}:9080/api/project`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -227,7 +227,7 @@ function CreatePosition() {
               setProjectList(response);
             });
 
-        fetch(`http://${window.location.hostname}:9080/people`, {
+      fetch(`http://${window.location.hostname}:9080/api/people`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -239,7 +239,7 @@ function CreatePosition() {
               setPeopleList(data);
             });
 
-        fetch(`http://${window.location.hostname}:9080/office`, {
+      fetch(`http://${window.location.hostname}:9080/api/office`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -252,7 +252,7 @@ function CreatePosition() {
               setSkillList(skillsData);
             });
 
-        fetch(`http://${window.location.hostname}:9080/project`, {
+      fetch(`http://${window.location.hostname}:9080/api/project`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -264,7 +264,7 @@ function CreatePosition() {
               setProjectList(response);
             });
 
-        fetch(`http://${window.location.hostname}:9080/people`, {
+      fetch(`http://${window.location.hostname}:9080/api/people`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -276,7 +276,7 @@ function CreatePosition() {
               setPeopleList(data);
             });
 
-        fetch(`http://${window.location.hostname}:9080/office`, {
+      fetch(`http://${window.location.hostname}:9080/api/office`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -292,7 +292,7 @@ function CreatePosition() {
   const createPosition = (event) => {
         const requestBody = JSON.stringify(form);
 
-        fetch(`http://${window.location.hostname}:9080/position`, {
+        fetch(`http://${window.location.hostname}:9080/api/position`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
