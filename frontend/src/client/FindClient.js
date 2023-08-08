@@ -80,7 +80,7 @@ function FindClient() {
   };
 
   const findClient = (clientCode) =>
-      fetch(`http://${window.location.hostname}:9080/client/${clientCode}`,
+      fetch(`http://${window.location.hostname}:9080/api/client/${clientCode}`,
       {
         method: "GET", headers: {
           "Content-Type": "application/json",

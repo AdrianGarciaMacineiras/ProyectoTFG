@@ -64,7 +64,7 @@ function FindPosition() {
 
   const FindPosition = (positionCode) =>
       fetch(
-          `http://${window.location.hostname}:9080/position/${positionCode}`, {
+          `http://${window.location.hostname}:9080/api/position/${positionCode}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

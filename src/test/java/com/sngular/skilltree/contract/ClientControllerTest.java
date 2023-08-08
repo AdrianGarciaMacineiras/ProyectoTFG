@@ -1,24 +1,6 @@
 package com.sngular.skilltree.contract;
 
-import static com.sngular.skilltree.fixtures.ClientFixtures.CLIENT_BY_CODE;
-import static com.sngular.skilltree.fixtures.ClientFixtures.CLIENT_BY_CODE_JSON;
-import static com.sngular.skilltree.fixtures.ClientFixtures.CLIENT_LIST;
-import static com.sngular.skilltree.fixtures.ClientFixtures.LIST_CLIENT_JSON;
-import static com.sngular.skilltree.fixtures.ClientFixtures.PATCH_CLIENT_BY_CODE_JSON;
-import static com.sngular.skilltree.fixtures.ClientFixtures.UPDATED_CLIENT_BY_CODE;
-import static com.sngular.skilltree.fixtures.ClientFixtures.UPDATED_CLIENT_BY_CODE_JSON;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import com.sngular.skilltree.application.ClientService;
-import com.sngular.skilltree.application.OfficeService;
-import com.sngular.skilltree.application.PeopleService;
-import com.sngular.skilltree.application.PositionService;
-import com.sngular.skilltree.application.ProjectService;
-import com.sngular.skilltree.application.ResolveService;
-import com.sngular.skilltree.application.SkillService;
+import com.sngular.skilltree.application.*;
 import com.sngular.skilltree.application.updater.ClientUpdater;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.ClientMapper;
@@ -34,6 +16,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static com.sngular.skilltree.fixtures.ClientFixtures.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @WebMvcTest(controllers = ClientController.class)
@@ -52,7 +41,7 @@ class ClientControllerTest {
     void getClientByCode() throws Exception{
         when(clientService.findByCode(anyString())).thenReturn(CLIENT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/client/1")
+                        .get("/api/client/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().json(CLIENT_BY_CODE_JSON));
@@ -62,7 +51,7 @@ class ClientControllerTest {
     void shouldDeleteClientBySuccess() throws Exception{
         when(clientService.deleteByCode(anyString())).thenReturn(true);
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/client/1")
+                        .delete("/api/client/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful());
     }
@@ -71,7 +60,7 @@ class ClientControllerTest {
     void shouldDeleteClientFail() throws Exception{
         when(clientService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("Client", "1"));
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/client/1")
+                        .delete("/api/client/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -80,7 +69,7 @@ class ClientControllerTest {
     void updateClient() throws Exception {
         when(clientUpdater.update(anyString(), any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/client/1")
+                        .put("/api/client/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(UPDATED_CLIENT_BY_CODE_JSON))
@@ -91,7 +80,7 @@ class ClientControllerTest {
     void addClient() throws Exception {
         when(clientService.create(any(Client.class))).thenReturn(CLIENT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/client")
+                        .post("/api/client")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(CLIENT_BY_CODE_JSON))
@@ -103,7 +92,7 @@ class ClientControllerTest {
     void patchClient() throws Exception {
         when(clientUpdater.patch(anyString(), any(Client.class))).thenReturn(UPDATED_CLIENT_BY_CODE);
         mockMvc.perform(MockMvcRequestBuilders
-                        .patch("/client/1")
+                        .patch("/api/client/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(PATCH_CLIENT_BY_CODE_JSON))
@@ -114,7 +103,7 @@ class ClientControllerTest {
     void getClients() throws Exception {
         when(clientService.getAll()).thenReturn(CLIENT_LIST);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/client")
+                        .get("/api/client")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(LIST_CLIENT_JSON));
     }

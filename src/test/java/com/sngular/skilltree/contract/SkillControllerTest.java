@@ -32,7 +32,7 @@ class SkillControllerTest {
   void getSkillByCode() throws Exception {
     when(skillService.findByCode(anyString())).thenReturn(SKILL_BY_CODE);
     mockMvc.perform(MockMvcRequestBuilders
-                      .get("/skills/Spring")
+                    .get("/api/skills/Spring")
                       .accept(MediaType.APPLICATION_JSON))
            .andExpect(content().json(SKILL_BY_CODE_JSON));
   }
@@ -41,7 +41,7 @@ class SkillControllerTest {
   void getSkills() throws Exception {
     when(skillService.getAll()).thenReturn(SKILL_LIST);
     mockMvc.perform(MockMvcRequestBuilders
-                      .get("/skills")
+                    .get("/api/skills")
                       .accept(MediaType.APPLICATION_JSON))
            .andExpect(content().json(LIST_SKILL_JSON));
   }

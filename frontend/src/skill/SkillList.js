@@ -301,7 +301,7 @@ const handleClick =
     () => {
       setToggled(!isToggled)
       fetch(
-          `http://${window.location.hostname}:9080/people/skills?skillList=${
+          `http://${window.location.hostname}:9080/api/people/skills?skillList=${
               selected}`,
           {
             method: 'GET',
@@ -387,7 +387,7 @@ useEffect(() => {
         return list;
       }
 
-                    fetch(`http://${window.location.hostname}:9080/skills`, {
+    fetch(`http://${window.location.hostname}:9080/api/skills`, {
                       method: 'GET',
                       headers: {
                         'Content-Type': 'application/json',

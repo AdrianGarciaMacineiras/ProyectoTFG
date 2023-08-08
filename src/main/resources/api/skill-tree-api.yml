@@ -9,7 +9,7 @@ servers:
 
 
 paths:
-  /project:
+  /api/project:
     summary: Company projects
     get:
       summary: List all projects
@@ -67,7 +67,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /project/{projectCode}:
+  /api/project/{projectCode}:
     get:
       summary: Gets a project by the code
       description: Returns an individual project, identified by a code
@@ -200,7 +200,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /position:
+  /api/position:
     summary: Company positions
     description: Returns a list of all positions
     get:
@@ -258,7 +258,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /position/{positionCode}:
+  /api/position/{positionCode}:
     get:
       summary: Gets a position by the code
       description: Returns an individual position, identified by a code
@@ -391,7 +391,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /position/{positionCode}/candidates:
+  /api/position/{positionCode}/candidates:
     post:
       summary: Generate new candidates for a position
       description: Generate candidates
@@ -455,7 +455,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /position/{positionCode}/people/{peopleCode}:
+  /api/position/{positionCode}/people/{peopleCode}:
     post:
       summary: Assign a candidate to a position
       description: Assign a candidate
@@ -493,7 +493,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /people:
+  /api/people:
     summary: Company people
     description: Returns a list of all people in the company
     get:
@@ -551,7 +551,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /person/{peopleCode}:
+  /api/person/{peopleCode}:
     get:
       summary: Gets a person by the code
       description: Returns an individual person, identified by a code
@@ -684,7 +684,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /person/{peopleCode}/position/{positionCode}:
+  /api/person/{peopleCode}/position/{positionCode}:
     post:
       summary: Assign a candidate to a position
       description: Assign a candidate
@@ -703,7 +703,7 @@ paths:
           description: String that represents the code of a position
       operationId: assignCandidate
       tags:
-        - position
+        - person
       responses:
         '200':
           description: The candidate assigned to the position
@@ -722,7 +722,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /person/{peopleCode}/candidates:
+  /api/person/{peopleCode}/candidates:
     get:
       summary: List all candidacies of the person
       parameters:
@@ -755,7 +755,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /person/{peopleCode}/assignments:
+  /api/person/{peopleCode}/assignments:
     get:
       summary: List all positions of a person that has been assigned to
       parameters:
@@ -788,7 +788,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /people/skills:
+  /api/people/skills:
     get:
       summary: List of people that know all the skills given
       parameters:
@@ -824,7 +824,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /people/strategic/team/{teamCode}:
+  /api/people/strategic/team/{teamCode}:
     get:
       summary: List people outside the team that works with their strategic skills
       parameters:
@@ -857,7 +857,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /skills:
+  /api/skills:
     summary: Skills on the skill tree
     description: Returns a list of all skills
     get:
@@ -885,7 +885,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /skills/{skillCode}:
+  /api/skills/{skillCode}:
     get:
       summary: Gets a skill by the code as well as the skills under it
       description: Returns an individual skill as well as the skills under it, identified by a code
@@ -917,7 +917,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /skills/strategic:
+  /api/skills/strategic:
     get:
       summary: Gets all the members of a team that work with strategic skills
       description: Returns a list of people
@@ -944,7 +944,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /skills/nostrategic:
+  /api/skills/nostrategic:
     get:
       summary: Gets all the skills filtered by teams that are not used by any member
       description: Returns a list of people
@@ -970,7 +970,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
-  /candidate:
+  /api/candidate:
     summary: Candidates
     description: Returns a list of all the company candidates
     get:
@@ -999,7 +999,7 @@ paths:
                 $ref: "#/components/schemas/error"
 
 
-  /candidate/{candidateCode}:
+  /api/candidate/{candidateCode}:
     get:
       summary: Gets a candidate by the code
       description: Returns an individual candidate, identified by a code
@@ -1132,7 +1132,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /client:
+  /api/client:
     summary: Clients
     description: Returns a list of all the company clients
     get:
@@ -1190,7 +1190,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /client/{clientCode}:
+  /api/client/{clientCode}:
     get:
       summary: Gets a client by the code
       description: Returns an individual client, identified by a code
@@ -1323,7 +1323,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /team:
+  /api/team:
     summary: Teams
     description: Returns a list of all the company teams
     get:
@@ -1381,7 +1381,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /team/{teamcode}:
+  /api/team/{teamcode}:
     get:
       summary: Gets a team by the code
       description: Returns an individual team, identified by a code
@@ -1425,7 +1425,7 @@ paths:
             type: string
           description: String that represents the code of a team
       tags:
-        - client
+        - team
       requestBody:
         required: true
         content:
@@ -1514,7 +1514,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /team/{teamcode}/people:
+  /api/team/{teamcode}/people:
     get:
       summary: Gets all the members of a team and its information
       description: Returns a list of members
@@ -1548,7 +1548,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
-  /office:
+  /api/office:
     summary: List of offices
     description: Returns a list of all the offices
     get:

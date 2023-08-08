@@ -57,7 +57,7 @@ function FindTeam() {
   };
 
   const findTeam = (teamCode) =>
-      fetch(`http://${window.location.hostname}:9080/team/${teamCode}`, {
+      fetch(`http://${window.location.hostname}:9080/api/team/${teamCode}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

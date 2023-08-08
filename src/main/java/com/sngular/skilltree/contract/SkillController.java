@@ -1,7 +1,6 @@
 package com.sngular.skilltree.contract;
 
-import java.util.List;
-
+import com.sngular.skilltree.api.SkillApi;
 import com.sngular.skilltree.api.SkillsApi;
 import com.sngular.skilltree.api.model.SkillDTO;
 import com.sngular.skilltree.api.model.StrategicTeamSkillDTO;
@@ -10,9 +9,13 @@ import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.contract.mapper.SkillMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+@RestController
 @RequiredArgsConstructor
-public class SkillController extends AbstractController implements SkillsApi {
+public class SkillController implements SkillsApi, SkillApi {
 
   private final SkillService skillService;
 

@@ -326,7 +326,7 @@ const UpdatePersonForm = () => {
       return list;
     };
 
-    fetch(`http://${window.location.hostname}:9080/skills`, {
+      fetch(`http://${window.location.hostname}:9080/api/skills`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -339,7 +339,7 @@ const UpdatePersonForm = () => {
           setSkillList(skillsData);
         });
 
-    fetch(`http://${window.location.hostname}:9080/person/${employeeId}`, {
+      fetch(`http://${window.location.hostname}:9080/api/person/${employeeId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

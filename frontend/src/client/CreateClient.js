@@ -12,7 +12,7 @@ import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 const ClientForm = () => {
   const [clientData, setClientData] = useState({
@@ -89,7 +89,7 @@ const ClientForm = () => {
 
     const requestBody = JSON.stringify(form);
 
-    fetch(`http://${window.location.hostname}:9080/client`, {
+    fetch(`http://${window.location.hostname}:9080/api/client`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
