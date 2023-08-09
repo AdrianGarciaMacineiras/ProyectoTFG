@@ -1,31 +1,27 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import com.sngular.skilltree.infraestructura.SkillRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.SkillCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.SkillNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubSkillsRelationship;
+import com.sngular.skilltree.infraestructura.impl.neo4j.projection.SkillCountProjection;
 import com.sngular.skilltree.infraestructura.impl.neo4j.tool.NodeUtil;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Skill;
 import com.sngular.skilltree.model.StrategicTeamSkill;
 import com.sngular.skilltree.model.StrategicTeamSkillNotUsed;
+import com.sngular.skilltree.model.views.SkillStatsTittle;
 import lombok.RequiredArgsConstructor;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.internal.InternalNode;
 import org.neo4j.driver.types.TypeSystem;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.neo4j.core.Neo4jClient;
-import org.springframework.data.neo4j.core.mapping.Neo4jMappingContext;
 import org.springframework.stereotype.Repository;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,10 +33,8 @@ public class SkillRepositoryImpl implements SkillRepository {
 
     private final Neo4jClient client;
 
-    private final Neo4jMappingContext neo4jMappingContext;
-
     @Override
-    @Cacheable
+    @Cacheable(cacheNames = "skills")
     public List<Skill> findAll() {
         var parentNodeCodes = crud.findAllParents();
         List<Skill> subSkills;
@@ -62,7 +56,7 @@ public class SkillRepositoryImpl implements SkillRepository {
     }
 
     @Override
-    @Cacheable
+    @Cacheable(cacheNames = "skills")
     public Skill findByCode(String skillcode) {
         var skillNode = crud.findByCode(skillcode);
         List<Skill> subSkills = new ArrayList<>();
@@ -74,14 +68,14 @@ public class SkillRepositoryImpl implements SkillRepository {
     }
 
     @Override
-    @Cacheable
+    @Cacheable(cacheNames = "skills")
     public Skill findSkill(String skillcode) {
         var skillNode = crud.findByCode(skillcode);
         return new Skill(skillcode, skillNode.getName(), new ArrayList<>());
     }
 
     @Override
-    @Cacheable
+    @Cacheable(cacheNames = "skills")
     public Skill findByName(String skillname) {
         var skillNode = crud.findByName(skillname);
         return new Skill(skillNode.getCode(), skillname, new ArrayList<>());
@@ -187,5 +181,61 @@ public class SkillRepositoryImpl implements SkillRepository {
         var skillList = new HashSet<String>();
         skillNodeList.forEach(skill -> skillList.add(skill.toString()));
         return new ArrayList<>(skillList);
+    }
+
+    @Override
+    public List<SkillStatsTittle> getSkillStatsByTittle(String tittle) {
+
+        final var query = """
+                match (s:Skill)-[r:KNOWS]-(p:People)
+                 where p.title = $tittle
+                 return s.name as skill, count(r) as total
+                """;
+
+        final HashMap<String, List<SkillStatsTittle>> resultMap = client
+                .query(query)
+                .bindAll(Map.of("tittle", tittle))
+                .fetchAs(SkillCountProjection.class)
+                .mappedBy((TypeSystem t, Record queryResult) ->
+                        SkillCountProjection
+                                .builder()
+                                .skill(queryResult.get("skill").asString())
+                                .total(queryResult.get("total", 0))
+                                .parent(queryResult.get("parent", "root"))
+                                .build())
+                .all()
+                .stream()
+                .map(result -> SkillStatsTittle.builder().parent(result.parent()).name(result.skill()).total(result.total()).build())
+                .collect(HashMap::new,
+                        (statsMap, skillStat) -> {
+                            statsMap
+                                    .compute(skillStat.parent(),
+                                            (s, skillStatsTittles) -> addToList(skillStat, skillStatsTittles));
+                        },
+                        (statsMap1, statsMap2) -> {
+                            statsMap2
+                                    .keySet()
+                                    .forEach(key ->
+                                            statsMap1.compute(key, (skill, skillStatsTittles) ->
+                                                    combineToList(skillStatsTittles, statsMap2.get(skill)))
+                                    );
+                        }
+                );
+
+        return resultMap.values().stream().flatMap(List::stream).collect(Collectors.toList());
+    }
+
+    private List<SkillStatsTittle> addToList(final SkillStatsTittle value, final List<SkillStatsTittle> skillStatsTittles) {
+        var listSkillStats = Objects.isNull(skillStatsTittles) ? new ArrayList<SkillStatsTittle>() : new ArrayList<>(skillStatsTittles);
+        listSkillStats.add(value);
+        return listSkillStats;
+    }
+
+    private List<SkillStatsTittle> combineToList(final List<SkillStatsTittle> skillStatsTittleA, final List<SkillStatsTittle> skillStatsTittleB) {
+        var listSkillStats = Objects.isNull(skillStatsTittleA) ? new ArrayList<SkillStatsTittle>() : skillStatsTittleA;
+        if (Objects.nonNull(skillStatsTittleB)) {
+            listSkillStats.addAll(skillStatsTittleB);
+        }
+        return listSkillStats;
     }
 }

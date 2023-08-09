@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class CandidateController extends AbstractController implements CandidateApi {
+public class CandidateController implements CandidateApi {
 
     private final CandidateService candidateService;
 

@@ -24,15 +24,6 @@ public class ControllerAdvisor {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<Object> handleHttpMessageNotReadableExceptionTemp(RuntimeException ex, WebRequest request){
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Instance not found");
-
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-    }
-
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> handleInstanceNotFoundException(EntityNotFoundException ex, WebRequest request){
         Map<String, Object> body = new LinkedHashMap<>();

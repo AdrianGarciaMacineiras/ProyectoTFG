@@ -3,6 +3,7 @@ package com.sngular.skilltree.contract;
 import com.sngular.skilltree.api.SkillApi;
 import com.sngular.skilltree.api.SkillsApi;
 import com.sngular.skilltree.api.model.SkillDTO;
+import com.sngular.skilltree.api.model.SkillStatDTO;
 import com.sngular.skilltree.api.model.StrategicTeamSkillDTO;
 import com.sngular.skilltree.api.model.StrategicTeamSkillNotUsedDTO;
 import com.sngular.skilltree.application.SkillService;
@@ -48,4 +49,8 @@ public class SkillController implements SkillsApi, SkillApi {
                         .getNoStrategicSkillsUse()));
     }
 
+    @Override
+    public ResponseEntity<List<SkillStatDTO>> getSkillStatsByTittle(String tittle) {
+        return ResponseEntity.ok(skillMapper.toSkillStatList(skillService.getSkillStatsByTittle(tittle)));
+    }
 }

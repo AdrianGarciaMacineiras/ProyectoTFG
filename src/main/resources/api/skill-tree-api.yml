@@ -970,6 +970,41 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/error"
+
+  /api/skills/stats/{tittle}:
+    get:
+      summary: Given a tittle code return a tree of Skills and how many people know them with that tittle
+      description: Return a tree of skill names and a count of people who know them.
+      operationId: getSkillStatsByTittle
+      parameters:
+        - name: tittle
+          in: path
+          required: true
+          schema:
+            type: string
+          description: String that represents the people tittle
+      tags:
+        - skills
+      responses:
+        '200':
+          description: A skill stats tree
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/skillStat"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
   /api/candidate:
     summary: Candidates
     description: Returns a list of all the company candidates
@@ -1681,6 +1716,22 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/skill"
+
+    skillStat:
+      type: object
+      required:
+        - name
+        - total
+        - subSkills
+      properties:
+        name:
+          type: string
+        total:
+          type: integer
+        subSkills:
+          type: array
+          items:
+            $ref: "#/components/schemas/skillStat"
 
     position:
       type: object
