@@ -23,7 +23,7 @@ import Grid from '@mui/material/Grid';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import PropTypes from 'prop-types';
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
@@ -46,6 +46,9 @@ const ListPeople =
     const [rowsPerPage, setRowsPerPage] = useState(50);
 
     const [open, setOpen] = useState(false);
+
+    const [orderBy, setOrderBy] = useState('code');
+    const [sortDirection, setSortDirection] = useState('asc');
 
     const navigate = useNavigate();
 
@@ -254,9 +257,6 @@ const ListPeople =
       );
     };
 
-    const [orderBy, setOrderBy] = useState('code');
-    const [sortDirection, setSortDirection] = useState('asc');
-
     const handleSortChange = (column) => {
       if (orderBy === column) {
         setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
@@ -345,8 +345,7 @@ const ListPeople =
                           Birth date
                         </TableCell>
                       </TableRow>
-                    </TableHead><TableBody> {peopleList
-                      .slice()
+                    </TableHead><TableBody> {peopleList?.slice()
                       .sort((a, b) => {
                         const aValue = a[orderBy];
                         const bValue = b[orderBy];

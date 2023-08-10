@@ -514,13 +514,17 @@ const CreatePerson =
                   mx={2} mt={-3} py={3} px={2} variant='gradient'
                   bgColor='info'
                   borderRadius='lg'
-                  coloredShadow='info' > <MDTypography variant='h6' color='white'>Create
-                    Person</MDTypography>
-                </MDBox><form id='personForm'>
-                  <Grid container spacing={6}><Grid item xs={6}><MDBox pt={3}>
-                    <MDTypography variant='h6' fontWeight='medium'>Person Code: </MDTypography>
-                    <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" />
-                  </MDBox>
+                  coloredShadow='info' >
+                  <MDTypography variant='h6' color='white'>
+                    Create Person
+                  </MDTypography>
+                </MDBox>
+                <form id='personForm'>
+                  <Grid container spacing={6}><Grid item xs={6}>
+                    <MDBox pt={3}>
+                      <MDTypography variant='h6' fontWeight='medium'>Person Code: </MDTypography>
+                      <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" />
+                    </MDBox>
                     <MDBox>
                       <MDTypography variant='h6' fontWeight='medium'>Employee ID:</MDTypography>
                       <MDInput type='text' value={form.employeeId} onChange=
@@ -781,7 +785,8 @@ const CreatePerson =
                   'info' >
                   <MDTypography variant='h6' color='white'>Person Graph</MDTypography>
                 </MDBox>
-                <MDBox pt={3}>< VisGraph
+                <MDBox pt={3}>
+                  < VisGraph
                   graph={graph} options={options} events=
                   {events} getNetwork={
                     network => {

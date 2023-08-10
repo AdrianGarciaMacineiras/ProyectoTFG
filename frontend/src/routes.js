@@ -17,7 +17,7 @@ import CreateProject from './project/CreateProject'
 import FindProject from './project/FindProject'
 
 import FindSkill from './skill/FindSkill'
-
+import SkillStatsForm from './skill/SkillStatsForm';
 import SkillList from './skill/SkillList'
 
 import CreateTeam from './team/CreateTeam'
@@ -37,7 +37,7 @@ const routes = [
         icon: <Icon fontSize='small'>dashboard</Icon>,
         route: '/findPerson',
         component: <FindPerson />,
-      },{
+      }, {
         type: 'collapse',
         name: 'Find by Skills',
         key: 'skill-list',
@@ -45,7 +45,7 @@ const routes = [
         route: '/skillList',
         component: <SkillList />,
         child: []
-      },{
+      }, {
         type: 'collapse',
         name: 'Create',
         key: 'createPerson',
@@ -84,7 +84,7 @@ const routes = [
       route: '/findClient',
       component: <FindClient />,
       child: []
-    },{
+    }, {
       type: 'collapse',
       name: 'Create',
       key: 'createClient',
@@ -110,7 +110,7 @@ const routes = [
       route: '/updateClientForm/:name',
       component: <UpdateClientForm />,
     }
-  ]
+    ]
   },
   {
     type: 'title',
@@ -191,16 +191,25 @@ const routes = [
     key: 'skills',
     icon: <Icon fontSize='small'>self_improvement</Icon>,
     child: [
-    {
-      type: 'collapse',
-      name: 'Find Skill',
-      key: 'findSkill',
-      icon: <Icon fontSize='small'>receipt_long</Icon>,
-      route: '/findSkill',
-      component: <FindSkill />,
-      child: []
-    }]
+      {
+        type: 'collapse',
+        name: 'Find Skill',
+        key: 'findSkill',
+        icon: <Icon fontSize='small'>receipt_long</Icon>,
+        route: '/findSkill',
+        component: <FindSkill />,
+        child: []
+      }, {
+        type: 'collapse',
+        name: 'Skill Stats',
+        key: 'skillStats',
+        icon: <Icon fontSize='small'>receipt_long</Icon>,
+        route: '/skillStats',
+        component: <SkillStatsForm />,
+        child: []
+      }
+    ]
   }
 ];
 
-    export default routes;
+export default routes;
