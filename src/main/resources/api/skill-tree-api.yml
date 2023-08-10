@@ -991,9 +991,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/skillStat"
+                $ref: "#/components/schemas/skillStat"
         '400':
           description: Bad Request
         '404':

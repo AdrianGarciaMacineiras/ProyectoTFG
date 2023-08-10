@@ -9,6 +9,7 @@ import com.sngular.skilltree.model.Skill;
 import com.sngular.skilltree.model.StrategicTeamSkill;
 import com.sngular.skilltree.model.StrategicTeamSkillNotUsed;
 import com.sngular.skilltree.model.views.SkillStatsTittle;
+import org.apache.commons.lang3.ObjectUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -33,7 +34,13 @@ public interface SkillMapper {
 
     List<SkillStatDTO> toSkillStatList(List<SkillStatsTittle> skillStatsByTittle);
 
-    @Mapping(source = "total", target = "total")
-    @Mapping(source = "subSkills", target = "subSkills")
-    SkillStatDTO toSkillStat(SkillStatsTittle skillStatsTittle);
+    default SkillStatDTO toSkillStat(SkillStatsTittle skillStatsTittle) {
+        return
+                SkillStatDTO
+                        .builder()
+                        .subSkills(toSkillStatList(skillStatsTittle.subSkillStats()))
+                        .name(skillStatsTittle.name())
+                        .total(ObjectUtils.defaultIfNull(skillStatsTittle.total(), 0))
+                        .build();
+    }
 }

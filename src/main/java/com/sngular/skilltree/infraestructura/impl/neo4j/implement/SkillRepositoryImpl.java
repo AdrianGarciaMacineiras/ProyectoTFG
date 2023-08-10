@@ -5,7 +5,6 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.SkillCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.SkillNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubSkillsRelationship;
-import com.sngular.skilltree.infraestructura.impl.neo4j.projection.SkillCountProjection;
 import com.sngular.skilltree.infraestructura.impl.neo4j.tool.NodeUtil;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Skill;
@@ -21,7 +20,6 @@ import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -184,58 +182,29 @@ public class SkillRepositoryImpl implements SkillRepository {
     }
 
     @Override
-    public List<SkillStatsTittle> getSkillStatsByTittle(String tittle) {
+    public SkillStatsTittle getSkillStatsByTittle(String tittle) {
 
         final var query = """
                 match (s:Skill)-[r:KNOWS]-(p:People)
                  where p.title = $tittle
-                 return s.name as skill, count(r) as total
+                 return s.namespace as skill, count(r) as total
                 """;
-
-        final HashMap<String, List<SkillStatsTittle>> resultMap = client
+        final var rootSkill = SkillStatsTittle.builder().name("Skills").build();
+        client
                 .query(query)
                 .bindAll(Map.of("tittle", tittle))
-                .fetchAs(SkillCountProjection.class)
+                .fetchAs(SkillStatsTittle.class)
                 .mappedBy((TypeSystem t, Record queryResult) ->
-                        SkillCountProjection
+                        SkillStatsTittle
                                 .builder()
-                                .skill(queryResult.get("skill").asString())
+                                .name(queryResult.get("skill").asString().substring(queryResult.get("skill").asString().lastIndexOf('.') + 1))
                                 .total(queryResult.get("total", 0))
-                                .parent(queryResult.get("parent", "root"))
+                                .parent(queryResult.get("skill").asString().substring(0, queryResult.get("skill").asString().lastIndexOf('.')))
                                 .build())
                 .all()
-                .stream()
-                .map(result -> SkillStatsTittle.builder().parent(result.parent()).name(result.skill()).total(result.total()).build())
-                .collect(HashMap::new,
-                        (statsMap, skillStat) -> {
-                            statsMap
-                                    .compute(skillStat.parent(),
-                                            (s, skillStatsTittles) -> addToList(skillStat, skillStatsTittles));
-                        },
-                        (statsMap1, statsMap2) -> {
-                            statsMap2
-                                    .keySet()
-                                    .forEach(key ->
-                                            statsMap1.compute(key, (skill, skillStatsTittles) ->
-                                                    combineToList(skillStatsTittles, statsMap2.get(skill)))
-                                    );
-                        }
+                .forEach(skillStat -> rootSkill.addStat(skillStat.parent().substring(skillStat.parent().indexOf(".") + 1), skillStat)
                 );
 
-        return resultMap.values().stream().flatMap(List::stream).collect(Collectors.toList());
-    }
-
-    private List<SkillStatsTittle> addToList(final SkillStatsTittle value, final List<SkillStatsTittle> skillStatsTittles) {
-        var listSkillStats = Objects.isNull(skillStatsTittles) ? new ArrayList<SkillStatsTittle>() : new ArrayList<>(skillStatsTittles);
-        listSkillStats.add(value);
-        return listSkillStats;
-    }
-
-    private List<SkillStatsTittle> combineToList(final List<SkillStatsTittle> skillStatsTittleA, final List<SkillStatsTittle> skillStatsTittleB) {
-        var listSkillStats = Objects.isNull(skillStatsTittleA) ? new ArrayList<SkillStatsTittle>() : skillStatsTittleA;
-        if (Objects.nonNull(skillStatsTittleB)) {
-            listSkillStats.addAll(skillStatsTittleB);
-        }
-        return listSkillStats;
+        return rootSkill;
     }
 }

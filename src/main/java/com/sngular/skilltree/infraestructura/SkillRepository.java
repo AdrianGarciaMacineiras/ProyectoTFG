@@ -21,6 +21,6 @@ public interface SkillRepository {
 
     List<StrategicTeamSkillNotUsed> getNoStrategicSkillsUse();
 
-    List<SkillStatsTittle> getSkillStatsByTittle(String tittle);
+    SkillStatsTittle getSkillStatsByTittle(String tittle);
 
 }

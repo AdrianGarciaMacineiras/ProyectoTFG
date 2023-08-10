@@ -48,7 +48,7 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public List<SkillStatsTittle> getSkillStatsByTittle(String tittle) {
+    public SkillStatsTittle getSkillStatsByTittle(String tittle) {
         return skillRepository.getSkillStatsByTittle(tittle);
     }
 }

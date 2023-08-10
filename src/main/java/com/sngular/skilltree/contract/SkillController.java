@@ -50,7 +50,7 @@ public class SkillController implements SkillsApi, SkillApi {
     }
 
     @Override
-    public ResponseEntity<List<SkillStatDTO>> getSkillStatsByTittle(String tittle) {
-        return ResponseEntity.ok(skillMapper.toSkillStatList(skillService.getSkillStatsByTittle(tittle)));
+    public ResponseEntity<SkillStatDTO> getSkillStatsByTittle(String tittle) {
+        return ResponseEntity.ok(skillMapper.toSkillStat(skillService.getSkillStatsByTittle(tittle)));
     }
 }
