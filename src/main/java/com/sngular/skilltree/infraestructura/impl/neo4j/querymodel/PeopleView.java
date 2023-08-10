@@ -1,6 +1,10 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.querymodel;
 
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateTimeConverter;
+import org.springframework.data.neo4j.core.convert.ConvertWith;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PeopleView {
@@ -22,15 +26,17 @@ public interface PeopleView {
 
     List<AssignedView> getAssign();
 
+    LocalDateTime getBirthDate();
+
     List<CertificateView> getCertificates();
 
     interface CertificateView{
 
         SkillView getSkillNode();
 
-        String getComments();
+        String getComment();
 
-        LocalDate getDate();
+        LocalDateTime getDate();
     }
 
     interface KnowsView {

@@ -157,7 +157,7 @@
 			<plugin>
 				<groupId>com.sngular</groupId>
 				<artifactId>scs-multiapi-maven-plugin</artifactId>
-                <version>4.9.7</version>
+				<version>4.9.7</version>
 				<executions>
 					<execution>
 						<id>openapi</id>

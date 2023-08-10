@@ -1,6 +1,7 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateConverter;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateTimeConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +32,8 @@ public class PeopleNode {
 
     private String surname;
 
-    @ConvertWith(converter = LocalDateConverter.class)
-    private LocalDate birthDate;
+    @ConvertWith(converter = LocalDateTimeConverter.class)
+    private LocalDateTime birthDate;
 
     private String title;
 
@@ -60,7 +62,7 @@ public class PeopleNode {
     private List<SkillNode> interest = new ArrayList<>();
 
     @Builder.Default
-    @Relationship(type = "HAVE_CERTIFICATE", direction = Relationship.Direction.OUTGOING)
+    @Relationship(type = "HAS_CERTIFICATE", direction = Relationship.Direction.OUTGOING)
     private List<CertificateRelationship> certificates = new ArrayList<>();
 
     @Builder.Default

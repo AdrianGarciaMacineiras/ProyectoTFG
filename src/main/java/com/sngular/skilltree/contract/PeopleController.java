@@ -12,12 +12,14 @@ import com.sngular.skilltree.contract.mapper.CandidateMapper;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.contract.mapper.PositionMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class PeopleController implements PeopleApi, PersonApi {

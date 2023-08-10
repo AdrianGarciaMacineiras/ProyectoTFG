@@ -1,5 +1,6 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model.converter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
@@ -27,13 +28,14 @@ public class LocalDateTimeConverter implements Neo4jPersistentPropertyConverter<
   @Override
   public LocalDateTime read(Value source) {
     if (source instanceof DateValue dateValue) {
-      return dateValue.asLocalDateTime();
+      LocalDate localDate = dateValue.asLocalDate();
+      return localDate.atStartOfDay();
     } else if (source instanceof DateTimeValue dateTimeValue) {
       return dateTimeValue.asZonedDateTime().toLocalDateTime();
     } else {
       final var valueStr = source.toString();
       if (valueStr.matches("yyyy-MM-dd")) {
-        return LocalDateTime.parse(valueStr, DATE_FORMATTER);
+        return LocalDate.parse(valueStr, DATE_FORMATTER).atStartOfDay();
       }
       return LocalDateTime.parse(valueStr, DATE_TIME_FORMATTER);
     }

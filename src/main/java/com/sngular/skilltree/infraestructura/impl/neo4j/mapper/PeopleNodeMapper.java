@@ -1,5 +1,8 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
@@ -22,35 +25,34 @@ import org.mapstruct.Mapping;
 public interface PeopleNodeMapper {
 
     @InheritInverseConfiguration
-    @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "birthDate", expression = "java(toLocalDateTime(people.birthDate()))")
     @Mapping(target = "assigns", source = "assigns", qualifiedByName = {"resolveServiceNode", "mapToAssignedRelationship"})
         //@Mapping(target = "noClients", source = "noClients", qualifiedByName = {"resolveServiceNode", "mapToClientNode"})
         //@Mapping(target = "noProjects", source = "noProjects", qualifiedByName = {"resolveServiceNode", "mapToProjectNode"})
     PeopleNode toNode(People people);
 
-    @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "birthDate", expression = "java(toLocalDate(peopleNode.getBirthDate()))")
     @Mapping(target = "assigns", source = "assigns", qualifiedByName = {"resolveServiceNode", "mapToAssignment"})
         //@Mapping(target = "noClients", source = "noClients", qualifiedByName = {"resolveServiceNode", "mapToClientString"})
         //@Mapping(target = "noProjects", source = "noProjects", qualifiedByName = {"resolveServiceNode", "mapToProjectString"})
     People fromNode(PeopleNode peopleNode);
 
     @Mapping(target = "work_with", source = "workWith")
-    People fromView(PeopleView peopleNode);
+    People fromView(PeopleView peopleView);
 
-    @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "date", expression = "java(toLocalDate(certificateRelationship.date()))")
     @Mapping(target = "code", source = "skillNode.code")
     @Mapping(target = "name", source = "skillNode.name")
     Certificate certificateRelationshipToCertificate(CertificateRelationship certificateRelationship);
 
     @Mapping(target = "skillNode", source = "code", qualifiedByName = {"resolveServiceNode", "resolveCodeToSkillNode"})
-    @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "id", source = "id", qualifiedByName = {"resolveServiceNode", "resolveId"})
+    @Mapping(target = "date", expression = "java(toLocalDateTime(certificate.date()))")
     CertificateRelationship certificateToCertificateRelationship(Certificate certificate);
 
     @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
     com.sngular.skilltree.model.Role roleToRole(Role role);
 
-    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "id", source = "id", qualifiedByName = {"resolveServiceNode", "resolveId"})
     Role roleToRole1(com.sngular.skilltree.model.Role role);
 
@@ -68,6 +70,7 @@ public interface PeopleNodeMapper {
 
     @Mapping(target = "code", source = "skillNode.code")
     @Mapping(target = "name", source = "skillNode.name")
+    @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
     Certificate certificateViewToCertificate(PeopleView.CertificateView certificateView);
 
     @Mapping(target = "skill", source = "code", qualifiedByName = {"resolveServiceNode", "resolveCodeToSkillNode"})
@@ -79,4 +82,12 @@ public interface PeopleNodeMapper {
     @Mapping(target = "code", source = "code")
     @Mapping(target = "name", source = "name")
     Skill map(PeopleView.SkillView skillView);
+
+    default LocalDateTime toLocalDateTime(LocalDate date) {
+        return date.atStartOfDay();
+    }
+
+    default LocalDate toLocalDate(LocalDateTime dateTime) {
+        return dateTime != null ? dateTime.toLocalDate() : null;
+    }
 }

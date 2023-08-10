@@ -2168,7 +2168,7 @@ components:
           type: string
         code:
           type: string
-        comments:
+        comment:
           type: string
         date:
           type: string

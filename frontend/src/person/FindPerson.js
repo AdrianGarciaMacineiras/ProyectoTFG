@@ -2,7 +2,7 @@ import '../network.css';
 
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import VisGraph from 'react-vis-graph-wrapper';
 
 import Footer from '../components/Footer';
@@ -67,8 +67,8 @@ function FindPerson() {
   };
 
   const findPerson = (personCode) =>
-      fetch(`http://${window.location.hostname}:9080/api/person/${personCode}`, {
- method: 'GET',
+    fetch(`http://${window.location.hostname}:9080/api/person/${personCode}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'

@@ -6,5 +6,5 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Builder(toBuilder = true)
-public record Certificate(String id, String code, String name, String comments, LocalDate date) {
+public record Certificate(String id, String code, String name, String comment, LocalDate date) {
 }
