@@ -9,8 +9,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
-@Value
-@Slf4j
 @Builder(toBuilder = true)
 public class Skill {
 
