@@ -1,17 +1,5 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
-import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
-import static com.sngular.skilltree.model.EnumStatus.QUALIFICATION;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.BiFunction;
-
 import com.sngular.skilltree.common.exceptions.AssignUnableException;
 import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.CandidateCrudRepository;
@@ -29,6 +17,13 @@ import org.neo4j.driver.Record;
 import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.util.*;
+import java.util.function.BiFunction;
+
+import static com.sngular.skilltree.model.EnumLevelReq.MANDATORY;
+import static com.sngular.skilltree.model.EnumStatus.QUALIFICATION;
 
 @Repository
 @RequiredArgsConstructor
