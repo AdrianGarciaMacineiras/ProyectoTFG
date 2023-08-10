@@ -21,6 +21,8 @@ public class SkillNode {
 
     private String name;
 
+    private String namespace;
+
     @Relationship(type = "REQUIRE", direction = Relationship.Direction.INCOMING)
     private List<SubSkillsRelationship> subSkills;
 }

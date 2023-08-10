@@ -3,7 +3,6 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 import com.sngular.skilltree.infraestructura.SkillRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.SkillCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.SkillNodeMapper;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubSkillsRelationship;
 import com.sngular.skilltree.infraestructura.impl.neo4j.tool.NodeUtil;
 import com.sngular.skilltree.model.People;
@@ -34,49 +33,40 @@ public class SkillRepositoryImpl implements SkillRepository {
     @Override
     @Cacheable(cacheNames = "skills")
     public List<Skill> findAll() {
-        var parentNodeCodes = crud.findAllParents();
-        List<Skill> subSkills;
-        List<Skill> skills = new ArrayList<>();
-        List<SkillNode> skillNodeList = new ArrayList<>();
-        for (String parentNode : parentNodeCodes) {
-            skillNodeList.add(crud.findByCode(parentNode));
-        }
-        for (SkillNode skillNode : skillNodeList) {
-            subSkills = new ArrayList<>();
-            for (SubSkillsRelationship subSkillNode : skillNode.getSubSkills()) {
-                var toSkill = mapper.fromNode(subSkillNode.skillNode());
-                subSkills.add(toSkill);
-            }
-            Skill skill = new Skill(skillNode.getCode(), skillNode.getName(), subSkills);
-            skills.add(skill);
-        }
-        return skills;
+        var leafNodes = crud.findAllLeafs();
+        final Skill root = Skill.builder().name("Skills").build();
+        leafNodes.forEach(leaf ->
+                root.addSkill(leaf.getNamespace().substring(leaf.getNamespace().indexOf(".") + 1),
+                        Skill.builder().name(leaf.getName()).code(leaf.getCode()).build())
+        );
+
+        return root.subSkills();
     }
 
     @Override
     @Cacheable(cacheNames = "skills")
     public Skill findByCode(String skillcode) {
         var skillNode = crud.findByCode(skillcode);
-        List<Skill> subSkills = new ArrayList<>();
+        Map<String, Skill> subSkills = new HashMap<>();
         for (SubSkillsRelationship subSkillNode : skillNode.getSubSkills()) {
             var toSkill = mapper.fromNode(subSkillNode.skillNode());
-            subSkills.add(toSkill);
+            subSkills.put(toSkill.getName(), toSkill);
         }
-        return new Skill(skillcode, skillNode.getName(), subSkills);
+        return Skill.builder().code(skillcode).name(skillNode.getName()).subSkillList(subSkills).build();
     }
 
     @Override
     @Cacheable(cacheNames = "skills")
-    public Skill findSkill(String skillcode) {
-        var skillNode = crud.findByCode(skillcode);
-        return new Skill(skillcode, skillNode.getName(), new ArrayList<>());
+    public Skill findSkill(String skillCode) {
+        var skillNode = crud.findByCode(skillCode);
+        return Skill.builder().code(skillCode).name(skillNode.getName()).subSkillList(new HashMap<>()).build();
     }
 
     @Override
     @Cacheable(cacheNames = "skills")
-    public Skill findByName(String skillname) {
-        var skillNode = crud.findByName(skillname);
-        return new Skill(skillNode.getCode(), skillname, new ArrayList<>());
+    public Skill findByName(String skillName) {
+        var skillNode = crud.findByName(skillName);
+        return Skill.builder().code(skillNode.getCode()).name(skillNode.getName()).subSkillList(new HashMap<>()).build();
     }
 
     @Override

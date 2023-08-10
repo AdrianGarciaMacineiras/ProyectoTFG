@@ -19,11 +19,13 @@ import java.util.List;
 @Mapper(config = CommonMapperConfiguration.class, uses = PeopleMapper.class)
 public interface SkillMapper {
 
-    SkillDTO toSkillDTO(Skill skill);
+    default SkillDTO toSkillDTO(Skill skill) {
+        return SkillDTO.builder().name(skill.getName()).code(skill.getCode()).subSkills(toSkillsDTO(skill.subSkills())).build();
+    }
 
     Skill toSkill(SkillDTO skill);
 
-    List<SkillDTO> toSkillsDTO (Collection<Skill> skills);
+    List<SkillDTO> toSkillsDTO(List<Skill> skills);
 
     List<Skill> toSkills (Collection<SkillDTO> skills);
 

@@ -1,6 +1,7 @@
 package com.sngular.skilltree.model.views;
 
 import lombok.Builder;
+import org.apache.commons.text.WordUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public record SkillStatsTittle(String parent, String name, Integer total, Map<St
     public void addStat(final String parent, final SkillStatsTittle stat) {
         var root = parent;
         if (parent.contains(".")) {
-            root = parent.substring(0, stat.parent.indexOf('.'));
+            root = parent.substring(0, parent.indexOf('.'));
         }
         if (name.equalsIgnoreCase(root)) {
             subSkills.put(stat.name, stat);
@@ -26,7 +27,7 @@ public record SkillStatsTittle(String parent, String name, Integer total, Map<St
             if (subSkills.containsKey(root)) {
                 newSkill = subSkills.get(root);
             } else {
-                newSkill = SkillStatsTittle.builder().name(root).total(stat.total()).build();
+                newSkill = SkillStatsTittle.builder().name(WordUtils.capitalize(root.replace('_', ' '))).total(stat.total()).build();
                 subSkills.put(root, newSkill);
             }
             if (!parent.contains(".")) {
