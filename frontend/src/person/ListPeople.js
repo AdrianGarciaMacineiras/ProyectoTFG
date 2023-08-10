@@ -23,7 +23,7 @@ import Grid from '@mui/material/Grid';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import PropTypes from 'prop-types';
-import { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
@@ -160,7 +160,7 @@ const ListPeople =
 
 
       return (
-        <Fragment>
+        <React.Fragment >
           <TableRow sx={{ '& > *': { borderBottom: 'unset' } }} key={row.index}>
             <TableCell>
               <Tooltip title="Expand row">
@@ -253,7 +253,7 @@ const ListPeople =
             </Collapse>
           </TableCell>
           </TableRow>
-        </Fragment>
+        </React.Fragment >
       );
     };
 
@@ -276,6 +276,7 @@ const ListPeople =
     };
 
     return (
+    <React.Fragment>
       <DashboardLayout>
         <DashboardNavbar />
         <MDBox pt={6} pb={3}>
@@ -378,6 +379,7 @@ const ListPeople =
           </Grid>
         </MDBox>
       </DashboardLayout>
+    </React.Fragment>
     );
   };
 

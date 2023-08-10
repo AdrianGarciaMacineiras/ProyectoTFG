@@ -97,7 +97,7 @@ const CreateProject = () => {
 
   const events = {
     select: function (event) {
-      var { nodes, edges } = event;
+      let { nodes, edges } = event;
     }
   };
 
@@ -109,9 +109,11 @@ const CreateProject = () => {
   useEffect(() => {
     const recursive = (dataList) => {
       let list = [];
-      dataList?.forEach(data => {
-        list.push({ nodeId: data.code, name: data.name, children: recursive(data.subSkills) });
-      });
+      if (!!dataList) {
+        dataList.forEach(data => {
+          list.push({nodeId: data.code, name: data.name, children: recursive(data.subSkills)});
+        });
+      }
       return list;
     };
 
@@ -282,23 +284,24 @@ const CreateProject = () => {
       .then(response => { return response.json() })
       .then(response => {
         setAux(response);
-        var i = 1;
-        var temp = {
+        let i = 1;
+        let temp = {
           Code: response.code, Name: response.name, InitDate: response.initDate, Descripcion: response.desc, Area: response.area,
           Guards: response.guards, Duration: response.duration, Domain: response.domain, Tag: response.tag
         }
         graphTemp.nodes.push({ id: i, label: response.name, title: JSON.stringify(temp, '', 2) });
 
-        i++
+        i++;
         graphTemp.nodes.push({ id: i, label: response.clientCode, title: JSON.stringify(response.clientCode, '', 2), groups: 'client' });
         graphTemp.edges.push({ from: 1, to: i, label: 'FOR_CLIENT', title: response.clientCode });
 
-        response.skills?.forEach(element => {
-          i++
-          graphTemp.nodes.push({ id: i, label: element, title: element, groups: 'skills' });
-          graphTemp.edges.push({ from: 1, to: i, label: 'REQUIRE', title: response.clientCode });
-        });
-
+        if (!!response.skills) {
+          response.skills.forEach(element => {
+            i++;
+            graphTemp.nodes.push({id: i, label: element, title: element, groups: 'skills'});
+            graphTemp.edges.push({from: 1, to: i, label: 'REQUIRE', title: response.clientCode});
+          });
+        }
         setGraph(prev => graphTemp);
       })
   };

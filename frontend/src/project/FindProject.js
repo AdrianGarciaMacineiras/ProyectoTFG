@@ -83,7 +83,7 @@ function FindProject() {
           title: JSON.stringify(temp, '', 2)
         });
 
-        i++
+        i++;
         graphTemp.nodes.push({
           id: i,
           label: response.clientCode,
@@ -97,17 +97,13 @@ function FindProject() {
           title: response.clientCode
         });
 
-        response.skills?.forEach(element => {
-          i++
-          graphTemp.nodes.push(
-            { id: i, label: element, title: element, groups: 'skills' });
-          graphTemp.edges.push({
-            from: 1,
-            to: i,
-            label: 'REQUIRE',
-            title: response.clientCode
+        if (!!response.skills) {
+          response.skills.forEach(element => {
+            i++;
+            graphTemp.nodes.push({id: i, label: element, title: element, groups: 'skills'});
+            graphTemp.edges.push({from: 1, to: i, label: 'REQUIRE', title: response.clientCode});
           });
-        });
+        }
 
         setGraph(prev => graphTemp);
       });

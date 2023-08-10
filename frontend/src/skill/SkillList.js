@@ -11,7 +11,7 @@ import Card from '@mui/material/Card';
 import Checkbox from '@mui/material/Checkbox';
 import Collapse from '@mui/material/Collapse';
 import Grid from '@mui/material/Grid';
-import { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import VisGraph from 'react-vis-graph-wrapper';
 
 import Footer from '../components/Footer';
@@ -32,7 +32,7 @@ function SkillList() {
 
   const [searchSkill, setSearchSkill] = useState('');
 
-  var auxList = [];
+  let auxList = [];
 
   const graphTemp = { nodes: [], edges: [] };
 
@@ -65,7 +65,7 @@ function SkillList() {
 
   const events = {
     select: function (event) {
-      var { nodes, edges } = event;
+      let { nodes, edges } = event;
     }
   };
 
@@ -157,7 +157,7 @@ function SkillList() {
     const paginatedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
     return (
-      <Fragment>
+      <React.Fragment>
         <Table>
           <TableHead sx={{ display: "table-header-group" }}>
             <TableRow>
@@ -188,7 +188,7 @@ function SkillList() {
           onRowsPerPageChange={
             handleChangeRowsPerPage}
         />
-      </Fragment>
+      </React.Fragment>
     );
   };
 
@@ -198,7 +198,7 @@ function SkillList() {
     const [open, setOpen] = useState(false);
 
     return (
-      <Fragment>
+      <React.Fragment>
         <TableRow sx={
           { '& > *': { borderBottom: 'unset' } }} key={row.index}>
           <TableCell>
@@ -234,7 +234,7 @@ function SkillList() {
             </Collapse>
           </TableCell>
         </TableRow>
-      </Fragment>
+      </React.Fragment>
     );
   };
 
@@ -257,7 +257,7 @@ function SkillList() {
       data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
     return (
-      <>
+      <React.Fragment>
         <Table sx={{
           minWidth: 650
         }}>
@@ -297,7 +297,7 @@ function SkillList() {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      </>
+      </React.Fragment>
     );
   }
 
@@ -332,10 +332,10 @@ function SkillList() {
               }))
             }));
           setTableData(tableData);
-          var i = 1;
-          var j = 2;
+          let i = 1;
+          let j = 2;
           data.forEach(element => {
-            var temp = {
+            let temp = {
               Code: element.code,
               Name: element.name,
               Surname: element.surname,
@@ -353,7 +353,7 @@ function SkillList() {
             element.knows.forEach(knows => {
               /*const foundElement = graphTemp.nodes.find(node => node.label
                * === knows.name);*/
-              var temp = {
+              let temp = {
                 Code: knows.code,
                 Primary: knows.primary,
                 Experience: knows.experience,
@@ -381,7 +381,7 @@ function SkillList() {
   useEffect(() => {
     const recursive =
       (dataList) => {
-        var list = [];
+        let list = [];
         dataList.forEach(data => {
           list.push({
             nodeId: data.code,

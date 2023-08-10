@@ -5,12 +5,12 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {FormControl, InputLabel, MenuItem, Select} from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import { format } from 'date-fns';
-import { useEffect, useState } from 'react';
+import {format} from 'date-fns';
+import React, {useEffect, useState} from 'react';
 import DatePicker from 'react-datepicker';
 import VisGraph from 'react-vis-graph-wrapper';
 
@@ -97,12 +97,10 @@ function CreatePosition() {
   const getTreeItemsFromData =
     (treeItems, searchValue) => {
       const filteredItems = treeItems.filter((treeItemData) => {
-        const isMatched = treeItemData.name.toLowerCase().includes(
-          searchValue.toLowerCase()) ||
-          getTreeItemsFromData(treeItemData.children, searchValue).length >
-          0;
-
-        return isMatched;
+        return treeItemData.name.toLowerCase().includes(
+                searchValue.toLowerCase()) ||
+            getTreeItemsFromData(treeItemData.children, searchValue).length >
+            0;
       });
 
       return filteredItems.map(
@@ -112,21 +110,23 @@ function CreatePosition() {
 
           if (isMatched) {
             return (
-              <TreeItem
-                key={treeItemData.nodeId} nodeId={treeItemData.nodeId} label=
-                {
-                  < div
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleItemClick(treeItemData);
-                    }}
-                  >
-                    {treeItemData.name}
-                  </div>
-                }
-              >
-                {getTreeItemsFromData(treeItemData.children, searchValue)}
-              </TreeItem>
+              <React.Fragment>
+                <TreeItem
+                  key={treeItemData.nodeId} nodeId={treeItemData.nodeId} label=
+                  {
+                    < div
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleItemClick(treeItemData);
+                      }}
+                    >
+                      {treeItemData.name}
+                    </div>
+                  }
+                >
+                  {getTreeItemsFromData(treeItemData.children, searchValue)}
+                </TreeItem>
+              </React.Fragment>
             );
           }
 
@@ -145,14 +145,16 @@ function CreatePosition() {
   const DataTreeView =
     () => {
       return (
-        <MDBox>
-          <TreeView
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}
-          >
-            {getTreeItemsFromData(skillList, searchSkill, false)}
-          </TreeView>
-        </MDBox>
+        <React.Fragment>
+          <MDBox>
+            <TreeView
+              defaultCollapseIcon={<ExpandMoreIcon />}
+              defaultExpandIcon={<ChevronRightIcon />}
+            >
+              {getTreeItemsFromData(skillList, searchSkill, false)}
+            </TreeView>
+          </MDBox>
+        </React.Fragment>
       );
     };
 
@@ -169,23 +171,25 @@ function CreatePosition() {
   const SkillsList =
     () => {
       return (
-        <MDBox>
-          {form.skills.map((skill, index) => (
-            <MDBox key={index}>
-              <hr />
-              <label>Skill: {skill.skillName}</label>
-              <br />
-              <label>Level Required: {skill.levelReq}</label>
-              <br />
-              <label>Minimum Level: {skill.minLevel}</label>
-              <br />
-              <label>Minimum Experience: {skill.minExp}</label>
-              <br />
-              <button onClick={() => handleRemoveSkill(index)}>Remove</button>
-              <hr />
-            </MDBox>
-          ))}
-        </MDBox>
+        <React.Fragmet>
+          <MDBox>
+            {form.skills.map((skill, index) => (
+              <MDBox key={index}>
+                <hr />
+                <label>Skill: {skill.skillName}</label>
+                <br />
+                <label>Level Required: {skill.levelReq}</label>
+                <br />
+                <label>Minimum Level: {skill.minLevel}</label>
+                <br />
+                <label>Minimum Experience: {skill.minExp}</label>
+                <br />
+                <button onClick={() => handleRemoveSkill(index)}>Remove</button>
+                <hr />
+              </MDBox>
+            ))}
+          </MDBox>
+        </React.Fragmet>
       );
     };
 
@@ -447,182 +451,190 @@ function CreatePosition() {
   };
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox pt={6} pb={3}>
-        <Grid container spacing={6}>
-          <Grid item xs={12}>
+    <React.Fragment>
+      <DashboardLayout>
+        <DashboardNavbar />
+        <MDBox pt={6} pb={3}>
+          <Grid container spacing={6}>
+            <Grid item xs={12}>
+              <Card>
+                <MDBox
+                  mx={2} mt={-3} py={3} px={2} variant='gradient'
+                  bgColor='info'
+                  borderRadius='lg'
+                  coloredShadow=
+                  'info' > <MDTypography variant='h6' color='white'>Create Position</MDTypography>
+                </MDBox>
+                <form id='positionForm' onSubmit={handleSubmit}>
+                  <MDBox pt={3}>
+                    <Grid container spacing={6}>
+                      <Grid item xs={6}>
+                        <MDTypography variant='h6' fontWeight='medium'>Position code</MDTypography>
+                        <MDInput type="text" value={form.positionCode} onChange={handleInputChange} name="positionCode" />
+
+                        <Grid item xs={6}>
+                          <MDTypography variant='h6' fontWeight='medium'>
+                            Project Name
+                          </MDTypography>
+                          <Autocomplete
+                            options={projectList}
+                            getOptionLabel={(project) => project.name}
+                            value={projectList.find((project) => project.code === form.projectCode) || null}
+                            onChange={(event, newValue) => {
+                              handleInputChange({ target: { name: "projectCode", value: newValue?.code || '' } });
+                            }}
+                            renderInput={(params) => (
+                              <MDInput
+                                {...params}
+                                label="Select a project"
+                                name="projectCode"
+                              />
+                            )
+                            } />
+                        </Grid >
+
+                        <Grid item xs={6}>
+                          <MDTypography variant='h6' fontWeight='medium'>Manager</MDTypography>
+                          <Autocomplete
+                            options={peopleList}
+                            getOptionLabel={(people) => people.name + " " + people.surname}
+                            value={peopleList.find((people) => people.code === form.managedBy) || null}
+                            onChange={(event, newValue) => {
+                              handleInputChange({ target: { name: "managedBy", value: newValue?.code || '' } });
+                            }}
+                            renderInput={(params) => (
+                              <MDInput
+                                {...params}
+                                label="Select a person"
+                                name="managedBy"
+                              />)
+                            } />
+                        </Grid >
+
+                        <MDTypography variant='h6' fontWeight='medium'>
+                          Role</MDTypography>
+                        <MDInput type="text" value={form.role} onChange={handleInputChange} name="role" />
+                        <MDTypography variant='h6' fontWeight='medium'>Init
+                          Date</MDTypography>
+                        <DatePicker
+                          selected={openingDate}
+                          dateFormat="dd-MM-yyyy"
+                          onSelect={(date) => setOpeningDate(date)}
+                          onChange={(date) => handleInputChange({ target: { name: "openingDate", value: format(date, 'dd-MM-yyyy') } })}
+                        />
+                        <MDTypography variant='h6' fontWeight='medium'>
+                          Mode</MDTypography>
+                        <FormControl fullWidth>
+                          <InputLabel>Select an option</InputLabel>
+                          <Select name='mode' value={form.mode} onChange={handleInputChange}>
+                            <MenuItem value='REMOTE'>
+                              Remote</MenuItem>
+                            <MenuItem value="PRESENTIAL">Presential</MenuItem>
+                            <MenuItem value='MIX'>
+                              Mix</MenuItem>
+                            <MenuItem value="UNKNOWN">Unknown</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <MDTypography variant='h6' fontWeight='medium'>Name</MDTypography>
+                        <MDInput type='text' value={form.name} onChange=
+                          {handleInputChange} name='name' />
+                        <MDTypography variant='h6' fontWeight='medium'>
+                          Priority</MDTypography>
+                        <MDInput type="text" value={form.priority} onChange={handleInputChange} name="priority" />
+                        <MDTypography variant='h6' fontWeight='medium'>
+                          Charge</MDTypography>
+                        <MDTypography variant='h6' fontWeight='medium'>End Date</MDTypography><
+                          DatePicker
+                          selected={closingDate} dateFormat='dd-MM-yyyy'
+                          onSelect={(date) => setClosingDate(date)} onChange=
+                          {(date) => handleInputChange(
+                            { target: { name: 'closingDate', value: format(date, 'dd-MM-yyyy') } })
+                          } />
+                        <MDTypography variant='h6' fontWeight='medium'>Active</MDTypography >
+                        <FormControl fullWidth><InputLabel>Select an option</InputLabel>
+                          <Select name="active" value={form.active} onChange={handleInputChange}>
+                            <MenuItem value="true">YES</MenuItem>
+                            <MenuItem value='false'>NO</MenuItem>
+                          </Select>
+                        </FormControl>
+                        {selectedItem && (
+                          <MDBox>
+                            <h2>Selected Item: {selectedItem.name}</h2>
+                            <FormControl fullWith>
+                              <MDTypography variant='h6' fontWeight='medium'>Level Required</MDTypography>
+                              <InputLabel>Select an Option</InputLabel>
+                              <Select value={levelReq} onChange=
+                                {(e) => setLevelReq(e.target.value)}>
+                                <MenuItem value='MANDATORY'>MANDATORY</MenuItem>
+                                <MenuItem value="NICE_TO_HAVE">NICE TO HAVE</MenuItem>
+                              </Select>
+                            </FormControl><FormControl fullWidth>
+                              <MDTypography variant='h6' fontWeight='medium'>Level Required</MDTypography>
+                              <InputLabel>
+                                Select an option
+                              </InputLabel>
+                              <Select value={minLevel} onChange=
+                                {(e) => setMinLevel(e.target.value)}>
+                                <MenuItem value='HIGH'>HIGH</MenuItem>
+                                <MenuItem value="MEDIUM">MEDIUM</MenuItem>
+                                <MenuItem value='LOW'>
+                                  LOW</MenuItem>
+                              </Select>
+                            </FormControl>
+                            <FormControl fullWidth>
+                              <MDTypography variant='h6' fontWeight='medium'>Minimum Experience</MDTypography>
+                              <MDInput type='number' value={minExp} onChange=
+                                {(e) => setMinExp(parseInt(e.target.value))
+                                } />
+                            </FormControl>
+                            <MDButton onClick={handleModalSubmit}>Save</MDButton>
+                            <MDButton onClick={() => setSelectedItem(null)}>Cancel</MDButton>
+                          </MDBox>
+                        )}
+
+                        <MDButton onClick={collapseAll}> Collapse all </MDButton>
+                        <br />< input
+                          type='text'
+                          value={searchSkill} onChange=
+                          {(e) => setSearchSkill(e.target.value)} placeholder=
+                          'Search' /> <DataTreeView /><SkillsList />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
+                      </Grid>
+                    </Grid></MDBox>
+                </form>
+              </Card>
+            </Grid>
+          </Grid>
+        </MDBox>
+        <MDBox pt={6} pb={3}>
+          <Grid container spacing={6}><Grid item xs={12}>
             <Card>
-              <MDBox
-                mx={2} mt={-3} py={3} px={2} variant='gradient'
+              <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
                 bgColor='info'
                 borderRadius='lg'
-                coloredShadow=
-                'info' > <MDTypography variant='h6' color='white'>Create Position</MDTypography>
-              </MDBox>
-              <form id='positionForm' onSubmit={handleSubmit}>
-                <MDBox pt={3}>
-                  <Grid container spacing={6}>
-                    <Grid item xs={6}>
-                      <MDTypography variant='h6' fontWeight='medium'>Position code</MDTypography>
-                      <MDInput type="text" value={form.positionCode} onChange={handleInputChange} name="positionCode" />
-
-                      <Grid item xs={6}>
-                        <MDTypography variant='h6' fontWeight='medium'>
-                          Project Name
-                        </MDTypography>
-                        <Autocomplete
-                          options={projectList}
-                          getOptionLabel={(project) => project.name}
-                          value={projectList.find((project) => project.code === form.projectCode) || null}
-                          onChange={(event, newValue) => {
-                            handleInputChange({ target: { name: "projectCode", value: newValue?.code || '' } });
-                          }}
-                          renderInput={(params) => (
-                            <MDInput
-                              {...params}
-                              label="Select a project"
-                              name="projectCode"
-                            />
-                          )
-                          } />
-                      </Grid >
-
-                      <Grid item xs={6}>
-                        <MDTypography variant='h6' fontWeight='medium'>Manager</MDTypography>
-                        <Autocomplete
-                          options={peopleList}
-                          getOptionLabel={(people) => people.name + " " + people.surname}
-                          value={peopleList.find((people) => people.code === form.managedBy) || null}
-                          onChange={(event, newValue) => {
-                            handleInputChange({ target: { name: "managedBy", value: newValue?.code || '' } });
-                          }}
-                          renderInput={(params) => (
-                            <MDInput
-                              {...params}
-                              label="Select a person"
-                              name="managedBy"
-                            />)
-                          } />
-                      </Grid >
-
-                      <MDTypography variant='h6' fontWeight='medium'>
-                        Role</MDTypography>
-                      <MDInput type="text" value={form.role} onChange={handleInputChange} name="role" />
-                      <MDTypography variant='h6' fontWeight='medium'>Init
-                        Date</MDTypography>
-                      <DatePicker
-                        selected={openingDate}
-                        dateFormat="dd-MM-yyyy"
-                        onSelect={(date) => setOpeningDate(date)}
-                        onChange={(date) => handleInputChange({ target: { name: "openingDate", value: format(date, 'dd-MM-yyyy') } })}
-                      />
-                      <MDTypography variant='h6' fontWeight='medium'>
-                        Mode</MDTypography>
-                      <FormControl fullWidth>
-                        <InputLabel>Select an option</InputLabel>
-                        <Select name='mode' value={form.mode} onChange={handleInputChange}>
-                          <MenuItem value='REMOTE'>
-                            Remote</MenuItem>
-                          <MenuItem value="PRESENTIAL">Presential</MenuItem>
-                          <MenuItem value='MIX'>
-                            Mix</MenuItem>
-                          <MenuItem value="UNKNOWN">Unknown</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <MDTypography variant='h6' fontWeight='medium'>Name</MDTypography>
-                      <MDInput type='text' value={form.name} onChange=
-                        {handleInputChange} name='name' />
-                      <MDTypography variant='h6' fontWeight='medium'>
-                        Priority</MDTypography>
-                      <MDInput type="text" value={form.priority} onChange={handleInputChange} name="priority" />
-                      <MDTypography variant='h6' fontWeight='medium'>
-                        Charge</MDTypography>
-                      <MDTypography variant='h6' fontWeight='medium'>End Date</MDTypography><
-                        DatePicker
-                        selected={closingDate} dateFormat='dd-MM-yyyy'
-                        onSelect={(date) => setClosingDate(date)} onChange=
-                        {(date) => handleInputChange(
-                          { target: { name: 'closingDate', value: format(date, 'dd-MM-yyyy') } })
-                        } />
-                      <MDTypography variant='h6' fontWeight='medium'>Active</MDTypography >
-                      <FormControl fullWidth><InputLabel>Select an option</InputLabel>
-                        <Select name="active" value={form.active} onChange={handleInputChange}>
-                          <MenuItem value="true">YES</MenuItem>
-                          <MenuItem value='false'>NO</MenuItem>
-                        </Select>
-                      </FormControl>
-                      {selectedItem && (
-                        <MDBox>
-                          <h2>Selected Item: {selectedItem.name}</h2>
-                          <FormControl fullWith>
-                            <MDTypography variant='h6' fontWeight='medium'>Level Required</MDTypography>
-                            <InputLabel>Select an Option</InputLabel>
-                            <Select value={levelReq} onChange=
-                              {(e) => setLevelReq(e.target.value)}>
-                              <MenuItem value='MANDATORY'>MANDATORY</MenuItem>
-                              <MenuItem value="NICE_TO_HAVE">NICE TO HAVE</MenuItem>
-                            </Select>
-                          </FormControl><FormControl fullWidth>
-                            <MDTypography variant='h6' fontWeight='medium'>Level Required</MDTypography>
-                            <InputLabel>
-                              Select an option
-                            </InputLabel>
-                            <Select value={minLevel} onChange=
-                              {(e) => setMinLevel(e.target.value)}>
-                              <MenuItem value='HIGH'>HIGH</MenuItem>
-                              <MenuItem value="MEDIUM">MEDIUM</MenuItem>
-                              <MenuItem value='LOW'>
-                                LOW</MenuItem>
-                            </Select>
-                          </FormControl>
-                          <FormControl fullWidth>
-                            <MDTypography variant='h6' fontWeight='medium'>Minimum Experience</MDTypography>
-                            <MDInput type='number' value={minExp} onChange=
-                              {(e) => setMinExp(parseInt(e.target.value))
-                              } />
-                          </FormControl>
-                          <MDButton onClick={handleModalSubmit}>Save</MDButton>
-                          <MDButton onClick={() => setSelectedItem(null)}>Cancel</MDButton>
-                        </MDBox>
-                      )}
-
-                      <MDButton onClick={collapseAll}> Collapse all </MDButton>
-                      <br />< input
-                        type='text'
-                        value={searchSkill} onChange=
-                        {(e) => setSearchSkill(e.target.value)} placeholder=
-                        'Search' /> <DataTreeView /><SkillsList />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
-                    </Grid>
-                  </Grid></MDBox>
-              </form>
-            </Card>
-          </Grid></Grid>
-      </MDBox><MDBox pt={6} pb={3}>
-
-        <Grid container spacing={6}><Grid item xs={12}><Card><
-          MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
-          bgColor='info'
-          borderRadius='lg'
-          coloredShadow='info' > <MDTypography variant='h6' color='white'>Position
-            Graph</MDTypography>
-        </MDBox><MDBox pt={3}>< VisGraph
-          graph={graph} options={options} events={events} getNetwork={
-            network => {
+                coloredShadow='info'>
+              <MDTypography variant='h6' color='white'>Position Graph</MDTypography>
+          </MDBox>
+          <MDBox pt={3}>
+            < VisGraph
+              graph={graph} options={options} events={events} getNetwork={
+              network => {
               //  if you want access to vis.js network api you can set the state in a
               //  parent component using this property
-            }
-          } />
-          </MDBox >
-
-        </Card>
-        </Grid></Grid>
-      </MDBox><Footer /></DashboardLayout>
+              }
+            } />
+         </MDBox >
+      </Card>
+    </Grid>
+  </Grid>
+</MDBox>
+        <Footer />
+      </DashboardLayout>
+    </React.Fragment>
   );
 }
 
