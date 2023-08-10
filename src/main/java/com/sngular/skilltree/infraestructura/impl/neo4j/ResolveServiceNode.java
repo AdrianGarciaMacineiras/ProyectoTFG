@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,8 +31,7 @@ public class ResolveServiceNode {
 
     @Named("resolveCodeToSkillNode")
     public SkillNode resolveCodeToSkillNode(final String code) {
-        var skillNode = skillCrudRepository.findSkillByCode(code);
-        return skillNode;
+        return skillCrudRepository.findSkillByCode(code);
     }
 
     @Named("mapToAssignment")
@@ -89,24 +85,24 @@ public class ResolveServiceNode {
     }
 
     @Named("mapToSubskill")
-    public List<Skill> mapToSubskill(List<SubSkillsRelationship> subSkillsRelationships) {
-        final List<Skill> skillList = new ArrayList<>();
+    public Map<String, Skill> mapToSubskill(List<SubSkillsRelationship> subSkillsRelationships) {
+        final Map<String, Skill> skillList = new HashMap<>();
         subSkillsRelationships
                 .forEach(subSkillsRelationship ->
-                        skillList.add(Skill.builder()
+                        skillList.put(subSkillsRelationship.skillNode().getName(), Skill.builder()
                                 .name(subSkillsRelationship.skillNode().getName())
                                 .code(subSkillsRelationship.skillNode().getCode())
-                                .subSkills(mapToSubskill(subSkillsRelationship.skillNode().getSubSkills()))
+                                .subSkillList(mapToSubskill(subSkillsRelationship.skillNode().getSubSkills()))
                                 .build())
                 );
         return skillList;
     }
 
     @Named("mapToSkillRelationship")
-    public List<SubSkillsRelationship> mapToSkillRelationship(List<Skill> skills) {
+    public List<SubSkillsRelationship> mapToSkillRelationship(Map<String, Skill> skills) {
         final List<SubSkillsRelationship> subSkillsRelationshipsList = new ArrayList<>();
-        for (var skill : skills) {
-            var skillNode = skillCrudRepository.findSkillByCode(skill.code());
+        for (var skill : skills.values()) {
+            var skillNode = skillCrudRepository.findSkillByCode(skill.getCode());
             SubSkillsRelationship subskillsRelationship = new SubSkillsRelationship(null, skillNode, "own");
             subSkillsRelationshipsList.add(subskillsRelationship);
         }

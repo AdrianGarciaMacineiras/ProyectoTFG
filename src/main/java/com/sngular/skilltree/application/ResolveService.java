@@ -1,17 +1,12 @@
 package com.sngular.skilltree.application;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.sngular.skilltree.model.Client;
-import com.sngular.skilltree.model.Office;
-import com.sngular.skilltree.model.People;
-import com.sngular.skilltree.model.Position;
-import com.sngular.skilltree.model.Project;
-import com.sngular.skilltree.model.Skill;
+import com.sngular.skilltree.model.*;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -31,7 +26,7 @@ public class ResolveService {
 
     @Named("resolveSkillName")
     public String resolveSkillToName(final Skill skill) {
-        return skill.name();
+        return skill.getName();
     }
 
     @Named("resolveSkillNameList")
@@ -47,7 +42,7 @@ public class ResolveService {
 
     @Named("resolveSkillCode")
     public String resolveSkillToCode(final Skill skill) {
-        return skill.name();
+        return skill.getName();
     }
 
     @Named("resolveSkillCodeList")

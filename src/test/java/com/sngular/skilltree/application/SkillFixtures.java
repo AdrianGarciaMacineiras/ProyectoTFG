@@ -1,8 +1,9 @@
 package com.sngular.skilltree.application;
 
-import java.util.List;
-
 import com.sngular.skilltree.model.Skill;
+
+import java.util.List;
+import java.util.Map;
 
 public class SkillFixtures {
 
@@ -16,7 +17,7 @@ public class SkillFixtures {
       Skill.builder()
            .code("s1120")
            .name("Spring")
-           .subSkills(List.of(SKILL2_BY_CODE))
+              .subSkillList(Map.of(SKILL2_BY_CODE.getName(), SKILL2_BY_CODE))
            .build();
 
     public static final Skill SKILL3_BY_CODE =
