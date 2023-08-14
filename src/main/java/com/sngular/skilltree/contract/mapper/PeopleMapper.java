@@ -22,13 +22,13 @@ import org.mapstruct.Named;
 @Mapper(config = CommonMapperConfiguration.class, uses = {SkillMapper.class, CandidateMapper.class, ResolveService.class})
 public interface PeopleMapper {
 
-    @Mapping(target = "work_with", source = "work_with", qualifiedByName = {"resolveSkillNameList"})
+    @Mapping(target = "work_with", source = "workWith", qualifiedByName = {"resolveSkillNameList"})
     @Mapping(target = "master", source = "master", qualifiedByName = {"resolveSkillNameList"})
     @Mapping(target = "interest", source = "interest", qualifiedByName = {"resolveSkillNameList"})
     @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
     PeopleDTO toPersonDTO(People people);
 
-  @Mapping(source = "work_with", target = "work_with", qualifiedByName = {"resolveNameSkillList"})
+  @Mapping(source = "work_with", target = "workWith", qualifiedByName = {"resolveNameSkillList"})
   @Mapping(source = "master", target = "master", qualifiedByName = {"resolveNameSkillList"})
   @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveNameSkillList"})
   @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
@@ -36,7 +36,7 @@ public interface PeopleMapper {
 
   List<PeopleDTO> toPeopleDto(Collection<People> people);
 
-  @Mapping(source = "work_with", target = "work_with", qualifiedByName = {"resolveCodeSkillList"})
+  @Mapping(source = "work_with", target = "workWith", qualifiedByName = {"resolveCodeSkillList"})
   @Mapping(source = "master", target = "master", qualifiedByName = {"resolveCodeSkillList"})
   @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveCodeSkillList"})
   @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
@@ -80,7 +80,7 @@ public interface PeopleMapper {
                 .interest((Objects.isNull(newPeople.interest())) ? oldPeople.interest() : newPeople.interest())
                 .knows((Objects.isNull(newPeople.knows())) ? oldPeople.knows() : newPeople.knows())
                 .master((Objects.isNull(newPeople.master())) ? oldPeople.master() : newPeople.master())
-                .work_with((Objects.isNull(newPeople.work_with())) ? oldPeople.work_with() : newPeople.work_with())
+                .workWith((Objects.isNull(newPeople.workWith())) ? oldPeople.workWith() : newPeople.workWith())
                 .roles((Objects.isNull(newPeople.roles())) ? oldPeople.roles() : newPeople.roles())
                 .assignable(newPeople.assignable())
                 .assigns((Objects.isNull(newPeople.assigns())) ? oldPeople.assigns() : newPeople.assigns())

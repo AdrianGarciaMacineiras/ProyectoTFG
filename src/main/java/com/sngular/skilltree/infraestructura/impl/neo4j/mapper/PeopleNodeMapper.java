@@ -37,7 +37,7 @@ public interface PeopleNodeMapper {
         //@Mapping(target = "noProjects", source = "noProjects", qualifiedByName = {"resolveServiceNode", "mapToProjectString"})
     People fromNode(PeopleNode peopleNode);
 
-    @Mapping(target = "work_with", source = "workWith")
+    @Mapping(target = "workWith", source = "workWith")
     People fromView(PeopleView peopleView);
 
     @Mapping(target = "date", expression = "java(toLocalDate(certificateRelationship.date()))")

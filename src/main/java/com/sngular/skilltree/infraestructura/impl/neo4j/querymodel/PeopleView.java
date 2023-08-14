@@ -1,8 +1,5 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.querymodel;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateTimeConverter;
-import org.springframework.data.neo4j.core.convert.ConvertWith;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,7 +13,7 @@ public interface PeopleView {
 
     String getSurname();
 
-    String geTitle();
+    String getTitle();
 
     boolean getAssignable();
 
@@ -82,6 +79,6 @@ public interface PeopleView {
 
         String getRole();
 
-        String getProjectName();
+        ProjectView getProject();
     }
 }
