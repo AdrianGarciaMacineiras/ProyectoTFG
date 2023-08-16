@@ -11,6 +11,7 @@ public class CustomPeopleRepositoryImpl implements CustomPeopleRepository {
 
     private final Neo4jClient client;
 
+    //TODO: Add Team
     private final static String QUERY = """
             match (p:Person {deleted: false})-[r:KNOWS]-(s:Skill)
             with p, collect({code:s.code, name:s.name, experience:r.experience, level:r.level, primary:r.primary}) as skill
