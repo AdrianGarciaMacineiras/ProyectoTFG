@@ -1,9 +1,8 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
-import java.util.List;
-
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomPeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleView;
@@ -13,11 +12,15 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class PeopleRepositoryImpl implements PeopleRepository {
 
     private final PeopleCrudRepository crud;
+
+    private final CustomPeopleRepository customCrud;
 
     private final PeopleNodeMapper mapper;
 
@@ -26,6 +29,11 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     @Override
     public List<People> findAll() {
         return mapper.map(crud.findByDeletedIsFalse(PeopleView.class));
+    }
+
+    @Override
+    public List<com.sngular.skilltree.model.views.PeopleView> findAllResumed() {
+        return mapper.mapExtended(customCrud.getAllPeopleExtended());
     }
 
     @Override

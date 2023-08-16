@@ -857,6 +857,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /api/people/shortinfo:
+    summary: Company people
+    description: Returns a list of all people in the company
+    get:
+      summary: List all available people
+      operationId: getPeopleResume
+      tags:
+        - people
+      responses:
+        '200':
+          description: A paged array of people
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/peopleResumed"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
   /api/skills:
     summary: Skills on the skill tree
     description: Returns a list of all skills
@@ -2085,6 +2113,52 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/candidate"
+
+    peopleResumed:
+      type: object
+      required:
+        - code
+        - employeeId
+        - name
+        - surname
+        - title
+        - teamShortName
+      properties:
+        code:
+          type: string
+        employeeId:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        title:
+          type: string
+        teamShortName:
+          type: string
+        knows:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              code:
+                type: string
+              name:
+                type: string
+              level:
+                type: string
+                enum:
+                  - ADVANCED
+                  - MIDDLE
+                  - LOW
+                  - UNKNOWN
+              experience:
+                type: integer
+                format: int32
+              primary:
+                type: boolean
 
     patchedPeople:
       type: object

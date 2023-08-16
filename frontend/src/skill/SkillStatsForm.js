@@ -6,7 +6,7 @@ import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import MDInput from '../components/MDInput';
 import MDButton from '../components/MDButton';
-import { useState } from 'react';
+import {useState} from 'react';
 import Sunburst from './Sunburst';
 
 
@@ -64,7 +64,7 @@ const SkillStatsForm = () => {
         event.preventDefault();
 
         skillStat(form.title);
-        
+
         setForm({ title: '' });
     }
 

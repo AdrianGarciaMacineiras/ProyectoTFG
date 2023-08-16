@@ -1,11 +1,15 @@
 package com.sngular.skilltree.infraestructura;
 
 import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.views.PeopleView;
+
 import java.util.List;
 
 public interface PeopleRepository {
 
     List<People> findAll();
+
+    List<PeopleView> findAllResumed();
 
     People save(People people);
 

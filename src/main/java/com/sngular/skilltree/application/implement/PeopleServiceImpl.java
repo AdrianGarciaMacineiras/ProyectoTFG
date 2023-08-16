@@ -5,10 +5,11 @@ import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.PositionService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.People;
-import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.model.Position;
+import com.sngular.skilltree.model.views.PeopleView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,11 @@ public class PeopleServiceImpl implements PeopleService {
     @Override
     public List<People> getAll() {
         return peopleRepository.findAll();
+    }
+
+    @Override
+    public List<PeopleView> getAllResumed() {
+        return peopleRepository.findAllResumed();
     }
 
     @Override

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CustomPeopleRepository {
 
-    PeopleExtendedView getAllPeopleExtended();
+    List<PeopleExtendedView> getAllPeopleExtended();
 }
