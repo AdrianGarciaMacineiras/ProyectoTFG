@@ -29,10 +29,12 @@ const NestedKnows = ({ data }) => {
     switch (experience) {
       case 'LOW':
         return 1;
-      case 'MIDDLE':
+      case 'MEDIUM':
         return 2;
-      case 'ADVANCED':
+      case 'CONFIDENT':
         return 3;
+      case 'HIGH':
+        return 4;
       default:
         return 0;
     }

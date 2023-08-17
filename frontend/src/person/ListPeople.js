@@ -89,31 +89,6 @@ const ListPeople =
       });
     };
 
-    /*const handleSubmit = (event) => {
-
-      event.preventDefault();
-
-      fetch(`http://${window.location.hostname}:9080/api/people/${updatedPeopleData.code}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify(updatedPeopleData),
-      })
-        .then((response) => response.json())
-        .then((updatedPeople) => {
-          setPeopleList((prevpeopleList) =>
-            prevpeopleList.map((people) =>
-              people.code === updatedPeople.code ? updatedPeople : people
-            )
-          );
-        })
-        .catch((error) => {
-          console.error('Error updating people:', error);
-        });
-    };*/
-
     function CustomTabPanel(props) {
       const { children, value, index, ...other } = props;
 
@@ -180,17 +155,18 @@ const ListPeople =
                     <KeyboardArrowDownIcon />
                   }
                 </IconButton>
-              </Tooltip></TableCell>
+              </Tooltip>
+            </TableCell>
             <TableCell align="left">{row.code}</TableCell>
             <TableCell align='left'>{row.name}</TableCell>
             <TableCell align="left">{row.surname}</TableCell>
             <TableCell align='left'>{row.employeeId}</TableCell>
-            <TableCell align="left">{row.birthDate}</TableCell>
             <TableCell><Tooltip title='Update element'>< IconButton
               aria-label='update row'
               size='small'
               onClick={(event) => handleUpdate(event, row.employeeId)} >
-              {<Update />}</IconButton>
+              {<Update />}
+            </IconButton>
             </Tooltip>
             </TableCell>
             <TableCell>
@@ -200,9 +176,10 @@ const ListPeople =
                   size="small"
                   onClick={(event) => handleDelete(event, row.employeeId)}
                 >
-                  {<Clear />
-                  }</IconButton>
-              </Tooltip></TableCell>
+                  {<Clear />}
+                </IconButton>
+              </Tooltip>
+            </TableCell>
           </TableRow>
           <TableRow><TableCell style={
             {
@@ -219,19 +196,11 @@ const ListPeople =
               }
             }><Tabs value={valor} onChange={(event, newValue) =>
               handleChangeTab(event, newValue, row)} aria-label='basic tabs example'>
-                  <Tab label='Knows' {
-                    ...a11yProps(0)
-                  }
-                  />
-                  <Tab label="WorkWith" {...a11yProps(1)} /> < Tab label=
-                    'Masters' {
-                    ...a11yProps(2)
-                    }
-                  />
-                  <Tab label="Interests" {...a11yProps(3)} /> <
-                    Tab label='Certificates' {
-                    ...a11yProps(4)
-                    } />
+                  <Tab label='Knows' {...a11yProps(0)} />
+                  <Tab label="WorkWith" {...a11yProps(1)} />
+                  <Tab label='Masters' {...a11yProps(2)} />
+                  <Tab label="Interests" {...a11yProps(3)} />
+                  <Tab label='Certificates' {...a11yProps(4)} />
                 </Tabs>
               </MDBox>
               <CustomTabPanel value={valor} index={0}>
@@ -276,110 +245,107 @@ const ListPeople =
     };
 
     return (
-    <React.Fragment>
-      <DashboardLayout>
-        <DashboardNavbar />
-        <MDBox pt={6} pb={3}>
-          <Grid container spacing={6}>
-            <Grid item xs={12}>
-              <Card>
-                <MDBox
-                  mx={2} mt={-3} py={3} px={2} variant='gradient'
-                  bgColor='info'
-                  borderRadius='lg'
-                  coloredShadow='info'
-                  display='flex'
-                  justifyContent='space-between'
-                  alignItems=
-                  'center' >
-                  <MDTypography variant='h6' color='white'>People List</MDTypography>
-                  <MDBox display="flex" justifyContent="flex-end">
-                    <Tooltip title="Add item">
-                      <IconButton aria-label="add row" size="small" onClick={handleAdd}>
-                        <Add />
-                      </IconButton>
-                    </Tooltip></MDBox>
-                </MDBox>
-                <TableContainer component={Paper}>
-                  <Table sx=
-                    {
-                      { minWidth: 650 }
-                    } aria-label='simple table'><TableHead sx={
+      <React.Fragment>
+        <DashboardLayout>
+          <DashboardNavbar />
+          <MDBox pt={6} pb={3}>
+            <Grid container spacing={6}>
+              <Grid item xs={12}>
+                <Card>
+                  <MDBox
+                    mx={2} mt={-3} py={3} px={2} variant='gradient'
+                    bgColor='info'
+                    borderRadius='lg'
+                    coloredShadow='info'
+                    display='flex'
+                    justifyContent='space-between'
+                    alignItems=
+                    'center' >
+                    <MDTypography variant='h6' color='white'>People List</MDTypography>
+                    <MDBox display="flex" justifyContent="flex-end">
+                      <Tooltip title="Add item">
+                        <IconButton aria-label="add row" size="small" onClick={handleAdd}>
+                          <Add />
+                        </IconButton>
+                      </Tooltip></MDBox>
+                  </MDBox>
+                  <TableContainer component={Paper}>
+                    <Table sx=
                       {
-                        display: 'table-header-group'
-                      }
-                    }><TableRow><TableCell width='100' component='th' scope='row'><IconButton
-                      aria-label='expand row'
-                      size='small'
-                      onClick=
-                      {() => setOpen(!open)} >
-                      {
-                        open ? <KeyboardDoubleArrowUpIcon /> : <KeyboardDoubleArrowDownIcon />
-                      }</IconButton>
-                    </TableCell>
-                        <TableCell align='left' onClick={() => handleSortChange('code')}>
-                          <strong>{
-                            orderBy === 'code' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
-                          Code
-                        </TableCell>
-                        <TableCell align='left' onClick={() => handleSortChange('name')}>
-                          <strong>{
-                            orderBy === 'name' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
-                          Name
-                        </TableCell>
-                        <TableCell align='left' onClick={() => handleSortChange('surname')}>
-                          <strong>{
-                            orderBy === 'surname' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
-                              null}</strong>
-                          Surname
-                        </TableCell>
-                        <TableCell align=
-                          'left' onClick={() => handleSortChange('employeeId')}><strong>{
-                            orderBy === 'employeeId' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
-                              null}</strong>
-                          EmployeeId
-                        </TableCell>
-                        <TableCell align='left' onClick={() => handleSortChange('birthDate')}>
-                          <strong>{
-                            orderBy === 'birthDate' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
-                              null}</strong>
-                          Birth date
-                        </TableCell>
-                      </TableRow>
-                    </TableHead><TableBody> {peopleList?.slice()
-                      .sort((a, b) => {
-                        const aValue = a[orderBy];
-                        const bValue = b[orderBy];
-
-                        if (sortDirection === 'asc') {
-                          return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-                        } else {
-                          return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+                        { minWidth: 650 }
+                      } aria-label='simple table'><TableHead sx={
+                        {
+                          display: 'table-header-group'
                         }
-                      })
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((row, index) => (
-                        <DataPerson key={index} row={
-                          row} />
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25, 50]} component='div'
-                  count={peopleList.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={
-                    handleChangeRowsPerPage}
-                />
-              </Card>
+                      }>
+                        <TableRow>
+                          <TableCell width='100' component='th' scope='row'>
+                            <IconButton
+                              aria-label='expand row'
+                              size='small'
+                              onClick=
+                              {() => setOpen(!open)} >
+                              {
+                                open ? <KeyboardDoubleArrowUpIcon /> : <KeyboardDoubleArrowDownIcon />
+                              }</IconButton>
+                          </TableCell>
+                          <TableCell align='left' onClick={() => handleSortChange('code')}>
+                            <strong>{
+                              orderBy === 'code' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+                            Code
+                          </TableCell>
+                          <TableCell align='left' onClick={() => handleSortChange('name')}>
+                            <strong>{
+                              orderBy === 'name' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+                            Name
+                          </TableCell>
+                          <TableCell align='left' onClick={() => handleSortChange('surname')}>
+                            <strong>{
+                              orderBy === 'surname' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
+                                null}</strong>
+                            Surname
+                          </TableCell>
+                          <TableCell align=
+                            'left' onClick={() => handleSortChange('employeeId')}><strong>{
+                              orderBy === 'employeeId' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
+                                null}</strong>
+                            EmployeeId
+                          </TableCell>
+                        </TableRow>
+                      </TableHead><TableBody> {peopleList?.slice()
+                        .sort((a, b) => {
+                          const aValue = a[orderBy];
+                          const bValue = b[orderBy];
+
+                          if (sortDirection === 'asc') {
+                            return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+                          } else {
+                            return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+                          }
+                        })
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row, index) => (
+                          <DataPerson key={index} row={
+                            row} />
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25, 50]} component='div'
+                    count={peopleList.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={
+                      handleChangeRowsPerPage}
+                  />
+                </Card>
+              </Grid>
             </Grid>
-          </Grid>
-        </MDBox>
-      </DashboardLayout>
-    </React.Fragment>
+          </MDBox>
+        </DashboardLayout>
+      </React.Fragment>
     );
   };
 

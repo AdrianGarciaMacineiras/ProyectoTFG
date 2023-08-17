@@ -1,9 +1,5 @@
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
 
 
@@ -17,7 +13,7 @@ const Sunburst = ({ data }) => {
 
     const chart = () => {
       // Specify the chart’s dimensions.
-      const width = 928;
+      const width = 728;
       const height = width;
       const radius = width / 4;
 
@@ -44,7 +40,7 @@ const Sunburst = ({ data }) => {
 
       // Create the SVG container.
       const svg = d3.create("svg")
-        .attr("viewBox", [-width / 2, -height / 2, width, height])
+        .attr("viewBox", [-width / 2, -height / 1.33, width * 1.5, height * 1.5])
         .style("font", "10px sans-serif");
 
       // Append the arcs.
@@ -67,6 +63,27 @@ const Sunburst = ({ data }) => {
       path.append("title")
         .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
 
+      const calculateSegmentSize = (node) => {
+        if (node.children) {
+          return node.children.reduce((acc, child) => acc + calculateSegmentSize(child), 0);
+        }
+        return node.value;
+      };
+
+      const minSegmentSize = d3.min(data.children, calculateSegmentSize);
+      const maxSegmentSize = d3.max(data.children, calculateSegmentSize);
+
+
+      // Define a linear scale for font size
+      const fontSizeScale = d3.scaleLinear()
+        .domain([minSegmentSize, maxSegmentSize])  // You might need to adjust the domain values based on your data
+        .range([10, 17]);   // Adjust the range of font sizes accordingly
+
+      function calculateFontSize(d) {
+        const segmentSize = (d.y1 - d.y0) * (d.x1 - d.x0);
+        return fontSizeScale(segmentSize); // No need to append units
+      }
+
       const label = svg.append("g")
         .attr("pointer-events", "none")
         .attr("text-anchor", "middle")
@@ -77,6 +94,7 @@ const Sunburst = ({ data }) => {
         .attr("dy", "0.35em")
         .attr("fill-opacity", d => +labelVisible(d.current))
         .attr("transform", d => labelTransform(d.current))
+        .style("font-size", d => `${calculateFontSize(d)}pt`)
         .text(d => d.data.name);
 
       const parent = svg.append("circle")
@@ -141,13 +159,14 @@ const Sunburst = ({ data }) => {
     const generatedChart = chart(); // Call the chart function
 
     svg.node().appendChild(generatedChart); // Append the generated SVG to the DOM
+
   }, [data]);
 
   return (
     <DashboardLayout>
-              <div style={{ width: '100%', height: '800px' }}>
-                <svg ref={svgRef} style={{ width: '100%', height: '100%' }}></svg>
-              </div>
+      <div style={{ width: '100%', height: '800px' }}>
+        <svg ref={svgRef} style={{ width: '100%', height: '100%' }}></svg>
+      </div>
     </DashboardLayout>
   );
 

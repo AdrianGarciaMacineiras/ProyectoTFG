@@ -147,36 +147,42 @@ function FindSkill() {
                 borderRadius='lg'
                 coloredShadow='info' > <MDTypography variant='h6' color='white'>Find
                   Skill</MDTypography>
-              </MDBox><MDBox pt={3}>
-                <form onSubmit={handleSubmit}><MDBox>
-                  <MDTypography variant='h6' fontWeight='medium'>Skill code</MDTypography>
-                  <MDInput
-                    id="skillCode"
-                    type="text"
-                    value={form.skillCode}
-                    onChange={handleSkillCode} />
-                </MDBox>
+              </MDBox>
+              <MDBox pt={3}>
+                <form onSubmit={handleSubmit}>
+                  <MDBox>
+                    <MDTypography variant='h6' fontWeight='medium'>Skill code</MDTypography>
+                    <MDInput
+                      id="skillCode"
+                      type="text"
+                      value={form.skillCode}
+                      onChange={handleSkillCode} />
+                  </MDBox>
                   <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
                 </form>
               </MDBox>
             </Card>
-          </Grid><Grid item xs={12}><Card>< MDBox
+          </Grid>
+          <Grid item xs={12}><Card><
+            MDBox
             mx={2} mt={-3} py={3} px={2} variant='gradient'
             bgColor='info'
             borderRadius='lg'
-            coloredShadow='info' > <MDTypography variant='h6' color='white'>Skill
-              Graph</MDTypography>
-          </MDBox><MDBox pt={3}><
-            VisGraph
-            graph={graph} options={options} events={events} getNetwork=
-            {
-              network => {
-                //  if you want access to vis.js network api you can set the state in a
-                //  parent component using this property
-              }
-            } />
+            coloredShadow='info' >
+            <MDTypography variant='h6' color='white'>Skill Graph</MDTypography>
+          </MDBox>
+            <MDBox pt={3}>
+              <VisGraph
+                graph={graph} options={options} events={events} getNetwork=
+                {
+                  network => {
+                    //  if you want access to vis.js network api you can set the state in a
+                    //  parent component using this property
+                  }
+                } />
 
-            </MDBox > </Card>
+            </MDBox >
+          </Card>
           </Grid>
         </Grid>
       </MDBox><Footer /></DashboardLayout>

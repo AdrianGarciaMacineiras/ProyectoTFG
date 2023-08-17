@@ -8,6 +8,7 @@ import UpdateClientForm from './client/UpdateClientForm'
 import CreatePerson from './person/CreatePerson'
 import FindPerson from './person/FindPerson'
 import ListPeople from './person/ListPeople'
+import ListPeopleKnows from './person/ListPeopleKnows'
 import UpdatePersonForm from './person/UpdatePersonForm'
 
 import CreatePosition from './position/CreatePosition'
@@ -60,6 +61,14 @@ const routes = [
         icon: <Icon fontSize='small'>assignment</Icon>,
         route: '/listPeople',
         component: <ListPeople />,
+      },
+      {
+        type: 'collapse',
+        name: 'List knows',
+        key: 'listPeopleKnows',
+        icon: <Icon fontSize='small'>assignment</Icon>,
+        route: '/listPeopleKnows',
+        component: <ListPeopleKnows />,
       },
       {
         type: 'hidden',

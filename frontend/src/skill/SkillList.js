@@ -99,12 +99,13 @@ function SkillList() {
         return (
           <TreeItem
             key={treeItemData.nodeId} nodeId={treeItemData.nodeId} label={
-              <>< Checkbox
-                checked={isSelected}
-                onChange={handleCheckboxChange}
-                value={
-                  treeItemData.nodeId}
-              />
+              <>
+                < Checkbox
+                  checked={isSelected}
+                  onChange={handleCheckboxChange}
+                  value={
+                    treeItemData.nodeId}
+                />
                 {treeItemData.name}
               </>
             }
