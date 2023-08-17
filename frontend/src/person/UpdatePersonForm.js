@@ -10,7 +10,8 @@ import Card from '@mui/material/Card';
 import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { useParams } from 'react-router-dom';
 import VisGraph from 'react-vis-graph-wrapper';
@@ -39,7 +40,20 @@ const UpdatePersonForm = () => {
     certificates: [],
   });
 
-  const [updatedPerson, setUpdatedPerson] = useState(null);
+  const [updatedPerson, setUpdatedPerson] = useState({
+    code: '',
+    employeeId: '',
+    name: '',
+    surname: '',
+    birthDate: '',
+    title: '',
+    roles: [],
+    knows: [],
+    work_with: [],
+    master: [],
+    interest: [],
+    certificates: [],
+  });
 
 
   const { employeeId } = useParams();
@@ -348,9 +362,17 @@ const UpdatePersonForm = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const formattedBirthDate = data.birthDate ?
-          format(new Date(data.birthDate), 'dd-MM-yyyy') :
-          format(new Date(), 'dd-MM-yyyy');
+        console.log("Data birthdate", typeof data.birthDate);
+        console.log("Data birthdate", data.birthDate);
+
+        let formattedBirthDate = data.birthDate
+        if (data.birthDate) {
+          formattedBirthDate = moment(data.birthDate, "DD-MM-YYYY").toDate();
+        } else {
+          formattedBirthDate = format(new Date(), "dd-MM-yyyy");
+        }
+        console.log("formattedBirthDate", typeof formattedBirthDate);
+        console.log("formattedBirthDate", formattedBirthDate);
 
         setForm({
           code: data.code,
@@ -379,6 +401,7 @@ const UpdatePersonForm = () => {
           interest: data.interest || [],
           certificates: data.certificates || [],
         });
+
       });
   }, [employeeId]);
 
@@ -483,7 +506,7 @@ const UpdatePersonForm = () => {
               <MDBox>
                 <MDTypography variant='h6' fontWeight='medium'>Birth Date:</MDTypography><
                   DatePicker
-                  selected={birthDate} dateFormat='dd-MM-yyyy'
+                  selected={updatedPerson.birthDate} dateFormat='dd-MM-yyyy'
                   onSelect={(date) => setBirthDate(date)} onChange=
                   {(date) => handleInputChange(
                     { target: { name: 'birthDate', value: format(date, 'dd-MM-yyyy') } })

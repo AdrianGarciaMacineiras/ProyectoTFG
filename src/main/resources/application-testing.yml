@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 9080
 spring:
   neo4j:
     uri: bolt://192.168.252.83:7687

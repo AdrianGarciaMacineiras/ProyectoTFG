@@ -61,7 +61,7 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public List<Candidate> getCandidatesByPeople(String peopleCode) {
-        return candidateRepository.getCandidatesByPosition(peopleCode);
+        return candidateRepository.getCandidatesByPeople(peopleCode);
     }
 
     private void validateDoesNotExist(String code) {

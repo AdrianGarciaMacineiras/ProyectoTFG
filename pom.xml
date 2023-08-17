@@ -14,7 +14,7 @@
 	<name>SkillTree</name>
 	<description>SkillTree Gateway for Sngular Skills Management</description>
 	<properties>
-		<java.version>20</java.version>
+		<java.version>17</java.version>
     <spring-cloud.version>2022.0.3</spring-cloud.version>
 	</properties>
 	<dependencies>
@@ -185,7 +185,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
 				<configuration>
-					<release>19</release>
+					<release>17</release>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.mapstruct</groupId>

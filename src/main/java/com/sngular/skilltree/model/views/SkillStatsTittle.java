@@ -3,10 +3,7 @@ package com.sngular.skilltree.model.views;
 import lombok.Builder;
 import org.apache.commons.text.WordUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Builder(toBuilder = true)
 public record SkillStatsTittle(String parent, String name, Integer total, Map<String, SkillStatsTittle> subSkills) {
@@ -17,24 +14,26 @@ public record SkillStatsTittle(String parent, String name, Integer total, Map<St
 
     public void addStat(final String parent, final SkillStatsTittle stat) {
         var root = parent;
-        if (parent.contains(".")) {
-            root = parent.substring(0, parent.indexOf('.'));
-        }
-        if (name.equalsIgnoreCase(root)) {
-            subSkills.put(stat.name, stat);
+        if (Objects.nonNull(parent)) {
+            if (parent.contains(".")) {
+                root = parent.substring(0, parent.indexOf('.'));
+            }
+            if (!name.equalsIgnoreCase(root)) {
+                final SkillStatsTittle newSkill;
+                if (subSkills.containsKey(root)) {
+                    newSkill = subSkills.get(root);
+                } else {
+                    newSkill = SkillStatsTittle.builder().name(WordUtils.capitalize(root.replace('_', ' '))).total(stat.total()).build();
+                    subSkills.put(root, newSkill);
+                }
+                if (!parent.contains(".")) {
+                    newSkill.addStat(null, stat);
+                } else {
+                    newSkill.addStat(parent.substring(parent.indexOf('.') + 1), stat);
+                }
+            }
         } else {
-            final SkillStatsTittle newSkill;
-            if (subSkills.containsKey(root)) {
-                newSkill = subSkills.get(root);
-            } else {
-                newSkill = SkillStatsTittle.builder().name(WordUtils.capitalize(root.replace('_', ' '))).total(stat.total()).build();
-                subSkills.put(root, newSkill);
-            }
-            if (!parent.contains(".")) {
-                newSkill.addStat(parent, stat);
-            } else {
-                newSkill.addStat(parent.substring(parent.indexOf('.') + 1), stat);
-            }
+            this.subSkills.put(stat.name(), stat);
         }
     }
 

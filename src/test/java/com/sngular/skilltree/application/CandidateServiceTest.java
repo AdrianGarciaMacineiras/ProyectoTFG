@@ -115,7 +115,7 @@ class CandidateServiceTest {
     @Test
     @DisplayName("Testing get candidates using long as parameter")
     void testGetCandidatesLong() {
-        when(candidateRepository.getCandidatesByPosition(anyString())).thenReturn(CANDIDATE_LIST);
+        when(candidateRepository.getCandidatesByPeople(anyString())).thenReturn(CANDIDATE_LIST);
         List<Candidate> result = candidateService.getCandidatesByPeople("1");
         assertThat(result).containsExactly(CANDIDATE_BY_CODE, CANDIDATE2_BY_CODE);
     }
