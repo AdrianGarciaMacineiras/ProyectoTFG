@@ -30,7 +30,7 @@ public class Skill {
             if (subSkillList.containsKey(root)) {
                 newSkill = subSkillList.get(root);
             } else {
-                newSkill = Skill.builder().name(WordUtils.capitalize(root.replace('_', ' '))).code(skill.getCode()).build();
+                newSkill = Skill.builder().name(WordUtils.capitalize(root.replace('_', ' '))).code(root).build();
                 subSkillList.put(root, newSkill);
             }
             if (!parent.contains(".")) {
