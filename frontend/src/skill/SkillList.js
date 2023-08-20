@@ -6,14 +6,14 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
-import { 
-  IconButton, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TablePagination, 
-  TableRow, 
+import {
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  TableRow,
   Tooltip
 } from '@mui/material';
 import Card from '@mui/material/Card';
@@ -62,14 +62,21 @@ function SkillList() {
     },
     height: '800px',
     physics: {
-      barnesHut: {
-        gravitationalConstant: -11500,
-        centralGravity: 0.5,
-        springLength: 270,
-        springConstant: 0.135,
+      forceAtlas2Based: {
+        gravitationalConstant: -26,
+        centralGravity: 0.005,
+        springLength: 230,
+        springConstant: 0.18,
         avoidOverlap: 0.02
       },
-      minVelocity: 0.75
+      maxVelocity: 146,
+      solver: "forceAtlas2Based",
+      timestep: 0.35,
+      stabilization: {
+        enabled: true,
+        iterations: 2000,
+        updateInterval: 25,
+      },
     }
   };
 
@@ -355,7 +362,7 @@ function SkillList() {
 
   const handleNodeSelect = (event, item) => {
     event.stopPropagation();
-    setSelected(selected => [...selected, "'"+item.nodeId+"'"]);
+    setSelected(selected => [...selected, "'" + item.nodeId + "'"]);
   };
 
   const getTreeItemsFromData = (treeItems, searchValue) => {
@@ -430,13 +437,13 @@ function SkillList() {
       <MDBox key={index} display="flex" alignItems="center" my={1}>
         {item}
         <Tooltip title="Delete item">
-        <IconButton
-          aria-label="delete"
-          size="small"
-          onClick={() => handleDeleteSelected(index)}
-        >
-          {<Clear />}
-        </IconButton>
+          <IconButton
+            aria-label="delete"
+            size="small"
+            onClick={() => handleDeleteSelected(index)}
+          >
+            {<Clear />}
+          </IconButton>
         </Tooltip>
       </MDBox>
     ));
@@ -466,53 +473,57 @@ function SkillList() {
                     </MDBox>
                   </Grid>
                 )}
-                {(selected && selected.length > 0) && <MDButton color='black' onClick={handleClick}> Submit </MDButton>}
+                {(selected && selected.length > 0) && 
+                <MDButton color='black' onClick={handleClick}> Submit </MDButton>}
+
+                {isToggled &&
+                  <MDButton color='black' onClick={handleShowTable}>
+                    {showTable ? "Show Graph" : "Show Table"}
+                  </MDButton>
+                }
               </MDBox>
             </Card>
           </Grid>
-          <Grid container spacing={6}>
-            <Grid item xs={12}>
-              <Card>
-                <MDBox>
-                  {isToggled && <MDButton onClick={handleShowTable}>
-                    {showTable ? "Show Graph" : "Show Table"}
-                  </MDButton>
-                  }
-
-                  {isToggled && (!showTable ? (
-                    <>
-                      <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
-                        bgColor='info'
-                        borderRadius='lg'
-                        coloredShadow=
-                        'info' >
-                        <MDTypography variant='h6' color='white'>Person Graph</MDTypography>
-                        <VisGraph
-                          graph={graph}
-                          options={options}
-                          events={events}
-                          getNetwork={
-                            network => {
-                              //  if you want access to vis.js network api you can set the state in a
-                              //  parent component using this property
-                            }}
-                        />
-                      </MDBox>
-                    </>
-                  ) : (<>
+        </Grid>
+      </MDBox>
+      <MDBox pt={6} pb={3}>
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox>
+                {isToggled && (!showTable ? (
+                  <>
                     <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
                       bgColor='info'
                       borderRadius='lg'
                       coloredShadow=
                       'info' >
-                      <MDTypography variant='h6' color='white'>Person Table</MDTypography>
-                      <TableComponent data={tableData} />
+                      <MDTypography variant='h6' color='white'>Person Graph</MDTypography>
                     </MDBox>
+                    <VisGraph
+                      graph={graph}
+                      options={options}
+                      events={events}
+                      getNetwork={
+                        network => {
+                          //  if you want access to vis.js network api you can set the state in a
+                          //  parent component using this property
+                        }}
+                    />
                   </>
-                  ))}
-                </MDBox>
-              </Card>
-            </Grid>
+                ) : (<>
+                  <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
+                    bgColor='info'
+                    borderRadius='lg'
+                    coloredShadow=
+                    'info' >
+                    <MDTypography variant='h6' color='white'>Person Table</MDTypography>
+                  </MDBox>
+                  <TableComponent data={tableData} />
+                </>
+                ))}
+              </MDBox>
+            </Card>
           </Grid>
         </Grid>
       </MDBox>
