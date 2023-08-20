@@ -50,6 +50,8 @@ const CreatePerson =
 
     const [selectedNode, setSelectedNode] = useState(null);
 
+    const [expandAll, setExpandAll] = useState([]);
+    const [expand, setExpand] = useState([]);
 
     const [roleForm, setRoleForm] =
       useState({ role: '', category: '', initDate: new Date() })
@@ -283,6 +285,7 @@ const CreatePerson =
       const recursive = (dataList) => {
         let list = [];
         dataList.forEach((data) => {
+          setExpandAll(nodes => [...nodes, data.code]);
           list.push({
             nodeId: data.code,
             name: data.name,
@@ -308,7 +311,7 @@ const CreatePerson =
 
 
     const handleNodeSelect = (event, item) => {
-      event.preventDefault();
+      event.stopPropagation();
       setSelectedNode(item);
     };
 
@@ -345,12 +348,16 @@ const CreatePerson =
       });
     };
 
-    const collapseAll = (e) => {
-      e.preventDefault();
-      setSkillList(skillList.map((item) => Object.assign({}, item, {
-        expanded: false,
-      })));
+    const handleExpandClick = () => {
+      setExpand((oldExpanded) =>
+        oldExpanded.length === 0 ? expandAll : [],
+      );
     };
+
+
+    const handleToggle = (event, nodeIds) => {
+      setExpand(nodeIds)
+    }
 
     const DataTreeView = () => {
       return (
@@ -358,6 +365,9 @@ const CreatePerson =
           <TreeView
             defaultCollapseIcon={<ExpandMoreIcon />}
             defaultExpandIcon={<ChevronRightIcon />}
+            defaultExpanded={expandAll}
+            expanded={expand}
+            onNodeToggle={handleToggle}
           >
             {getTreeItemsFromData(skillList, searchSkill)}
           </TreeView>
@@ -435,7 +445,8 @@ const CreatePerson =
                             (date) => handleInputChange(
                               { target: { name: 'birthDate', value: format(date, 'dd-MM-yyyy') } })
                           } />
-                      </MDBox > <MDBox>
+                      </MDBox >
+                      <MDBox>
                         <MDTypography variant='h6' fontWeight='medium'>Title: </MDTypography>
                         <MDInput type="text" value={form.title} onChange={handleInputChange} name="title" />
                       </MDBox>
@@ -498,7 +509,7 @@ const CreatePerson =
                   <Grid container spacing={12}>
                     <Grid item xs={12}>
                       <MDBox>
-                        <MDButton variant="gradient" color="dark" onClick={collapseAll}> Collapse all </MDButton>
+                        <MDButton variant="gradient" color="dark" onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'} </MDButton>
                         <MDBox>
                           < MDInput
                             type='text'

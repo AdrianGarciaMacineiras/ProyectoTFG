@@ -102,7 +102,8 @@ const UpdateClientForm = () => {
                                         bgColor='info'
                                         borderRadius='lg'
                                         coloredShadow=
-                                        'info' > <MDTypography variant='h6' color='white'>Update Client</MDTypography>
+                                        'info' >
+                                        <MDTypography variant='h6' color='white'>Update Client</MDTypography>
                                     </MDBox>
                                     <form onSubmit={handleSubmit}>
                                         <MDBox pt={3}>

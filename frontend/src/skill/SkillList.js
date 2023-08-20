@@ -4,15 +4,13 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-//import TreeItem from '@mui/lab/TreeItem';
-//import TreeView from '@mui/lab/TreeView';
-import { Tree } from 'react-arborist'
+import TreeItem from '@mui/lab/TreeItem';
+import TreeView from '@mui/lab/TreeView';
 import { IconButton, Table, TableBody, TableCell, TableHead, TablePagination, TableRow } from '@mui/material';
 import Card from '@mui/material/Card';
-import Checkbox from '@mui/material/Checkbox';
 import Collapse from '@mui/material/Collapse';
 import Grid from '@mui/material/Grid';
-import React, { StrictMode, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import VisGraph from 'react-vis-graph-wrapper';
 import MDInput from '../components/MDInput';
 import MDTypography from '../components/MDTypography';
@@ -33,15 +31,14 @@ function SkillList() {
 
   const [tableData, setTableData] = useState([]);
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [expandAll, setExpandAll] = useState([]);
+  const [expand, setExpand] = useState([]);
 
-  let auxList = [];
+  const [searchSkill, setSearchSkill] = useState('');
 
   const graphTemp = { nodes: [], edges: [] };
 
   const [graph, setGraph] = useState({ nodes: [], edges: [] });
-
-  const [aux, setAux] = useState([]);
 
   const options = {
     layout: { improvedLayout: true },
@@ -316,6 +313,7 @@ function SkillList() {
       (dataList) => {
         let list = [];
         dataList.forEach(data => {
+          setExpandAll(nodes => [...nodes, data.code]);
           list.push({
             id: data.code,
             name: data.name,
@@ -334,7 +332,8 @@ function SkillList() {
     })
       .then(response => { return response.json() })
       .then(response => {
-        setSkillList(recursive(response));
+        const skillsData = recursive(response);
+        setSkillList(skillsData);
       });
 
 
@@ -343,46 +342,70 @@ function SkillList() {
   const handleShowTable = () => {
     setShowTable((prevShowTable) => !prevShowTable);
   };
-  const INDENT_STEP = 15;
 
-  function FolderArrow({ node }) {
-    return (
-      <span>
-        {node.isInternal ? (
-          node.isOpen ? (
-            <ExpandMoreIcon />
-          ) : (
-            <ChevronRightIcon />
-          )
-        ) : null}
-      </span>
+  const handleNodeSelect = (event, item) => {
+    event.stopPropagation();
+    setSelected(item.nodeId);
+  };
+
+  const getTreeItemsFromData = (treeItems, searchValue) => {
+    const filteredItems = treeItems.filter((treeItemData) => {
+      const isMatched =
+        treeItemData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        getTreeItemsFromData(treeItemData.children, searchValue).length > 0;
+
+      return isMatched;
+    });
+
+    return filteredItems.map((treeItemData) => {
+      const isMatched =
+        treeItemData.name.toLowerCase().includes(searchValue.toLowerCase());
+
+      if (isMatched) {
+        return (
+          <TreeItem
+            key={treeItemData.nodeId} nodeId={treeItemData.nodeId} label=
+            {
+              <div onClick={(event) => handleNodeSelect(event, treeItemData)}>
+                {treeItemData.name}
+              </div>
+            }
+
+          >
+            {getTreeItemsFromData(treeItemData.children, searchValue)}
+          </TreeItem>
+        );
+      }
+
+      return getTreeItemsFromData(treeItemData.children, searchValue);
+    });
+  };
+
+  const handleExpandClick = () => {
+    setExpand((oldExpanded) =>
+      oldExpanded.length === 0 ? expandAll : [],
     );
+  };
+
+
+  const handleToggle = (event, nodeIds) => {
+    setExpand(nodeIds)
   }
 
-  function Node({ node, style, dragHandle }) {
-
+  const DataTreeView = () => {
     return (
-      <div
-        ref={dragHandle}
-        style={style}
-      >
-        <span onClick={() => node.isInternal && node.toggle()}>
-          <FolderArrow node={node} />
-        </span>
-        <span onClick={(node) => handleSelect(node.data)}>
-          {node.data.name}
-        </span>
-      </div>
+      <MDBox>
+        <TreeView
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+          defaultExpanded={expandAll}
+          expanded={expand}
+          onNodeToggle={handleToggle}
+        >
+          {getTreeItemsFromData(skillList, searchSkill)}
+        </TreeView>
+      </MDBox>
     );
-  }
-
-  const handleSelect = (data) => {
-    if (data) {
-      const nodeId = data.id;
-      console.log(nodeId);
-
-      setSelected((prevSelected) => [...prevSelected, nodeId]);
-    }
   };
 
   return (
@@ -393,26 +416,16 @@ function SkillList() {
           <Grid item xs={12}>
             <Card>
               <MDBox>
-                <StrictMode>
+                <MDButton variant="gradient" color="dark" onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'} </MDButton>
+                <MDBox>
                   < MDInput
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.currentTarget.value)} />
-                  <Tree
-                    className="Tree"
-                    initialData={skillList}
-                    openByDefault={false}
-                    searchTerm={searchTerm}
-                    searchMatch={
-                      (node, term) => node.data.name.toLowerCase().includes(term.toLowerCase())
-                    }
-                    indent={INDENT_STEP}
-                    width={'300'}
-                  >
-                    {Node}
-                  </Tree>
-                  {console.log(selected)}
-                </StrictMode>
+                    type='text'
+                    value={searchSkill}
+                    onChange={(e) => setSearchSkill(e.target.value)}
+                    placeholder='Search' />
+                </MDBox>
+                {console.log(expandAll)}
+                <DataTreeView />
                 {(selected && selected.length > 0) &&
                   <Grid item xs={6}>
                     {selected}
