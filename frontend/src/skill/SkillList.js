@@ -6,7 +6,16 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
-import { IconButton, Table, TableBody, TableCell, TableHead, TablePagination, TableRow } from '@mui/material';
+import { 
+  IconButton, 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TablePagination, 
+  TableRow, 
+  Tooltip
+} from '@mui/material';
 import Card from '@mui/material/Card';
 import Collapse from '@mui/material/Collapse';
 import Grid from '@mui/material/Grid';
@@ -14,6 +23,7 @@ import React, { useEffect, useState } from 'react';
 import VisGraph from 'react-vis-graph-wrapper';
 import MDInput from '../components/MDInput';
 import MDTypography from '../components/MDTypography';
+import Clear from '@mui/icons-material/Clear';
 
 import Footer from '../components/Footer';
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
@@ -315,12 +325,12 @@ function SkillList() {
         dataList.forEach(data => {
           setExpandAll(nodes => [...nodes, data.code]);
           list.push({
-            id: data.code,
+            nodeId: data.code,
             name: data.name,
             children: recursive(data.subSkills)
           })
         });
-        return list.length === 0 ? null : list;
+        return list;
       }
 
     fetch(`http://${window.location.hostname}:9080/api/skills`, {
@@ -345,7 +355,7 @@ function SkillList() {
 
   const handleNodeSelect = (event, item) => {
     event.stopPropagation();
-    setSelected(item.nodeId);
+    setSelected(selected => [...selected, "'"+item.nodeId+"'"]);
   };
 
   const getTreeItemsFromData = (treeItems, searchValue) => {
@@ -370,7 +380,6 @@ function SkillList() {
                 {treeItemData.name}
               </div>
             }
-
           >
             {getTreeItemsFromData(treeItemData.children, searchValue)}
           </TreeItem>
@@ -408,6 +417,31 @@ function SkillList() {
     );
   };
 
+  const handleDeleteSelected = (index) => {
+    setSelected((prevSelected) => {
+      const newSelected = [...prevSelected];
+      newSelected.splice(index, 1);
+      return newSelected;
+    });
+  };
+
+  const renderSelectedList = () => {
+    return selected.map((item, index) => (
+      <MDBox key={index} display="flex" alignItems="center" my={1}>
+        {item}
+        <Tooltip title="Delete item">
+        <IconButton
+          aria-label="delete"
+          size="small"
+          onClick={() => handleDeleteSelected(index)}
+        >
+          {<Clear />}
+        </IconButton>
+        </Tooltip>
+      </MDBox>
+    ));
+  };
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -424,17 +458,20 @@ function SkillList() {
                     onChange={(e) => setSearchSkill(e.target.value)}
                     placeholder='Search' />
                 </MDBox>
-                {console.log(expandAll)}
                 <DataTreeView />
-                {(selected && selected.length > 0) &&
+                {selected.length > 0 && (
                   <Grid item xs={6}>
-                    {selected}
+                    <MDBox mt={2}>
+                      {renderSelectedList()}
+                    </MDBox>
                   </Grid>
-                }
+                )}
                 {(selected && selected.length > 0) && <MDButton color='black' onClick={handleClick}> Submit </MDButton>}
               </MDBox>
             </Card>
-            <Grid>
+          </Grid>
+          <Grid container spacing={6}>
+            <Grid item xs={12}>
               <Card>
                 <MDBox>
                   {isToggled && <MDButton onClick={handleShowTable}>

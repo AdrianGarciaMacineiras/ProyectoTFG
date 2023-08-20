@@ -62,8 +62,6 @@ const CreatePerson =
 
     const [graph, setGraph] = useState({ nodes: [], edges: [] });
 
-    const [aux, setAux] = useState([]);
-
     const options = {
       layout: { improvedLayout: true },
       nodes: { shape: 'dot', scaling: { min: 10, label: false } },
@@ -121,7 +119,6 @@ const CreatePerson =
         })
           .then(response => { return response.json() })
           .then(response => {
-            setAux(response);
             let i = 1;
             let temp = {
               Code: response.code,
@@ -316,6 +313,7 @@ const CreatePerson =
     };
 
     const getTreeItemsFromData = (treeItems, searchValue) => {
+      console.log(treeItems);
       const filteredItems = treeItems.filter((treeItemData) => {
         const isMatched =
           treeItemData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
