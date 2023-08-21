@@ -329,7 +329,9 @@ const CreatePerson =
         if (isMatched) {
           return (
             <TreeItem
-              key={treeItemData.nodeId} nodeId={treeItemData.nodeId} label=
+              key={treeItemData.nodeId}
+              nodeId={treeItemData.nodeId}
+              label=
               {
                 <div onClick={(event) => handleNodeSelect(event, treeItemData)}>
                   {treeItemData.name}
@@ -435,14 +437,15 @@ const CreatePerson =
                           {handleInputChange} name='surname' />
                       </MDBox>
                       <MDBox>
-                        <MDTypography variant='h6' fontWeight='medium'>Birth Date:</MDTypography><
-                          DatePicker
+                        <MDTypography variant='h6' fontWeight='medium'>Birth Date:</MDTypography>
+                        <DatePicker
                           selected={birthDate} dateFormat='dd-MM-yyyy'
                           onSelect={(date) => setBirthDate(date)} onChange=
                           {
                             (date) => handleInputChange(
                               { target: { name: 'birthDate', value: format(date, 'dd-MM-yyyy') } })
-                          } />
+                          }
+                        />
                       </MDBox >
                       <MDBox>
                         <MDTypography variant='h6' fontWeight='medium'>Title: </MDTypography>

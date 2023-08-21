@@ -23,7 +23,7 @@ public interface PeopleView {
 
     List<AssignedView> getAssign();
 
-    LocalDateTime getBirthDate();
+    //LocalDateTime getBirthDate();
 
     List<CertificateView> getCertificates();
 

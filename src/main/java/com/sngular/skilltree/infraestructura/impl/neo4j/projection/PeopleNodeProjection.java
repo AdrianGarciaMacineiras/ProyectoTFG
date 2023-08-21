@@ -12,7 +12,7 @@ public interface PeopleNodeProjection {
 
   String getSurname();
 
-  LocalDate getBirthDate();
+  //LocalDate getBirthDate();
 
   String getTitle();
 

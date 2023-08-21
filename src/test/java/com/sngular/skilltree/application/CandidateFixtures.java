@@ -97,7 +97,7 @@ public class CandidateFixtures extends CommonFixtures {
             SkillsCandidate.builder()
                     .code("sc1120")
                     .experience(3)
-                    .level(EnumLevel.HIGH)
+                    .level(EnumLevel.ADVANCED)
                     .build();
 
     public static final People PEOPLE_BY_CODE =
@@ -107,7 +107,7 @@ public class CandidateFixtures extends CommonFixtures {
                     .surname("surname")
                     .employeeId("employeeId")
                     .title("SD3")
-                    .birthDate(date)
+                    //.birthDate(date)
                     .build();
 
     public static final Candidate CANDIDATE_BY_CODE =

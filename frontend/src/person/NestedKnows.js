@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import SortIcon from '@mui/icons-material/Sort';
+import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import {
   Table,
   TableBody,
@@ -9,77 +13,75 @@ import {
 } from '@mui/material';
 
 
-const NestedKnows = ({ data }) => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const [orderBy, setOrderBy] = useState('code');
-  const [sortDirection, setSortDirection] = useState('asc');
+const NestedKnows = (props) => {
+  const { data, state, onStateChange, onPageChange, onRowsPerPageChange } = props;
+  const { page=0, rowsPerPage=10, orderBy, sortDirection } = state || {};
 
   const handleSortChange = (column) => {
-    if (orderBy === column) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setOrderBy(column);
-      setSortDirection('asc');
-    }
+    const newSortDirection = orderBy === column ? (sortDirection === 'asc' ? 'desc' : 'asc') : 'asc';
+    const newState = { page, rowsPerPage, orderBy: column, sortDirection: newSortDirection };
+    onStateChange(newState);
   };
 
   const getExperienceValue = (experience) => {
     switch (experience) {
       case 'LOW':
         return 1;
-      case 'MEDIUM':
+      case 'MIDDLE':
         return 2;
-      case 'CONFIDENT':
+      case 'ADVANCED':
         return 3;
-      case 'HIGH':
-        return 4;
       default:
         return 0;
     }
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handlePageChange = (event, newPage) => {
+    onPageChange(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handleRowsPerPageChange = (event) => {
+    const newRowsPerPage = parseInt(event.target.value, 10);
+    onRowsPerPageChange(newRowsPerPage);
+    onPageChange(0);
   };
 
-  const paginatedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  function getSortIcon(column) {
+    if (orderBy === column) {
+      return sortDirection === 'asc' ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />;
+    };
+    if (column !== 'experience') {
+      return <SortByAlphaIcon />;
+    } else {
+      return <SortIcon />;
+    }
+  }
 
   return (
     <>
       <Table>
         <TableHead sx={{ display: "table-header-group" }}>
           <TableRow>
-            <TableCell align='left' onClick={() => handleSortChange('code')}>
-              <strong>{
-                orderBy === 'code' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
-              Code
+            <TableCell align='left' onClick={() => handleSortChange('name')}>
+              {getSortIcon('name')}
+              Name
             </TableCell>
             <TableCell align='left' onClick={() => handleSortChange('level')}>
-              <strong>{
-                orderBy === 'level' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+              {getSortIcon('level')}
               Level
             </TableCell>
             <TableCell align='left' onClick={() => handleSortChange('experience')}>
-              <strong>{
-                orderBy === 'experience' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+              {getSortIcon('experience')}
               Experience
             </TableCell>
             <TableCell align='left' onClick={() => handleSortChange('primary')}>
-              <strong>{
-                orderBy === 'primary' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+              {getSortIcon('primary')}
               Primary
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {paginatedData?.slice()
+          {data?.slice()
             .sort((a, b) => {
               if (orderBy === 'level') {
                 const aValue = getExperienceValue(a[orderBy]);
@@ -104,7 +106,7 @@ const NestedKnows = ({ data }) => {
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row, index) => (
               <TableRow key={index}>
-                <TableCell style={{ width: "5%" }}>{row.code}</TableCell>
+                <TableCell style={{ width: "5%" }}>{row.name}</TableCell>
                 <TableCell>{row.level}</TableCell>
                 <TableCell>{row.experience}</TableCell>
                 <TableCell>{row.primary}</TableCell>
@@ -119,8 +121,8 @@ const NestedKnows = ({ data }) => {
         count={data.length}
         rowsPerPage={rowsPerPage}
         page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        onPageChange={handlePageChange}
+        onRowsPerPageChange={handleRowsPerPageChange}
       />
     </>
   );

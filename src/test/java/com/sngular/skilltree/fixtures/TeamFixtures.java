@@ -26,7 +26,7 @@ public class TeamFixtures extends CommonFixtures {
                     .surname("LaPel")
                     .employeeId("900003940059")
                     .title("SD2")
-                    .birthDate(date)
+                    //.birthDate(date)
                     .build();
 
     public final static Member MEMBER1 =

@@ -4,6 +4,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import SortIcon from '@mui/icons-material/Sort';
+import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
 import {
@@ -30,6 +34,7 @@ import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
 import MDBox from '../components/MDBox';
 import MDButton from '../components/MDButton';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
+import NestedKnows from '../person/NestedKnows';
 
 function SkillList() {
   const [skillList, setSkillList] = useState([]);
@@ -142,7 +147,35 @@ function SkillList() {
 
   const DataPerson = ({ row }) => {
     const [open, setOpen] = useState(false);
+    const [nestedKnowStates, setNestedKnowStates] = useState({});
 
+    const handleNestedKnowStateChange = (personCode, newState) => {
+      setNestedKnowStates(prevStates => ({
+        ...prevStates,
+        [personCode]: newState
+      }));
+    };
+
+    const handleNestedKnowPageChange = (personCode, newPage) => {
+      setNestedKnowStates(prevStates => ({
+        ...prevStates,
+        [personCode]: {
+          ...prevStates[personCode],
+          page: newPage
+        }
+      }));
+    };
+
+    const handleNestedKnowRowsPerPageChange = (personCode, newRowsPerPage) => {
+      setNestedKnowStates(prevStates => ({
+        ...prevStates,
+        [personCode]: {
+          ...prevStates[personCode],
+          rowsPerPage: newRowsPerPage,
+          page: 0
+        }
+      }));
+    };
     return (
       <React.Fragment>
         <TableRow sx={
@@ -159,13 +192,13 @@ function SkillList() {
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
-          <TableCell scope='row'>{row.Name}</TableCell>
-          <TableCell>{row.Surname}</TableCell>
-          <TableCell>{row.Email}</TableCell>
-          <TableCell>{row.Title}</TableCell>
-          <TableCell>{row.EmployeeId}</TableCell>
-          <TableCell>{row.FriendlyName}</TableCell>
-          <TableCell>{row.BirthDate}</TableCell>
+          <TableCell scope='row'>{row.name}</TableCell>
+          <TableCell>{row.surname}</TableCell>
+          <TableCell>{row.email}</TableCell>
+          <TableCell>{row.title}</TableCell>
+          <TableCell>{row.employeeId}</TableCell>
+          <TableCell>{row.friendlyName}</TableCell>
+          <TableCell>{row.birthDate}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell style={
@@ -174,8 +207,15 @@ function SkillList() {
               <MDBox sx={{
                 margin: 1
               }}>
-                <NestedTableComponent data={
-                  row.Knows} />
+                {/*<NestedTableComponent data={row.Knows} />*/}
+                <NestedKnows
+                  key={row.code}
+                  data={row.knows}
+                  state={nestedKnowStates[row.code]}
+                  onStateChange={newState => handleNestedKnowStateChange(row.code, newState)}
+                  onPageChange={newPage => handleNestedKnowPageChange(row.code, newPage)}
+                  onRowsPerPageChange={newRowsPerPage => handleNestedKnowRowsPerPageChange(row.code, newRowsPerPage)}
+                />
               </MDBox>
             </Collapse>
           </TableCell>
@@ -184,23 +224,44 @@ function SkillList() {
     );
   };
 
+
   function TableComponent({ data }) {
     const [open, setOpen] = useState(false);
 
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(50);
+
+    const [orderBy, setOrderBy] = useState('');
+    const [sortDirection, setSortDirection] = useState('asc');
+
+    const handleSortChange = (column) => {
+      if (orderBy === column) {
+        setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      } else {
+        setOrderBy(column);
+        setSortDirection('asc');
+      }
+    };
 
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(parseInt(event.target.value, 10));
+      setRowsPerPage(parseInt(event.target.value, 50));
       setPage(0);
     };
 
-    const paginatedData =
-      data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+    function getSortIcon(column) {
+      if (orderBy === column) {
+        return sortDirection === 'asc' ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />;
+      };
+      if (column !== 'code') {
+        return <SortByAlphaIcon />;
+      } else {
+        return <SortIcon />;
+      }
+    }
 
     return (
       <React.Fragment>
@@ -220,22 +281,52 @@ function SkillList() {
                   {open ? <KeyboardDoubleArrowUpIcon /> : <KeyboardDoubleArrowDownIcon />}
                 </IconButton>
               </TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Surname</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell>EmployeeId</TableCell>
-              <TableCell>FriendlyName</TableCell>
-              <TableCell>BirthDate</TableCell>
+              <TableCell align='left' onClick={() => handleSortChange('name')}>
+                {getSortIcon('name')}
+                Name
+              </TableCell>
+              <TableCell align='left' onClick={() => handleSortChange('surname')}>
+                {getSortIcon('surname')}
+                Surname
+              </TableCell>
+              <TableCell align='left' onClick={() => handleSortChange('email')}>
+                {getSortIcon('email')}
+                Email
+              </TableCell>
+              <TableCell align='left' onClick={() => handleSortChange('title')}>
+                {getSortIcon('title')}
+                Title
+              </TableCell>
+              <TableCell align='left' onClick={() => handleSortChange('employeeId')}>
+                {getSortIcon('employeeId')}
+                EmployeeId
+              </TableCell>
+              <TableCell align='left' onClick={() => handleSortChange('friendlyName')}>
+                {getSortIcon('friendlyName')}
+                Friendly Name
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedData?.map((row, index) => (
-              <DataPerson key={index} row={row} />
-            ))
-            }
+            {data.slice()
+              .sort((a, b) => {
+                const aValue = a[orderBy];
+                const bValue = b[orderBy];
+                console.log("aValue", aValue);
+                console.log("bValue", bValue);
+                if (sortDirection === 'asc') {
+                  return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+                } else {
+                  return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+                }
+              })
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, index) => (
+                <DataPerson key={index} row={row} />
+              ))}
           </TableBody>
-        </Table>< TablePagination
+        </Table>
+        < TablePagination
           rowsPerPageOptions={[5, 10, 25, 50]} component='div'
           count={data.length}
           rowsPerPage={rowsPerPage}
@@ -261,7 +352,7 @@ function SkillList() {
         })
         .then(response => { return response.json() })
         .then(data => {
-          const tableData = data.map(
+          /*const tableData = data.map(
             (element) => ({
               Name: element.name,
               Surname: element.surname,
@@ -277,7 +368,8 @@ function SkillList() {
                 Level: knows.level
               }))
             }));
-          setTableData(tableData);
+          setTableData(tableData);*/
+          setTableData(data);
           let i = 1;
           let j = 2;
           data.forEach(element => {
@@ -473,8 +565,8 @@ function SkillList() {
                     </MDBox>
                   </Grid>
                 )}
-                {(selected && selected.length > 0) && 
-                <MDButton color='black' onClick={handleClick}> Submit </MDButton>}
+                {(selected && selected.length > 0) &&
+                  <MDButton color='black' onClick={handleClick}> Submit </MDButton>}
 
                 {isToggled &&
                   <MDButton color='black' onClick={handleShowTable}>

@@ -32,8 +32,8 @@ public class PeopleNode {
 
     private String surname;
 
-    @ConvertWith(converter = LocalDateTimeConverter.class)
-    private LocalDateTime birthDate;
+    /*@ConvertWith(converter = LocalDateTimeConverter.class)
+    private LocalDateTime birthDate;*/
 
     private String title;
 

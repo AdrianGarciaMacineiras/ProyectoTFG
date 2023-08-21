@@ -22,13 +22,13 @@ public interface PeopleMapper {
     @Mapping(target = "work_with", source = "workWith", qualifiedByName = {"resolveSkillNameList"})
     @Mapping(target = "master", source = "master", qualifiedByName = {"resolveSkillNameList"})
     @Mapping(target = "interest", source = "interest", qualifiedByName = {"resolveSkillNameList"})
-    @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
+    //@Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
     PeopleDTO toPersonDTO(People people);
 
   @Mapping(source = "work_with", target = "workWith", qualifiedByName = {"resolveNameSkillList"})
   @Mapping(source = "master", target = "master", qualifiedByName = {"resolveNameSkillList"})
   @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveNameSkillList"})
-  @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
+  //@Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
   People toPerson(PeopleDTO peopleDTO);
 
   List<PeopleDTO> toPeopleDto(Collection<People> people);
@@ -38,7 +38,7 @@ public interface PeopleMapper {
   @Mapping(source = "work_with", target = "workWith", qualifiedByName = {"resolveCodeSkillList"})
   @Mapping(source = "master", target = "master", qualifiedByName = {"resolveCodeSkillList"})
   @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveCodeSkillList"})
-  @Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
+  //@Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
   People toPeople(PatchedPeopleDTO patchedPersonDTO);
 
   @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
@@ -71,7 +71,7 @@ public interface PeopleMapper {
         return peopleBuilder
                 .code(oldPeople.code())
                 .employeeId((Objects.isNull(newPeople.employeeId())) ? oldPeople.employeeId() : newPeople.employeeId())
-                .birthDate((Objects.isNull(newPeople.birthDate())) ? oldPeople.birthDate() : newPeople.birthDate())
+                //.birthDate((Objects.isNull(newPeople.birthDate())) ? oldPeople.birthDate() : newPeople.birthDate())
                 .name((Objects.isNull(newPeople.name())) ? oldPeople.name() : newPeople.name())
                 .surname((Objects.isNull(newPeople.surname())) ? oldPeople.surname() : newPeople.surname())
                 .title((Objects.isNull(newPeople.title())) ? oldPeople.title() : newPeople.title())

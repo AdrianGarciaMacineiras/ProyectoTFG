@@ -32,7 +32,7 @@ public final class PersonFixtures extends CommonFixtures {
                   .surname("surname")
                   .employeeId("employeeId")
                   .title("SD3")
-            .birthDate(date)
+            //.birthDate(date)
             .assignable(true)
             .assigns(List.of(ASSIGNMENTS))
             .deleted(false)
@@ -46,7 +46,7 @@ public final class PersonFixtures extends CommonFixtures {
                   .surname("surname")
                   .employeeId("employeeId")
                   .title("SD3")
-                  .birthDate(date)
+                  //.birthDate(date)
                   .assignable(true)
                   .assigns(List.of(ASSIGNMENTS))
                   .deleted(true)
@@ -59,7 +59,7 @@ public final class PersonFixtures extends CommonFixtures {
                   .surname("surname3")
                   .employeeId("employeeId")
                   .title("SD3")
-                  .birthDate(date)
+                  //.birthDate(date)
                   .build();
 
   public static final People UPDATED_PEOPLE_BY_CODE =
@@ -69,7 +69,7 @@ public final class PersonFixtures extends CommonFixtures {
                   .surname("surname2")
                   .employeeId("employeeId")
                   .title("SD2")
-                  .birthDate(date)
+                  //.birthDate(date)
                   .build();
 
   public static final List<People> PEOPLE_LIST = new ArrayList<>() {{

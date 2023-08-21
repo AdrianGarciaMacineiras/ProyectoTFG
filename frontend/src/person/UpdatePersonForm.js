@@ -76,6 +76,9 @@ const UpdatePersonForm = () => {
   const [tempKnows, setTempKnows] = useState(false);
   const [tempCertificates, setTempCertificates] = useState(false);
 
+  const [expandAll, setExpandAll] = useState([]);
+  const [expand, setExpand] = useState([]);
+
   const [knowsForm, setKnowsForm] = useState({
     LevelRequired: '',
     minLevel: '',
@@ -282,6 +285,7 @@ const UpdatePersonForm = () => {
     const recursive = (dataList) => {
       var list = [];
       dataList.forEach((data) => {
+        setExpandAll(nodes => [...nodes, data.code]);
         list.push({
           nodeId: data.code,
           name: data.name,
@@ -354,6 +358,7 @@ const UpdatePersonForm = () => {
 
 
   const handleNodeSelect = (event, item) => {
+    event.stopPropagation();
     setSelectedNode(item);
     setShowCheckboxes(true);
     setShowKnowsForm(false);
@@ -378,7 +383,9 @@ const UpdatePersonForm = () => {
         if (isMatched) {
           return (
             <TreeItem
-              key={treeItemData.nodeId} nodeId={treeItemData.nodeId} label=
+              key={treeItemData.nodeId} 
+              nodeId={treeItemData.nodeId} 
+              label=
               {
                 <div onClick={(event) => handleNodeSelect(event, treeItemData)}>
                   {treeItemData.name}
@@ -395,12 +402,16 @@ const UpdatePersonForm = () => {
       });
     };
 
-  const collapseAll = (e) => {
-    e.preventDefault();
-    setSkillList(skillList.map((item) => Object.assign({}, item, {
-      expanded: false,
-    })));
+  const handleExpandClick = () => {
+    setExpand((oldExpanded) =>
+      oldExpanded.length === 0 ? expandAll : [],
+    );
   };
+
+
+  const handleToggle = (event, nodeIds) => {
+    setExpand(nodeIds)
+  }
 
   const DataTreeView = () => {
     return (
@@ -408,6 +419,9 @@ const UpdatePersonForm = () => {
         <TreeView
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
+          defaultExpanded={expandAll}
+          expanded={expand}
+          onNodeToggle={handleToggle}
         >
           {getTreeItemsFromData(skillList, searchSkill)}
         </TreeView>
@@ -557,7 +571,7 @@ const UpdatePersonForm = () => {
                           )
                           }</MDBox>
                         <MDBox>
-                          <MDButton variant="gradient" color="dark" onClick={collapseAll}> Collapse all </MDButton>
+                        <MDButton variant="gradient" color="dark" onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'} </MDButton>
                           <MDBox>
                             < MDInput
                               type='text'

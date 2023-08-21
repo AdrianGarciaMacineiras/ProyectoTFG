@@ -69,7 +69,7 @@ public class PositionFixtures extends CommonFixtures {
                     .surname("surname")
                     .employeeId("employeeId")
                     .title("SD3")
-                    .birthDate(date)
+                    //.birthDate(date)
                     .build();
 
     public static final PositionSkill OPPORTUNITY_SKILL =

@@ -278,7 +278,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                      .name(people.get("name").asString())
                      .surname(people.get("surname").asString())
                      .employeeId(people.get("employeeId").asString())
-                     .birthDate(NULL.equalsIgnoreCase(result.get(BIRTH_DATE).asString()) ? null : result.get(BIRTH_DATE).asLocalDate())
+                     //.birthDate(NULL.equalsIgnoreCase(result.get(BIRTH_DATE).asString()) ? null : result.get(BIRTH_DATE).asLocalDate())
                      .code(people.get("code").asString())
                      .deleted(people.get("deleted").asBoolean())
                      .build();
@@ -295,7 +295,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                          .name(people.get("name").asString())
                          .surname(people.get("surname").asString())
                          .employeeId(people.get("employeeId").asString())
-                         .birthDate(NULL.equalsIgnoreCase(result.get(BIRTH_DATE).asString()) ? null : result.get(BIRTH_DATE).asLocalDate())
+                         //.birthDate(NULL.equalsIgnoreCase(result.get(BIRTH_DATE).asString()) ? null : result.get(BIRTH_DATE).asLocalDate())
                          .code(people.get("code").asString())
                          .deleted(people.get("deleted").asBoolean())
                          .build();

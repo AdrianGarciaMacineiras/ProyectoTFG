@@ -15,9 +15,10 @@ const SkillStatsForm = () => {
     const [data, setData] = useState('');
 
     const handleTitle = (event) => {
+        const newValue = event.target.value.toUpperCase(); 
         setForm({
             ...form,
-            [event.target.id]: event.target.value,
+            [event.target.id]: newValue,
         });
     };
 
