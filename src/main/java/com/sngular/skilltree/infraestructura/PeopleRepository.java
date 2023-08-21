@@ -1,9 +1,9 @@
 package com.sngular.skilltree.infraestructura;
 
+import java.util.List;
+
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.views.PeopleView;
-
-import java.util.List;
 
 public interface PeopleRepository {
 

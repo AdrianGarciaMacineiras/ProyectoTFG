@@ -2,7 +2,6 @@ package com.sngular.skilltree.contract.config;
 
 import java.time.format.DateTimeFormatter;
 
-
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;

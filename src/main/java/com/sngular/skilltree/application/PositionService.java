@@ -1,9 +1,9 @@
 package com.sngular.skilltree.application;
 
+import java.util.List;
+
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.Position;
-
-import java.util.List;
 
 public interface PositionService {
 

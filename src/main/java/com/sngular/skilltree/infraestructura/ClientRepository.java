@@ -1,9 +1,8 @@
 package com.sngular.skilltree.infraestructura;
 
+import java.util.List;
 
 import com.sngular.skilltree.model.Client;
-
-import java.util.List;
 
 public interface ClientRepository {
 

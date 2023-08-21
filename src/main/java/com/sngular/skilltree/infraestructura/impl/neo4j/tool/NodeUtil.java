@@ -1,9 +1,9 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.tool;
 
+import java.time.LocalDate;
+
 import org.neo4j.driver.Value;
 import org.neo4j.driver.internal.InternalNode;
-
-import java.time.LocalDate;
 
 public class NodeUtil {
 

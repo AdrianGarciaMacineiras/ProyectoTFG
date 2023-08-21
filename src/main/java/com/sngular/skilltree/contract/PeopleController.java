@@ -1,8 +1,14 @@
 package com.sngular.skilltree.contract;
 
+import java.util.List;
+
 import com.sngular.skilltree.api.PeopleApi;
 import com.sngular.skilltree.api.PersonApi;
-import com.sngular.skilltree.api.model.*;
+import com.sngular.skilltree.api.model.CandidateDTO;
+import com.sngular.skilltree.api.model.PatchedPeopleDTO;
+import com.sngular.skilltree.api.model.PeopleDTO;
+import com.sngular.skilltree.api.model.PeopleResumedDTO;
+import com.sngular.skilltree.api.model.PositionDTO;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.updater.PeopleUpdater;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
@@ -13,8 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Slf4j
 @RestController

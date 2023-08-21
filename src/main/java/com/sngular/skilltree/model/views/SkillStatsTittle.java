@@ -1,9 +1,13 @@
 package com.sngular.skilltree.model.views;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import lombok.Builder;
 import org.apache.commons.text.WordUtils;
-
-import java.util.*;
 
 @Builder(toBuilder = true)
 public record SkillStatsTittle(String parent, String name, Integer total, Map<String, SkillStatsTittle> subSkills) {

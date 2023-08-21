@@ -1,11 +1,9 @@
 package com.sngular.skilltree.application;
 
+import java.util.List;
+
 import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.Team;
-import com.sngular.skilltree.model.People;
-
-
-import java.util.List;
 
 public interface TeamService {
 

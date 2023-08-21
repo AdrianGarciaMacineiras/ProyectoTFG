@@ -1,6 +1,17 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.AssignedRelationship;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.ClientNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.ProjectNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillsCandidateRelationship;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubSkillsRelationship;
 import com.sngular.skilltree.model.Assignment;
 import com.sngular.skilltree.model.Assignments;
 import com.sngular.skilltree.model.Skill;
@@ -8,8 +19,6 @@ import com.sngular.skilltree.model.SkillsCandidate;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
 
 @Service
 @RequiredArgsConstructor

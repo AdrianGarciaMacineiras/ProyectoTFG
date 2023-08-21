@@ -1,8 +1,8 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.querymodel;
 
-import lombok.Builder;
-
 import java.util.List;
+
+import lombok.Builder;
 
 @Builder
 public record PeopleExtendedView(String code, String employeeId, String name, String surname, String title,

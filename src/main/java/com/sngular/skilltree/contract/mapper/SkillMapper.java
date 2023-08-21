@@ -1,5 +1,8 @@
 package com.sngular.skilltree.contract.mapper;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.sngular.skilltree.api.model.SkillDTO;
 import com.sngular.skilltree.api.model.SkillStatDTO;
 import com.sngular.skilltree.api.model.StrategicTeamSkillDTO;
@@ -12,9 +15,6 @@ import com.sngular.skilltree.model.views.SkillStatsTittle;
 import org.apache.commons.lang3.ObjectUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.Collection;
-import java.util.List;
 
 @Mapper(config = CommonMapperConfiguration.class, uses = PeopleMapper.class)
 public interface SkillMapper {

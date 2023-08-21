@@ -1,12 +1,17 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.model.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.sngular.skilltree.model.Client;
+import com.sngular.skilltree.model.Office;
+import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.Position;
+import com.sngular.skilltree.model.Project;
+import com.sngular.skilltree.model.Skill;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

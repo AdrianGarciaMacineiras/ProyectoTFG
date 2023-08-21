@@ -1,9 +1,9 @@
 package com.sngular.skilltree.model;
 
-import lombok.Builder;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
+import lombok.Builder;
 
 @Builder(toBuilder = true)
 public record Team(String code,

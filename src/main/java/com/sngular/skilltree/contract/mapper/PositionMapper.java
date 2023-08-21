@@ -1,5 +1,9 @@
 package com.sngular.skilltree.contract.mapper;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+
 import com.sngular.skilltree.api.model.PatchedPositionDTO;
 import com.sngular.skilltree.api.model.PositionDTO;
 import com.sngular.skilltree.api.model.PositionSkillDTO;
@@ -10,10 +14,6 @@ import com.sngular.skilltree.model.PositionSkill;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 
 @Mapper(config = CommonMapperConfiguration.class, uses = {ClientMapper.class, ResolveService.class, PeopleMapper.class, ProjectMapper.class,
   OfficeMapper.class, CandidateMapper.class})

@@ -1,8 +1,8 @@
 package com.sngular.skilltree.model;
 
-import lombok.Builder;
-
 import java.util.Date;
+
+import lombok.Builder;
 
 
 @Builder(toBuilder = true)
