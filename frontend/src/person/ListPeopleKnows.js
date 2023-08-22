@@ -4,6 +4,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import SortIcon from '@mui/icons-material/Sort';
+import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import Update from '@mui/icons-material/Update';
 import {
     IconButton,
@@ -32,7 +36,6 @@ import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 import NestedKnows from './NestedKnows';
 
 
-
 const ListPeopleKnows =
     () => {
         const [peopleList, setPeopleList] = useState([]);
@@ -42,7 +45,7 @@ const ListPeopleKnows =
 
         const [open, setOpen] = useState(false);
 
-        const [orderBy, setOrderBy] = useState('code');
+        const [orderBy, setOrderBy] = useState('');
         const [sortDirection, setSortDirection] = useState('asc');
 
         const navigate = useNavigate();
@@ -108,11 +111,39 @@ const ListPeopleKnows =
             value: PropTypes.number.isRequired,
         };
 
+        const [nestedKnowStates, setNestedKnowStates] = useState({});
+
+            const handleNestedKnowStateChange = (personCode, newState) => {
+                setNestedKnowStates(prevStates => ({
+                    ...prevStates,
+                    [personCode]: newState
+                }));
+            };
+
+            const handleNestedKnowPageChange = (personCode, newPage) => {
+                setNestedKnowStates(prevStates => ({
+                    ...prevStates,
+                    [personCode]: {
+                        ...prevStates[personCode],
+                        page: newPage
+                    }
+                }));
+            };
+
+            const handleNestedKnowRowsPerPageChange = (personCode, newRowsPerPage) => {
+                setNestedKnowStates(prevStates => ({
+                    ...prevStates,
+                    [personCode]: {
+                        ...prevStates[personCode],
+                        rowsPerPage: newRowsPerPage,
+                        page: 0
+                    }
+                }));
+            };
 
         const DataPerson = ({ row }) => {
             const isOpen = row.open;
             const valor = row.tabValue;
-
 
             return (
                 <React.Fragment >
@@ -159,8 +190,8 @@ const ListPeopleKnows =
                                     size="small"
                                     onClick={(event) => handleDelete(event, row.employeeId)}
                                 >
-                                    {<Clear />
-                                    }</IconButton>
+                                    {<Clear />}
+                                </IconButton>
                             </Tooltip>
                         </TableCell>
                     </TableRow>
@@ -182,7 +213,14 @@ const ListPeopleKnows =
                                     <TableCell align='center'>Knows</TableCell>
                                 </MDBox>
                                 <CustomTabPanel value={valor} index={0}>
-                                    <NestedKnows data={row.knows} />
+                                    <NestedKnows
+                                        key={row.code}
+                                        data={row.knows}
+                                        state={nestedKnowStates[row.code]}
+                                        onStateChange={newState => handleNestedKnowStateChange(row.code, newState)}
+                                        onPageChange={newPage => handleNestedKnowPageChange(row.code, newPage)}
+                                        onRowsPerPageChange={newRowsPerPage => handleNestedKnowRowsPerPageChange(row.code, newRowsPerPage)}
+                                    />                                
                                 </CustomTabPanel>
                             </MDBox>
                             </Collapse>
@@ -209,6 +247,17 @@ const ListPeopleKnows =
             setRowsPerPage(parseInt(event.target.value, 50));
             setPage(0);
         };
+
+        function getSortIcon(column) {
+            if (orderBy === column) {
+                return sortDirection === 'asc' ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />;
+            };
+            if (column !== 'code') {
+                return <SortByAlphaIcon />;
+            } else {
+                return <SortIcon />;
+            }
+        }
 
         return (
             <React.Fragment>
@@ -258,37 +307,27 @@ const ListPeopleKnows =
                                                     </IconButton>
                                                     </TableCell>
                                                     <TableCell align='left' onClick={() => handleSortChange('code')}>
-                                                        <strong>{
-                                                            orderBy === 'code' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+                                                        {getSortIcon('code')}
                                                         Code
                                                     </TableCell>
                                                     <TableCell align='left' onClick={() => handleSortChange('name')}>
-                                                        <strong>{
-                                                            orderBy === 'name' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+                                                        {getSortIcon('name')}
                                                         Name
                                                     </TableCell>
                                                     <TableCell align='left' onClick={() => handleSortChange('surname')}>
-                                                        <strong>{
-                                                            orderBy === 'surname' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
-                                                                null}</strong>
+                                                        {getSortIcon('surname')}
                                                         Surname
                                                     </TableCell>
-                                                    <TableCell align=
-                                                        'left' onClick={() => handleSortChange('employeeId')}><strong>{
-                                                            orderBy === 'employeeId' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
-                                                                null}</strong>
+                                                    <TableCell align='left' onClick={() => handleSortChange('employeeId')}>
+                                                        {getSortIcon('employeeId')}
                                                         EmployeeId
                                                     </TableCell>
                                                     <TableCell align='left' onClick={() => handleSortChange('title')}>
-                                                        <strong>{
-                                                            orderBy === 'title' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
-                                                                null}</strong>
+                                                        {getSortIcon('title')}
                                                         Title
                                                     </TableCell>
-                                                    <TableCell align='left' onClick={() => handleSortChange('teamShortName')}>
-                                                        <strong>{
-                                                            orderBy === 'teamShortName' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') :
-                                                                null}</strong>
+                                                    <TableCell align='left' onClick={() => handleSortChange('team')}>
+                                                        {getSortIcon('team')}
                                                         Team
                                                     </TableCell>
                                                 </TableRow>
