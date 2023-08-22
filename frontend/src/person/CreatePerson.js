@@ -30,7 +30,7 @@ const CreatePerson =
       employeeId: '',
       name: '',
       surname: '',
-      birthDate: '',
+      //birthDate: '',
       title: '',
       roles: [],
       knows: [],
@@ -43,7 +43,7 @@ const CreatePerson =
     const [skillList, setSkillList] = useState([]);
     const [searchSkill, setSearchSkill] = useState('');
 
-    const [birthDate, setBirthDate] = useState(new Date());
+    //const [birthDate, setBirthDate] = useState(new Date());
 
     const [isAddRoleVisible, setIsAddRoleVisible] = useState(false);
     const [isShowRoleListVisible, setIsShowRoleListVisible] = useState(false);
@@ -127,8 +127,8 @@ const CreatePerson =
               Email: response.email,
               EmployeeId: response.employeeId,
               FriendlyName: response.friendlyName,
-              Title: response.title,
-              BirthDate: response.birthDate
+              Title: response.title
+             // BirthDate: response.birthDate
             };
             graphTemp.nodes.push({
               id: i,
@@ -220,7 +220,7 @@ const CreatePerson =
         employeeId: '',
         name: '',
         surname: '',
-        birthDate: '',
+        //birthDate: '',
         title: '',
         roles: [],
         knows: [],
@@ -313,7 +313,6 @@ const CreatePerson =
     };
 
     const getTreeItemsFromData = (treeItems, searchValue) => {
-      console.log(treeItems);
       const filteredItems = treeItems.filter((treeItemData) => {
         const isMatched =
           treeItemData.name.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -380,22 +379,48 @@ const CreatePerson =
         if (row.master) {
           setForm((prevForm) => ({
             ...prevForm,
-            master: [...prevForm.master, row.name],
+            master: [...prevForm.master, row.code],
           }));
         }
         if (row.interest) {
           setForm((prevForm) => ({
             ...prevForm,
-            interest: [...prevForm.interest, row.name],
+            interest: [...prevForm.interest, row.code],
           }));
         }
         if (row.workwith) {
           setForm((prevForm) => ({
             ...prevForm,
-            work_with: [...prevForm.work_with, row.name],
+            work_with: [...prevForm.work_with, row.code],
           }));
         }
-      });
+        if (row.knows.add) {
+          setForm((prevForm) => ({
+            ...prevForm,
+            knows: [
+              ...prevForm.knows,
+              {
+                code: row.code,
+                name: row.name,
+                ...row.knows,
+              },
+            ],
+          }));
+        }
+        if (row.certificates.add) {
+          setForm((prevForm) => ({
+            ...prevForm,
+            certificates: [
+              ...prevForm.certificates,
+              {
+                code: row.code,
+                name: row.name,
+                ...row.certificates,
+              },
+            ],
+          }));
+      }
+    });
     };
 
     return (
@@ -436,7 +461,7 @@ const CreatePerson =
                         <MDInput type='text' value={form.surname} onChange=
                           {handleInputChange} name='surname' />
                       </MDBox>
-                      <MDBox>
+                      {/*<MDBox>
                         <MDTypography variant='h6' fontWeight='medium'>Birth Date:</MDTypography>
                         <DatePicker
                           selected={birthDate} dateFormat='dd-MM-yyyy'
@@ -446,7 +471,7 @@ const CreatePerson =
                               { target: { name: 'birthDate', value: format(date, 'dd-MM-yyyy') } })
                           }
                         />
-                      </MDBox >
+                        </MDBox >*/}
                       <MDBox>
                         <MDTypography variant='h6' fontWeight='medium'>Title: </MDTypography>
                         <MDInput type="text" value={form.title} onChange={handleInputChange} name="title" />
@@ -473,9 +498,10 @@ const CreatePerson =
                               <MDInput type="text" value={roleForm.category} onChange={(e) => setRoleForm({ ...roleForm, category: e.target.value })} />
                             </MDBox>
                             <MDBox>
-                              <MDTypography variant='h6' fontWeight='medium'>Init Date:</MDTypography><
-                                DatePicker
-                                selected={roleForm.initDate} dateFormat='dd-MM-yyyy'
+                              <MDTypography variant='h6' fontWeight='medium'>Init Date:</MDTypography>
+                              <DatePicker
+                                selected={roleForm.initDate} 
+                                dateFormat='dd-MM-yyyy'
                                 onSelect={(date) => setRoleForm({ ...roleForm, initDate: date })}
                                 onChange={
                                   (date) => setRoleForm({ ...roleForm, initDate: date })}
@@ -509,6 +535,15 @@ const CreatePerson =
                   </Grid>
                   <Grid container spacing={12}>
                     <Grid item xs={12}>
+                      {form.certificates.length > 0 && (
+                        <MDBox>
+                          {console.log(form)}
+                        </MDBox>
+                      )}       
+                    </Grid>             
+                  </Grid>
+                  <Grid container spacing={12}>
+                    <Grid item xs={12}>
                       <MDBox>
                         <MDButton variant="gradient" color="dark" onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'} </MDButton>
                         <MDBox>
@@ -520,7 +555,10 @@ const CreatePerson =
                         </MDBox>
                         <DataTreeView />
                       </MDBox>
-                      {selectedNode && <SkillTable skill={selectedNode} onReturnRows={handleReturnRows} />}
+                      {selectedNode && 
+                      <SkillTable skill={selectedNode} onReturnRows={handleReturnRows} 
+                      />
+                      }
                     </Grid>
                     <Grid item xs={12}>
                       <MDButton color='black' onClick={handleSubmit}>Submit</MDButton>

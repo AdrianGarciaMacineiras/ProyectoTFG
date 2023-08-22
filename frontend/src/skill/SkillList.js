@@ -299,23 +299,6 @@ function SkillList() {
         })
         .then(response => { return response.json() })
         .then(data => {
-          /*const tableData = data.map(
-            (element) => ({
-              Name: element.name,
-              Surname: element.surname,
-              Email: element.email,
-              Title: element.title,
-              EmployeeId: element.employeeId,
-              FriendlyName: element.friendlyName,
-              BirthDate: element.birthDate,
-              Knows: element.knows.map((knows) => ({
-                Code: knows.code,
-                Primary: knows.primary?.toString(),
-                Experience: knows.experience,
-                Level: knows.level
-              }))
-            }));
-          setTableData(tableData);*/
           setTableData(data);
           let i = 1;
           let j = 2;
@@ -336,16 +319,12 @@ function SkillList() {
               title: JSON.stringify(temp, '', 2)
             });
             element.knows.forEach(knows => {
-              /*const foundElement = graphTemp.nodes.find(node => node.label
-               * === knows.name);*/
               let temp = {
                 Code: knows.code,
                 Primary: knows.primary,
                 Experience: knows.experience,
                 Level: knows.level
-              } /* if(foundElement !== undefined && foundElement !== null){
-                     graphTemp.edges.push({from:i, to:foundElement.id, label:
-                   "KNOWS", title: JSON.stringify(temp,'',2) }); } else {*/
+              } 
               graphTemp.nodes.push(
                 { id: j, label: knows.name, title: knows.name });
               graphTemp.edges.push({
@@ -354,7 +333,6 @@ function SkillList() {
                 label: 'KNOWS',
                 title: JSON.stringify(temp, '', 2)
               });
-              ///}
               j++
             })
             i = j++;
