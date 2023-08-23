@@ -162,7 +162,7 @@ public class SkillRepositoryImpl implements SkillRepository {
                     .name(peopleNode.get("name").asString())
                     .surname(peopleNode.get("surname").asString())
                     .employeeId(peopleNode.get("employeeId").asString())
-                    .birthDate(NodeUtil.getValueAsLocalDate(peopleNode, "birthdate"))
+                    //.birthDate(NodeUtil.getValueAsLocalDate(peopleNode, "birthdate"))
                     .code(peopleNode.get("code").asString())
                     .deleted(false)
                     .build();

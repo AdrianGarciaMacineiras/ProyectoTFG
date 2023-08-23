@@ -57,7 +57,7 @@ class TeamControllerTest {
 
     @Test
     void shouldDeleteTeamFail() throws Exception{
-        when(teamService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("Opportunity", "itxtl1"));
+        when(teamService.deleteByCode(anyString())).thenThrow(new EntityNotFoundException("Team", "itxtl1"));
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/api/team/team1120")
                         .accept(MediaType.APPLICATION_JSON))

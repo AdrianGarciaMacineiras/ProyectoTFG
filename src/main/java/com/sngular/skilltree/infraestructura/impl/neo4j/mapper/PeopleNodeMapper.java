@@ -25,13 +25,13 @@ import org.mapstruct.Mapping;
 public interface PeopleNodeMapper {
 
     @InheritInverseConfiguration
-    @Mapping(target = "birthDate", expression = "java(toLocalDateTime(people.birthDate()))")
+    //@Mapping(target = "birthDate", expression = "java(toLocalDateTime(people.birthDate()))")
     @Mapping(target = "assigns", source = "assigns", qualifiedByName = {"resolveServiceNode", "mapToAssignedRelationship"})
         //@Mapping(target = "noClients", source = "noClients", qualifiedByName = {"resolveServiceNode", "mapToClientNode"})
         //@Mapping(target = "noProjects", source = "noProjects", qualifiedByName = {"resolveServiceNode", "mapToProjectNode"})
     PeopleNode toNode(People people);
 
-    @Mapping(target = "birthDate", expression = "java(toLocalDate(peopleNode.getBirthDate()))")
+    //@Mapping(target = "birthDate", expression = "java(toLocalDate(peopleNode.getBirthDate()))")
     @Mapping(target = "assigns", source = "assigns", qualifiedByName = {"resolveServiceNode", "mapToAssignment"})
         //@Mapping(target = "noClients", source = "noClients", qualifiedByName = {"resolveServiceNode", "mapToClientString"})
         //@Mapping(target = "noProjects", source = "noProjects", qualifiedByName = {"resolveServiceNode", "mapToProjectString"})

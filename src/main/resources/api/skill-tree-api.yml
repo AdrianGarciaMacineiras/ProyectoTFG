@@ -2031,9 +2031,9 @@ components:
           type: string
         surname:
           type: string
-        birthDate:
-          type: string
-          format: date
+        #birthDate:
+          #type: string
+          #format: date
         title:
           type: string
         #         $ref: "#/components/schemas/title"
@@ -2169,9 +2169,9 @@ components:
           type: string
         surname:
           type: string
-        birthDate:
-          type: string
-          format: date
+        #birthDate:
+          #type: string
+          #format: date
         title:
           type: string
         roles:
@@ -2239,6 +2239,8 @@ components:
         id:
           type: string
         code:
+          type: string
+        name:
           type: string
         comment:
           type: string

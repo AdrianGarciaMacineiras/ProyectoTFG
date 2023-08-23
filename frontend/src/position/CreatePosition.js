@@ -5,12 +5,12 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
-import {FormControl, InputLabel, MenuItem, Select} from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import {format} from 'date-fns';
-import React, {useEffect, useState} from 'react';
+import { format } from 'date-fns';
+import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import VisGraph from 'react-vis-graph-wrapper';
 
@@ -56,11 +56,12 @@ function CreatePosition() {
 
   const [searchSkill, setSearchSkill] = useState('');
 
+  const [expandAll, setExpandAll] = useState([]);
+  const [expand, setExpand] = useState([]);
+
   const graphTemp = { nodes: [], edges: [] };
 
   const [graph, setGraph] = useState({ nodes: [], edges: [] });
-
-  const [aux, setAux] = useState([]);
 
   const options = {
     layout: { improvedLayout: true },
@@ -98,9 +99,9 @@ function CreatePosition() {
     (treeItems, searchValue) => {
       const filteredItems = treeItems.filter((treeItemData) => {
         return treeItemData.name.toLowerCase().includes(
-                searchValue.toLowerCase()) ||
-            getTreeItemsFromData(treeItemData.children, searchValue).length >
-            0;
+          searchValue.toLowerCase()) ||
+          getTreeItemsFromData(treeItemData.children, searchValue).length >
+          0;
       });
 
       return filteredItems.map(
@@ -112,12 +113,14 @@ function CreatePosition() {
             return (
               <React.Fragment>
                 <TreeItem
-                  key={treeItemData.nodeId} nodeId={treeItemData.nodeId} label=
+                  key={treeItemData.nodeId}
+                  nodeId={treeItemData.nodeId}
+                  label=
                   {
                     < div
                       onClick={(event) => {
                         event.stopPropagation();
-                        handleItemClick(treeItemData);
+                        handleItemClick(event, treeItemData);
                       }}
                     >
                       {treeItemData.name}
@@ -134,13 +137,16 @@ function CreatePosition() {
         });
     };
 
-  const collapseAll =
-    (e) => {
-      e.preventDefault();
-      setSkillList(skillList.map((item) => Object.assign({}, item, {
-        expanded: false,
-      })));
-    };
+  const handleExpandClick = () => {
+    setExpand((oldExpanded) =>
+      oldExpanded.length === 0 ? expandAll : [],
+    );
+  };
+
+
+  const handleToggle = (event, nodeIds) => {
+    setExpand(nodeIds)
+  }
 
   const DataTreeView =
     () => {
@@ -150,8 +156,11 @@ function CreatePosition() {
             <TreeView
               defaultCollapseIcon={<ExpandMoreIcon />}
               defaultExpandIcon={<ChevronRightIcon />}
+              defaultExpanded={expandAll}
+              expanded={expand}
+              onNodeToggle={handleToggle}
             >
-              {getTreeItemsFromData(skillList, searchSkill, false)}
+              {getTreeItemsFromData(skillList, searchSkill)}
             </TreeView>
           </MDBox>
         </React.Fragment>
@@ -171,7 +180,7 @@ function CreatePosition() {
   const SkillsList =
     () => {
       return (
-        <React.Fragmet>
+        <React.Fragment>
           <MDBox>
             {form.skills.map((skill, index) => (
               <MDBox key={index}>
@@ -189,7 +198,7 @@ function CreatePosition() {
               </MDBox>
             ))}
           </MDBox>
-        </React.Fragmet>
+        </React.Fragment>
       );
     };
 
@@ -197,6 +206,7 @@ function CreatePosition() {
     const recursive = (dataList) => {
       let list = [];
       dataList.forEach(data => {
+        setExpandAll(nodes => [...nodes, data.code]);
         list.push({
           nodeId: data.code,
           name: data.name,
@@ -306,7 +316,6 @@ function CreatePosition() {
     })
       .then(response => response.json())
       .then(response => {
-        setAux(response);
         let i = 1
         let temp = {
           Code: response.code,
@@ -406,7 +415,8 @@ function CreatePosition() {
     });
   };
 
-  const handleItemClick = (item) => {
+  const handleItemClick = (event, item) => {
+    event.stopPropagation();
     setSelectedItem(item);
     setSkill(item.nodeId);
     setSkillName(item.name);
@@ -594,17 +604,22 @@ function CreatePosition() {
                           </MDBox>
                         )}
 
-                        <MDButton onClick={collapseAll}> Collapse all </MDButton>
-                        <br />< input
-                          type='text'
-                          value={searchSkill} onChange=
-                          {(e) => setSearchSkill(e.target.value)} placeholder=
-                          'Search' /> <DataTreeView /><SkillsList />
+                        <MDButton variant="gradient" color="dark" onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'} </MDButton>
+                        <MDBox>
+                          < MDInput
+                            type='text'
+                            value={searchSkill}
+                            onChange={(e) => setSearchSkill(e.target.value)}
+                            placeholder='Search' />
+                        </MDBox>
+                        <DataTreeView />
+                        <SkillsList />
                       </Grid>
                       <Grid item xs={12}>
                         <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
                       </Grid>
-                    </Grid></MDBox>
+                    </Grid>
+                  </MDBox>
                 </form>
               </Card>
             </Grid>
@@ -617,21 +632,21 @@ function CreatePosition() {
                 bgColor='info'
                 borderRadius='lg'
                 coloredShadow='info'>
-              <MDTypography variant='h6' color='white'>Position Graph</MDTypography>
-          </MDBox>
-          <MDBox pt={3}>
-            < VisGraph
-              graph={graph} options={options} events={events} getNetwork={
-              network => {
-              //  if you want access to vis.js network api you can set the state in a
-              //  parent component using this property
-              }
-            } />
-         </MDBox >
-      </Card>
-    </Grid>
-  </Grid>
-</MDBox>
+                <MDTypography variant='h6' color='white'>Position Graph</MDTypography>
+              </MDBox>
+              <MDBox pt={3}>
+                < VisGraph
+                  graph={graph} options={options} events={events} getNetwork={
+                    network => {
+                      //  if you want access to vis.js network api you can set the state in a
+                      //  parent component using this property
+                    }
+                  } />
+              </MDBox >
+            </Card>
+          </Grid>
+          </Grid>
+        </MDBox>
         <Footer />
       </DashboardLayout>
     </React.Fragment>

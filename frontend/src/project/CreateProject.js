@@ -5,12 +5,12 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
-import {Checkbox, FormControl, InputLabel, MenuItem, Select} from '@mui/material';
+import { Checkbox, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import {format} from 'date-fns';
-import React, {useEffect, useState} from 'react';
+import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import VisGraph from 'react-vis-graph-wrapper';
 
@@ -26,14 +26,15 @@ const CreateProject = () => {
   const [skillList, setSkillList] = useState([]);
   const [clientList, setClientList] = useState([]);
 
-  const [searchClientCode, setSearchClientCode] = useState('');
-
   const [endDate, setEndDate] = useState(new Date());
   const [initDate, setInitDate] = useState(new Date());
 
   const [searchSkill, setSearchSkill] = useState('');
 
   const [selectedSkills, setSelectedSkills] = useState([]);
+
+  const [expandAll, setExpandAll] = useState([]);
+  const [expand, setExpand] = useState([]);
 
   const [form, setForm] = useState({
     code: '',
@@ -59,8 +60,6 @@ const CreateProject = () => {
     nodes: [],
     edges: []
   });
-
-  const [aux, setAux] = useState([]);
 
   const options = {
     layout: {
@@ -111,7 +110,8 @@ const CreateProject = () => {
       let list = [];
       if (!!dataList) {
         dataList.forEach(data => {
-          list.push({nodeId: data.code, name: data.name, children: recursive(data.subSkills)});
+          setExpandAll(nodes => [...nodes, data.code]);
+          list.push({ nodeId: data.code, name: data.name, children: recursive(data.subSkills) });
         });
       }
       return list;
@@ -197,6 +197,7 @@ const CreateProject = () => {
   };
 
   const handleCheckboxChange = (event) => {
+    event.stopPropagation();
     const nodeId = event.target.value;
     if (event.target.checked) {
       setSelectedSkills((prevSelectedSkills) => [...prevSelectedSkills, nodeId]);
@@ -223,19 +224,24 @@ const CreateProject = () => {
       if (isMatched) {
         return (
           <TreeItem
-            key={treeItemData.nodeId}
-            nodeId={treeItemData.nodeId}
-            label={
-              <div>
-                <Checkbox
-                  value={treeItemData.nodeId}
-                  checked={isSelected}
-                  onChange={handleCheckboxChange}
-                />
+          key={treeItemData.nodeId}
+          nodeId={treeItemData.nodeId}
+          label={
+            <div>
+              <Checkbox
+                value={treeItemData.nodeId}
+                checked={isSelected}
+                onChange={handleCheckboxChange}
+                onClick={(event) => event.stopPropagation()}
+              />
+              <span
+                onClick={(event) => event.stopPropagation()}
+              >
                 {treeItemData.name}
-              </div>
-            }
-          >
+              </span>
+            </div>
+          }
+        >
             {getTreeItemsFromData(treeItemData.children, searchValue)}
           </TreeItem>
         );
@@ -244,17 +250,15 @@ const CreateProject = () => {
     });
   };
 
-
-  const collapseAll = (e) => {
-    e.preventDefault();
-    setSkillList(
-      skillList.map((item) =>
-        Object.assign({}, item, {
-          expanded: false,
-        })
-      )
+  const handleExpandClick = () => {
+    setExpand((oldExpanded) =>
+      oldExpanded.length === 0 ? expandAll : [],
     );
   };
+
+  const handleToggle = (event, nodeIds) => {
+    setExpand(nodeIds)
+  }
 
   const DataTreeView = () => {
     return (
@@ -262,6 +266,9 @@ const CreateProject = () => {
         <TreeView
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
+          defaultExpanded={expandAll}
+          expanded={expand}
+          onNodeToggle={handleToggle}
         >
           {getTreeItemsFromData(skillList, searchSkill)}
         </TreeView>
@@ -283,7 +290,6 @@ const CreateProject = () => {
     })
       .then(response => { return response.json() })
       .then(response => {
-        setAux(response);
         let i = 1;
         let temp = {
           Code: response.code, Name: response.name, InitDate: response.initDate, Descripcion: response.desc, Area: response.area,
@@ -298,8 +304,8 @@ const CreateProject = () => {
         if (!!response.skills) {
           response.skills.forEach(element => {
             i++;
-            graphTemp.nodes.push({id: i, label: element, title: element, groups: 'skills'});
-            graphTemp.edges.push({from: 1, to: i, label: 'REQUIRE', title: response.clientCode});
+            graphTemp.nodes.push({ id: i, label: element, title: element, groups: 'skills' });
+            graphTemp.edges.push({ from: 1, to: i, label: 'REQUIRE', title: response.clientCode });
           });
         }
         setGraph(prev => graphTemp);
@@ -424,7 +430,7 @@ const CreateProject = () => {
                         </Select>
                       </FormControl>
 
-                      <MDButton onClick={collapseAll}> Collapse all </MDButton>
+                      <MDButton variant="gradient" color="dark" onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'} </MDButton>
                       <br />
                       <input
                         type='text'

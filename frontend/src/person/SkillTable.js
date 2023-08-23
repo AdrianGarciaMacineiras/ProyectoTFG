@@ -18,10 +18,10 @@ import { Delete as DeleteIcon } from '@mui/icons-material';
 import DatePicker from 'react-datepicker';
 import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
+import { format, parse } from 'date-fns';
+import moment from 'moment';
 
-
-
-const levels = ['Low', 'Medium', 'Confident', 'High'];
+const levels = ['LOW', 'MIDDLE', 'ADVANCED'];
 
 const SkillTable = ({ skill, onReturnRows }) => {
     const [rows, setRows] = useState([]);
@@ -29,26 +29,30 @@ const SkillTable = ({ skill, onReturnRows }) => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
     useEffect(() => {
-        if (skill) {
+        const skillExists = rows.some(row => row.code === skill.nodeId);
+
+        if (!skillExists) {
             const newRow = {
                 name: skill.name,
                 code: skill.nodeId,
                 knows: {
-                    level: 'Low',
+                    level: '',
                     experience: 0,
                     primary: false,
+                    add: false,
                 },
                 workwith: false,
                 interest: false,
                 master: false,
-                certificate: {
+                certificates: {
                     comment: '',
-                    date: new Date(),
+                    date: moment().format('DD-MM-YYYY'),
+                    add: false,
                 },
             };
             setRows(prevRows => [...prevRows, newRow]);
         }
-    }, [skill]);
+    }, [skill, rows]);
 
     const handleCheckboxChange = (event, rowIndex, field) => {
         const updatedRows = [...rows];
@@ -56,16 +60,23 @@ const SkillTable = ({ skill, onReturnRows }) => {
         setRows(updatedRows);
     };
 
-    const handleSelectChange = (event, rowIndex, field) => {
+    const handleComplexCheckboxChange = (event, rowIndex, field) => {
+        const [mainField, nestedField] = field.split('.');
         const updatedRows = [...rows];
-        updatedRows[rowIndex][field] = event.target.value;
+        updatedRows[rowIndex][mainField][nestedField] = event.target.checked;
         setRows(updatedRows);
     };
 
-    const handleDateChange = (event, field, rowIndex) => {
-        const value = event.target.value;
+    const handleSelectChange = (event, rowIndex, field) => {
+        const [mainField, nestedField] = field.split('.');
         const updatedRows = [...rows];
-        updatedRows[rowIndex][field].date = value;
+        updatedRows[rowIndex][mainField][nestedField] = event.target.value;
+        setRows(updatedRows);
+    };
+
+    const handleDateChange = (date, field, rowIndex) => {
+        const updatedRows = [...rows];
+        updatedRows[rowIndex][field].date = moment(date).format('DD-MM-YYYY');
         setRows(updatedRows);
     };
 
@@ -89,7 +100,7 @@ const SkillTable = ({ skill, onReturnRows }) => {
                             <TableCell>Work With</TableCell>
                             <TableCell>Master</TableCell>
                             <TableCell>Interest</TableCell>
-                            <TableCell>Certificate</TableCell>
+                            <TableCell>Certificatescertificates</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -104,6 +115,7 @@ const SkillTable = ({ skill, onReturnRows }) => {
                                             label="Level"
                                             value={row.knows.level}
                                             onChange={(event) => handleSelectChange(event, rowIndex, 'knows.level')}
+                                            sx={{ width: '100%' }}
                                         >
                                             {levels.map((level) => (
                                                 <MenuItem key={level} value={level}>
@@ -121,41 +133,74 @@ const SkillTable = ({ skill, onReturnRows }) => {
                                             control={
                                                 <Checkbox
                                                     checked={row.knows.primary}
-                                                    onChange={(event) => handleCheckboxChange(event, rowIndex, 'knows.primary')}
+                                                    onChange={(event) => handleComplexCheckboxChange(event, rowIndex, 'knows.primary')}
                                                 />
                                             }
                                             label="Primary"
                                         />
-                                    </TableCell>
-                                    <TableCell>
-                                        <Checkbox
-                                            checked={row.workwith}
-                                            onChange={(event) => handleCheckboxChange(event, rowIndex, 'workwith')}
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={row.knows.add}
+                                                    onChange={(event) => handleComplexCheckboxChange(event, rowIndex, 'knows.add')}
+                                                />
+                                            }
+                                            label="Add"
                                         />
                                     </TableCell>
                                     <TableCell>
-                                        <Checkbox
-                                            checked={row.master}
-                                            onChange={(event) => handleCheckboxChange(event, rowIndex, 'master')}
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={row.workwith}
+                                                    onChange={(event) => handleCheckboxChange(event, rowIndex, 'workwith')}
+                                                />
+                                            }
+                                            label="Add"
                                         />
                                     </TableCell>
                                     <TableCell>
-                                        <Checkbox
-                                            checked={row.interest}
-                                            onChange={(event) => handleCheckboxChange(event, rowIndex, 'interest')}
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={row.master}
+                                                    onChange={(event) => handleCheckboxChange(event, rowIndex, 'master')}
+                                                />
+                                            }
+                                            label="Add"
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={row.interest}
+                                                    onChange={(event) => handleCheckboxChange(event, rowIndex, 'interest')}
+                                                />
+                                            }
+                                            label="Add"
                                         />
                                     </TableCell>
                                     <TableCell>
                                         <MDInput
                                             label="Comment"
-                                            value={row.certificate.comment}
-                                            onChange={(event) => handleSelectChange(event, rowIndex, 'certificate.comment')}
+                                            value={row.certificates.comment}
+                                            onChange={(event) => handleSelectChange(event, rowIndex, 'certificates.comment')}
                                         />
                                         <DatePicker
-                                            selected={row.certificate.date}
-                                            //onSelect={(date) => setRows(date)}
-                                            onChange={(date) => handleDateChange(date, 'certificate', rowIndex)}
-                                            dateFormat="dd-MM-yyyy"
+                                            selected={parse(row.certificates.date, 'dd-MM-yyyy', new Date())}
+                                            onSelect={(date) => handleDateChange(date, 'certificates', rowIndex)}
+                                            onChange={(date) => handleDateChange(date, 'certificates', rowIndex)}
+                                            dateFormat='dd-MM-yyyy'
+                                        />
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={row.certificates.add}
+                                                    onChange={(event) => handleComplexCheckboxChange(event, rowIndex, 'certificates.add')}
+                                                />
+                                            }
+                                            label="Add"
                                         />
                                     </TableCell>
                                     <TableCell>

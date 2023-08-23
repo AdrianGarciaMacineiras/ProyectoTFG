@@ -13,7 +13,7 @@ import { format } from 'date-fns';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import Footer from '../components/Footer';
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
@@ -29,7 +29,7 @@ const UpdatePersonForm = () => {
     employeeId: '',
     name: '',
     surname: '',
-    birthDate: '',
+    //birthDate: '',
     title: '',
     roles: [],
     knows: [],
@@ -44,7 +44,7 @@ const UpdatePersonForm = () => {
     employeeId: '',
     name: '',
     surname: '',
-    birthDate: '',
+    //birthDate: '',
     title: '',
     roles: [],
     knows: [],
@@ -75,6 +75,11 @@ const UpdatePersonForm = () => {
   const [tempWorkWith, setTempWorkWith] = useState(false);
   const [tempKnows, setTempKnows] = useState(false);
   const [tempCertificates, setTempCertificates] = useState(false);
+
+  const [expandAll, setExpandAll] = useState([]);
+  const [expand, setExpand] = useState([]);
+
+  const navigate = useNavigate();
 
   const [knowsForm, setKnowsForm] = useState({
     LevelRequired: '',
@@ -183,10 +188,16 @@ const UpdatePersonForm = () => {
 
   const handleCertificateFormSubmit = (e) => {
     e.preventDefault();
+    let formattedDate = selectedNode.date
+    if (selectedNode.date) {
+      formattedDate = moment(selectedNode.date, "DD-MM-YYYY").toDate();
+    } else {
+      formattedDate = format(new Date(), "dd-MM-yyyy");
+    }
     const newCertificateItem = {
       code: selectedNode.nodeId,
       comments: certificateForm.comments,
-      date: format(certificateForm.date, 'dd-MM-yyyy'),
+      date: formattedDate,
     };
     setUpdatedPerson(
       (prevForm) => ({
@@ -211,26 +222,6 @@ const UpdatePersonForm = () => {
     });
   };
 
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    setForm({
-      code: '',
-      employeeId: '',
-      name: '',
-      surname: '',
-      birthDate: '',
-      title: '',
-      roles: [],
-      knows: [],
-      work_with: [],
-      master: [],
-      interest: [],
-      certificates: [],
-    });
-  };
-
   const handleShowAddRoleForm = () => {
     setIsAddRoleVisible(true);
   };
@@ -247,10 +238,16 @@ const UpdatePersonForm = () => {
 
   const handleAddRoleSubmit = (e) => {
     e.preventDefault();
+    let formattedDate = roleForm.initDate
+    if (roleForm.initDate) {
+      formattedDate = moment(roleForm.initDate, "DD-MM-YYYY").toDate();
+    } else {
+      formattedDate = format(new Date(), "dd-MM-yyyy");
+    }
     const newRoleItem = {
       role: roleForm.role,
       category: roleForm.category,
-      initDate: format(roleForm.initDate, 'dd-MM-yyyy'),
+      initDate: formattedDate,
     };
     setUpdatedPerson((prevForm) => ({
       ...prevForm,
@@ -282,6 +279,7 @@ const UpdatePersonForm = () => {
     const recursive = (dataList) => {
       var list = [];
       dataList.forEach((data) => {
+        setExpandAll(nodes => [...nodes, data.code]);
         list.push({
           nodeId: data.code,
           name: data.name,
@@ -314,19 +312,19 @@ const UpdatePersonForm = () => {
       .then((response) => response.json())
       .then((data) => {
 
-        let formattedBirthDate = data.birthDate
+        /*let formattedBirthDate = data.birthDate
         if (data.birthDate) {
           formattedBirthDate = moment(data.birthDate, "DD-MM-YYYY").toDate();
         } else {
           formattedBirthDate = format(new Date(), "dd-MM-yyyy");
-        }
+        }*/
 
         setForm({
           code: data.code,
           employeeId: data.employeeId,
           name: data.name,
           surname: data.surname,
-          birthDate: formattedBirthDate,
+          //birthDate: formattedBirthDate,
           title: data.title,
           roles: data.roles || [],
           knows: data.knows || [],
@@ -339,7 +337,7 @@ const UpdatePersonForm = () => {
         setUpdatedPerson({
           name: data.name,
           surname: data.surname,
-          birthDate: formattedBirthDate,
+          //birthDate: formattedBirthDate,
           title: data.title,
           roles: data.roles || [],
           knows: data.knows || [],
@@ -354,6 +352,7 @@ const UpdatePersonForm = () => {
 
 
   const handleNodeSelect = (event, item) => {
+    event.stopPropagation();
     setSelectedNode(item);
     setShowCheckboxes(true);
     setShowKnowsForm(false);
@@ -378,7 +377,9 @@ const UpdatePersonForm = () => {
         if (isMatched) {
           return (
             <TreeItem
-              key={treeItemData.nodeId} nodeId={treeItemData.nodeId} label=
+              key={treeItemData.nodeId}
+              nodeId={treeItemData.nodeId}
+              label=
               {
                 <div onClick={(event) => handleNodeSelect(event, treeItemData)}>
                   {treeItemData.name}
@@ -395,12 +396,16 @@ const UpdatePersonForm = () => {
       });
     };
 
-  const collapseAll = (e) => {
-    e.preventDefault();
-    setSkillList(skillList.map((item) => Object.assign({}, item, {
-      expanded: false,
-    })));
+  const handleExpandClick = () => {
+    setExpand((oldExpanded) =>
+      oldExpanded.length === 0 ? expandAll : [],
+    );
   };
+
+
+  const handleToggle = (event, nodeIds) => {
+    setExpand(nodeIds)
+  }
 
   const DataTreeView = () => {
     return (
@@ -408,6 +413,9 @@ const UpdatePersonForm = () => {
         <TreeView
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
+          defaultExpanded={expandAll}
+          expanded={expand}
+          onNodeToggle={handleToggle}
         >
           {getTreeItemsFromData(skillList, searchSkill)}
         </TreeView>
@@ -415,35 +423,25 @@ const UpdatePersonForm = () => {
     );
   };
 
-  /*const handleSubmit = (event) => {
- 
-       event.preventDefault();
- 
-       fetch(`http://${window.location.hostname}:9080/api/people/${updatedPeopleData.code}`, {
-         method: "PUT",
-         headers: {
-           "Content-Type": "application/json",
-           "Access-Control-Allow-Origin": "*",
-         },
-         body: JSON.stringify(updatedPeopleData),
-       })
-         .then((response) => response.json())
-         .then((updatedPeople) => {
-           setPeopleList((prevpeopleList) =>
-             prevpeopleList.map((people) =>
-               people.code === updatedPeople.code ? updatedPeople : people
-             )
-           );
-         })
-         .catch((error) => {
-           console.error('Error updating people:', error);
-         });
-     };*/
+  const handleSubmit = (event) => {
 
+    event.preventDefault();
 
-  if (!form.employeeId) {
-    return <div>Loading...</div>;
-  }
+    fetch(`http://${window.location.hostname}:9080/api/people/${updatedPerson.code}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(updatedPerson),
+    })
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error('Error updating people:', error);
+      });
+
+    navigate(`/listPeople`);
+  };
 
   return (
     <DashboardLayout>
@@ -458,7 +456,8 @@ const UpdatePersonForm = () => {
                   bgColor='info'
                   borderRadius='lg'
                   coloredShadow=
-                  'info' > <MDTypography variant='h6' color='white'>Loading...</MDTypography>
+                  'info' >
+                  <MDTypography variant='h6' color='white'>Loading...</MDTypography>
                 </MDBox>
               </Card>) : (
                 <Card>
@@ -468,7 +467,7 @@ const UpdatePersonForm = () => {
                     borderRadius='lg'
                     coloredShadow=
                     'info' >
-                    <MDTypography variant='h6' color='white'>Create
+                    <MDTypography variant='h6' color='white'>Update
                       Person</MDTypography>
                   </MDBox>
                   <form id='personForm'>
@@ -479,7 +478,7 @@ const UpdatePersonForm = () => {
                       <MDBox>
                         <MDTypography variant='h6' fontWeight='medium'>Employee ID:</MDTypography>
                         <MDInput type='text' value={form.employeeId} onChange=
-                          {handleInputChange} name='employeeId' />
+                          {handleInputChange} name='employeeId' disabled />
                       </MDBox>
                       <MDBox>
                         <MDTypography variant='h6' fontWeight='medium'>Name:</MDTypography>
@@ -491,7 +490,7 @@ const UpdatePersonForm = () => {
                         <MDInput type='text' value={updatedPerson.surname} onChange=
                           {handleInputChange} name='surname' />
                       </MDBox>
-                      <MDBox>
+                      {/*<MDBox>
                         <MDTypography variant='h6' fontWeight='medium'>Birth Date:</MDTypography><
                           DatePicker
                           selected={updatedPerson.birthDate} dateFormat='dd-MM-yyyy'
@@ -499,7 +498,7 @@ const UpdatePersonForm = () => {
                           {(date) => handleInputChange(
                             { target: { name: 'birthDate', value: format(date, 'dd-MM-yyyy') } })
                           } />
-                      </MDBox >
+                        </MDBox >*/}
                       <MDBox>
                         <MDTypography variant='h6' fontWeight='medium'>Title: </MDTypography>
                         <MDInput type="text" value={updatedPerson.title} onChange={handleInputChange} name="title" />
@@ -557,7 +556,7 @@ const UpdatePersonForm = () => {
                           )
                           }</MDBox>
                         <MDBox>
-                          <MDButton variant="gradient" color="dark" onClick={collapseAll}> Collapse all </MDButton>
+                          <MDButton variant="gradient" color="dark" onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'} </MDButton>
                           <MDBox>
                             < MDInput
                               type='text'
@@ -732,6 +731,6 @@ const UpdatePersonForm = () => {
       <Footer />
     </DashboardLayout>
   );
-}
+};
 
 export default UpdatePersonForm;

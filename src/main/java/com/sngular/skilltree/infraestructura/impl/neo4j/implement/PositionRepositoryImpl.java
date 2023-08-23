@@ -125,7 +125,7 @@ public class PositionRepositoryImpl implements PositionRepository {
                  .name(people.get("name").asString())
                  .surname(people.get("surname").asString())
                  .employeeId(people.get("employeeId").asString())
-                 .birthDate(NULL.equalsIgnoreCase(people.get("birthDate").asString()) ? null : people.get("birthDate").asLocalDate())
+                 //.birthDate(NULL.equalsIgnoreCase(people.get("birthDate").asString()) ? null : people.get("birthDate").asLocalDate())
                  .code(people.get("code").asString())
                  .deleted(people.get("deleted").asBoolean())
                  .build();

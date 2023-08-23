@@ -3,9 +3,8 @@ package com.sngular.skilltree.model;
 public enum EnumLevel {
 
     LOW("low"),
-    MEDIUM("medium"),
-    CONFIDENT("confident"),
-    HIGH("high"),
+    MIDDLE("middle"),
+    ADVANCED("advanced"),
     UNKNOWN("unknown");
 
     private String value;
@@ -22,12 +21,10 @@ public enum EnumLevel {
         EnumLevel result;
         if (LOW.value.equalsIgnoreCase(value)) {
             result = LOW;
-        } else if (MEDIUM.value.equalsIgnoreCase(value)) {
-            result = MEDIUM;
-        } else if (CONFIDENT.value.equalsIgnoreCase(value)) {
-            result = CONFIDENT;
+        } else if (MIDDLE.value.equalsIgnoreCase(value)) {
+            result = MIDDLE;
         } else {
-            result = HIGH;
+            result = ADVANCED;
         }
         return result;
     }
