@@ -37,7 +37,7 @@ public record SkillStatsTittle(String parent, String name, Integer total, Map<St
                 }
             }
         } else {
-            this.subSkills.put(stat.name(), stat);
+            this.subSkills.put(WordUtils.capitalize(stat.name().replace('_', ' ')), stat);
         }
     }
 

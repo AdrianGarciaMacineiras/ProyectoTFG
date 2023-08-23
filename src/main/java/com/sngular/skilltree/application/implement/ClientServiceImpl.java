@@ -9,6 +9,7 @@ import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.ClientRepository;
 import com.sngular.skilltree.model.Client;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,18 +19,20 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
 
     @Override
+    @Cacheable(cacheNames = "clients")
     public List<Client> getAll() {
         return clientRepository.findAll();
     }
 
     @Override
-    public Client create(Client client) {
+    public Client create(final Client client) {
         validateExist(client.code());
         return clientRepository.save(client);
     }
 
     @Override
-    public Client findByCode(String clientCode) {
+    @Cacheable(cacheNames = "clients", key = "#root.target.code")
+    public Client findByCode(final String clientCode) {
         var client = clientRepository.findByCode(clientCode);
         if (Objects.isNull(client) || client.deleted())
             throw new EntityNotFoundException("Client", clientCode);
@@ -37,20 +40,19 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public boolean deleteByCode(String clientCode) {
+    public boolean deleteByCode(final String clientCode) {
         validateDoesNotExist(clientCode);
         return clientRepository.deleteByCode(clientCode);
     }
 
-
-    private void validateExist(String code) {
+    private void validateExist(final String code) {
         var oldClient = clientRepository.findByCode(code);
         if (!Objects.isNull(oldClient) && !oldClient.deleted()) {
             throw new EntityFoundException("Client", code);
         }
     }
 
-    private void validateDoesNotExist(String code) {
+    private void validateDoesNotExist(final String code) {
         var oldClient = clientRepository.findByCode(code);
         if (Objects.isNull(oldClient) || oldClient.deleted()) {
             throw new EntityNotFoundException("Client", code);

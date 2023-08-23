@@ -23,13 +23,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project create(Project project) {
+    public Project create(final Project project) {
         validateExist(project.code());
         return projectRepository.save(project);
     }
 
     @Override
-    public Project findByCode(String projectCode) {
+    public Project findByCode(final String projectCode) {
         var project = projectRepository.findByCode(projectCode);
         if (Objects.isNull(project) || project.deleted())
             throw new EntityNotFoundException("Project", projectCode);
@@ -37,27 +37,27 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public boolean deleteByCode(String projectCode) {
+    public boolean deleteByCode(final String projectCode) {
         validateDoesNotExist(projectCode);
         return projectRepository.deleteByCode(projectCode);
     }
 
     @Override
-    public Project findProject(String projectCode) {
+    public Project findProject(final String projectCode) {
         var project = projectRepository.findProject(projectCode);
         if (Objects.isNull(project) || project.deleted())
             throw new EntityNotFoundException("Project", projectCode);
         return project;
     }
 
-    private void validateExist(String code) {
+    private void validateExist(final String code) {
         var oldProject = projectRepository.findByCode(code);
         if (!Objects.isNull(oldProject) && !oldProject.deleted()) {
             throw new EntityFoundException("Project", code);
         }
     }
 
-    private void validateDoesNotExist(String code) {
+    private void validateDoesNotExist(final String code) {
         var oldProject = projectRepository.findByCode(code);
         if (Objects.isNull(oldProject) || oldProject.deleted()) {
             throw new EntityNotFoundException("Project", code);

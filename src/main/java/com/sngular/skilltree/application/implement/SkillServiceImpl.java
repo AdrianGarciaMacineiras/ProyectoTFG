@@ -9,6 +9,7 @@ import com.sngular.skilltree.model.StrategicTeamSkill;
 import com.sngular.skilltree.model.StrategicTeamSkillNotUsed;
 import com.sngular.skilltree.model.views.SkillStatsTittle;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,22 +19,26 @@ public class SkillServiceImpl implements SkillService {
     private final SkillRepository skillRepository;
 
     @Override
+    @Cacheable("skills")
     public List<Skill> getAll() {
         return skillRepository.findAll();
     }
 
     @Override
-    public Skill findByCode(String skillCode) {
+    @Cacheable(cacheNames = "skills", key = "#root.target.code")
+    public Skill findByCode(final String skillCode) {
         return skillRepository.findByCode(skillCode);
     }
 
     @Override
-    public Skill findSkill(String skillcode) {
-        return skillRepository.findSkill(skillcode);
+    @Cacheable(cacheNames = "skills", key = "#root.target.code")
+    public Skill findSkill(final String skillCode) {
+        return skillRepository.findSkill(skillCode);
     }
 
     @Override
-    public Skill findByName(String skillName){
+    @Cacheable(cacheNames = "skills", key = "#root.target.name")
+    public Skill findByName(final String skillName) {
         return skillRepository.findByName(skillName);
     }
 
@@ -48,7 +53,7 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public SkillStatsTittle getSkillStatsByTittle(String tittle) {
+    public SkillStatsTittle getSkillStatsByTittle(final String tittle) {
         return skillRepository.getSkillStatsByTittle(tittle);
     }
 }
