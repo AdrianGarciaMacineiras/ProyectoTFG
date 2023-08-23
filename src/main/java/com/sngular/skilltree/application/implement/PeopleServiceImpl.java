@@ -14,6 +14,9 @@ import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.views.PeopleView;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,17 +30,20 @@ public class PeopleServiceImpl implements PeopleService {
     private final PositionService positionService;
 
     @Override
+    @Cacheable(cacheNames = "people")
     public List<People> getAll() {
         return peopleRepository.findAll();
     }
 
     @Override
+    @Cacheable(cacheNames = "peopleView")
     public List<PeopleView> getAllResumed() {
         return peopleRepository.findAllResumed();
     }
 
     @Override
-    public People create(People people) {
+    @CachePut(cacheNames = "people")
+    public People create(final People people) {
         validateExist(people.code());
         People.PeopleBuilder builder = people.toBuilder();
         People aux = builder.assignable(true).build();
@@ -45,7 +51,8 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public People findByCode(String peopleCode) {
+    @Cacheable(cacheNames = "people", key = "#peopleCode")
+    public People findByCode(final String peopleCode) {
         var people = peopleRepository.findByCode(peopleCode);
         if (Objects.isNull(people) || people.deleted())
             throw new EntityNotFoundException("People", peopleCode);
@@ -56,7 +63,8 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public People findPeopleByCode(String peopleCode) {
+    @Cacheable(cacheNames = "people", key = "#peopleCode")
+    public People findPeopleByCode(final String peopleCode) {
         var people = peopleRepository.findPeopleByCode(peopleCode);
         if (Objects.isNull(people) || people.deleted())
             throw new EntityNotFoundException("People", peopleCode);
@@ -64,48 +72,49 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public boolean deleteByCode(String peopleCode) {
+    @CacheEvict(cacheNames = "people", key = "#peopleCode")
+    public boolean deleteByCode(final String peopleCode) {
         validateDoesNotExist(peopleCode);
         return peopleRepository.deleteByCode(peopleCode);
     }
 
     @Override
-    public People assignCandidate(String peopleCode, String positionCode) {
+    public People assignCandidate(final String peopleCode, final String positionCode) {
         validateDoesNotExist(peopleCode);
         candidateService.assignCandidate(positionCode, peopleCode);
         return peopleRepository.findByCode(peopleCode);
     }
 
     @Override
-    public List<Candidate> getCandidates(String peopleCode) {
+    public List<Candidate> getCandidates(final String peopleCode) {
         validateDoesNotExist(peopleCode);
         return candidateService.getCandidatesByPeople(peopleCode);
     }
 
     @Override
-    public List<People> getPeopleSkills(List<String> skills) {
+    public List<People> getPeopleSkills(final List<String> skills) {
         return peopleRepository.getPeopleSkills(skills);
     }
 
     @Override
-    public List<People> getOtherPeopleStrategicSkills(String teamCode) {
+    public List<People> getOtherPeopleStrategicSkills(final String teamCode) {
         return peopleRepository.getOtherPeopleStrategicSkills(teamCode);
     }
 
     @Override
-    public List<Position> getPeopleAssignedPositions(String peopleCode) {
+    public List<Position> getPeopleAssignedPositions(final String peopleCode) {
         validateDoesNotExist(peopleCode);
         return positionService.getPeopleAssignedPositions(peopleCode);
     }
 
-    private void validateExist(String code) {
+    private void validateExist(final String code) {
         var oldPerson = peopleRepository.findByCode(code);
         if (!Objects.isNull(oldPerson) && !oldPerson.deleted()) {
             throw new EntityFoundException("People", code);
         }
     }
 
-    private void validateDoesNotExist(String code) {
+    private void validateDoesNotExist(final String code) {
         var oldPerson = peopleRepository.findByCode(code);
         if (Objects.isNull(oldPerson) || oldPerson.deleted()) {
             throw new EntityNotFoundException("People", code);

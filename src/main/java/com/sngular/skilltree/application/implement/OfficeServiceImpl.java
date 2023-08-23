@@ -15,7 +15,7 @@ public class OfficeServiceImpl implements OfficeService {
     private final OfficeRepository officeRepository;
 
     @Override
-    public Office findByCode(String officeCode) {
+    public Office findByCode(final String officeCode) {
         return officeRepository.findByCode(officeCode);
     }
 

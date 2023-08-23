@@ -54,7 +54,7 @@ public class PositionServiceImpl implements PositionService {
     }
 
   @Override
-  public Position generateCandidates(String positionCode) {
+  public Position generateCandidates(final String positionCode) {
     var position = positionRepository.findByCode(positionCode);
     if (Objects.isNull(position) || position.deleted()) {
       throw new EntityNotFoundException("Position", positionCode);
@@ -64,31 +64,31 @@ public class PositionServiceImpl implements PositionService {
   }
 
     @Override
-    public Position assignCandidate(String positionCode, String peopleCode) {
+    public Position assignCandidate(final String positionCode, final String peopleCode) {
         validateDoesNotExist(positionCode);
         candidateService.assignCandidate(positionCode, peopleCode);
         return positionRepository.findByCode(positionCode);
     }
 
   @Override
-  public List<Candidate> getCandidates(String positionCode) {
+  public List<Candidate> getCandidates(final String positionCode) {
     validateDoesNotExist(positionCode);
       return candidateService.getCandidatesByPosition(positionCode);
   }
 
     @Override
-    public List<Position> getPeopleAssignedPositions(String peopleCode) {
+    public List<Position> getPeopleAssignedPositions(final String peopleCode) {
         return positionRepository.getPeopleAssignedPositions(peopleCode);
     }
 
-  private void validateExist(String code) {
+  private void validateExist(final String code) {
     var oldPosition = positionRepository.findByCode(code);
     if (!Objects.isNull(oldPosition) && !oldPosition.deleted()) {
       throw new EntityFoundException("Position", code);
     }
   }
 
-  private void validateDoesNotExist(String code) {
+  private void validateDoesNotExist(final String code) {
     var oldPosition = positionRepository.findByCode(code);
     if (Objects.isNull(oldPosition) || oldPosition.deleted()) {
       throw new EntityNotFoundException("Position", code);
