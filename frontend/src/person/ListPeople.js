@@ -36,10 +36,8 @@ import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 
 import NestedCertificate from './NestedCertificate';
-import NestedInterest from './NestedInterest';
 import NestedKnows from './NestedKnows';
-import NestedMaster from './NestedMaster';
-import NestedWorkWith from './NestedWorkWith';
+import NestedSimpleTable from './NestedSimpleTable';
 
 
 const ListPeople =
@@ -187,57 +185,50 @@ const ListPeople =
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={
-              {
-                paddingBottom: 0, paddingTop: 0
-              }
-            } colSpan={8}>
-              <Collapse in={isOpen} timeout='auto' unmountOnExit><MDBox sx={
-                {
-                  margin: 1
-                }
-              }><MDBox sx={
-                {
-                  borderBottom: 1, borderColor: 'divider'
-                }
-              }><Tabs value={valor} onChange={(event, newValue) =>
-                handleChangeTab(event, newValue, row)} aria-label='basic tabs example'>
-                    <Tab label='Knows' {...a11yProps(0)} />
-                    <Tab label="WorkWith" {...a11yProps(1)} />
-                    <Tab label='Masters' {...a11yProps(2)} />
-                    <Tab label="Interests" {...a11yProps(3)} />
-                    <Tab label='Certificates' {...a11yProps(4)} />
-                  </Tabs>
+            <TableCell
+              style={{ paddingBottom: 0, paddingTop: 0 }}
+              colSpan={8}>
+              <Collapse in={isOpen} timeout='auto' unmountOnExit>
+                <MDBox sx={{ margin: 1 }}>
+                  <MDBox sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Tabs value={valor} onChange={(event, newValue) =>
+                      handleChangeTab(event, newValue, row)} aria-label='basic tabs example'>
+                      <Tab label='Knows' {...a11yProps(0)} />
+                      <Tab label="WorkWith" {...a11yProps(1)} />
+                      <Tab label='Masters' {...a11yProps(2)} />
+                      <Tab label="Interests" {...a11yProps(3)} />
+                      <Tab label='Certificates' {...a11yProps(4)} />
+                    </Tabs>
+                  </MDBox>
+                  <CustomTabPanel value={valor} index={0}>
+                    <NestedKnows
+                      key={row.code}
+                      data={row.knows}
+                      state={nestedKnowStates[row.code]}
+                      onStateChange={newState => handleNestedKnowStateChange(row.code, newState)}
+                      onPageChange={newPage => handleNestedKnowPageChange(row.code, newPage)}
+                      onRowsPerPageChange={newRowsPerPage => handleNestedKnowRowsPerPageChange(row.code, newRowsPerPage)}
+                    />
+                  </CustomTabPanel>
+                  <CustomTabPanel value={valor} index={1}>
+                    <NestedSimpleTable data={row.work_with} />
+                  </CustomTabPanel>
+                  <CustomTabPanel value={valor} index={2}>
+                    <NestedSimpleTable data={row.master} />
+                  </CustomTabPanel>
+                  <CustomTabPanel value={valor} index={3}>
+                    <NestedSimpleTable data={row.interest} />
+                  </CustomTabPanel>
+                  <CustomTabPanel value={valor} index={4}>
+                    <NestedCertificate
+                      key={row.code}
+                      data={row.certificates}
+                      state={nestedCertificateStates[row.code]}
+                      onStateChange={newState => handleNestedCertificateStateChange(row.code, newState)}
+                      onPageChange={newPage => handleNestedCertificatePageChange(row.code, newPage)}
+                      onRowsPerPageChange={newRowsPerPage => handleNestedCertificateRowsPerPageChange(row.code, newRowsPerPage)} />
+                  </CustomTabPanel>
                 </MDBox>
-                <CustomTabPanel value={valor} index={0}>
-                  <NestedKnows
-                    key={row.code}
-                    data={row.knows}
-                    state={nestedKnowStates[row.code]}
-                    onStateChange={newState => handleNestedKnowStateChange(row.code, newState)}
-                    onPageChange={newPage => handleNestedKnowPageChange(row.code, newPage)}
-                    onRowsPerPageChange={newRowsPerPage => handleNestedKnowRowsPerPageChange(row.code, newRowsPerPage)}
-                  />
-                </CustomTabPanel>
-                <CustomTabPanel value={valor} index={1}>
-                  <NestedWorkWith data={row.work_with} />
-                </CustomTabPanel>
-                <CustomTabPanel value={valor} index={2}>
-                  <NestedMaster data={row.master} />
-                </CustomTabPanel>
-                <CustomTabPanel value={valor} index={3}>
-                  <NestedInterest data={row.interest} />
-                </CustomTabPanel>
-                <CustomTabPanel value={valor} index={4}>
-                  <NestedCertificate
-                    key={row.code}
-                    data={row.certificates}
-                    state={nestedCertificateStates[row.code]}
-                    onStateChange={newState => handleNestedCertificateStateChange(row.code, newState)}
-                    onPageChange={newPage => handleNestedCertificatePageChange(row.code, newPage)}
-                    onRowsPerPageChange={newRowsPerPage => handleNestedCertificateRowsPerPageChange(row.code, newRowsPerPage)} />
-                </CustomTabPanel>
-              </MDBox>
               </Collapse>
             </TableCell>
           </TableRow>

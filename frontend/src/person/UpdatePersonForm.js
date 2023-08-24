@@ -5,9 +5,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
-import { FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select } from '@mui/material';
 import Card from '@mui/material/Card';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import { format } from 'date-fns';
 import moment from 'moment';
@@ -22,6 +20,8 @@ import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
+
+import SkillTable from './SkillTable';
 
 const UpdatePersonForm = () => {
   const [form, setForm] = useState({
@@ -60,157 +60,22 @@ const UpdatePersonForm = () => {
   const [skillList, setSkillList] = useState([]);
   const [searchSkill, setSearchSkill] = useState('');
 
-  const [birthDate, setBirthDate] = useState(new Date());
+  //const [birthDate, setBirthDate] = useState(new Date());
 
   const [isAddRoleVisible, setIsAddRoleVisible] = useState(false);
   const [isShowRoleListVisible, setIsShowRoleListVisible] = useState(false);
 
   const [selectedNode, setSelectedNode] = useState(null);
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
-  const [showKnowsForm, setShowKnowsForm] = useState(false);
-  const [showCertificateForm, setShowCertificateForm] = useState(false);
-
-  const [tempInterest, setTempInterest] = useState(false);
-  const [tempMaster, setTempMaster] = useState(false);
-  const [tempWorkWith, setTempWorkWith] = useState(false);
-  const [tempKnows, setTempKnows] = useState(false);
-  const [tempCertificates, setTempCertificates] = useState(false);
 
   const [expandAll, setExpandAll] = useState([]);
   const [expand, setExpand] = useState([]);
 
+  const [listas, setListas] = useState({});
+
   const navigate = useNavigate();
 
-  const [knowsForm, setKnowsForm] = useState({
-    LevelRequired: '',
-    minLevel: '',
-    minExp: '',
-  });
-
-  const [certificateForm, setCertificateForm] = useState({
-    comments: '',
-    date: new Date(),
-  });
-
   const [roleForm, setRoleForm] =
-    useState({ role: '', category: '', initDate: new Date() })
-
-  const handleCheckboxChange = (event, arrayName) => {
-    const { checked } = event.target;
-
-    if (arrayName === 'interest') {
-      setTempInterest(checked);
-    }
-    if (arrayName === 'master') {
-      setTempMaster(checked);
-    }
-    if (arrayName === 'work_with') {
-      setTempWorkWith(checked);
-    }
-    if (arrayName === 'knows') {
-      setShowKnowsForm(true);
-      setTempKnows(checked);
-    }
-    if (arrayName === 'certificates') {
-      setShowCertificateForm(true);
-      setTempCertificates(checked);
-    }
-  };
-
-  const handleCancel =
-    () => {
-      setShowCheckboxes(!showCheckboxes);
-      setSelectedNode(null);
-    }
-
-  const handleAddToArray = () => {
-    if (showKnowsForm || showCertificateForm) {
-      setShowCheckboxes(false);
-      setSelectedNode(null);
-      return;
-    }
-
-    if (tempInterest) {
-      setForm((prevForm) => ({
-        ...prevForm,
-        interest: [...prevForm.interest, selectedNode.nodeId],
-      }));
-    }
-    if (tempMaster) {
-      setForm((prevForm) => ({
-        ...prevForm,
-        master: [...prevForm.master, selectedNode.nodeId],
-      }));
-    }
-    if (tempWorkWith) {
-      setForm((prevForm) => ({
-        ...prevForm,
-        work_with: [...prevForm.work_with, selectedNode.nodeId],
-      }));
-    }
-    if (tempKnows) {
-      setShowKnowsForm(true);
-    }
-    if (tempCertificates) {
-      setShowCertificateForm(true);
-    }
-
-    setTempInterest(false);
-    setTempMaster(false);
-    setTempWorkWith(false);
-    setTempKnows(false);
-    setTempCertificates(false);
-
-    setShowCheckboxes(false);
-    setSelectedNode(null);
-  };
-
-  const handleKnowsFormSubmit = (e) => {
-    e.preventDefault();
-    const newKnowsItem = {
-      code: selectedNode.nodeId,
-      LevelRequired: knowsForm.LevelRequired,
-      minLevel: knowsForm.minLevel,
-      minExp: knowsForm.minExp,
-    };
-    setUpdatedPerson((prevForm) => ({
-      ...prevForm,
-      knows: [...prevForm.knows, newKnowsItem],
-    }));
-    setShowKnowsForm(false);
-    setKnowsForm({
-      LevelRequired: 'MANDATORY',
-      minLevel: 'HIGH',
-      minExp: '',
-    });
-    setShowKnowsForm(false);
-  };
-
-  const handleCertificateFormSubmit = (e) => {
-    e.preventDefault();
-    let formattedDate = selectedNode.date
-    if (selectedNode.date) {
-      formattedDate = moment(selectedNode.date, "DD-MM-YYYY").toDate();
-    } else {
-      formattedDate = format(new Date(), "dd-MM-yyyy");
-    }
-    const newCertificateItem = {
-      code: selectedNode.nodeId,
-      comments: certificateForm.comments,
-      date: formattedDate,
-    };
-    setUpdatedPerson(
-      (prevForm) => ({
-        ...prevForm,
-        certificates: [...prevForm.certificates, newCertificateItem],
-      }));
-    setShowCertificateForm(false);
-    setCertificateForm({
-      comments: '',
-      date: new Date(),
-    });
-    setShowCertificateForm(false);
-  };
+    useState({ role: '', category: '', initDate: new Date() });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -346,17 +211,21 @@ const UpdatePersonForm = () => {
           interest: data.interest || [],
           certificates: data.certificates || [],
         });
-
-      });
+        setListas({
+          knows: data.knows || [],
+          master: data.master || [],
+          interest: data.interest || [],
+          work_with: data.work_with || [],
+          certificates: data.certificates || [],
+        });
+      })
+      .catch(error => console.error(error));
   }, [employeeId]);
 
 
   const handleNodeSelect = (event, item) => {
     event.stopPropagation();
     setSelectedNode(item);
-    setShowCheckboxes(true);
-    setShowKnowsForm(false);
-    setShowCertificateForm(false);
   };
 
   const getTreeItemsFromData =
@@ -443,6 +312,66 @@ const UpdatePersonForm = () => {
     navigate(`/listPeople`);
   };
 
+  const handleReturnRows = (updatedRows) => {
+    const updatedListas = {
+      knows: [],
+      master: [],
+      interest: [],
+      work_with: [],
+      certificates: [],
+      notAssigned: updatedRows.notAssigned,
+    };
+
+    updatedRows?.forEach((row) => {
+      if (row.master) {
+        updatedListas.master.push(row.code);
+      }
+      if (row.interest) {
+        updatedListas.interest.push(row.code);
+      }
+      if (row.workwith) {
+        updatedListas.work_with.push(row.code);
+      }
+      if (row.knows.add) {
+        updatedListas.knows.push({
+          code: row.code,
+          name: row.name,
+          ...row.knows,
+        });
+      }
+      if (row.certificates.add) {
+        updatedListas.certificates.push({
+          code: row.code,
+          name: row.name,
+          ...row.certificates,
+        });
+      }
+    });
+
+    let hasMatchingSkill = false;
+
+    updatedRows.forEach(row => {
+      if (row.code === selectedNode) {
+        hasMatchingSkill = true;
+      }
+    });
+
+    if (!hasMatchingSkill) {
+      setSelectedNode(null);
+    }
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      master: updatedListas.master,
+      interest: updatedListas.interest,
+      work_with: updatedListas.work_with,
+      knows: updatedListas.knows,
+      certificates: updatedListas.certificates,
+    }));
+
+    setListas(updatedListas);
+  };
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -516,10 +445,12 @@ const UpdatePersonForm = () => {
                             <MDBox>
                               <MDBox>
                                 <MDTypography variant='h6' fontWeight='medium'>Role:</MDTypography>
-                                <MDInput type='text' value={roleForm.role} onChange=
-                                  {(e) => setRoleForm({ ...roleForm, role: e.target.value })
-                                  } />
-                              </MDBox><MDBox>
+                                <MDInput type='text'
+                                  value={roleForm.role}
+                                  onChange={(e) => setRoleForm({ ...roleForm, role: e.target.value })}
+                                />
+                              </MDBox>
+                              <MDBox>
                                 <MDTypography variant='h6' fontWeight='medium'>Category: </MDTypography>
                                 <MDInput type="text" value={roleForm.category} onChange={(e) => setRoleForm({ ...roleForm, category: e.target.value })} />
                               </MDBox>
@@ -553,8 +484,12 @@ const UpdatePersonForm = () => {
                                 </MDBox>
                               )}
                             </MDBox>
-                          )
-                          }</MDBox>
+                          )}
+                        </MDBox>
+                      </Grid>
+                    </Grid>
+                    <Grid container spacing={12}>
+                      <Grid item xs={12}>
                         <MDBox>
                           <MDButton variant="gradient" color="dark" onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'} </MDButton>
                           <MDBox>
@@ -566,159 +501,10 @@ const UpdatePersonForm = () => {
                           </MDBox>
                           <DataTreeView />
                         </MDBox>
-
-                        {selectedNode && showCheckboxes && (
-                          <Grid item xs={6}>
-                            <br /><
-                              MDBox
-                              mx={2} mt={-3} py={3} px={2} variant='gradient'
-                              bgColor='info'
-                              borderRadius='lg'
-                              coloredShadow=
-                              'info' >
-                              <MDTypography variant='h6' color='white'>Select element: {selectedNode.name}</MDTypography>
-                              <FormGroup>
-                                <FormControlLabel
-                                  label="Knows"
-                                  control={
-                                    <Checkbox
-                                      checked={tempKnows}
-                                      onChange={(e) => handleCheckboxChange(e, "knows")}
-                                      value={selectedNode.nodeId}
-                                    />
-                                  } />
-                                <FormControlLabel
-                                  label="Work With"
-                                  control={
-                                    <Checkbox
-                                      checked={tempWorkWith}
-                                      onChange={(e) => handleCheckboxChange(e, "work_with")}
-                                      value={selectedNode.nodeId}
-                                    />
-                                  }
-                                />
-                                <FormControlLabel
-                                  label="Interest"
-                                  control={
-                                    <Checkbox
-                                      checked={tempInterest}
-                                      onChange={(e) => handleCheckboxChange(e, "interest")}
-                                      value={selectedNode.nodeId}
-                                    />
-                                  }
-                                />
-                                <FormControlLabel
-                                  label="Master"
-                                  control={
-                                    <Checkbox
-                                      checked={tempMaster}
-                                      onChange={(e) => handleCheckboxChange(e, "master")}
-                                      value={selectedNode.nodeId}
-                                    />
-                                  }
-                                />
-                                <FormControlLabel
-                                  label="Certificate"
-                                  control={
-                                    <Checkbox
-                                      checked={tempCertificates}
-                                      onChange={(e) => handleCheckboxChange(e, "certificates")}
-                                      value={selectedNode.nodeId}
-                                    />
-                                  }
-                                />
-                              </FormGroup>
-                              <MDButton onClick={handleAddToArray}>Add</MDButton>
-                              <MDButton onClick={handleCancel}>Cancel</MDButton>
-                            </MDBox>
-                          </Grid>
-                        )
+                        {skillList &&
+                          <SkillTable skill={selectedNode} onReturnRows={handleReturnRows} listToUpdate={listas}
+                          />
                         }
-
-                        {selectedNode && showKnowsForm && (
-                          <Grid item xs={6}>
-                            <br />
-                            <MDBox
-                              mx={2} mt={-3} py={3} px={2} variant='gradient'
-                              bgColor='info'
-                              borderRadius='lg'
-                              coloredShadow=
-                              'info' >
-                              <MDTypography variant='h6' color='white'>Knows Form: {selectedNode.name}</MDTypography>
-                              <FormControl fullWidth>
-                                <InputLabel variant="standard" id="requiredLevelLabel">Level Required:</InputLabel><
-                                  Select
-                                  labelId='requiredLevelLabel'
-                                  value={knowsForm.LevelRequired} label='Level'
-                                  onChange={(e) => setKnowsForm({ ...knowsForm, LevelRequired: e.target.value })}
-                                >
-                                  <MenuItem value='MANDATORY'>Mandatory</MenuItem>
-                                  <MenuItem value="NICE_TO_HAVE">Nice to have</MenuItem>
-                                </Select>
-                              </FormControl>
-                              <FormControl fullWidth>
-                                <InputLabel variant='standard' id='minLevelLabel'>Min Level:</InputLabel>
-                                <Select
-                                  labelId="minLevelLabel"
-                                  value={knowsForm.minLevel}
-                                  onChange={(e) => setKnowsForm({ ...knowsForm, minLevel: e.target.value })}
-                                >
-                                  <MenuItem value="HIGH">High</MenuItem>
-                                  <MenuItem value='MEDIUM'>Medium</MenuItem>
-                                  <MenuItem value="LOW">Low</MenuItem>
-                                </Select>
-                              </FormControl>
-                              <MDBox>
-                                <MDTypography variant='h6' fontWeight='medium'>Min Experience:</MDTypography>
-                                <MDInput
-                                  type="number"
-                                  value={knowsForm.minExp}
-                                  onChange={(e) => setKnowsForm({ ...knowsForm, minExp: e.target.value })}
-                                />
-                              </MDBox>
-                              <MDButton variant="gradient" color="dark" onClick={handleKnowsFormSubmit}>Add to Knows</MDButton>
-                            </MDBox>
-                          </Grid>
-                        )}
-
-                        {selectedNode && showCertificateForm && (
-                          <Grid item xs={6}>
-                            <br />
-                            <MDBox
-                              mx={2} mt={-3} py={3} px={2} variant=
-                              'gradient'
-                              bgColor='info'
-                              borderRadius='lg'
-                              coloredShadow=
-                              'info' >
-                              <MDTypography variant='h6' color=
-                                'white'>Certificate Form: {selectedNode
-                                  .name}</MDTypography>
-                              <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
-                                bgColor='info'
-                                borderRadius='lg'
-                                coloredShadow='info' >
-                                <MDTypography variant='h6' fontWeight='medium'>Comments:</MDTypography><
-                                  MDInput
-                                  type='text'
-                                  value={certificateForm.comments}
-                                  onChange={
-                                    (e) => setCertificateForm({ ...certificateForm, comments: e.target.value })}
-                                />
-                              </MDBox>
-                              <MDBox>
-                                <MDTypography variant='h6' color='white'>Date:</MDTypography>
-                                <DatePicker
-                                  selected={certificateForm.date}
-                                  dateFormat="dd-MM-yyyy"
-                                  onSelect={(date) => setCertificateForm({ ...certificateForm, date: date })}
-                                  onChange={(date) => setCertificateForm({ ...certificateForm, date: date })}
-                                />
-                              </MDBox>
-                              <MDButton onClick={handleCertificateFormSubmit}>Add to Certificate</MDButton>
-                            </MDBox>
-                          </Grid>
-                        )}
                         <MDButton color='black' onClick={handleSubmit}>Submit</MDButton>
                       </Grid>
                     </Grid>

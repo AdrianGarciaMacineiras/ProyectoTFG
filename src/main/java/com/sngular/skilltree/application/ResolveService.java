@@ -1,5 +1,6 @@
 package com.sngular.skilltree.application;
 
+import com.sngular.skilltree.api.model.SkillPairDTO;
 import com.sngular.skilltree.model.*;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
@@ -24,17 +25,20 @@ public class ResolveService {
 
     private final ClientService clientService;
 
-    @Named("resolveSkillName")
-    public String resolveSkillToName(final Skill skill) {
-        return skill.getName();
+    @Named("resolveSkillPair")
+    public SkillPairDTO resolveSkillToSkillPair(final Skill skill) {
+        return SkillPairDTO.builder()
+                .name(skill.getName())
+                .code(skill.getCode())
+                .build();
     }
 
-    @Named("resolveSkillNameList")
-    public List<String> resolveSkillToName(final List<Skill> skillList){
-        final var nameList = new ArrayList<String>();
+    @Named("resolveSkillPairList")
+    public List<SkillPairDTO> resolveSkillToSkillPair(final List<Skill> skillList){
+        final var nameList = new ArrayList<SkillPairDTO>();
         if (skillList != null) {
             for (var skill : skillList) {
-                nameList.add(resolveSkillToName(skill));
+                nameList.add(resolveSkillToSkillPair(skill));
             }
         }
         return nameList;
@@ -75,15 +79,15 @@ public class ResolveService {
     }
 
     @Named("resolveNameToSkill")
-    public Skill resolveNameSkill(final String name) {
-        return skillService.findByName(name);
+    public Skill resolveNameSkill(final SkillPairDTO skillPairDTO) {
+        return skillService.findByName(skillPairDTO.getName());
     }
 
-    @Named("resolveNameSkillList")
-    public List<Skill> resolveNameSkill(final List<String> nameList) {
+    @Named("resolveSkillPairDtoList")
+    public List<Skill> resolveNameSkill(final List<SkillPairDTO> skillPairDTOList) {
         var skillList = new ArrayList<Skill>();
-        if (nameList != null) {
-            for (var name : nameList) {
+        if (skillPairDTOList != null) {
+            for (var name : skillPairDTOList) {
                 skillList.add(resolveNameSkill(name));
             }
         } else {

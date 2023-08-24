@@ -537,6 +537,8 @@ const CreatePerson =
                     <Grid item xs={12}>
                       {form.certificates.length > 0 && (
                         <MDBox>
+                          {/*Hace falta poner las cosas que se van añadiendo?
+                          se añade con el boton de return rows? */}
                           {console.log(form)}
                         </MDBox>
                       )}       

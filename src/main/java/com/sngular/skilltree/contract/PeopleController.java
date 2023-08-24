@@ -33,9 +33,11 @@ public class PeopleController implements PeopleApi, PersonApi {
 
     @Override
     public ResponseEntity<PeopleDTO> getPersonByCode(String peopleCode) {
-        return ResponseEntity.ok(peopleMapper
+        final var aux = peopleMapper
                 .toPersonDTO(peopleService
-                        .findByCode(peopleCode)));
+                        .findByCode(peopleCode));
+        log.info(aux.toString());
+        return ResponseEntity.ok(aux);
     }
 
     @Override

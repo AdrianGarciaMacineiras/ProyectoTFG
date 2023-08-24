@@ -19,15 +19,15 @@ import java.util.Objects;
 @Mapper(config = CommonMapperConfiguration.class, uses = {SkillMapper.class, CandidateMapper.class, ResolveService.class})
 public interface PeopleMapper {
 
-    @Mapping(target = "work_with", source = "workWith", qualifiedByName = {"resolveSkillNameList"})
-    @Mapping(target = "master", source = "master", qualifiedByName = {"resolveSkillNameList"})
-    @Mapping(target = "interest", source = "interest", qualifiedByName = {"resolveSkillNameList"})
+    @Mapping(target = "work_with", source = "workWith", qualifiedByName = {"resolveSkillPairList"})
+    @Mapping(target = "master", source = "master", qualifiedByName = {"resolveSkillPairList"})
+    @Mapping(target = "interest", source = "interest", qualifiedByName = {"resolveSkillPairList"})
     //@Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
     PeopleDTO toPersonDTO(People people);
 
-  @Mapping(source = "work_with", target = "workWith", qualifiedByName = {"resolveNameSkillList"})
-  @Mapping(source = "master", target = "master", qualifiedByName = {"resolveNameSkillList"})
-  @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveNameSkillList"})
+  @Mapping(source = "work_with", target = "workWith", qualifiedByName = {"resolveSkillPairDtoList"})
+  @Mapping(source = "master", target = "master", qualifiedByName = {"resolveSkillPairDtoList"})
+  @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveSkillPairDtoList"})
   //@Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
   People toPerson(PeopleDTO peopleDTO);
 
@@ -35,9 +35,9 @@ public interface PeopleMapper {
 
     List<PeopleResumedDTO> toPeopleResumedDto(List<PeopleView> people);
 
-  @Mapping(source = "work_with", target = "workWith", qualifiedByName = {"resolveCodeSkillList"})
-  @Mapping(source = "master", target = "master", qualifiedByName = {"resolveCodeSkillList"})
-  @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveCodeSkillList"})
+  @Mapping(source = "work_with", target = "workWith", qualifiedByName = {"resolveSkillPairDtoList"})
+  @Mapping(source = "master", target = "master", qualifiedByName = {"resolveSkillPairDtoList"})
+  @Mapping(source = "interest", target = "interest", qualifiedByName = {"resolveSkillPairDtoList"})
   //@Mapping(target = "birthDate", dateFormat = "dd-MM-yyyy")
   People toPeople(PatchedPeopleDTO patchedPersonDTO);
 

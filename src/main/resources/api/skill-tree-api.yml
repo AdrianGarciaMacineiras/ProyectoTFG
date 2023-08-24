@@ -2076,12 +2076,12 @@ components:
                 type: boolean
         work_with:
           type: array
-          items: 
-            type: string
+          items:
+            $ref: "#/components/schemas/skillPair"
         master:
           type: array
-          items: 
-            type: string
+          items:
+            $ref: "#/components/schemas/skillPair"
         assigns:
           type: array
           items:
@@ -2096,7 +2096,7 @@ components:
         interest:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/skillPair"
         certificates:
           type: array
           items:
@@ -2208,11 +2208,11 @@ components:
         work_with:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/skillPair"
         master:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/skillPair"
         assigns:
           type: array
           items:
@@ -2227,11 +2227,19 @@ components:
         interest:
           type: array
           items:
-            type: string
+            $ref: "#/components/schemas/skillPair"
         certificates:
           type: array
           items:
             $ref: "#/components/schemas/certificate"
+
+    skillPair:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
 
     certificate:
       type: object

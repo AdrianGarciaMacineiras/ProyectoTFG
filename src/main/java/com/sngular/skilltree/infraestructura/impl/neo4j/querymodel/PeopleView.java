@@ -21,6 +21,10 @@ public interface PeopleView {
 
     List<SkillView> getWorkWith();
 
+    List<SkillView> getInterest();
+
+    List<SkillView> getMaster();
+
     List<AssignedView> getAssign();
 
     //LocalDateTime getBirthDate();

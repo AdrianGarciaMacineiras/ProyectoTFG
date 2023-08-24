@@ -23,7 +23,7 @@ const NestedMaster = ({ data }) => {
     };
 
     const paginatedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
+    console.log(data);
     return (
       <>
         <Table>
@@ -35,7 +35,7 @@ const NestedMaster = ({ data }) => {
           <TableBody>
             {paginatedData.map((row, index) => (
               <TableRow key={index}>
-                <TableCell style={{ width: "5%" }}>{row}</TableCell>
+                <TableCell style={{ width: "5%" }}>{row.name}</TableCell>
               </TableRow>
             ))}
           </TableBody>

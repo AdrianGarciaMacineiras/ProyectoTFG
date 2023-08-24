@@ -2,6 +2,7 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.common.exceptions.PositionWithoutProjectException;
 import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomPeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
@@ -13,6 +14,7 @@ import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
@@ -49,6 +51,10 @@ public class PeopleRepositoryImpl implements PeopleRepository {
             people = crud.findByCodeAndDeletedIsFalse(personCode);
         } else {
             people = crud.findByEmployeeIdAndDeletedIsFalse(personCode);
+        }
+        for(var cover : people.getAssigns()){
+            if(Objects.isNull(cover.positionNode().getProject()))
+                throw new PositionWithoutProjectException("Position", cover.positionNode().getCode());
         }
         return mapper.fromNode(people);
     }

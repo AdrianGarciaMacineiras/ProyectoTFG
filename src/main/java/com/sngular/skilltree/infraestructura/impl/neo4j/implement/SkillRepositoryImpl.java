@@ -11,6 +11,7 @@ import com.sngular.skilltree.model.StrategicTeamSkill;
 import com.sngular.skilltree.model.StrategicTeamSkillNotUsed;
 import com.sngular.skilltree.model.views.SkillStatsTittle;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.text.WordUtils;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.internal.InternalNode;
 import org.neo4j.driver.types.TypeSystem;
@@ -37,7 +38,7 @@ public class SkillRepositoryImpl implements SkillRepository {
         final Skill root = Skill.builder().name("Skills").build();
         leafNodes.forEach(leaf ->
                 root.addSkill(leaf.getNamespace().substring(leaf.getNamespace().indexOf(".") + 1),
-                        Skill.builder().name(leaf.getName()).code(leaf.getCode()).build())
+                        Skill.builder().name(WordUtils.capitalize(leaf.getName())).code(leaf.getCode()).build())
         );
 
         return root.subSkills();
