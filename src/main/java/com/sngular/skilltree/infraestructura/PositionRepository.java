@@ -1,8 +1,9 @@
 package com.sngular.skilltree.infraestructura;
 
-import com.sngular.skilltree.model.*;
-
 import java.util.List;
+
+import com.sngular.skilltree.model.Position;
+import com.sngular.skilltree.model.PositionAssignment;
 
 public interface PositionRepository {
 

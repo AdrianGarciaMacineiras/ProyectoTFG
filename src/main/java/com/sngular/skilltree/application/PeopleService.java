@@ -1,11 +1,11 @@
 package com.sngular.skilltree.application;
 
+import java.util.List;
+
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.views.PeopleView;
-
-import java.util.List;
 
 public interface PeopleService {
 

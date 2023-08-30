@@ -1,14 +1,18 @@
 package com.sngular.skilltree.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import lombok.Builder;
 import lombok.Value;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.text.WordUtils;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
-
+@Value
 @Builder(toBuilder = true)
 public class Skill {
 

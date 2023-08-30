@@ -1,13 +1,13 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomPeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleExtendedView;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Repository
 public class CustomPeopleRepositoryImpl implements CustomPeopleRepository {

@@ -1,5 +1,8 @@
 package com.sngular.skilltree.application.implement;
 
+import java.util.List;
+import java.util.Objects;
+
 import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.PositionService;
@@ -12,9 +15,6 @@ import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.views.PeopleView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor

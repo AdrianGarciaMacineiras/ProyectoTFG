@@ -1,20 +1,15 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateConverter;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateTimeConverter;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.neo4j.core.convert.ConvertWith;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Builder

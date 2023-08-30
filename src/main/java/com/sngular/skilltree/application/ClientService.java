@@ -1,8 +1,8 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.model.Client;
-
 import java.util.List;
+
+import com.sngular.skilltree.model.Client;
 
 public interface ClientService {
 

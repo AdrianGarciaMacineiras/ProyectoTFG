@@ -9,7 +9,6 @@ import com.sngular.skilltree.api.model.PatchedClientDTO;
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Client;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper(config = CommonMapperConfiguration.class)

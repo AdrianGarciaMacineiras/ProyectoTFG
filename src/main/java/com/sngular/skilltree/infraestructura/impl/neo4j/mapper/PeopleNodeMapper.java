@@ -1,5 +1,9 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.mapper;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveServiceNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.CertificateRelationship;
@@ -16,10 +20,6 @@ import com.sngular.skilltree.model.Skill;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Mapper(config = CommonMapperConfiguration.class, uses = {ResolveServiceNode.class, SkillNodeMapper.class})
 public interface PeopleNodeMapper {

@@ -1,7 +1,8 @@
 package com.sngular.skilltree.application.updater.implement;
 
+import java.util.Objects;
+
 import com.sngular.skilltree.application.updater.PeopleUpdater;
-import com.sngular.skilltree.common.exceptions.AssignUnableException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.contract.mapper.PeopleMapper;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
@@ -9,8 +10,6 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.model.People;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor

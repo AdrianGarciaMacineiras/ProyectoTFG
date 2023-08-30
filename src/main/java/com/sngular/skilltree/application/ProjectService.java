@@ -1,8 +1,8 @@
 package com.sngular.skilltree.application;
 
-import com.sngular.skilltree.model.Project;
-
 import java.util.List;
+
+import com.sngular.skilltree.model.Project;
 
 public interface ProjectService {
 

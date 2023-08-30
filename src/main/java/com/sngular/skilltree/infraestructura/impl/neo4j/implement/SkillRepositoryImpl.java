@@ -1,10 +1,17 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import com.sngular.skilltree.infraestructura.SkillRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.SkillCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.SkillNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubSkillsRelationship;
-import com.sngular.skilltree.infraestructura.impl.neo4j.tool.NodeUtil;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Skill;
 import com.sngular.skilltree.model.StrategicTeamSkill;
@@ -18,8 +25,6 @@ import org.neo4j.driver.types.TypeSystem;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
-
-import java.util.*;
 
 @Repository
 @RequiredArgsConstructor

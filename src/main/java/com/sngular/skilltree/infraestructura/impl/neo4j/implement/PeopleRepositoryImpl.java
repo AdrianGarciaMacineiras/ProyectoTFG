@@ -1,5 +1,8 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import java.util.List;
+import java.util.Objects;
+
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.common.exceptions.PositionWithoutProjectException;
@@ -12,9 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor

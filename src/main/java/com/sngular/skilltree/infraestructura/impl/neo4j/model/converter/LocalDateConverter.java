@@ -1,13 +1,13 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model.converter;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import lombok.extern.slf4j.Slf4j;
 import org.neo4j.driver.Value;
 import org.neo4j.driver.internal.value.DateTimeValue;
 import org.neo4j.driver.internal.value.DateValue;
 import org.springframework.data.neo4j.core.convert.Neo4jPersistentPropertyConverter;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Slf4j
 public class LocalDateConverter implements Neo4jPersistentPropertyConverter<LocalDate> {

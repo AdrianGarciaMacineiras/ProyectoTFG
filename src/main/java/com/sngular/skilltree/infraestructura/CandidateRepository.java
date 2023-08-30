@@ -1,10 +1,10 @@
 package com.sngular.skilltree.infraestructura;
 
-import com.sngular.skilltree.model.Candidate;
-import com.sngular.skilltree.model.PositionSkill;
-
 import java.util.List;
 import java.util.Optional;
+
+import com.sngular.skilltree.model.Candidate;
+import com.sngular.skilltree.model.PositionSkill;
 
 public interface CandidateRepository {
 

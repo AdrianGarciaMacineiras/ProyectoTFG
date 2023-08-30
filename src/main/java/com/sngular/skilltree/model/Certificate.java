@@ -1,9 +1,8 @@
 package com.sngular.skilltree.model;
 
-import lombok.Builder;
-
 import java.time.LocalDate;
-import java.util.Date;
+
+import lombok.Builder;
 
 @Builder(toBuilder = true)
 public record Certificate(String id, String code, String name, String comment, LocalDate date) {

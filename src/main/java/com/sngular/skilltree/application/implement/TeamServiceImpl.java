@@ -1,5 +1,8 @@
 package com.sngular.skilltree.application.implement;
 
+import java.util.List;
+import java.util.Objects;
+
 import com.sngular.skilltree.application.TeamService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
@@ -8,9 +11,6 @@ import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.Team;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
