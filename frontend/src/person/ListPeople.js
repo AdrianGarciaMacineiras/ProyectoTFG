@@ -99,13 +99,13 @@ const ListPeople =
           role='tabpanel'
           hidden={value !== index}
           id={`simple-tabpanel-${index}`}
-          aria-labelledby={`simple-tab-${index}`} {...other} > {value === index &&
-            (<MDBox sx={
-              {
-                p: 3
-              }
-            }><MDTypography>{children}</MDTypography>
-            </MDBox>)}</div>
+          aria-labelledby={`simple-tab-${index}`} {...other} >
+          {value === index &&
+            (<MDBox sx={{ p: 3 }}>
+              <MDTypography>{children}</MDTypography>
+            </MDBox>)
+          }
+        </div>
       );
     }
 
@@ -152,7 +152,8 @@ const ListPeople =
                   }}
                   style={{ width: "5%" }}
                 >
-                  {isOpen ? <KeyboardArrowUpIcon /> :
+                  {isOpen ?
+                    <KeyboardArrowUpIcon /> :
                     <KeyboardArrowDownIcon />
                   }
                 </IconButton>
@@ -351,14 +352,8 @@ const ListPeople =
                     </MDBox>
                   </MDBox>
                   <TableContainer component={Paper}>
-                    <Table sx=
-                      {
-                        { minWidth: 650 }
-                      } aria-label='simple table'><TableHead sx={
-                        {
-                          display: 'table-header-group'
-                        }
-                      }>
+                    <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+                      <TableHead sx={{ display: 'table-header-group' }}>
                         <TableRow>
                           <TableCell width='100' component='th' scope='row'>
                             <IconButton
@@ -366,9 +361,11 @@ const ListPeople =
                               size='small'
                               onClick=
                               {() => setOpen(!open)} >
-                              {
-                                open ? <KeyboardDoubleArrowUpIcon /> : <KeyboardDoubleArrowDownIcon />
-                              }</IconButton>
+                              {open ?
+                                <KeyboardDoubleArrowUpIcon /> :
+                                <KeyboardDoubleArrowDownIcon />
+                              }
+                            </IconButton>
                           </TableCell>
                           <TableCell align='left' onClick={() => handleSortChange('code')}>
                             {getSortIcon('code')}

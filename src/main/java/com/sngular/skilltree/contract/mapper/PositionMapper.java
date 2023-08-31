@@ -4,13 +4,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import com.sngular.skilltree.api.model.PatchedPositionDTO;
-import com.sngular.skilltree.api.model.PositionDTO;
-import com.sngular.skilltree.api.model.PositionSkillDTO;
+import com.sngular.skilltree.api.model.*;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.PositionSkill;
+import com.sngular.skilltree.model.views.PeopleView;
+import com.sngular.skilltree.model.views.PositionView;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -40,6 +40,8 @@ public interface PositionMapper {
   Position toPosition(PositionDTO opportunityDTO);
 
   List<PositionDTO> toPositionsDTO(Collection<Position> positions);
+
+  List<PositionResumedDTO> toPositionResumedDto(List<PositionView> people);
 
   @Mapping(target = "skills", ignore = true)
   @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")

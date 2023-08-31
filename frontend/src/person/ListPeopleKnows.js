@@ -95,13 +95,13 @@ const ListPeopleKnows =
                     role='tabpanel'
                     hidden={value !== index}
                     id={`simple-tabpanel-${index}`}
-                    aria-labelledby={`simple-tab-${index}`} {...other} > {value === index &&
-                        (<MDBox sx={
-                            {
-                                p: 3
-                            }
-                        }><MDTypography>{children}</MDTypography>
-                        </MDBox>)}</div>
+                    aria-labelledby={`simple-tab-${index}`} {...other} >
+                    {value === index &&
+                        (<MDBox sx={{ p: 3 }}>
+                            <MDTypography>{children}</MDTypography>
+                        </MDBox>)
+                    }
+                </div>
             );
         }
 
@@ -113,33 +113,33 @@ const ListPeopleKnows =
 
         const [nestedKnowStates, setNestedKnowStates] = useState({});
 
-            const handleNestedKnowStateChange = (personCode, newState) => {
-                setNestedKnowStates(prevStates => ({
-                    ...prevStates,
-                    [personCode]: newState
-                }));
-            };
+        const handleNestedKnowStateChange = (personCode, newState) => {
+            setNestedKnowStates(prevStates => ({
+                ...prevStates,
+                [personCode]: newState
+            }));
+        };
 
-            const handleNestedKnowPageChange = (personCode, newPage) => {
-                setNestedKnowStates(prevStates => ({
-                    ...prevStates,
-                    [personCode]: {
-                        ...prevStates[personCode],
-                        page: newPage
-                    }
-                }));
-            };
+        const handleNestedKnowPageChange = (personCode, newPage) => {
+            setNestedKnowStates(prevStates => ({
+                ...prevStates,
+                [personCode]: {
+                    ...prevStates[personCode],
+                    page: newPage
+                }
+            }));
+        };
 
-            const handleNestedKnowRowsPerPageChange = (personCode, newRowsPerPage) => {
-                setNestedKnowStates(prevStates => ({
-                    ...prevStates,
-                    [personCode]: {
-                        ...prevStates[personCode],
-                        rowsPerPage: newRowsPerPage,
-                        page: 0
-                    }
-                }));
-            };
+        const handleNestedKnowRowsPerPageChange = (personCode, newRowsPerPage) => {
+            setNestedKnowStates(prevStates => ({
+                ...prevStates,
+                [personCode]: {
+                    ...prevStates[personCode],
+                    rowsPerPage: newRowsPerPage,
+                    page: 0
+                }
+            }));
+        };
 
         const DataPerson = ({ row }) => {
             const isOpen = row.open;
@@ -162,7 +162,8 @@ const ListPeopleKnows =
                                     }}
                                     style={{ width: "5%" }}
                                 >
-                                    {isOpen ? <KeyboardArrowUpIcon /> :
+                                    {isOpen ?
+                                        <KeyboardArrowUpIcon /> :
                                         <KeyboardArrowDownIcon />
                                     }
                                 </IconButton>
@@ -196,33 +197,23 @@ const ListPeopleKnows =
                         </TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell style={
-                            {
-                                paddingBottom: 0, paddingTop: 0
-                            }
-                        } colSpan={8}>
-                            <Collapse in={isOpen} timeout='auto' unmountOnExit><MDBox sx={
-                                {
-                                    margin: 1
-                                }
-                            }><MDBox sx={
-                                {
-                                    borderBottom: 1, borderColor: 'divider'
-                                }
-                            }>
-                                    <TableCell align='center'>Knows</TableCell>
+                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+                            <Collapse in={isOpen} timeout='auto' unmountOnExit>
+                                <MDBox sx={{ margin: 1 }}>
+                                    <MDBox sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                        <TableCell align='center'>Knows</TableCell>
+                                    </MDBox>
+                                    <CustomTabPanel value={valor} index={0}>
+                                        <NestedKnows
+                                            key={row.code}
+                                            data={row.knows}
+                                            state={nestedKnowStates[row.code]}
+                                            onStateChange={newState => handleNestedKnowStateChange(row.code, newState)}
+                                            onPageChange={newPage => handleNestedKnowPageChange(row.code, newPage)}
+                                            onRowsPerPageChange={newRowsPerPage => handleNestedKnowRowsPerPageChange(row.code, newRowsPerPage)}
+                                        />
+                                    </CustomTabPanel>
                                 </MDBox>
-                                <CustomTabPanel value={valor} index={0}>
-                                    <NestedKnows
-                                        key={row.code}
-                                        data={row.knows}
-                                        state={nestedKnowStates[row.code]}
-                                        onStateChange={newState => handleNestedKnowStateChange(row.code, newState)}
-                                        onPageChange={newPage => handleNestedKnowPageChange(row.code, newPage)}
-                                        onRowsPerPageChange={newRowsPerPage => handleNestedKnowRowsPerPageChange(row.code, newRowsPerPage)}
-                                    />                                
-                                </CustomTabPanel>
-                            </MDBox>
                             </Collapse>
                         </TableCell>
                     </TableRow>
@@ -257,7 +248,7 @@ const ListPeopleKnows =
             } else {
                 return <SortIcon />;
             }
-        }
+        };
 
         return (
             <React.Fragment>
@@ -286,23 +277,17 @@ const ListPeopleKnows =
                                         </MDBox>
                                     </MDBox>
                                     <TableContainer component={Paper}>
-                                        <Table sx=
-                                            {
-                                                { minWidth: 650 }
-                                            } aria-label='simple table'>
-                                            <TableHead sx={
-                                                {
-                                                    display: 'table-header-group'
-                                                }
-                                            }>
+                                        <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+                                            <TableHead sx={{ display: 'table-header-group' }}>
                                                 <TableRow>
                                                     <TableCell width='100' component='th' scope='row'><IconButton
                                                         aria-label='expand row'
                                                         size='small'
                                                         onClick=
                                                         {() => setOpen(!open)} >
-                                                        {
-                                                            open ? <KeyboardDoubleArrowUpIcon /> : <KeyboardDoubleArrowDownIcon />
+                                                        {open ?
+                                                            <KeyboardDoubleArrowUpIcon /> :
+                                                            <KeyboardDoubleArrowDownIcon />
                                                         }
                                                     </IconButton>
                                                     </TableCell>

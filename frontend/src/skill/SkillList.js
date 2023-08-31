@@ -123,6 +123,7 @@ function SkillList() {
         }
       }));
     };
+
     return (
       <React.Fragment>
         <TableRow sx={
@@ -132,11 +133,12 @@ function SkillList() {
               aria-label='expand row'
               size='small'
               onClick={() => setOpen(!open)}
-              style={{
-                width: '5%'
-              }}
+              style={{ width: '5%' }}
             >
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              {open ?
+                <KeyboardArrowUpIcon /> :
+                <KeyboardArrowDownIcon />
+              }
             </IconButton>
           </TableCell>
           <TableCell scope='row'>{row.name}</TableCell>
@@ -145,16 +147,11 @@ function SkillList() {
           <TableCell>{row.title}</TableCell>
           <TableCell>{row.employeeId}</TableCell>
           <TableCell>{row.friendlyName}</TableCell>
-          <TableCell>{row.birthDate}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell style={
-            { paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
             <Collapse in={open} timeout='auto' unmountOnExit>
-              <MDBox sx={{
-                margin: 1
-              }}>
-                {/*<NestedTableComponent data={row.Knows} />*/}
+              <MDBox sx={{ margin: 1 }}>
                 <NestedKnows
                   key={row.code}
                   data={row.knows}
@@ -212,12 +209,8 @@ function SkillList() {
 
     return (
       <React.Fragment>
-        <Table sx={{
-          minWidth: 650
-        }}>
-          <TableHead sx={{
-            display: 'table-header-group'
-          }}>
+        <Table sx={{ minWidth: 650 }}>
+          <TableHead sx={{ display: 'table-header-group' }}>
             <TableRow>
               <TableCell width='100' component='th' scope='row'>
                 <IconButton
@@ -225,7 +218,10 @@ function SkillList() {
                   size='small'
                   onClick={() => setOpen(!open)}
                 >
-                  {open ? <KeyboardDoubleArrowUpIcon /> : <KeyboardDoubleArrowDownIcon />}
+                  {open ?
+                    <KeyboardDoubleArrowUpIcon /> :
+                    <KeyboardDoubleArrowDownIcon />
+                  }
                 </IconButton>
               </TableCell>
               <TableCell align='left' onClick={() => handleSortChange('name')}>
@@ -246,7 +242,7 @@ function SkillList() {
               </TableCell>
               <TableCell align='left' onClick={() => handleSortChange('employeeId')}>
                 {getSortIcon('employeeId')}
-                EmployeeId
+                Employee ID
               </TableCell>
               <TableCell align='left' onClick={() => handleSortChange('friendlyName')}>
                 {getSortIcon('friendlyName')}
@@ -259,8 +255,7 @@ function SkillList() {
               .sort((a, b) => {
                 const aValue = a[orderBy];
                 const bValue = b[orderBy];
-                console.log("aValue", aValue);
-                console.log("bValue", bValue);
+
                 if (sortDirection === 'asc') {
                   return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
                 } else {
@@ -324,7 +319,7 @@ function SkillList() {
                 Primary: knows.primary,
                 Experience: knows.experience,
                 Level: knows.level
-              } 
+              }
               graphTemp.nodes.push(
                 { id: j, label: knows.name, title: knows.name });
               graphTemp.edges.push({
@@ -521,23 +516,20 @@ function SkillList() {
                       graph={graph}
                       options={options}
                       events={events}
-                      getNetwork={
-                        network => {
-                          //  if you want access to vis.js network api you can set the state in a
-                          //  parent component using this property
-                        }}
+                      getNetwork={network => { }}
                     />
                   </>
-                ) : (<>
-                  <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
-                    bgColor='info'
-                    borderRadius='lg'
-                    coloredShadow=
-                    'info' >
-                    <MDTypography variant='h6' color='white'>Person Table</MDTypography>
-                  </MDBox>
-                  <TableComponent data={tableData} />
-                </>
+                ) : (
+                  <>
+                    <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
+                      bgColor='info'
+                      borderRadius='lg'
+                      coloredShadow=
+                      'info' >
+                      <MDTypography variant='h6' color='white'>Person Table</MDTypography>
+                    </MDBox>
+                    <TableComponent data={tableData} />
+                  </>
                 ))}
               </MDBox>
             </Card>

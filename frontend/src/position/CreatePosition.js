@@ -43,7 +43,6 @@ function CreatePosition() {
   const [peopleList, setPeopleList] = useState([]);
   const [officeList, setOfficeList] = useState([]);
 
-
   const [closingDate, setClosingDate] = useState(new Date());
   const [openingDate, setOpeningDate] = useState(new Date());
 
@@ -100,14 +99,12 @@ function CreatePosition() {
       const filteredItems = treeItems.filter((treeItemData) => {
         return treeItemData.name.toLowerCase().includes(
           searchValue.toLowerCase()) ||
-          getTreeItemsFromData(treeItemData.children, searchValue).length >
-          0;
+          getTreeItemsFromData(treeItemData.children, searchValue).length > 0;
       });
 
       return filteredItems.map(
         (treeItemData) => {
-          const isMatched = treeItemData.name.toLowerCase().includes(
-            searchValue.toLowerCase());
+          const isMatched = treeItemData.name.toLowerCase().includes(searchValue.toLowerCase());
 
           if (isMatched) {
             return (
@@ -142,7 +139,6 @@ function CreatePosition() {
       oldExpanded.length === 0 ? expandAll : [],
     );
   };
-
 
   const handleToggle = (event, nodeIds) => {
     setExpand(nodeIds)
@@ -481,11 +477,8 @@ function CreatePosition() {
                       <Grid item xs={6}>
                         <MDTypography variant='h6' fontWeight='medium'>Position code</MDTypography>
                         <MDInput type="text" value={form.positionCode} onChange={handleInputChange} name="positionCode" />
-
                         <Grid item xs={6}>
-                          <MDTypography variant='h6' fontWeight='medium'>
-                            Project Name
-                          </MDTypography>
+                          <MDTypography variant='h6' fontWeight='medium'>Project Name</MDTypography>
                           <Autocomplete
                             options={projectList}
                             getOptionLabel={(project) => project.name}
@@ -499,10 +492,9 @@ function CreatePosition() {
                                 label="Select a project"
                                 name="projectCode"
                               />
-                            )
-                            } />
+                            )}
+                          />
                         </Grid >
-
                         <Grid item xs={6}>
                           <MDTypography variant='h6' fontWeight='medium'>Manager</MDTypography>
                           <Autocomplete
@@ -517,51 +509,42 @@ function CreatePosition() {
                                 {...params}
                                 label="Select a person"
                                 name="managedBy"
-                              />)
-                            } />
+                              />
+                            )}
+                          />
                         </Grid >
-
-                        <MDTypography variant='h6' fontWeight='medium'>
-                          Role</MDTypography>
+                        <MDTypography variant='h6' fontWeight='medium'>Role</MDTypography>
                         <MDInput type="text" value={form.role} onChange={handleInputChange} name="role" />
-                        <MDTypography variant='h6' fontWeight='medium'>Init
-                          Date</MDTypography>
+                        <MDTypography variant='h6' fontWeight='medium'>Init Date</MDTypography>
                         <DatePicker
                           selected={openingDate}
                           dateFormat="dd-MM-yyyy"
                           onSelect={(date) => setOpeningDate(date)}
                           onChange={(date) => handleInputChange({ target: { name: "openingDate", value: format(date, 'dd-MM-yyyy') } })}
                         />
-                        <MDTypography variant='h6' fontWeight='medium'>
-                          Mode</MDTypography>
+                        <MDTypography variant='h6' fontWeight='medium'>Mode</MDTypography>
                         <FormControl fullWidth>
                           <InputLabel>Select an option</InputLabel>
                           <Select name='mode' value={form.mode} onChange={handleInputChange}>
-                            <MenuItem value='REMOTE'>
-                              Remote</MenuItem>
+                            <MenuItem value='REMOTE'>Remote</MenuItem>
                             <MenuItem value="PRESENTIAL">Presential</MenuItem>
-                            <MenuItem value='MIX'>
-                              Mix</MenuItem>
+                            <MenuItem value='MIX'>Mix</MenuItem>
                             <MenuItem value="UNKNOWN">Unknown</MenuItem>
                           </Select>
                         </FormControl>
                       </Grid>
                       <Grid item xs={6}>
                         <MDTypography variant='h6' fontWeight='medium'>Name</MDTypography>
-                        <MDInput type='text' value={form.name} onChange=
-                          {handleInputChange} name='name' />
-                        <MDTypography variant='h6' fontWeight='medium'>
-                          Priority</MDTypography>
+                        <MDInput type='text' value={form.name} onChange={handleInputChange} name='name' />
+                        <MDTypography variant='h6' fontWeight='medium'>Priority</MDTypography>
                         <MDInput type="text" value={form.priority} onChange={handleInputChange} name="priority" />
-                        <MDTypography variant='h6' fontWeight='medium'>
-                          Charge</MDTypography>
-                        <MDTypography variant='h6' fontWeight='medium'>End Date</MDTypography><
-                          DatePicker
+                        <MDTypography variant='h6' fontWeight='medium'>Charge</MDTypography>
+                        <MDTypography variant='h6' fontWeight='medium'>End Date</MDTypography>
+                        <DatePicker
                           selected={closingDate} dateFormat='dd-MM-yyyy'
                           onSelect={(date) => setClosingDate(date)} onChange=
-                          {(date) => handleInputChange(
-                            { target: { name: 'closingDate', value: format(date, 'dd-MM-yyyy') } })
-                          } />
+                          {(date) => handleInputChange({ target: { name: 'closingDate', value: format(date, 'dd-MM-yyyy') } })}
+                        />
                         <MDTypography variant='h6' fontWeight='medium'>Active</MDTypography >
                         <FormControl fullWidth><InputLabel>Select an option</InputLabel>
                           <Select name="active" value={form.active} onChange={handleInputChange}>
@@ -580,31 +563,28 @@ function CreatePosition() {
                                 <MenuItem value='MANDATORY'>MANDATORY</MenuItem>
                                 <MenuItem value="NICE_TO_HAVE">NICE TO HAVE</MenuItem>
                               </Select>
-                            </FormControl><FormControl fullWidth>
+                            </FormControl>
+                            <FormControl fullWidth>
                               <MDTypography variant='h6' fontWeight='medium'>Level Required</MDTypography>
-                              <InputLabel>
-                                Select an option
-                              </InputLabel>
+                              <InputLabel>Select an option</InputLabel>
                               <Select value={minLevel} onChange=
                                 {(e) => setMinLevel(e.target.value)}>
                                 <MenuItem value='HIGH'>HIGH</MenuItem>
                                 <MenuItem value="MEDIUM">MEDIUM</MenuItem>
-                                <MenuItem value='LOW'>
-                                  LOW</MenuItem>
+                                <MenuItem value='LOW'>LOW</MenuItem>
                               </Select>
                             </FormControl>
                             <FormControl fullWidth>
                               <MDTypography variant='h6' fontWeight='medium'>Minimum Experience</MDTypography>
-                              <MDInput type='number' value={minExp} onChange=
-                                {(e) => setMinExp(parseInt(e.target.value))
-                                } />
+                              <MDInput type='number' value={minExp} onChange={(e) => setMinExp(parseInt(e.target.value))} />
                             </FormControl>
                             <MDButton onClick={handleModalSubmit}>Save</MDButton>
                             <MDButton onClick={() => setSelectedItem(null)}>Cancel</MDButton>
                           </MDBox>
                         )}
-
-                        <MDButton variant="gradient" color="dark" onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'} </MDButton>
+                        <MDButton variant="gradient" color="dark"
+                          onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'}
+                        </MDButton>
                         <MDBox>
                           < MDInput
                             type='text'
@@ -625,28 +605,29 @@ function CreatePosition() {
             </Grid>
           </Grid>
         </MDBox>
-        <MDBox pt={6} pb={3}>
-          <Grid container spacing={6}><Grid item xs={12}>
-            <Card>
-              <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
-                bgColor='info'
-                borderRadius='lg'
-                coloredShadow='info'>
-                <MDTypography variant='h6' color='white'>Position Graph</MDTypography>
-              </MDBox>
-              <MDBox pt={3}>
-                < VisGraph
-                  graph={graph} options={options} events={events} getNetwork={
-                    network => {
-                      //  if you want access to vis.js network api you can set the state in a
-                      //  parent component using this property
-                    }
-                  } />
-              </MDBox >
-            </Card>
-          </Grid>
-          </Grid>
-        </MDBox>
+        {graph &&
+          <MDBox pt={6} pb={3}>
+            <Grid container spacing={6}><Grid item xs={12}>
+              <Card>
+                <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
+                  bgColor='info'
+                  borderRadius='lg'
+                  coloredShadow='info'>
+                  <MDTypography variant='h6' color='white'>Position Graph</MDTypography>
+                </MDBox>
+                <MDBox pt={3}>
+                  < VisGraph
+                    graph={graph}
+                    options={options}
+                    events={events}
+                    getNetwork={network => { }}
+                  />
+                </MDBox >
+              </Card>
+            </Grid>
+            </Grid>
+          </MDBox>
+        }
         <Footer />
       </DashboardLayout>
     </React.Fragment>

@@ -12,10 +12,7 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.model.ProjectNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillsCandidateRelationship;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubSkillsRelationship;
-import com.sngular.skilltree.model.Assignment;
-import com.sngular.skilltree.model.Assignments;
-import com.sngular.skilltree.model.Skill;
-import com.sngular.skilltree.model.SkillsCandidate;
+import com.sngular.skilltree.model.*;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
@@ -32,6 +29,8 @@ public class ResolveServiceNode {
     private final ClientCrudRepository clientCrudRepository;
 
     private final ProjectCrudRepository projectCrudRepository;
+
+    private final PeopleCrudRepository peopleCrudRepository;
 
     @Named("resolveId")
     public String resolveId(final String id) {
@@ -179,5 +178,19 @@ public class ResolveServiceNode {
             projectNameList.add(projectNode.getName());
         }
         return projectNameList;
+    }
+
+    @Named("mapToManagedByPeople")
+    public People mapToManagedByPeople(String managedBy){
+        var peopleNode = peopleCrudRepository.findByEmployeeId(managedBy);
+        return People.builder()
+                .employeeId(peopleNode.getEmployeeId())
+                .name(peopleNode.getName())
+                .surname(peopleNode.getSurname())
+                .title(peopleNode.getTitle())
+                .code(peopleNode.getCode())
+                .assignable(peopleNode.isAssignable())
+                .deleted(peopleNode.isDeleted())
+                .build();
     }
 }

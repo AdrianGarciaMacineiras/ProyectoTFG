@@ -2,13 +2,10 @@ import '../network.css';
 
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import React, {useState} from 'react';
+import { useState } from 'react';
 import VisGraph from 'react-vis-graph-wrapper';
-
 import Footer from '../components/Footer';
-// Material Dashboard 2 React example components
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
-// Material Dashboard 2 React components
 import MDBox from '../components/MDBox';
 import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
@@ -80,7 +77,7 @@ function FindClient() {
   };
 
   const findClient = (clientCode) =>
-      fetch(`http://${window.location.hostname}:9080/api/client/${clientCode}`,
+    fetch(`http://${window.location.hostname}:9080/api/client/${clientCode}`,
       {
         method: "GET", headers: {
           "Content-Type": "application/json",
@@ -148,34 +145,34 @@ function FindClient() {
               </MDBox>
             </Card>
           </Grid>
-          <Grid item xs={12}>
-            <Card>
-              <MDBox
-                mx={2}
-                mt={-3}
-                py={3}
-                px={2}
-                variant="gradient"
-                bgColor="info"
-                borderRadius="lg"
-                coloredShadow="info"
-              >
-                <MDTypography variant="h6" color="white">
-                  Clients Graph
-                </MDTypography>
-              </MDBox>
-              <MDBox pt={3}>
-                <VisGraph
-                  graph={graph}
-                  options={options}
-                  events={events}
-                  getNetwork={network => {
-                    //  if you want access to vis.js network api you can set the state in a parent component using this property
-                  }}
-                />
-              </MDBox>
-            </Card>
-          </Grid>
+          {graph &&
+            <Grid item xs={12}>
+              <Card>
+                <MDBox
+                  mx={2}
+                  mt={-3}
+                  py={3}
+                  px={2}
+                  variant="gradient"
+                  bgColor="info"
+                  borderRadius="lg"
+                  coloredShadow="info"
+                >
+                  <MDTypography variant="h6" color="white">
+                    Clients Graph
+                  </MDTypography>
+                </MDBox>
+                <MDBox pt={3}>
+                  <VisGraph
+                    graph={graph}
+                    options={options}
+                    events={events}
+                    getNetwork={network => {}}
+                  />
+                </MDBox>
+              </Card>
+            </Grid>
+          }
         </Grid>
       </MDBox>
       <Footer />

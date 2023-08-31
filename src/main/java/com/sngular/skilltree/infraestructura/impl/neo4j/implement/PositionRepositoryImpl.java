@@ -10,10 +10,12 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.ClientCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.OfficeCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PositionCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ProjectCrudRepository;
+import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomPositionRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PositionNodeMapper;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.PositionAssignment;
+import com.sngular.skilltree.model.views.PositionView;
 import lombok.RequiredArgsConstructor;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.types.TypeSystem;
@@ -26,11 +28,9 @@ public class PositionRepositoryImpl implements PositionRepository {
 
   private final PositionCrudRepository crud;
 
+  private final CustomPositionRepository customCrud;
+
   private final ProjectCrudRepository projectCrud;
-
-  private final ClientCrudRepository clientCrud;
-
-  private final OfficeCrudRepository officeCrud;
 
   private final PositionNodeMapper mapper;
 
@@ -41,6 +41,11 @@ public class PositionRepositoryImpl implements PositionRepository {
   @Override
   public List<Position> findAll() {
     return mapper.map(crud.findByDeletedIsFalse());
+  }
+
+  @Override
+  public List<PositionView> findAllResumed() {
+    return mapper.mapExtended(customCrud.getAllPositionExtended());
   }
 
   @Override

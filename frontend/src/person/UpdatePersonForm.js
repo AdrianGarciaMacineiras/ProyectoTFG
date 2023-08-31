@@ -233,15 +233,13 @@ const UpdatePersonForm = () => {
       const filteredItems = treeItems.filter((treeItemData) => {
         const isMatched = treeItemData.name.toLowerCase().includes(
           searchValue.toLowerCase()) ||
-          getTreeItemsFromData(treeItemData.children, searchValue).length >
-          0;
+          getTreeItemsFromData(treeItemData.children, searchValue).length > 0;
 
         return isMatched;
       });
 
       return filteredItems.map((treeItemData) => {
-        const isMatched =
-          treeItemData.name.toLowerCase().includes(searchValue.toLowerCase());
+        const isMatched = treeItemData.name.toLowerCase().includes(searchValue.toLowerCase());
 
         if (isMatched) {
           return (
@@ -388,38 +386,37 @@ const UpdatePersonForm = () => {
                   'info' >
                   <MDTypography variant='h6' color='white'>Loading...</MDTypography>
                 </MDBox>
-              </Card>) : (
-                <Card>
-                  < MDBox
-                    mx={2} mt={-3} py={3} px={2} variant='gradient'
-                    bgColor='info'
-                    borderRadius='lg'
-                    coloredShadow=
-                    'info' >
-                    <MDTypography variant='h6' color='white'>Update
-                      Person</MDTypography>
+              </Card>)
+              : (<Card>
+                < MDBox
+                  mx={2} mt={-3} py={3} px={2} variant='gradient'
+                  bgColor='info'
+                  borderRadius='lg'
+                  coloredShadow=
+                  'info' >
+                  <MDTypography variant='h6' color='white'>Update Person</MDTypography>
+                </MDBox>
+                <form id='personForm'>
+                  <Grid container spacing={6}><Grid item xs={6}><MDBox pt={3}>
+                    <MDTypography variant='h6' fontWeight='medium'>Person Code: </MDTypography>
+                    <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" disabled />
                   </MDBox>
-                  <form id='personForm'>
-                    <Grid container spacing={6}><Grid item xs={6}><MDBox pt={3}>
-                      <MDTypography variant='h6' fontWeight='medium'>Person Code: </MDTypography>
-                      <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" disabled />
+                    <MDBox>
+                      <MDTypography variant='h6' fontWeight='medium'>Employee ID:</MDTypography>
+                      <MDInput type='text' value={form.employeeId} onChange=
+                        {handleInputChange} name='employeeId' disabled />
                     </MDBox>
-                      <MDBox>
-                        <MDTypography variant='h6' fontWeight='medium'>Employee ID:</MDTypography>
-                        <MDInput type='text' value={form.employeeId} onChange=
-                          {handleInputChange} name='employeeId' disabled />
-                      </MDBox>
-                      <MDBox>
-                        <MDTypography variant='h6' fontWeight='medium'>Name:</MDTypography>
-                        <MDInput type='text' value={updatedPerson.name} onChange=
-                          {handleInputChange} name='name' />
-                      </MDBox>
-                      <MDBox>
-                        <MDTypography variant='h6' fontWeight='medium'>Surname:</MDTypography>
-                        <MDInput type='text' value={updatedPerson.surname} onChange=
-                          {handleInputChange} name='surname' />
-                      </MDBox>
-                      {/*<MDBox>
+                    <MDBox>
+                      <MDTypography variant='h6' fontWeight='medium'>Name:</MDTypography>
+                      <MDInput type='text' value={updatedPerson.name} onChange=
+                        {handleInputChange} name='name' />
+                    </MDBox>
+                    <MDBox>
+                      <MDTypography variant='h6' fontWeight='medium'>Surname:</MDTypography>
+                      <MDInput type='text' value={updatedPerson.surname} onChange=
+                        {handleInputChange} name='surname' />
+                    </MDBox>
+                    {/*<MDBox>
                         <MDTypography variant='h6' fontWeight='medium'>Birth Date:</MDTypography><
                           DatePicker
                           selected={updatedPerson.birthDate} dateFormat='dd-MM-yyyy'
@@ -428,88 +425,90 @@ const UpdatePersonForm = () => {
                             { target: { name: 'birthDate', value: format(date, 'dd-MM-yyyy') } })
                           } />
                         </MDBox >*/}
+                    <MDBox>
+                      <MDTypography variant='h6' fontWeight='medium'>Title: </MDTypography>
+                      <MDInput type="text" value={updatedPerson.title} onChange={handleInputChange} name="title" />
+                    </MDBox>
+                  </Grid>
+                    <Grid item xs={6}>
                       <MDBox>
-                        <MDTypography variant='h6' fontWeight='medium'>Title: </MDTypography>
-                        <MDInput type="text" value={updatedPerson.title} onChange={handleInputChange} name="title" />
+                        <MDTypography variant='h6' fontWeight='medium'>Roles: </MDTypography>
+                        {!isAddRoleVisible && (
+                          <MDBox>
+                            <MDButton variant="gradient" color="dark" onClick={handleShowAddRoleForm}>Add Role</MDButton>
+                          </MDBox>
+                        )}
+                        {isAddRoleVisible && (
+                          <MDBox>
+                            <MDBox>
+                              <MDTypography variant='h6' fontWeight='medium'>Role:</MDTypography>
+                              <MDInput type='text'
+                                value={roleForm.role}
+                                onChange={(e) => setRoleForm({ ...roleForm, role: e.target.value })}
+                              />
+                            </MDBox>
+                            <MDBox>
+                              <MDTypography variant='h6' fontWeight='medium'>Category: </MDTypography>
+                              <MDInput type="text" value={roleForm.category}
+                                onChange={(e) => setRoleForm({ ...roleForm, category: e.target.value })} />
+                            </MDBox>
+                            <MDBox>
+                              <MDTypography variant='h6' fontWeight='medium'>Init Date:</MDTypography><
+                                DatePicker
+                                selected={roleForm.initDate} dateFormat='dd-MM-yyyy'
+                                onSelect={(date) => setRoleForm({ ...roleForm, initDate: date })}
+                                onChange={(date) => setRoleForm({ ...roleForm, initDate: date })}
+                              />
+                            </MDBox>
+                            <MDBox>
+                              <MDButton variant='gradient' color='dark' onClick={(e) => handleAddRoleSubmit(e)}>Save</MDButton>
+                              <MDButton variant="gradient" color="dark" onClick={handleCancelAddRole}>Cancel</MDButton>
+                            </MDBox>
+                          </MDBox>
+                        )}
+                        {updatedPerson.roles?.length > 0 && (
+                          <MDBox>
+                            <MDButton variant='gradient' color='dark' onClick={handleShowRoleList}>Show Role List</MDButton>
+                            {isShowRoleListVisible && (
+                              <MDBox>
+                                {updatedPerson.roles.map((role, index) => (
+                                  <MDBox key={index}>
+                                    <MDTypography variant='h6' fontWeight='medium'>Role: {role.role}</MDTypography>
+                                    <MDTypography variant='h6' fontWeight='medium'>Category: {role.category}</MDTypography>
+                                    <MDTypography variant='h6' fontWeight='medium'>Init Date: {role.initDate}</MDTypography>
+                                    <MDButton variant='gradient' color='dark'
+                                      onClick={() => handleRemoveFromArray('roles', index)}>Remove</MDButton>
+                                  </MDBox>
+                                ))}
+                              </MDBox>
+                            )}
+                          </MDBox>
+                        )}
                       </MDBox>
                     </Grid>
-                      <Grid item xs={6}>
+                  </Grid>
+                  <Grid container spacing={12}>
+                    <Grid item xs={12}>
+                      <MDBox>
+                        <MDButton variant="gradient" color="dark" onClick={handleExpandClick}>
+                          {expand.length === 0 ? 'Expand all' : 'Collapse all'} </MDButton>
                         <MDBox>
-                          <MDTypography variant='h6' fontWeight='medium'>Roles: </MDTypography>
-                          {!isAddRoleVisible && (
-                            <MDBox>
-                              <MDButton variant="gradient" color="dark" onClick={handleShowAddRoleForm}>Add Role</MDButton>
-                            </MDBox>
-                          )}
-                          {isAddRoleVisible && (
-                            <MDBox>
-                              <MDBox>
-                                <MDTypography variant='h6' fontWeight='medium'>Role:</MDTypography>
-                                <MDInput type='text'
-                                  value={roleForm.role}
-                                  onChange={(e) => setRoleForm({ ...roleForm, role: e.target.value })}
-                                />
-                              </MDBox>
-                              <MDBox>
-                                <MDTypography variant='h6' fontWeight='medium'>Category: </MDTypography>
-                                <MDInput type="text" value={roleForm.category} onChange={(e) => setRoleForm({ ...roleForm, category: e.target.value })} />
-                              </MDBox>
-                              <MDBox>
-                                <MDTypography variant='h6' fontWeight='medium'>Init Date:</MDTypography><
-                                  DatePicker
-                                  selected={roleForm.initDate} dateFormat='dd-MM-yyyy'
-                                  onSelect={(date) => setRoleForm({ ...roleForm, initDate: date })}
-                                  onChange={(date) => setRoleForm({ ...roleForm, initDate: date })}
-                                />
-                              </MDBox>
-                              <MDBox>
-                                <MDButton variant='gradient' color='dark' onClick={(e) => handleAddRoleSubmit(e)}>Save</MDButton>
-                                <MDButton variant="gradient" color="dark" onClick={handleCancelAddRole}>Cancel</MDButton>
-                              </MDBox>
-                            </MDBox>
-                          )}
-                          {updatedPerson.roles?.length > 0 && (
-                            <MDBox>
-                              <MDButton variant='gradient' color='dark' onClick={handleShowRoleList}>Show Role List</MDButton>
-                              {isShowRoleListVisible && (
-                                <MDBox>
-                                  {updatedPerson.roles.map((role, index) => (
-                                    <MDBox key={index}>
-                                      <MDTypography variant='h6' fontWeight='medium'>Role: {role.role}</MDTypography>
-                                      <MDTypography variant='h6' fontWeight='medium'>Category: {role.category}</MDTypography>
-                                      <MDTypography variant='h6' fontWeight='medium'>Init Date: {role.initDate}</MDTypography>
-                                      <MDButton variant='gradient' color='dark' onClick={() => handleRemoveFromArray('roles', index)}>Remove</MDButton>
-                                    </MDBox>
-                                  ))}
-                                </MDBox>
-                              )}
-                            </MDBox>
-                          )}
+                          < MDInput
+                            type='text'
+                            value={searchSkill} onChange=
+                            {(e) => setSearchSkill(e.target.value)} placeholder=
+                            'Search' />
                         </MDBox>
-                      </Grid>
+                        <DataTreeView />
+                      </MDBox>
+                      {skillList &&
+                        <SkillTable skill={selectedNode} onReturnRows={handleReturnRows} listToUpdate={listas}/>
+                      }
+                      <MDButton color='black' onClick={handleSubmit}>Submit</MDButton>
                     </Grid>
-                    <Grid container spacing={12}>
-                      <Grid item xs={12}>
-                        <MDBox>
-                          <MDButton variant="gradient" color="dark" onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'} </MDButton>
-                          <MDBox>
-                            < MDInput
-                              type='text'
-                              value={searchSkill} onChange=
-                              {(e) => setSearchSkill(e.target.value)} placeholder=
-                              'Search' />
-                          </MDBox>
-                          <DataTreeView />
-                        </MDBox>
-                        {skillList &&
-                          <SkillTable skill={selectedNode} onReturnRows={handleReturnRows} listToUpdate={listas}
-                          />
-                        }
-                        <MDButton color='black' onClick={handleSubmit}>Submit</MDButton>
-                      </Grid>
-                    </Grid>
-                  </form>
-                </Card>
+                  </Grid>
+                </form>
+              </Card>
               ))}
           </Grid>
         </Grid>

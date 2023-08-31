@@ -6,7 +6,7 @@ import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import MDInput from '../components/MDInput';
 import MDButton from '../components/MDButton';
-import {useState} from 'react';
+import { useState } from 'react';
 import Sunburst from './Sunburst';
 
 
@@ -15,7 +15,7 @@ const SkillStatsForm = () => {
     const [data, setData] = useState('');
 
     const handleTitle = (event) => {
-        const newValue = event.target.value.toUpperCase(); 
+        const newValue = event.target.value.toUpperCase();
         setForm({
             ...form,
             [event.target.id]: newValue,
@@ -23,7 +23,6 @@ const SkillStatsForm = () => {
     };
 
     const skillStat = (title) => {
-
         const recursive = (dataList) => {
             let list = [];
             if (!!dataList) {
@@ -82,21 +81,18 @@ const SkillStatsForm = () => {
                                 bgColor='info'
                                 borderRadius='lg'
                                 coloredShadow='info' >
-                                <MDTypography variant='h6' color='white'>
-                                    Skill Stats
-                                </MDTypography>
+                                <MDTypography variant='h6' color='white'>Skill Stats</MDTypography>
                             </MDBox>
                             <MDBox pt={3}>
-                                <form onSubmit={handleSubmit}><MDBox>
-                                    <MDTypography variant='h6' fontWeight='medium'>
-                                        Title
-                                    </MDTypography>
-                                    <MDInput
-                                        id="title"
-                                        type="text"
-                                        value={form.title}
-                                        onChange={handleTitle} />
-                                </MDBox>
+                                <form onSubmit={handleSubmit}>
+                                    <MDBox>
+                                        <MDTypography variant='h6' fontWeight='medium'>Title</MDTypography>
+                                        <MDInput
+                                            id="title"
+                                            type="text"
+                                            value={form.title}
+                                            onChange={handleTitle} />
+                                    </MDBox>
                                     <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
                                 </form>
                             </MDBox>
@@ -111,9 +107,7 @@ const SkillStatsForm = () => {
                                         bgColor='info'
                                         borderRadius='lg'
                                         coloredShadow='info' >
-                                        <MDTypography variant='h6' color='white'>
-                                            Skills Graph
-                                        </MDTypography>
+                                        <MDTypography variant='h6' color='white'>Skills Graph</MDTypography>
                                     </MDBox>
                                     <MDBox pt={3}>
                                         <Sunburst data={data} />

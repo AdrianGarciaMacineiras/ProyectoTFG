@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
 import {
     IconButton,
@@ -24,17 +24,18 @@ import moment from 'moment';
 const levels = ['LOW', 'MIDDLE', 'ADVANCED'];
 
 const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
-    const [rows, setRows] = useState([]);
+    const rowsRef = useRef([]);
+    const [rows, setRows] = useState([]); 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
     useEffect(() => {
         if (listToUpdate) {
             const newRows = [];
-
+    
             listToUpdate.knows.forEach(knowsItem => {
                 const matchingRow = newRows.find(row => row.code === knowsItem.code);
-
+    
                 if (!matchingRow) {
                     const newRow = {
                         code: knowsItem.code,
@@ -52,10 +53,10 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                     newRows.push(newRow);
                 }
             });
-
+    
             listToUpdate.certificates.forEach(certificatesItem => {
                 const matchingRow = newRows.find(row => row.code === certificatesItem.code);
-
+    
                 if (matchingRow) {
                     matchingRow.certificates = { ...certificatesItem };
                 } else {
@@ -76,10 +77,10 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                     newRows.push(newRow);
                 }
             });
-
+    
             listToUpdate.master.forEach(masterItem => {
                 const matchingRow = newRows.find(row => row.code === masterItem.code);
-
+    
                 if (matchingRow) {
                     matchingRow.master = true;
                 } else {
@@ -104,10 +105,10 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                     newRows.push(newRow);
                 }
             });
-
+    
             listToUpdate.interest.forEach(interestItem => {
                 const matchingRow = newRows.find(row => row.code === interestItem.code);
-
+    
                 if (matchingRow) {
                     matchingRow.interest = true;
                 } else {
@@ -132,10 +133,10 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                     newRows.push(newRow);
                 }
             });
-
+    
             listToUpdate.work_with.forEach(workWithItem => {
                 const matchingRow = newRows.find(row => row.code === workWithItem.code);
-
+    
                 if (matchingRow) {
                     matchingRow.workwith = true;
                 } else {
@@ -160,13 +161,14 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                     newRows.push(newRow);
                 }
             });
-            setRows(newRows);
+            rowsRef.current = newRows;
         }
     }, [listToUpdate]);
+    
 
     useEffect(() => {
         if (skill) {
-            const skillExists = rows.some(row => row.code === skill.nodeId);
+            const skillExists = rowsRef.current.some(row => row.code === skill.nodeId);
 
             if (!skillExists) {
                 const newRow = {
@@ -188,55 +190,63 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                     },
                     notAssigned: true,
                 };
-                console.log("insertar",rows)
-                setRows(prevRows => [newRow, ...prevRows]);
+                console.log("insertar",rowsRef.current)
+                rowsRef.current = [newRow, ...rowsRef.current];
+                setRows(rowsRef.current);
             }
         }
-    }, [skill, rows]);
+    }, [skill]);
 
 
     const handleCheckboxChange = (event, rowIndex, field) => {
-        const updatedRows = [...rows];
+        const updatedRows = [...rowsRef.current];
         updatedRows[rowIndex][field] = event.target.checked;
         if (updatedRows[rowIndex].notAssigned) {
             updatedRows[rowIndex].notAssigned = false;
         }
-        setRows(updatedRows);
+        rowsRef.current = updatedRows;
+        setRows(rowsRef.current);
     };
-
+    
     const handleComplexCheckboxChange = (event, rowIndex, field) => {
         const [mainField, nestedField] = field.split('.');
-        const updatedRows = [...rows];
+        const updatedRows = [...rowsRef.current];
         updatedRows[rowIndex][mainField][nestedField] = event.target.checked;
         if (updatedRows[rowIndex].notAssigned) {
             updatedRows[rowIndex].notAssigned = false;
         }
-        setRows(updatedRows);
+        rowsRef.current = updatedRows;
+        setRows(rowsRef.current);
     };
-
+    
     const handleSelectChange = (event, rowIndex, field) => {
         const [mainField, nestedField] = field.split('.');
-        const updatedRows = [...rows];
-        updatedRows[rowIndex][mainField][nestedField] = event.target.value;
-        setRows(updatedRows);
+        const updatedRows = [...rowsRef.current];
+        if (nestedField === 'experience') {
+            const newValue = parseInt(event.target.value);
+            updatedRows[rowIndex][mainField][nestedField] = Math.max(newValue, 0);
+        } else {
+            updatedRows[rowIndex][mainField][nestedField] = event.target.value;
+        }
+        rowsRef.current = updatedRows;
+        setRows(rowsRef.current);
     };
-
+    
     const handleDateChange = (date, field, rowIndex) => {
-        const updatedRows = [...rows];
+        const updatedRows = [...rowsRef.current];
         updatedRows[rowIndex][field].date = moment(date).format('DD-MM-YYYY');
-        setRows(updatedRows);
+        rowsRef.current = updatedRows;
+        setRows(rowsRef.current);
     };
-
+    
     const handleDeleteRow = (rowIndex) => {
-        console.log("antes de borrar",rows);
-        const updatedRows = rows.filter((row, index) => index !== rowIndex);
-        console.log("borrar",updatedRows);
-        setRows(updatedRows);
-        skill = null;
+        const updatedRows = rowsRef.current.filter((row, index) => index !== rowIndex);
+        rowsRef.current = updatedRows;
+        setRows(rowsRef.current);
     };
 
     const handleReturnRows = () => {
-        onReturnRows(rows);
+        onReturnRows(rowsRef.current);
     };
 
     return (
@@ -254,7 +264,7 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows
+                        {rowsRef.current
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row, rowIndex) => (
                                 <TableRow key={rowIndex}>
@@ -360,7 +370,7 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 50]}
                     component="div"
-                    count={rows.length}
+                    count={rowsRef.current.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={(event, newPage) => setPage(newPage)}

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SortIcon from '@mui/icons-material/Sort';
@@ -13,7 +12,7 @@ import {
 } from '@mui/material';
 
 
-const NestedKnows = (props) => {
+const AssignedList = (props) => {
   const { data, state, onStateChange, onPageChange, onRowsPerPageChange } = props;
   const { page=0, rowsPerPage=10, orderBy, sortDirection } = state || {};
 
@@ -21,19 +20,6 @@ const NestedKnows = (props) => {
     const newSortDirection = orderBy === column ? (sortDirection === 'asc' ? 'desc' : 'asc') : 'asc';
     const newState = { page, rowsPerPage, orderBy: column, sortDirection: newSortDirection };
     onStateChange(newState);
-  };
-
-  const getExperienceValue = (experience) => {
-    switch (experience) {
-      case 'LOW':
-        return 1;
-      case 'MIDDLE':
-        return 2;
-      case 'ADVANCED':
-        return 3;
-      default:
-        return 0;
-    }
   };
 
   const handlePageChange = (event, newPage) => {
@@ -50,66 +36,65 @@ const NestedKnows = (props) => {
     if (orderBy === column) {
       return sortDirection === 'asc' ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />;
     };
-    if (column !== 'experience') {
+    if (column !== 'role') {
       return <SortByAlphaIcon />;
     } else {
       return <SortIcon />;
     }
-  };
+  }
 
   return (
     <>
       <Table>
         <TableHead sx={{ display: "table-header-group" }}>
           <TableRow>
-            <TableCell align='left' onClick={() => handleSortChange('name')}>
-              {getSortIcon('name')}
-              Name
+          <TableCell align='left' onClick={() => handleSortChange('assigned')}>
+              {getSortIcon('assigned')}
+              Assigned
             </TableCell>
-            <TableCell align='left' onClick={() => handleSortChange('level')}>
-              {getSortIcon('level')}
-              Level
+            <TableCell align='left' onClick={() => handleSortChange('role')}>
+              {getSortIcon('role')}
+              Role
             </TableCell>
-            <TableCell align='left' onClick={() => handleSortChange('experience')}>
-              {getSortIcon('experience')}
-              Experience
+            <TableCell align='left' onClick={() => handleSortChange('initDate')}>
+              {getSortIcon('initDate')}
+              Init Date
             </TableCell>
-            <TableCell align='left' onClick={() => handleSortChange('primary')}>
-              {getSortIcon('primary')}
-              Primary
+            <TableCell align='left' onClick={() => handleSortChange('endDate')}>
+              {getSortIcon('endDate')}
+              End Date
+            </TableCell>
+            <TableCell align='left' onClick={() => handleSortChange('assignDate')}>
+              {getSortIcon('assignDate')}
+              Assign Date
+            </TableCell>
+            <TableCell align='left' onClick={() => handleSortChange('dedication')}>
+              {getSortIcon('dedication')}
+              Dedication
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data?.slice()
             .sort((a, b) => {
-              if (orderBy === 'level') {
-                const aValue = getExperienceValue(a[orderBy]);
-                const bValue = getExperienceValue(b[orderBy]);
+              const aValue = a[orderBy];
+              const bValue = b[orderBy];
 
-                if (sortDirection === 'asc') {
-                  return aValue - bValue;
-                } else {
-                  return bValue - aValue;
-                }
+              if (sortDirection === 'asc') {
+                return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
               } else {
-                const aValue = a[orderBy];
-                const bValue = b[orderBy];
-
-                if (sortDirection === 'asc') {
-                  return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-                } else {
-                  return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-                }
+                return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
               }
             })
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row, index) => (
               <TableRow key={index}>
-                <TableCell style={{ width: "5%" }}>{row.name}</TableCell>
-                <TableCell>{row.level}</TableCell>
-                <TableCell>{row.experience}</TableCell>
-                <TableCell>{row.primary}</TableCell>
+                <TableCell>{row.assigned}</TableCell>
+                <TableCell>{row.role}</TableCell>
+                <TableCell>{row.initDate}</TableCell>
+                <TableCell>{row.endDate}</TableCell>
+                <TableCell>{row.assignDate}</TableCell>
+                <TableCell>{row.dedication}</TableCell>
               </TableRow>
             ))}
         </TableBody>
@@ -128,4 +113,4 @@ const NestedKnows = (props) => {
   );
 };
 
-export default NestedKnows;
+export default AssignedList;

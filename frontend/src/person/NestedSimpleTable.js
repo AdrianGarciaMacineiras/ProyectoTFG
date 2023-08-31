@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import { useState} from 'react';
 import {
   Table,
   TableBody,
@@ -23,7 +23,7 @@ const NestedMaster = ({ data }) => {
     };
 
     const paginatedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-    console.log(data);
+
     return (
       <>
         <Table>

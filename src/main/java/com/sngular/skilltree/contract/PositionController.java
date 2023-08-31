@@ -3,9 +3,7 @@ package com.sngular.skilltree.contract;
 import java.util.List;
 
 import com.sngular.skilltree.api.PositionApi;
-import com.sngular.skilltree.api.model.CandidateDTO;
-import com.sngular.skilltree.api.model.PatchedPositionDTO;
-import com.sngular.skilltree.api.model.PositionDTO;
+import com.sngular.skilltree.api.model.*;
 import com.sngular.skilltree.application.PositionService;
 import com.sngular.skilltree.application.updater.PositionUpdater;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
@@ -90,5 +88,10 @@ public class PositionController implements PositionApi {
         return ResponseEntity.ok(candidateMapper
                 .toCandidatesDTO(positionService
                         .getCandidates(positionCode)));
+    }
+
+    @Override
+    public ResponseEntity<List<PositionResumedDTO>> getPositionResume() {
+        return ResponseEntity.ok(positionMapper.toPositionResumedDto(positionService.getAllResumed()));
     }
 }

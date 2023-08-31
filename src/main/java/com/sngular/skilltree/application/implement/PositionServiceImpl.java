@@ -10,7 +10,9 @@ import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.PositionRepository;
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.Position;
+import com.sngular.skilltree.model.views.PositionView;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +26,12 @@ public class PositionServiceImpl implements PositionService {
   @Override
   public List<Position> getAll() {
     return positionRepository.findAll();
+  }
+
+  @Override
+  @Cacheable(cacheNames = "positionView")
+  public List<PositionView> getAllResumed() {
+    return positionRepository.findAllResumed();
   }
 
   @Override

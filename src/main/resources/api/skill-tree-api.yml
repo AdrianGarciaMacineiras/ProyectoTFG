@@ -258,6 +258,35 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /api/position/shortinfo:
+    summary: Company positions
+    description: Returns a list of all positions
+    get:
+      summary: List all available positions
+      operationId: getPositionResume
+      tags:
+        - position
+      responses:
+        '200':
+          description: A paged array of positions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/positionResumed"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+
   /api/position/{positionCode}:
     get:
       summary: Gets a position by the code
@@ -1763,7 +1792,6 @@ components:
       type: object
       required:
         - code
-        - projectCode
         - skills
       properties:
         code:
@@ -1836,6 +1864,42 @@ components:
             $ref: "#/components/schemas/positionAssignment"
         open:
           type: boolean
+
+    positionResumed:
+      type: object
+      required:
+        - code
+        - skills
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        projectCode:
+          type: string
+        openingDate:
+          type: string
+          format: date
+        priority:
+          type: string
+        mode:
+          $ref: "#/components/schemas/mode"
+        office:
+          type: string
+        role:
+          type: string
+        skills:
+          type: array
+          items:
+            $ref: "#/components/schemas/positionSkill"
+        candidates:
+          type: array
+          items:
+            $ref: "#/components/schemas/candidate"
+        assignedPeople:
+          type: array
+          items:
+            $ref: "#/components/schemas/positionAssignment"
 
     mode:
       type: string

@@ -1,6 +1,10 @@
 import Add from '@mui/icons-material/Add';
 import Clear from '@mui/icons-material/Clear';
 import Update from '@mui/icons-material/Update';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import SortIcon from '@mui/icons-material/Sort';
+import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import {
   IconButton,
   Paper,
@@ -22,7 +26,6 @@ import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
 import MDBox from '../components/MDBox';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
-import ClientForm from './CreateClient';
 
 
 const UpdateClient =
@@ -92,37 +95,47 @@ const UpdateClient =
 
     const DataClient = ({ row }) => {
       return (
-          <TableRow key={row.code}>
-            <TableCell align='left'>{row.code}</TableCell>
-            <TableCell align="left">{row.name}</TableCell>
-            <TableCell align='left'>{row.industry}</TableCell>
-            <TableCell align="left">{row.country}</TableCell>
-            <TableCell>
-              <Tooltip title='Update element'>
-                <IconButton
-                  aria-label='update row'
-                  size='small'
-                  onClick={(event) => handleUpdate(event, row.name)}
-                >
-                  {<Update />}
-                </IconButton>
-              </Tooltip>
-            </TableCell>
-            <TableCell>
-              <Tooltip title="Delete item">
-                <IconButton
-                  aria-label="clear row"
-                  size="small"
-                  onClick={(event) => handleDelete(event, row.name)}
-                >
-                  {<Clear />}
-                </IconButton>
-              </Tooltip>
-            </TableCell>
-          </TableRow>
+        <TableRow key={row.code}>
+          <TableCell align='left'>{row.code}</TableCell>
+          <TableCell align="left">{row.name}</TableCell>
+          <TableCell align='left'>{row.industry}</TableCell>
+          <TableCell align="left">{row.country}</TableCell>
+          <TableCell>
+            <Tooltip title='Update element'>
+              <IconButton
+                aria-label='update row'
+                size='small'
+                onClick={(event) => handleUpdate(event, row.name)}
+              >
+                {<Update />}
+              </IconButton>
+            </Tooltip>
+          </TableCell>
+          <TableCell>
+            <Tooltip title="Delete item">
+              <IconButton
+                aria-label="clear row"
+                size="small"
+                onClick={(event) => handleDelete(event, row.name)}
+              >
+                {<Clear />}
+              </IconButton>
+            </Tooltip>
+          </TableCell>
+        </TableRow>
       );
     };
 
+    function getSortIcon(column) {
+      if (orderBy === column) {
+        return sortDirection === 'asc' ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />;
+      };
+      if (column !== 'code') {
+        return <SortByAlphaIcon />;
+      } else {
+        return <SortIcon />;
+      }
+    }
     return (
       <DashboardLayout>
         <DashboardNavbar />
@@ -149,30 +162,23 @@ const UpdateClient =
                   </MDBox>
                 </MDBox>
                 <TableContainer component={Paper}>
-                  <Table sx={
-                    { minWidth: 650 }} aria-label='simple table'>
-                    <TableHead sx={{
-                      display: 'table-header-group'
-                    }}>
+                  <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+                    <TableHead sx={{display: 'table-header-group'}}>
                       <TableRow>
                         <TableCell align='left' onClick={() => handleSortChange('code')}>
-                          <strong>{
-                            orderBy === 'code' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+                          {getSortIcon('code')}
                           Code
                         </TableCell>
                         <TableCell align='left' onClick={() => handleSortChange('name')}>
-                          <strong>{
-                            orderBy === 'name' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+                          {getSortIcon('name')}
                           Name
                         </TableCell>
                         <TableCell align='left' onClick={() => handleSortChange('industry')}>
-                          <strong>{
-                            orderBy === 'industry' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+                          {getSortIcon('industry')}
                           Industry
                         </TableCell>
                         <TableCell align='left' onClick={() => handleSortChange('country')}>
-                          <strong>{
-                            orderBy === 'country' ? (sortDirection === 'asc' ? '▲ ' : '▼ ') : null}</strong>
+                          {getSortIcon('country')}
                           Country
                         </TableCell>
                       </TableRow>
@@ -191,8 +197,7 @@ const UpdateClient =
                         })
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row, index) => (
-                          <DataClient key={index} row={
-                            row} />
+                          <DataClient key={index} row={row} />
                         ))}
                     </TableBody>
                   </Table>
@@ -207,8 +212,10 @@ const UpdateClient =
                   onRowsPerPageChange={handleChangeRowsPerPage}
                 />
               </Card>
-            </Grid></Grid>
-        </MDBox></DashboardLayout>
+            </Grid>
+          </Grid>
+        </MDBox>
+      </DashboardLayout>
     );
   };
 

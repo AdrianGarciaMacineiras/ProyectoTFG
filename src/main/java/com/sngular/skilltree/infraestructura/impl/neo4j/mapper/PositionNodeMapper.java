@@ -6,8 +6,11 @@ import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveServiceNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PositionNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PositionSkillsRelationship;
+import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PositionExtendedView;
+import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.PositionSkill;
+import com.sngular.skilltree.model.views.PositionView;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -35,4 +38,15 @@ public interface PositionNodeMapper {
   PositionSkill toPositionSkill(PositionSkillsRelationship positionSkillsRelationship);
 
   List<Position> map(List<PositionNode> all);
+
+  List<PositionView> mapExtended(List<PositionExtendedView> all);
+
+  @Mapping(target = "managedBy", source = "managedBy", qualifiedByName = {"resolveServiceNode", "mapToManagedByPeople"})
+  PositionView mapToPositionView(PositionExtendedView positionExtendedView);
+
+  @Mapping(target = "introductionDate", dateFormat = "dd-MM-yyyy")
+  @Mapping(target = "resolutionDate", dateFormat = "dd-MM-yyyy")
+  @Mapping(target = "creationDate", dateFormat = "dd-MM-yyyy")
+  @Mapping(target = "interviewDate", dateFormat = "dd-MM-yyyy")
+  List<Candidate> mapCandidates(List<PositionExtendedView.CandidateView> all);
 }

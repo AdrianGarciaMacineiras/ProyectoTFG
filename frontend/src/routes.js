@@ -13,6 +13,7 @@ import UpdatePersonForm from './person/UpdatePersonForm'
 
 import CreatePosition from './position/CreatePosition'
 import FindPosition from './position/FindPosition'
+import ListPositions from './position/ListPositions'
 
 import CreateProject from './project/CreateProject'
 import FindProject from './project/FindProject'
@@ -168,7 +169,16 @@ const routes = [
       route: '/createPosition',
       component: <CreatePosition />,
       child: []
-    }]
+    },
+    {
+      type: 'collapse',
+      name: 'List',
+      key: 'listPositions',
+      icon: <Icon fontSize='small'>assignment</Icon>,
+      route: '/listPositions',
+      component: <ListPositions />,
+    }
+  ]
   },
   {
     type: 'title',

@@ -224,24 +224,24 @@ const CreateProject = () => {
       if (isMatched) {
         return (
           <TreeItem
-          key={treeItemData.nodeId}
-          nodeId={treeItemData.nodeId}
-          label={
-            <div>
-              <Checkbox
-                value={treeItemData.nodeId}
-                checked={isSelected}
-                onChange={handleCheckboxChange}
-                onClick={(event) => event.stopPropagation()}
-              />
-              <span
-                onClick={(event) => event.stopPropagation()}
-              >
-                {treeItemData.name}
-              </span>
-            </div>
-          }
-        >
+            key={treeItemData.nodeId}
+            nodeId={treeItemData.nodeId}
+            label={
+              <div>
+                <Checkbox
+                  value={treeItemData.nodeId}
+                  checked={isSelected}
+                  onChange={handleCheckboxChange}
+                  onClick={(event) => event.stopPropagation()}
+                />
+                <span
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  {treeItemData.name}
+                </span>
+              </div>
+            }
+          >
             {getTreeItemsFromData(treeItemData.children, searchValue)}
           </TreeItem>
         );
@@ -315,8 +315,6 @@ const CreateProject = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(form);
-
     createProject();
 
     setGraph({
@@ -358,14 +356,10 @@ const CreateProject = () => {
                 <MDBox pt={3}>
                   <Grid container spacing={6}>
                     <Grid item xs={6}>
-
                       <MDTypography variant='h6' fontWeight='medium'>Project code</MDTypography>
                       <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" />
-
                       <Grid item xs={6}>
-                        <MDTypography variant='h6' fontWeight='medium'>
-                          Client Name
-                        </MDTypography>
+                        <MDTypography variant='h6' fontWeight='medium'>Client Name</MDTypography>
                         <Autocomplete
                           options={clientList}
                           getOptionLabel={(client) => client.name}
@@ -374,24 +368,16 @@ const CreateProject = () => {
                             handleInputChange({ target: { name: "clientCode", value: newValue?.code || '' } });
                           }}
                           renderInput={(params) => (
-                            <MDInput
-                              {...params}
-                              label="Select a client"
-                              name="clientCode"
-                            />
+                            <MDInput {...params} label="Select a client" name="clientCode" />
                           )}
                         />
                       </Grid>
-
                       <MDTypography variant='h6' fontWeight='medium'>Project name</MDTypography>
                       <MDInput type="text" value={form.name} onChange={handleInputChange} name="name" />
-
                       <MDTypography variant='h6' fontWeight='medium'>Tag</MDTypography>
                       <MDInput type="text" value={form.tag} onChange={handleInputChange} name="tag" />
-
                       <MDTypography variant='h6' fontWeight='medium'>Description</MDTypography>
                       <MDInput type="text" value={form.desc} onChange={handleInputChange} name="desc" />
-
                       <MDTypography variant='h6' fontWeight='medium'>Init Date</MDTypography>
                       <DatePicker
                         selected={initDate}
@@ -399,7 +385,6 @@ const CreateProject = () => {
                         onSelect={(date) => setInitDate(date)}
                         onChange={(date) => handleInputChange({ target: { name: "initDate", value: format(date, 'dd-MM-yyyy') } })}
                       />
-
                       <MDTypography variant='h6' fontWeight='medium'>End Date</MDTypography>
                       <DatePicker
                         selected={endDate}
@@ -407,18 +392,14 @@ const CreateProject = () => {
                         onSelect={(date) => setEndDate(date)}
                         onChange={(date) => handleInputChange({ target: { name: "endDate", value: format(date, 'dd-MM-yyyy') } })}
                       />
-
                       <MDTypography variant='h6' fontWeight='medium'>Area</MDTypography>
                       <MDInput type="text" value={form.area} onChange={handleInputChange} name="area" />
                     </Grid>
-
                     <Grid item xs={6}>
                       <MDTypography variant='h6' fontWeight='medium'>Domain</MDTypography>
                       <MDInput type='text' value={form.domain} onChange={handleInputChange} name='domain' />
-
                       <MDTypography variant='h6' fontWeight='medium'>Duration</MDTypography>
                       <MDInput type="text" value={form.duration} onChange={handleInputChange} name="duration" />
-
                       <MDTypography variant='h6' fontWeight='medium'>Guard</MDTypography>
                       <FormControl fullWidth>
                         <InputLabel>Select an option</InputLabel>
@@ -429,10 +410,9 @@ const CreateProject = () => {
                           <MenuItem value="UNKNOWN">Unknown</MenuItem>
                         </Select>
                       </FormControl>
-
                       <MDButton variant="gradient" color="dark" onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'} </MDButton>
                       <br />
-                      <input
+                      <MDInput
                         type='text'
                         value={searchSkill}
                         onChange={(e) => setSearchSkill(e.target.value)}
@@ -455,30 +435,28 @@ const CreateProject = () => {
         </Grid>
       </MDBox>
       <MDBox pt={6} pb={3}>
-
-        <Grid container spacing={6}>
-          <Grid item xs={12}>
-            <Card>
-              <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
-                bgColor='info'
-                borderRadius='lg'
-                coloredShadow='info' >
-                <MDTypography variant='h6' color='white'>Position Graph</MDTypography>
-              </MDBox>
-              <MDBox pt={3}>
-                <VisGraph
-                  graph={graph}
-                  options={options}
-                  events={events}
-                  getNetwork={network => {
-                    //  if you want access to vis.js network api you can set the state in a parent component using this property
-                  }}
-                />
-              </MDBox>
-
-            </Card>
+        {graph &&
+          <Grid container spacing={6}>
+            <Grid item xs={12}>
+              <Card>
+                <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
+                  bgColor='info'
+                  borderRadius='lg'
+                  coloredShadow='info' >
+                  <MDTypography variant='h6' color='white'>Position Graph</MDTypography>
+                </MDBox>
+                <MDBox pt={3}>
+                  <VisGraph
+                    graph={graph}
+                    options={options}
+                    events={events}
+                    getNetwork={network => { }}
+                  />
+                </MDBox>
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
+        }
       </MDBox>
       <Footer />
     </DashboardLayout>

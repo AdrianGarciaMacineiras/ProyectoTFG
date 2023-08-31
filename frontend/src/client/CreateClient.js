@@ -2,7 +2,7 @@ import '../network.css';
 
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import React, {useState} from 'react';
+import { useState } from 'react';
 import VisGraph from 'react-vis-graph-wrapper';
 
 import Footer from '../components/Footer';
@@ -12,7 +12,7 @@ import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const ClientForm = () => {
   const [clientData, setClientData] = useState({
@@ -97,17 +97,17 @@ const ClientForm = () => {
       },
       body: requestBody,
     })
-    .then(response => response.json())
-    .then(response => {
-      setGraph({
-        nodes: [{
-          id: 1,
-          label: response.name,
-          title: JSON.stringify(response, '', 2)
-        }],
-        edges: []
+      .then(response => response.json())
+      .then(response => {
+        setGraph({
+          nodes: [{
+            id: 1,
+            label: response.name,
+            title: JSON.stringify(response, '', 2)
+          }],
+          edges: []
+        });
       });
-    });
 
     navigate(`/listClients`);
 
@@ -189,29 +189,27 @@ const ClientForm = () => {
               </form>
             </Card>
           </Grid>
-          <Grid item xs={12}>
-            <Card>
-              < MDBox
-                mx={2} mt={-3} py={3} px={2} variant='gradient'
-                bgColor='info'
-                borderRadius='lg'
-                coloredShadow='info' >
-                <MDTypography variant='h6' color='white'>Client Graph</MDTypography>
-              </MDBox>
-              <MDBox pt={3}>
-                {graph && (
+          {graph &&
+            <Grid item xs={12}>
+              <Card>
+                < MDBox
+                  mx={2} mt={-3} py={3} px={2} variant='gradient'
+                  bgColor='info'
+                  borderRadius='lg'
+                  coloredShadow='info' >
+                  <MDTypography variant='h6' color='white'>Client Graph</MDTypography>
+                </MDBox>
+                <MDBox pt={3}>
                   <VisGraph
                     graph={graph}
                     options={options}
                     events={events}
-                    getNetwork={network => {
-                      // if you want access to vis.js network api you can set the state in a parent component using this property
-                    }}
+                    getNetwork={network => {}}
                   />
-                )}
-              </MDBox>
-            </Card>
-          </Grid>
+                </MDBox>
+              </Card>
+            </Grid>
+          }
         </Grid>
       </MDBox>
       <Footer />

@@ -4,10 +4,13 @@ import java.util.List;
 
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.PositionAssignment;
+import com.sngular.skilltree.model.views.PositionView;
 
 public interface PositionRepository {
 
   List<Position> findAll();
+
+  List<PositionView> findAllResumed();
 
   Position save(Position position);
 

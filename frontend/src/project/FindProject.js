@@ -2,13 +2,11 @@ import '../network.css';
 
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import VisGraph from 'react-vis-graph-wrapper';
 
 import Footer from '../components/Footer';
-// Material Dashboard 2 React example components
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
-// Material Dashboard 2 React components
 import MDBox from '../components/MDBox';
 import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
@@ -100,8 +98,8 @@ function FindProject() {
         if (!!response.skills) {
           response.skills.forEach(element => {
             i++;
-            graphTemp.nodes.push({id: i, label: element, title: element, groups: 'skills'});
-            graphTemp.edges.push({from: 1, to: i, label: 'REQUIRE', title: response.clientCode});
+            graphTemp.nodes.push({ id: i, label: element, title: element, groups: 'skills' });
+            graphTemp.edges.push({ from: 1, to: i, label: 'REQUIRE', title: response.clientCode });
           });
         }
 
@@ -134,41 +132,47 @@ function FindProject() {
                 mx={2} mt={-3} py={3} px={2} variant='gradient'
                 bgColor='info'
                 borderRadius='lg'
-                coloredShadow='info' > <MDTypography variant='h6' color='white'>Find
-                  Project</MDTypography>
-              </MDBox><MDBox pt={3}>
-                <form onSubmit={handleSubmit}><MDBox>
-                  <MDTypography variant='h6' fontWeight='medium'>Project code</MDTypography>
-                  <MDInput
-                    id="projectCode"
-                    type="text"
-                    value={form.projectCode}
-                    onChange={handleProjectCode} />
-                </MDBox>
+                coloredShadow='info' > <MDTypography variant='h6' color='white'>Find Project</MDTypography>
+              </MDBox>
+              <MDBox pt={3}>
+                <form onSubmit={handleSubmit}>
+                  <MDBox>
+                    <MDTypography variant='h6' fontWeight='medium'>Project code</MDTypography>
+                    <MDInput
+                      id="projectCode"
+                      type="text"
+                      value={form.projectCode}
+                      onChange={handleProjectCode} />
+                  </MDBox>
                   <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
                 </form>
               </MDBox>
             </Card>
-          </Grid><Grid item xs={12}><Card>< MDBox
-            mx={2} mt={-3} py={3} px={2} variant='gradient'
-            bgColor='info'
-            borderRadius='lg'
-            coloredShadow=
-            'info' > <MDTypography variant='h6' color='white'>Project
-              Graph</MDTypography>
-          </MDBox><MDBox pt={3}><
-            VisGraph
-            graph={graph} options={options} events={events} getNetwork=
-            {
-              network => {
-                //  if you want access to vis.js network api you can set the state in a
-                //  parent component using this property
-              }
-            } />
-            </MDBox > </Card>
           </Grid>
+          {graph &&
+            <Grid item xs={12}>
+              <Card>
+                < MDBox
+                  mx={2} mt={-3} py={3} px={2} variant='gradient'
+                  bgColor='info'
+                  borderRadius='lg'
+                  coloredShadow='info' >
+                  <MDTypography variant='h6' color='white'>Project Graph</MDTypography>
+                </MDBox>
+                <MDBox pt={3}>
+                  <VisGraph
+                    graph={graph}
+                    options={options}
+                    events={events}
+                    getNetwork={network => {}} />
+                </MDBox >
+              </Card>
+            </Grid>
+          }
         </Grid>
-      </MDBox><Footer /></DashboardLayout>
+      </MDBox>
+      <Footer />
+    </DashboardLayout>
   );
 }
 

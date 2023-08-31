@@ -40,7 +40,6 @@ public class PeopleController implements PeopleApi, PersonApi {
         final var aux = peopleMapper
                 .toPersonDTO(peopleService
                         .findByCode(peopleCode));
-        log.info(aux.toString());
         return ResponseEntity.ok(aux);
     }
 

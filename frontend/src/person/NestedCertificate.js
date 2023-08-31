@@ -37,7 +37,7 @@ const NestedCertificate = (props) => {
     if (orderBy === column) {
       return sortDirection === 'asc' ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />;
     };
-    if (column !== 'experience') {
+    if (column === 'name') {
       return <SortByAlphaIcon />;
     } else {
       return <SortIcon />;

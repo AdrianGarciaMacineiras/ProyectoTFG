@@ -128,7 +128,7 @@ const CreatePerson =
               EmployeeId: response.employeeId,
               FriendlyName: response.friendlyName,
               Title: response.title
-             // BirthDate: response.birthDate
+              // BirthDate: response.birthDate
             };
             graphTemp.nodes.push({
               id: i,
@@ -419,8 +419,8 @@ const CreatePerson =
               },
             ],
           }));
-      }
-    });
+        }
+      });
     };
 
     return (
@@ -435,9 +435,7 @@ const CreatePerson =
                   bgColor='info'
                   borderRadius='lg'
                   coloredShadow='info' >
-                  <MDTypography variant='h6' color='white'>
-                    Create Person
-                  </MDTypography>
+                  <MDTypography variant='h6' color='white'>Create Person</MDTypography>
                 </MDBox>
                 <form id='personForm'>
                   <Grid container spacing={6}>
@@ -489,18 +487,18 @@ const CreatePerson =
                           <MDBox>
                             <MDBox>
                               <MDTypography variant='h6' fontWeight='medium'>Role:</MDTypography>
-                              <MDInput type='text' value={roleForm.role} onChange=
-                                {
-                                  (e) => setRoleForm({ ...roleForm, role: e.target.value })
-                                } />
-                            </MDBox><MDBox>
+                              <MDInput type='text' value={roleForm.role} onChange={
+                                (e) => setRoleForm({ ...roleForm, role: e.target.value })} />
+                            </MDBox>
+                            <MDBox>
                               <MDTypography variant='h6' fontWeight='medium'>Category: </MDTypography>
-                              <MDInput type="text" value={roleForm.category} onChange={(e) => setRoleForm({ ...roleForm, category: e.target.value })} />
+                              <MDInput type="text" value={roleForm.category} onChange={
+                                (e) => setRoleForm({ ...roleForm, category: e.target.value })} />
                             </MDBox>
                             <MDBox>
                               <MDTypography variant='h6' fontWeight='medium'>Init Date:</MDTypography>
                               <DatePicker
-                                selected={roleForm.initDate} 
+                                selected={roleForm.initDate}
                                 dateFormat='dd-MM-yyyy'
                                 onSelect={(date) => setRoleForm({ ...roleForm, initDate: date })}
                                 onChange={
@@ -541,8 +539,8 @@ const CreatePerson =
                           se añade con el boton de return rows? */}
                           {console.log(form)}
                         </MDBox>
-                      )}       
-                    </Grid>             
+                      )}
+                    </Grid>
                   </Grid>
                   <Grid container spacing={12}>
                     <Grid item xs={12}>
@@ -557,9 +555,8 @@ const CreatePerson =
                         </MDBox>
                         <DataTreeView />
                       </MDBox>
-                      {selectedNode && 
-                      <SkillTable skill={selectedNode} onReturnRows={handleReturnRows} 
-                      />
+                      {selectedNode &&
+                        <SkillTable skill={selectedNode} onReturnRows={handleReturnRows} />
                       }
                     </Grid>
                     <Grid item xs={12}>
@@ -584,19 +581,17 @@ const CreatePerson =
                 </MDBox>
                 <MDBox pt={3}>
                   < VisGraph
-                    graph={graph} options={options} events=
-                    {events} getNetwork={
-                      network => {
-                        //  if you want access to vis.js network
-                        //  api you can set the state in a parent
-                        //  component using this property
-                      }
-                    } />
+                    graph={graph}
+                    options={options}
+                    events={events}
+                    getNetwork={network => {}} />
                 </MDBox >
               </Card>
             </Grid>
           </Grid>
-        </MDBox><Footer /></DashboardLayout>
+        </MDBox>
+        <Footer />
+      </DashboardLayout>
     );
   }
 
