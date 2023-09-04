@@ -10,7 +10,7 @@
   </parent>
   <groupId>com.sngular</groupId>
   <artifactId>ubikservice</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
   <name>SkillTree</name>
   <description>SkillTree Gateway for Sngular Skills Management</description>
   <properties>
