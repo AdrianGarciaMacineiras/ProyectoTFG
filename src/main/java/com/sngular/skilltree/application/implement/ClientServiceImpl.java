@@ -2,7 +2,6 @@ package com.sngular.skilltree.application.implement;
 
 import java.util.List;
 import java.util.Objects;
-
 import com.sngular.skilltree.application.ClientService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
@@ -31,7 +30,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    @Cacheable(cacheNames = "clients", key = "#root.target.code")
+    @Cacheable(cacheNames = "clients")
     public Client findByCode(final String clientCode) {
         var client = clientRepository.findByCode(clientCode);
         if (Objects.isNull(client) || client.deleted())

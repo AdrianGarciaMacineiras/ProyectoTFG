@@ -2,7 +2,6 @@ package com.sngular.skilltree.application.implement;
 
 import java.util.List;
 import java.util.Objects;
-
 import com.sngular.skilltree.application.TeamService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
@@ -49,7 +48,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    @CacheEvict(cacheNames = "teams", key = "#root.target.code")
+    @CacheEvict(cacheNames = "teams")
     public boolean deleteByCode(final String teamCode) {
         validateDoesNotExist(teamCode);
         return teamRepository.deleteByCode(teamCode);

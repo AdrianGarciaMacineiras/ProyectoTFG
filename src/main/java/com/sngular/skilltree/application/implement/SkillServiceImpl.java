@@ -1,7 +1,6 @@
 package com.sngular.skilltree.application.implement;
 
 import java.util.List;
-
 import com.sngular.skilltree.application.SkillService;
 import com.sngular.skilltree.infraestructura.SkillRepository;
 import com.sngular.skilltree.model.Skill;
@@ -25,19 +24,19 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    @Cacheable(cacheNames = "skills", key = "#root.target.code")
+    @Cacheable(cacheNames = "skills")
     public Skill findByCode(final String skillCode) {
         return skillRepository.findByCode(skillCode);
     }
 
     @Override
-    @Cacheable(cacheNames = "skills", key = "#root.target.code")
+    @Cacheable(cacheNames = "skills")
     public Skill findSkill(final String skillCode) {
         return skillRepository.findSkill(skillCode);
     }
 
     @Override
-    @Cacheable(cacheNames = "skills", key = "#root.target.name")
+    @Cacheable(cacheNames = "skills")
     public Skill findByName(final String skillName) {
         return skillRepository.findByName(skillName);
     }
