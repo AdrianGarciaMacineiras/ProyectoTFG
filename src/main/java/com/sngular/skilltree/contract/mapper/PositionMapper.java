@@ -3,13 +3,13 @@ package com.sngular.skilltree.contract.mapper;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-
-import com.sngular.skilltree.api.model.*;
+import com.sngular.skilltree.api.model.PatchedPositionDTO;
+import com.sngular.skilltree.api.model.PositionDTO;
+import com.sngular.skilltree.api.model.PositionSkillDTO;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.PositionSkill;
-import com.sngular.skilltree.model.views.PeopleView;
 import com.sngular.skilltree.model.views.PositionView;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
