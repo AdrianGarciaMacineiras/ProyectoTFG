@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import com.sngular.skilltree.api.model.PatchedPositionDTO;
 import com.sngular.skilltree.api.model.PositionDTO;
+import com.sngular.skilltree.api.model.PositionResumedDTO;
 import com.sngular.skilltree.api.model.PositionSkillDTO;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
