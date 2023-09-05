@@ -40,6 +40,7 @@ function SkillList() {
   const [skillList, setSkillList] = useState([]);
 
   const [selected, setSelected] = useState([]);
+  const [names, setNames] = useState([]);
 
   const [isToggled, setToggled] = useState(false);
   const [showTable, setShowTable] = useState(false);
@@ -63,7 +64,7 @@ function SkillList() {
       smooth: { enabled: true, type: 'discrete', roundness: 0.5 }
     },
     groups: {
-      mainSkill: { color: { background: 'red' }, borderWidth: 3 },
+      skills: { color: { background: 'red' }, borderWidth: 3 },
     },
     height: '800px',
     physics: {
@@ -251,7 +252,7 @@ function SkillList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.slice()
+            {data?.slice()
               .sort((a, b) => {
                 const aValue = a[orderBy];
                 const bValue = b[orderBy];
@@ -270,7 +271,7 @@ function SkillList() {
         </Table>
         < TablePagination
           rowsPerPageOptions={[5, 10, 25, 50]} component='div'
-          count={data.length}
+          count={data?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -280,9 +281,9 @@ function SkillList() {
     );
   }
 
-  const handleClick =
-    () => {
+  const handleClick = () => {
       setToggled(!isToggled)
+      console.log(selected);
       fetch(
         `http://${window.location.hostname}:9080/api/people/skills?skillList=${selected}`,
         {
@@ -321,7 +322,7 @@ function SkillList() {
                 Level: knows.level
               }
               graphTemp.nodes.push(
-                { id: j, label: knows.name, title: knows.name });
+                { id: j, label: knows.name, title: knows.name, group: 'skills' });
               graphTemp.edges.push({
                 from: i,
                 to: j,
@@ -374,7 +375,10 @@ function SkillList() {
 
   const handleNodeSelect = (event, item) => {
     event.stopPropagation();
-    setSelected(selected => [...selected, "'" + item.nodeId + "'"]);
+    if (!selected.includes(item.nodeId)) {
+      setNames(names => [...names, item.name]);
+      setSelected(selected => [...selected, "'"+item.nodeId+"'"]);
+    }
   };
 
   const getTreeItemsFromData = (treeItems, searchValue) => {
@@ -437,6 +441,12 @@ function SkillList() {
   };
 
   const handleDeleteSelected = (index) => {
+    setNames((prevNames) => {
+      const newNames = [...prevNames];
+      newNames.splice(index, 1);
+      return newNames;
+    });
+
     setSelected((prevSelected) => {
       const newSelected = [...prevSelected];
       newSelected.splice(index, 1);
@@ -445,7 +455,7 @@ function SkillList() {
   };
 
   const renderSelectedList = () => {
-    return selected.map((item, index) => (
+    return names.map((item, index) => (
       <MDBox key={index} display="flex" alignItems="center" my={1}>
         {item}
         <Tooltip title="Delete item">
@@ -478,7 +488,7 @@ function SkillList() {
                     placeholder='Search' />
                 </MDBox>
                 <DataTreeView />
-                {selected.length > 0 && (
+                {names.length > 0 && (
                   <Grid item xs={6}>
                     <MDBox mt={2}>
                       {renderSelectedList()}
@@ -486,11 +496,11 @@ function SkillList() {
                   </Grid>
                 )}
                 {(selected && selected.length > 0) &&
-                  <MDButton color='black' onClick={handleClick}> Submit </MDButton>}
-
+                  <MDButton color='black' onClick={handleClick}> Submit </MDButton>
+                }
                 {isToggled &&
                   <MDButton color='black' onClick={handleShowTable}>
-                    {showTable ? "Show Graph" : "Show Table"}
+                    {showTable ? "Show Table" : "Show Graph"}
                   </MDButton>
                 }
               </MDBox>
@@ -503,13 +513,13 @@ function SkillList() {
           <Grid item xs={12}>
             <Card>
               <MDBox>
-                {isToggled && (!showTable ? (
+                {isToggled && (showTable ? (
                   <>
                     <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
                       bgColor='info'
                       borderRadius='lg'
-                      coloredShadow=
-                      'info' >
+                      coloredShadow='info'
+                    >
                       <MDTypography variant='h6' color='white'>Person Graph</MDTypography>
                     </MDBox>
                     <VisGraph

@@ -54,13 +54,6 @@ function FindPosition() {
         avoidOverlap: 0.02
       },
       minVelocity: 0.75
-    },
-    configure: { enabled: true, filter: 'physics, layout', showButton: true },
-    interaction: {
-      hover: true,
-      hoverConnectedEdges: true,
-      selectable: true,
-      selectConnectedEdges: true
     }
   };
 
@@ -425,7 +418,6 @@ function FindPosition() {
                       'center' >
                       <MDTypography variant='h6' color='white'>More Information</MDTypography>
                     </MDBox>
-                    <MDButton variant="gradient" color="dark" onClick={regenerateCandidates}>Regenerate Candidates</MDButton>
                     <TableRow>
                       <TableCell
                         style={{ paddingBottom: 0, paddingTop: 0 }}
@@ -471,6 +463,7 @@ function FindPosition() {
                         </MDBox>
                       </TableCell>
                     </TableRow>
+                    <MDButton variant="gradient" color="dark" onClick={regenerateCandidates}>Regenerate Candidates</MDButton>
                   </MDBox>
                 </Card>
               </Grid>
