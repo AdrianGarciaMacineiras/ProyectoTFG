@@ -60,7 +60,7 @@ const CreatePerson =
 
     const graphTemp = { nodes: [], edges: [] };
 
-    const [graph, setGraph] = useState({ nodes: [], edges: [] });
+    const [graph, setGraph] = useState(null);
 
     const options = {
       layout: { improvedLayout: true },
@@ -568,28 +568,30 @@ const CreatePerson =
             </Grid>
           </Grid>
         </MDBox>
-        <MDBox pt={6} pb={3}>
-          <Grid container spacing={6}>
-            <Grid item xs={12}>
-              <Card>
-                <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
-                  bgColor='info'
-                  borderRadius='lg'
-                  coloredShadow=
-                  'info' >
-                  <MDTypography variant='h6' color='white'>Person Graph</MDTypography>
-                </MDBox>
-                <MDBox pt={3}>
-                  < VisGraph
-                    graph={graph}
-                    options={options}
-                    events={events}
-                    getNetwork={network => {}} />
-                </MDBox >
-              </Card>
+        {graph &&
+          <MDBox pt={6} pb={3}>
+            <Grid container spacing={6}>
+              <Grid item xs={12}>
+                <Card>
+                  <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
+                    bgColor='info'
+                    borderRadius='lg'
+                    coloredShadow=
+                    'info' >
+                    <MDTypography variant='h6' color='white'>Person Graph</MDTypography>
+                  </MDBox>
+                  <MDBox pt={3}>
+                    < VisGraph
+                      graph={graph}
+                      options={options}
+                      events={events}
+                      getNetwork={network => { }} />
+                  </MDBox >
+                </Card>
+              </Grid>
             </Grid>
-          </Grid>
-        </MDBox>
+          </MDBox>
+        }
         <Footer />
       </DashboardLayout>
     );

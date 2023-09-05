@@ -171,7 +171,7 @@ const ListPositions = () => {
                         <Tooltip title='Update element'>< IconButton
                             aria-label='update row'
                             size='small'
-                            onClick={(event) => handleUpdate(event, row.employeeId)} >
+                            onClick={(event) => handleUpdate(event, row.code)} >
                             {<Update />}
                         </IconButton>
                         </Tooltip>

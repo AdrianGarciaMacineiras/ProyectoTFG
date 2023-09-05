@@ -1,7 +1,13 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.querymodel;
 
-import lombok.Builder;
+public interface PositionView{
+    String getCode();
 
-@Builder
-public record PositionView(String code, String name, String mode, String role, ProjectView project) {
+    String getName();
+
+    String getMode();
+
+    String getRole();
+
+    ProjectView project();
 }

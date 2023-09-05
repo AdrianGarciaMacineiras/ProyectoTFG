@@ -17,6 +17,7 @@ import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 import CandidateList from './CandidateList';
 import SkillsNeededList from './SkillsNeededList';
 import AssignedList from './AssignedList';
+import { useNavigate } from 'react-router-dom';
 
 function FindPosition() {
   const [form, setForm] = useState({ positionCode: '' });
@@ -28,6 +29,8 @@ function FindPosition() {
   const [valor, setValor] = useState(0);
 
   const [aux, setAux] = useState('');
+
+  const navigate = useNavigate();
 
   const options = {
     layout: { improvedLayout: true },
@@ -282,6 +285,97 @@ function FindPosition() {
     });
   };
 
+  const regenerateCandidates = () => {
+    const fetchData = async () => {
+      const regeneratedCandidates = await fetch(`http://${window.location.hostname}:9080//api/position/${form.positionCode}/candidates`);
+      const candidatesData = await regeneratedCandidates.json();
+
+      if (candidatesData) {
+        const positionData = await fetch(`http://${window.location.hostname}:9080/api/position/${form.positionCode}`);
+        const position = await positionData.json();
+        setAux(position);
+        var i = 1
+        var temp = {
+          Code: position.code,
+          Name: position.name,
+          Charge: position.charge,
+          Active: position.active,
+          Role: position.role,
+          EndDate: position.closingDate,
+          InitDate: position.openingDate
+        };
+        graphTemp.nodes.push({
+          id: i,
+          label: position.name,
+          title: JSON.stringify(temp, '', 2)
+        });
+
+        position.assignedPeople?.forEach(element => {
+          i++;
+          var temp = {
+            AssignDate: element.assignDate,
+            InitDate: element.initDate,
+            EndDate: element.endDate,
+            Dedication: element.dedication,
+            Role: element.role
+          };
+          graphTemp.nodes.push({
+            id: i,
+            label: element.assigned,
+            title: JSON.stringify(element.assigned, '', 2),
+            group: 'assigned'
+          });
+          graphTemp.edges.push({
+            from: i,
+            to: 1,
+            label: 'COVER',
+            title: JSON.stringify(temp, '', 2)
+          })
+        });
+
+        i++;
+        graphTemp.nodes.push({
+          id: i,
+          label: position.projectCode,
+          title: JSON.stringify(position.projectCode, '', 2),
+          group: 'project'
+        });
+        graphTemp.edges.push({
+          from: i,
+          to: 1,
+          label: 'FOR_PROJECT',
+          title: JSON.stringify(position.projectCode, '', 2)
+        });
+
+        position.candidates?.forEach(element => {
+          i++;
+          graphTemp.nodes.push({
+            id: i,
+            label: element.candidateCode,
+            title: element.candidateCode,
+            group: 'candidates'
+          });
+          var temp = {
+            Code: element.code,
+            Status: element.status,
+            IntroductionDate: element.introductionDate,
+            ResolutionDate: element.resolutionDate,
+            CreationDate: element.creationDate
+          };
+          graphTemp.edges.push({
+            from: 1,
+            to: i,
+            label: 'CANDIDATE',
+            title: JSON.stringify(temp, '', 2)
+          });
+        })
+
+        setGraph(prev => graphTemp);
+      }
+    };
+    fetchData();
+  }
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -293,7 +387,8 @@ function FindPosition() {
                 mx={2} mt={-3} py={3} px={2} variant='gradient'
                 bgColor='info'
                 borderRadius='lg'
-                coloredShadow='info' > <MDTypography variant='h6' color='white'>Find Position</MDTypography>
+                coloredShadow='info' >
+                <MDTypography variant='h6' color='white'>Find Position</MDTypography>
               </MDBox>
               <MDBox pt={3}>
                 <form onSubmit={handleSubmit}>
@@ -317,64 +412,67 @@ function FindPosition() {
           <MDBox pt={6} pb={3}>
             <Grid container spacing={6}>
               <Grid item xs={12}>
-                <MDBox>
-                  <MDBox
-                    mx={2} mt={-3} py={3} px={2} variant='gradient'
-                    bgColor='info'
-                    borderRadius='lg'
-                    coloredShadow='info'
-                    display='flex'
-                    justifyContent='space-between'
-                    alignItems=
-                    'center' >
-                    <MDTypography variant='h6' color='white'>More Information</MDTypography>
-                  </MDBox>
-                  <TableRow>
-                    <TableCell
-                      style={{ paddingBottom: 0, paddingTop: 0 }}
-                      colSpan={8}>
-                      <MDBox sx={{ margin: 1 }}>
-                        <MDBox sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                          <Tabs
-                            value={valor}
-                            onChange={(event, newValue) =>
-                              handleChangeTab(event, newValue, aux)} aria-label='basic tabs example'>
-                            <Tab label='Skills' {...a11yProps(0)} />
-                            <Tab label="Candidate" {...a11yProps(1)} />
-                            <Tab label='Assigned' {...a11yProps(2)} />
-                          </Tabs>
+                <Card>
+                  <MDBox>
+                    <MDBox
+                      mx={2} mt={-3} py={3} px={2} variant='gradient'
+                      bgColor='info'
+                      borderRadius='lg'
+                      coloredShadow='info'
+                      display='flex'
+                      justifyContent='space-between'
+                      alignItems=
+                      'center' >
+                      <MDTypography variant='h6' color='white'>More Information</MDTypography>
+                    </MDBox>
+                    <MDButton variant="gradient" color="dark" onClick={regenerateCandidates}>Regenerate Candidates</MDButton>
+                    <TableRow>
+                      <TableCell
+                        style={{ paddingBottom: 0, paddingTop: 0 }}
+                        colSpan={8}>
+                        <MDBox sx={{ margin: 1 }}>
+                          <MDBox sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                            <Tabs
+                              value={valor}
+                              onChange={(event, newValue) =>
+                                handleChangeTab(event, newValue, aux)} aria-label='basic tabs example'>
+                              <Tab label='Skills' {...a11yProps(0)} />
+                              <Tab label="Candidate" {...a11yProps(1)} />
+                              <Tab label='Assigned' {...a11yProps(2)} />
+                            </Tabs>
+                          </MDBox>
+                          <CustomTabPanel value={valor} index={0}>
+                            <SkillsNeededList
+                              key={aux.code}
+                              data={aux.skills}
+                              state={skillListState}
+                              onStateChange={newState => handleSkillListStateChange(newState)}
+                              onPageChange={newPage => handleSkillListPageChange(newPage)}
+                              onRowsPerPageChange={newRowsPerPage => handleSkillListRowsPerPageChange(newRowsPerPage)} />
+                          </CustomTabPanel>
+                          <CustomTabPanel value={valor} index={1}>
+                            <CandidateList
+                              key={aux.code}
+                              data={aux.candidates}
+                              state={candidateState}
+                              onStateChange={newState => handleCandidateStateChange(newState)}
+                              onPageChange={newPage => handleCandidatePageChange(newPage)}
+                              onRowsPerPageChange={newRowsPerPage => handleCandidateRowsPerPageChange(newRowsPerPage)} />
+                          </CustomTabPanel>
+                          <CustomTabPanel value={valor} index={2}>
+                            <AssignedList
+                              key={aux.code}
+                              data={aux.assignedPeople}
+                              state={assignedState}
+                              onStateChange={newState => handleAssignedStateChange(newState)}
+                              onPageChange={newPage => handleAssignedPageChange(newPage)}
+                              onRowsPerPageChange={newRowsPerPage => handleAssignedRowsPerPageChange(newRowsPerPage)} />
+                          </CustomTabPanel>
                         </MDBox>
-                        <CustomTabPanel value={valor} index={0}>
-                          <SkillsNeededList
-                            key={aux.code}
-                            data={aux.skills}
-                            state={skillListState}
-                            onStateChange={newState => handleSkillListStateChange(newState)}
-                            onPageChange={newPage => handleSkillListPageChange(newPage)}
-                            onRowsPerPageChange={newRowsPerPage => handleSkillListRowsPerPageChange(newRowsPerPage)} />
-                        </CustomTabPanel>
-                        <CustomTabPanel value={valor} index={1}>
-                          <CandidateList
-                            key={aux.code}
-                            data={aux.candidates}
-                            state={candidateState}
-                            onStateChange={newState => handleCandidateStateChange(newState)}
-                            onPageChange={newPage => handleCandidatePageChange(newPage)}
-                            onRowsPerPageChange={newRowsPerPage => handleCandidateRowsPerPageChange(newRowsPerPage)} />
-                        </CustomTabPanel>
-                        <CustomTabPanel value={valor} index={2}>
-                          <AssignedList
-                            key={aux.code}
-                            data={aux.assignedPeople}
-                            state={assignedState}
-                            onStateChange={newState => handleAssignedStateChange(newState)}
-                            onPageChange={newPage => handleAssignedPageChange(newPage)}
-                            onRowsPerPageChange={newRowsPerPage => handleAssignedRowsPerPageChange(newRowsPerPage)} />
-                        </CustomTabPanel>
-                      </MDBox>
-                    </TableCell>
-                  </TableRow>
-                </MDBox>
+                      </TableCell>
+                    </TableRow>
+                  </MDBox>
+                </Card>
               </Grid>
             </Grid>
           </MDBox>

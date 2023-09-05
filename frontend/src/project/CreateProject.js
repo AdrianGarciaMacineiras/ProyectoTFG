@@ -56,10 +56,7 @@ const CreateProject = () => {
     edges: []
   };
 
-  const [graph, setGraph] = useState({
-    nodes: [],
-    edges: []
-  });
+  const [graph, setGraph] = useState(null);
 
   const options = {
     layout: {
@@ -443,7 +440,7 @@ const CreateProject = () => {
                   bgColor='info'
                   borderRadius='lg'
                   coloredShadow='info' >
-                  <MDTypography variant='h6' color='white'>Position Graph</MDTypography>
+                  <MDTypography variant='h6' color='white'>Project Graph</MDTypography>
                 </MDBox>
                 <MDBox pt={3}>
                   <VisGraph

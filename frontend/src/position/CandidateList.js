@@ -12,6 +12,7 @@ import {
     TableRow
 } from '@mui/material';
 import React from 'react';
+import MDButton from '../components/MDButton';
 
 const CandidateList = (props) => {
     const { data, state, onStateChange, onPageChange, onRowsPerPageChange } = props;
@@ -111,7 +112,7 @@ const CandidateList = (props) => {
             </Table>
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 50]} component='div'
-                count={data.length}
+                count={data?.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handlePageChange}

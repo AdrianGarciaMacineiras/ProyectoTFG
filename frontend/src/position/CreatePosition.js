@@ -1,18 +1,34 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import '../network.css';
-
+import Clear from '@mui/icons-material/Clear';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import Autocomplete from '@mui/material/Autocomplete';
+import {
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+} from '@mui/material'; import Autocomplete from '@mui/material/Autocomplete';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import VisGraph from 'react-vis-graph-wrapper';
+import Box from '@mui/material/Box';
 
 import Footer from '../components/Footer';
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
@@ -60,7 +76,7 @@ function CreatePosition() {
 
   const graphTemp = { nodes: [], edges: [] };
 
-  const [graph, setGraph] = useState({ nodes: [], edges: [] });
+  const [graph, setGraph] = useState(null);
 
   const options = {
     layout: { improvedLayout: true },
@@ -178,21 +194,36 @@ function CreatePosition() {
       return (
         <React.Fragment>
           <MDBox>
-            {form.skills.map((skill, index) => (
-              <MDBox key={index}>
-                <hr />
-                <label>Skill: {skill.skillName}</label>
-                <br />
-                <label>Level Required: {skill.levelReq}</label>
-                <br />
-                <label>Minimum Level: {skill.minLevel}</label>
-                <br />
-                <label>Minimum Experience: {skill.minExp}</label>
-                <br />
-                <button onClick={() => handleRemoveSkill(index)}>Remove</button>
-                <hr />
-              </MDBox>
-            ))}
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+                <TableHead sx={{ display: 'table-header-group' }}>
+                  <TableRow>
+                    <TableCell>Skill</TableCell>
+                    <TableCell>Level Required</TableCell>
+                    <TableCell>Minimum Level</TableCell>
+                    <TableCell>Minimum Experience</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {form.skills.map((skill, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{skill.skillName}</TableCell>
+                      <TableCell>{skill.levelReq}</TableCell>
+                      <TableCell>{skill.minLevel}</TableCell>
+                      <TableCell>{skill.minExp}</TableCell>
+                      <TableCell>
+                        <IconButton
+                          color='error'
+                          onClick={() => handleRemoveSkill(index)}
+                        >
+                          <Clear />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </MDBox>
         </React.Fragment>
       );
@@ -247,19 +278,6 @@ function CreatePosition() {
       .then(data => data.json())
       .then(data => {
         setPeopleList(data);
-      });
-
-    fetch(`http://${window.location.hostname}:9080/api/office`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-      .then(response => response.json())
-      .then(response => {
-        const skillsData = recursive(response)
-        setSkillList(skillsData);
       });
 
     fetch(`http://${window.location.hostname}:9080/api/project`, {
@@ -426,8 +444,6 @@ function CreatePosition() {
 
     createPosition();
 
-    setGraph({ nodes: [], edges: [] });
-
     setForm({
       code: '',
       closingDate: '',
@@ -444,7 +460,8 @@ function CreatePosition() {
     });
   };
 
-  const handleModalSubmit = () => {
+  const handleModalSubmit = (event) => {
+    event.preventDefault();
     const newItem = { skill: skill, skillName, levelReq, minLevel, minExp };
     const updatedSkills = [...form.skills, newItem];
     setForm((prevForm) => ({ ...prevForm, skills: updatedSkills }));
@@ -524,8 +541,12 @@ function CreatePosition() {
                         />
                         <MDTypography variant='h6' fontWeight='medium'>Mode</MDTypography>
                         <FormControl fullWidth>
-                          <InputLabel>Select an option</InputLabel>
-                          <Select name='mode' value={form.mode} onChange={handleInputChange}>
+                          <InputLabel id="Mode-select">Mode</InputLabel>
+                          <Select name='mode' value={form.mode} onChange={handleInputChange} labelId="Mode-select"
+                            sx={{
+                              width: 250,
+                              height: 50,
+                            }}>
                             <MenuItem value='REMOTE'>Remote</MenuItem>
                             <MenuItem value="PRESENTIAL">Presential</MenuItem>
                             <MenuItem value='MIX'>Mix</MenuItem>
@@ -538,7 +559,6 @@ function CreatePosition() {
                         <MDInput type='text' value={form.name} onChange={handleInputChange} name='name' />
                         <MDTypography variant='h6' fontWeight='medium'>Priority</MDTypography>
                         <MDInput type="text" value={form.priority} onChange={handleInputChange} name="priority" />
-                        <MDTypography variant='h6' fontWeight='medium'>Charge</MDTypography>
                         <MDTypography variant='h6' fontWeight='medium'>End Date</MDTypography>
                         <DatePicker
                           selected={closingDate} dateFormat='dd-MM-yyyy'
@@ -546,42 +566,21 @@ function CreatePosition() {
                           {(date) => handleInputChange({ target: { name: 'closingDate', value: format(date, 'dd-MM-yyyy') } })}
                         />
                         <MDTypography variant='h6' fontWeight='medium'>Active</MDTypography >
-                        <FormControl fullWidth><InputLabel>Select an option</InputLabel>
-                          <Select name="active" value={form.active} onChange={handleInputChange}>
+                        <FormControl fullWidth>
+                          <InputLabel id="Active-select">Active</InputLabel>
+                          <Select name="active" value={form.active} onChange={handleInputChange} labelId="Active-select"
+                            sx={{
+                              width: 250,
+                              height: 50,
+                            }}>
                             <MenuItem value="true">YES</MenuItem>
                             <MenuItem value='false'>NO</MenuItem>
                           </Select>
                         </FormControl>
-                        {selectedItem && (
-                          <MDBox>
-                            <h2>Selected Item: {selectedItem.name}</h2>
-                            <FormControl fullWith>
-                              <MDTypography variant='h6' fontWeight='medium'>Level Required</MDTypography>
-                              <InputLabel>Select an Option</InputLabel>
-                              <Select value={levelReq} onChange=
-                                {(e) => setLevelReq(e.target.value)}>
-                                <MenuItem value='MANDATORY'>MANDATORY</MenuItem>
-                                <MenuItem value="NICE_TO_HAVE">NICE TO HAVE</MenuItem>
-                              </Select>
-                            </FormControl>
-                            <FormControl fullWidth>
-                              <MDTypography variant='h6' fontWeight='medium'>Level Required</MDTypography>
-                              <InputLabel>Select an option</InputLabel>
-                              <Select value={minLevel} onChange=
-                                {(e) => setMinLevel(e.target.value)}>
-                                <MenuItem value='HIGH'>HIGH</MenuItem>
-                                <MenuItem value="MEDIUM">MEDIUM</MenuItem>
-                                <MenuItem value='LOW'>LOW</MenuItem>
-                              </Select>
-                            </FormControl>
-                            <FormControl fullWidth>
-                              <MDTypography variant='h6' fontWeight='medium'>Minimum Experience</MDTypography>
-                              <MDInput type='number' value={minExp} onChange={(e) => setMinExp(parseInt(e.target.value))} />
-                            </FormControl>
-                            <MDButton onClick={handleModalSubmit}>Save</MDButton>
-                            <MDButton onClick={() => setSelectedItem(null)}>Cancel</MDButton>
-                          </MDBox>
-                        )}
+                      </Grid>
+                    </Grid>
+                    <Grid container spacing={12}>
+                      <Grid item xs={12}>
                         <MDButton variant="gradient" color="dark"
                           onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'}
                         </MDButton>
@@ -593,10 +592,63 @@ function CreatePosition() {
                             placeholder='Search' />
                         </MDBox>
                         <DataTreeView />
-                        <SkillsList />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
+                        {selectedItem && (
+                          <MDBox>
+                            <h2>Selected Item: {selectedItem.name}</h2>
+                            <FormControl fullWith>
+                              <MDTypography variant='h6' fontWeight='medium'>Level Required</MDTypography>
+                              <InputLabel id="Level-select">Level Required</InputLabel>
+                              <Select value={levelReq} onChange=
+                                {(e) => setLevelReq(e.target.value)}
+                                labelId="Level-select"
+                                sx={{
+                                  width: 250,
+                                  height: 50,
+                                }}>
+                                <MenuItem value='MANDATORY'>MANDATORY</MenuItem>
+                                <MenuItem value="NICE_TO_HAVE">NICE TO HAVE</MenuItem>
+                              </Select>
+                            </FormControl>
+                            <FormControl fullWidth>
+                              <InputLabel id="Minimum-select">Minimum Required</InputLabel>
+                              <MDTypography variant='h6' fontWeight='medium'>Minimum Required</MDTypography>
+                              <Select value={minLevel} onChange={(e) => setMinLevel(e.target.value)} labelId="Minimum-select"
+                                sx={{
+                                  width: 250,
+                                  height: 50,
+                                }}>
+                                <MenuItem value='HIGH'>HIGH</MenuItem>
+                                <MenuItem value="MEDIUM">MEDIUM</MenuItem>
+                                <MenuItem value='LOW'>LOW</MenuItem>
+                              </Select>
+                            </FormControl>
+                            <FormControl fullWidth>
+                              <MDTypography variant='h6' fontWeight='medium'>Minimum Experience</MDTypography>
+                              <MDInput
+                                type="text"
+                                value={minExp}
+                                onChange={(e) => {
+                                  const value = parseInt(e.target.value);
+                                  if (!isNaN(value)) {
+                                    setMinExp(value);
+                                  } else {
+                                    setMinExp(''); 
+                                  }
+                                }}
+                                sx={{
+                                  width: 250,
+                                  height: 50,
+                                }}
+                              />
+                            </FormControl>
+                            <MDButton onClick={(event) => handleModalSubmit(event)}>Save</MDButton>
+                            <MDButton onClick={() => setSelectedItem(null)}>Cancel</MDButton>
+                          </MDBox>
+                        )}
+                        {form.skills.length > 0 && <SkillsList />}
+                        <Grid item xs={12}>
+                          <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </MDBox>
@@ -607,30 +659,31 @@ function CreatePosition() {
         </MDBox>
         {graph &&
           <MDBox pt={6} pb={3}>
-            <Grid container spacing={6}><Grid item xs={12}>
-              <Card>
-                <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
-                  bgColor='info'
-                  borderRadius='lg'
-                  coloredShadow='info'>
-                  <MDTypography variant='h6' color='white'>Position Graph</MDTypography>
-                </MDBox>
-                <MDBox pt={3}>
-                  < VisGraph
-                    graph={graph}
-                    options={options}
-                    events={events}
-                    getNetwork={network => { }}
-                  />
-                </MDBox >
-              </Card>
-            </Grid>
+            <Grid container spacing={6}>
+              <Grid item xs={12}>
+                <Card>
+                  <MDBox mx={2} mt={-3} py={3} px={2} variant='gradient'
+                    bgColor='info'
+                    borderRadius='lg'
+                    coloredShadow='info'>
+                    <MDTypography variant='h6' color='white'>Position Graph</MDTypography>
+                  </MDBox>
+                  <MDBox pt={3}>
+                    < VisGraph
+                      graph={graph}
+                      options={options}
+                      events={events}
+                      getNetwork={network => { }}
+                    />
+                  </MDBox >
+                </Card>
+              </Grid>
             </Grid>
           </MDBox>
         }
         <Footer />
       </DashboardLayout>
-    </React.Fragment>
+    </React.Fragment >
   );
 }
 

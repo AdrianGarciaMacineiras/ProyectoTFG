@@ -185,15 +185,19 @@ public class ResolveServiceNode {
 
     @Named("mapToManagedByPeople")
     public People mapToManagedByPeople(String managedBy){
-        var peopleNode = peopleCrudRepository.findByEmployeeId(managedBy);
-        return People.builder()
-                .employeeId(peopleNode.getEmployeeId())
-                .name(peopleNode.getName())
-                .surname(peopleNode.getSurname())
-                .title(peopleNode.getTitle())
-                .code(peopleNode.getCode())
-                .assignable(peopleNode.isAssignable())
-                .deleted(peopleNode.isDeleted())
-                .build();
+        if (managedBy!=null) {
+            var peopleNode = peopleCrudRepository.findByEmployeeId(managedBy);
+            return People.builder()
+                    .employeeId(peopleNode.getEmployeeId())
+                    .name(peopleNode.getName())
+                    .surname(peopleNode.getSurname())
+                    .title(peopleNode.getTitle())
+                    .code(peopleNode.getCode())
+                    .assignable(peopleNode.isAssignable())
+                    .deleted(peopleNode.isDeleted())
+                    .build();
+        } else {
+            return null;
+        }
     }
 }

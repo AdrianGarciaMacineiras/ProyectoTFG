@@ -14,6 +14,7 @@ import UpdatePersonForm from './person/UpdatePersonForm'
 import CreatePosition from './position/CreatePosition'
 import FindPosition from './position/FindPosition'
 import ListPositions from './position/ListPositions'
+import UpdatePositionForm from './position/UpdatePositionForm'
 
 import CreateProject from './project/CreateProject'
 import FindProject from './project/FindProject'
@@ -177,6 +178,14 @@ const routes = [
       icon: <Icon fontSize='small'>assignment</Icon>,
       route: '/listPositions',
       component: <ListPositions />,
+    },
+    {
+      type: 'hidden',
+      name: 'Update Form',
+      key: 'updatePositionForm',
+      icon: <Icon fontSize='small'>assignment</Icon>,
+      route: '/updatePositionForm/:positionCode',
+      component: <UpdatePositionForm />,
     }
   ]
   },
