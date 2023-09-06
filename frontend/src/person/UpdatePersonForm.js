@@ -21,7 +21,7 @@ import MDInput from '../components/MDInput';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 
-import SkillTable from './SkillTable';
+import SkillTable from './components/SkillTable';
 
 const UpdatePersonForm = () => {
   const [form, setForm] = useState({
@@ -450,7 +450,7 @@ const UpdatePersonForm = () => {
                             <MDBox>
                               <MDTypography variant='h6' fontWeight='medium'>Category: </MDTypography>
                               <MDInput type="text" value={roleForm.category}
-                                onChange={(e) => setRoleForm({ ...roleForm, category: e.target.value })} />
+                                onChange={(e) => setRoleForm({ ...roleForm, category: e.target.value })}  />
                             </MDBox>
                             <MDBox>
                               <MDTypography variant='h6' fontWeight='medium'>Init Date:</MDTypography><
@@ -475,7 +475,7 @@ const UpdatePersonForm = () => {
                                   <MDBox key={index}>
                                     <MDTypography variant='h6' fontWeight='medium'>Role: {role.role}</MDTypography>
                                     <MDTypography variant='h6' fontWeight='medium'>Category: {role.category}</MDTypography>
-                                    <MDTypography variant='h6' fontWeight='medium'>Init Date: {role.initDate}</MDTypography>
+                                    <MDTypography variant='h6' fontWeight='medium'>Init Date: {format(role.initDate, "dd-MM-yyyy")}</MDTypography>
                                     <MDButton variant='gradient' color='dark'
                                       onClick={() => handleRemoveFromArray('roles', index)}>Remove</MDButton>
                                   </MDBox>

@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import MDInput from '../components/MDInput';
 import MDButton from '../components/MDButton';
 import { useState } from 'react';
-import Sunburst from './Sunburst';
+import Sunburst from './components/Sunburst';
 
 
 const SkillStatsForm = () => {

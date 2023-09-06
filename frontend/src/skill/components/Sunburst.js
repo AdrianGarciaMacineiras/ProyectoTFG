@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import DashboardLayout from '../../components/LayoutContainers/DashboardLayout';
 
 
 const Sunburst = ({ data }) => {

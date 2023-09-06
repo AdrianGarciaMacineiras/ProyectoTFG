@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
 import {
     Checkbox,
@@ -13,29 +13,31 @@ import {
     TableHead,
     TablePagination,
     TableRow,
+    Select,
+    InputLabel,
 } from '@mui/material';
-import {Delete as DeleteIcon} from '@mui/icons-material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 import DatePicker from 'react-datepicker';
 import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
-import {parse} from 'date-fns';
+import { parse } from 'date-fns';
 import moment from 'moment';
 
 const levels = ['LOW', 'MIDDLE', 'ADVANCED'];
 
 const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
     const rowsRef = useRef([]);
-    const [rows, setRows] = useState([]); 
+    const [rows, setRows] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
     useEffect(() => {
         if (listToUpdate) {
             const newRows = [];
-    
+
             listToUpdate.knows.forEach(knowsItem => {
                 const matchingRow = newRows.find(row => row.code === knowsItem.code);
-    
+
                 if (!matchingRow) {
                     const newRow = {
                         code: knowsItem.code,
@@ -53,10 +55,10 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                     newRows.push(newRow);
                 }
             });
-    
+
             listToUpdate.certificates.forEach(certificatesItem => {
                 const matchingRow = newRows.find(row => row.code === certificatesItem.code);
-    
+
                 if (matchingRow) {
                     matchingRow.certificates = { ...certificatesItem };
                 } else {
@@ -77,10 +79,10 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                     newRows.push(newRow);
                 }
             });
-    
+
             listToUpdate.master.forEach(masterItem => {
                 const matchingRow = newRows.find(row => row.code === masterItem.code);
-    
+
                 if (matchingRow) {
                     matchingRow.master = true;
                 } else {
@@ -105,10 +107,10 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                     newRows.push(newRow);
                 }
             });
-    
+
             listToUpdate.interest.forEach(interestItem => {
                 const matchingRow = newRows.find(row => row.code === interestItem.code);
-    
+
                 if (matchingRow) {
                     matchingRow.interest = true;
                 } else {
@@ -133,10 +135,10 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                     newRows.push(newRow);
                 }
             });
-    
+
             listToUpdate.work_with.forEach(workWithItem => {
                 const matchingRow = newRows.find(row => row.code === workWithItem.code);
-    
+
                 if (matchingRow) {
                     matchingRow.workwith = true;
                 } else {
@@ -164,7 +166,7 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
             rowsRef.current = newRows;
         }
     }, [listToUpdate]);
-    
+
 
     useEffect(() => {
         if (skill) {
@@ -190,7 +192,7 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                     },
                     notAssigned: true,
                 };
-                console.log("insertar",rowsRef.current)
+                console.log("insertar", rowsRef.current)
                 rowsRef.current = [newRow, ...rowsRef.current];
                 setRows(rowsRef.current);
             }
@@ -207,7 +209,7 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
         rowsRef.current = updatedRows;
         setRows(rowsRef.current);
     };
-    
+
     const handleComplexCheckboxChange = (event, rowIndex, field) => {
         const [mainField, nestedField] = field.split('.');
         const updatedRows = [...rowsRef.current];
@@ -218,7 +220,7 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
         rowsRef.current = updatedRows;
         setRows(rowsRef.current);
     };
-    
+
     const handleSelectChange = (event, rowIndex, field) => {
         const [mainField, nestedField] = field.split('.');
         const updatedRows = [...rowsRef.current];
@@ -231,14 +233,14 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
         rowsRef.current = updatedRows;
         setRows(rowsRef.current);
     };
-    
+
     const handleDateChange = (date, field, rowIndex) => {
         const updatedRows = [...rowsRef.current];
         updatedRows[rowIndex][field].date = moment(date).format('DD-MM-YYYY');
         rowsRef.current = updatedRows;
         setRows(rowsRef.current);
     };
-    
+
     const handleDeleteRow = (rowIndex) => {
         const updatedRows = rowsRef.current.filter((row, index) => index !== rowIndex);
         rowsRef.current = updatedRows;
@@ -270,7 +272,7 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                                 <TableRow key={rowIndex}>
                                     <TableCell>{row.name}</TableCell>
                                     <TableCell align="center"
-                                               style={{verticalAlign: 'top'}}>
+                                        style={{ verticalAlign: 'top' }}>
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
@@ -281,19 +283,22 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                                                 />
                                             }
                                         />
-                                        <MDInput
-                                            select
-                                            label="Level"
+                                        <InputLabel id="Level-select">Level</InputLabel>
+                                        <Select select
+                                            labelId="Level-select"
                                             value={row.knows.level}
                                             onChange={(event) => handleSelectChange(event, rowIndex, 'knows.level')}
-                                            sx={{ width: '100%' }}
+                                            sx={{
+                                                width: '100%',
+                                                height: 50,
+                                            }}
                                         >
                                             {levels.map((level) => (
                                                 <MenuItem key={level} value={level}>
                                                     {level}
                                                 </MenuItem>
                                             ))}
-                                        </MDInput>
+                                        </Select>
                                         <MDInput
                                             type="number"
                                             label="Experience"
@@ -311,7 +316,7 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                                         />
                                     </TableCell>
                                     <TableCell align="center"
-                                               style={{verticalAlign: 'top'}}>
+                                        style={{ verticalAlign: 'top' }}>
                                         <FormControlLabel
                                             label={"add"}
                                             control={
@@ -323,7 +328,7 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                                         />
                                     </TableCell>
                                     <TableCell align="center"
-                                               style={{verticalAlign: 'top'}}>
+                                        style={{ verticalAlign: 'top' }}>
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
@@ -334,7 +339,7 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                                         />
                                     </TableCell>
                                     <TableCell align="center"
-                                               style={{verticalAlign: 'top'}}>
+                                        style={{ verticalAlign: 'top' }}>
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
@@ -345,7 +350,7 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                                         />
                                     </TableCell>
                                     <TableCell align="center"
-                                               style={{verticalAlign: 'top'}}>
+                                        style={{ verticalAlign: 'top' }}>
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
@@ -366,6 +371,14 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                                             onSelect={(date) => handleDateChange(date, 'certificates', rowIndex)}
                                             onChange={(date) => handleDateChange(date, 'certificates', rowIndex)}
                                             dateFormat='dd-MM-yyyy'
+                                        />
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={row.certificates.add}
+                                                    onChange={(event) => handleComplexCheckboxChange(event, rowIndex, 'certificates.add')}
+                                                />
+                                            }
                                         />
                                     </TableCell>
                                     <TableCell>

@@ -20,8 +20,8 @@ import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
+import SkillTable from './components/SkillTable';
 
-import SkillTable from './SkillTable';
 
 const CreatePerson =
   () => {

@@ -35,9 +35,9 @@ import MDBox from '../components/MDBox';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 
-import NestedCertificate from './NestedCertificate';
-import NestedKnows from './NestedKnows';
-import NestedSimpleTable from './NestedSimpleTable';
+import NestedCertificate from './components/NestedCertificate';
+import NestedKnows from './components/NestedKnows';
+import NestedSimpleTable from './components/NestedSimpleTable';
 
 
 const ListPeople =

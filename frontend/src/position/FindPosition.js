@@ -14,9 +14,9 @@ import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
-import CandidateList from './CandidateList';
-import SkillsNeededList from './SkillsNeededList';
-import AssignedList from './AssignedList';
+import CandidateList from './components/CandidateList';
+import SkillsNeededList from './components/SkillsNeededList';
+import AssignedList from './components/AssignedList';
 import { useNavigate } from 'react-router-dom';
 
 function FindPosition() {

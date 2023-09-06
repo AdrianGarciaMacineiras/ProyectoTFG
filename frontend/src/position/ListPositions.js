@@ -32,7 +32,7 @@ import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
 import MDBox from '../components/MDBox';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
-import CandidateList from './CandidateList';
+import CandidateList from './components/CandidateList';
 
 
 const ListPositions = () => {
