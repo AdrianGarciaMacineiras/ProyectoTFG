@@ -2,7 +2,8 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import java.util.List;
 import java.util.Objects;
-
+import java.util.Optional;
+import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.common.exceptions.PositionWithoutProjectException;
@@ -52,9 +53,14 @@ public class PeopleRepositoryImpl implements PeopleRepository {
         } else {
             people = crud.findByEmployeeIdAndDeletedIsFalse(personCode);
         }
-        for(var cover : people.getAssigns()){
-            if(Objects.isNull(cover.positionNode().getProject()))
-                throw new PositionWithoutProjectException("Position", cover.positionNode().getCode());
+        if (Objects.nonNull(people)) {
+            for (var cover : people.getAssigns()) {
+                if (Objects.isNull(cover.positionNode().getProject())) {
+                    throw new PositionWithoutProjectException("Position", cover.positionNode().getCode());
+                }
+            }
+        } else {
+            throw new EntityNotFoundException("People", personCode);
         }
         return mapper.fromNode(people);
     }
@@ -63,7 +69,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     public People findPeopleByCode(String personCode) {
         final PeopleNode people;
         if (NumberUtils.isCreatable(personCode)) {
-            people = crud.findByCode(personCode, PeopleNode.class);
+            people = crud.findByCode(personCode, PeopleNode.class).orElse(null);
         } else {
             people = crud.findByEmployeeId(personCode);
         }
@@ -98,6 +104,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
         return peopleCodes
                 .parallelStream()
                 .map(code -> crud.findByCode(code, PeopleView.class))
+                .flatMap(Optional::stream)
                 .map(mapper::fromView)
                 .toList();
 
@@ -119,6 +126,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
         return peopleCodes
                 .parallelStream()
                 .map(code -> crud.findByCode(code, PeopleView.class))
+                .flatMap(Optional::stream)
                 .map(mapper::fromView)
                 .toList();
     }

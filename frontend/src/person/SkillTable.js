@@ -1,7 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
 import {
+    Checkbox,
+    FormControlLabel,
     IconButton,
+    MenuItem,
     Paper,
     Table,
     TableBody,
@@ -10,15 +13,12 @@ import {
     TableHead,
     TablePagination,
     TableRow,
-    Checkbox,
-    FormControlLabel,
-    MenuItem,
 } from '@mui/material';
-import { Delete as DeleteIcon } from '@mui/icons-material';
+import {Delete as DeleteIcon} from '@mui/icons-material';
 import DatePicker from 'react-datepicker';
 import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
-import { parse } from 'date-fns';
+import {parse} from 'date-fns';
 import moment from 'moment';
 
 const levels = ['LOW', 'MIDDLE', 'ADVANCED'];
@@ -269,7 +269,18 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                             .map((row, rowIndex) => (
                                 <TableRow key={rowIndex}>
                                     <TableCell>{row.name}</TableCell>
-                                    <TableCell>
+                                    <TableCell align="center"
+                                               style={{verticalAlign: 'top'}}>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={row.knows.add}
+                                                    onChange={(event) => handleComplexCheckboxChange(
+                                                        event, rowIndex,
+                                                        'knows.add')}
+                                                />
+                                            }
+                                        />
                                         <MDInput
                                             select
                                             label="Level"
@@ -298,17 +309,11 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                                             }
                                             label="Primary"
                                         />
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    checked={row.knows.add}
-                                                    onChange={(event) => handleComplexCheckboxChange(event, rowIndex, 'knows.add')}
-                                                />
-                                            }
-                                        />
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell align="center"
+                                               style={{verticalAlign: 'top'}}>
                                         <FormControlLabel
+                                            label={"add"}
                                             control={
                                                 <Checkbox
                                                     checked={row.workwith}
@@ -317,7 +322,8 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                                             }
                                         />
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell align="center"
+                                               style={{verticalAlign: 'top'}}>
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
@@ -327,7 +333,8 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                                             }
                                         />
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell align="center"
+                                               style={{verticalAlign: 'top'}}>
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
@@ -337,7 +344,18 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                                             }
                                         />
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell align="center"
+                                               style={{verticalAlign: 'top'}}>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={row.certificates.add}
+                                                    onChange={(event) => handleComplexCheckboxChange(
+                                                        event, rowIndex,
+                                                        'certificates.add')}
+                                                />
+                                            }
+                                        />
                                         <MDInput
                                             label="Comment"
                                             value={row.certificates.comment}
@@ -348,14 +366,6 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                                             onSelect={(date) => handleDateChange(date, 'certificates', rowIndex)}
                                             onChange={(date) => handleDateChange(date, 'certificates', rowIndex)}
                                             dateFormat='dd-MM-yyyy'
-                                        />
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    checked={row.certificates.add}
-                                                    onChange={(event) => handleComplexCheckboxChange(event, rowIndex, 'certificates.add')}
-                                                />
-                                            }
                                         />
                                     </TableCell>
                                     <TableCell>

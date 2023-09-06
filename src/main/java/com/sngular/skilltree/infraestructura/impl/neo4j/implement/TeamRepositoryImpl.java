@@ -3,7 +3,6 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.TeamRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
@@ -45,8 +44,8 @@ public class TeamRepositoryImpl implements TeamRepository {
         var teamNode = mapper.toNode(team);
         for (var member : teamNode.getMembers()) {
             var peopleNode = peopleCrudRepository.findByCode(member.people().getCode(), PeopleNode.class);
-            if (Objects.isNull(peopleNode) || peopleNode.isDeleted()) {
-                throw new EntityNotFoundException("People", peopleNode.getCode());
+          if (Objects.isNull(peopleNode) || peopleNode.isEmpty()) {
+            throw new EntityNotFoundException("People", peopleNode.get().getCode());
             }
         }
         return mapper.fromNode(crud.save(teamNode));

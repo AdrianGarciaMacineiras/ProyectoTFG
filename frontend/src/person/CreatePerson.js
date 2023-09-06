@@ -7,10 +7,10 @@ import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import { format } from 'date-fns';
-import { useEffect, useState } from 'react';
+import {format} from 'date-fns';
+import {useEffect, useState} from 'react';
 import DatePicker from 'react-datepicker';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import VisGraph from 'react-vis-graph-wrapper';
 
 import Footer from '../components/Footer';
@@ -438,8 +438,8 @@ const CreatePerson =
                   <MDTypography variant='h6' color='white'>Create Person</MDTypography>
                 </MDBox>
                 <form id='personForm'>
-                  <Grid container spacing={6}>
-                    <Grid item xs={6}>
+                  <Grid container spacing={12}>
+                    <Grid item xs={4}>
                       <MDBox pt={3}>
                         <MDTypography variant='h6' fontWeight='medium'>Person Code: </MDTypography>
                         <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" />
@@ -448,16 +448,6 @@ const CreatePerson =
                         <MDTypography variant='h6' fontWeight='medium'>Employee ID:</MDTypography>
                         <MDInput type='text' value={form.employeeId} onChange=
                           {handleInputChange} name='employeeId' />
-                      </MDBox>
-                      <MDBox>
-                        <MDTypography variant='h6' fontWeight='medium'>Name:</MDTypography>
-                        <MDInput type='text' value={form.name} onChange=
-                          {handleInputChange} name='name' />
-                      </MDBox>
-                      <MDBox>
-                        <MDTypography variant='h6' fontWeight='medium'>Surname:</MDTypography>
-                        <MDInput type='text' value={form.surname} onChange=
-                          {handleInputChange} name='surname' />
                       </MDBox>
                       {/*<MDBox>
                         <MDTypography variant='h6' fontWeight='medium'>Birth Date:</MDTypography>
@@ -475,7 +465,21 @@ const CreatePerson =
                         <MDInput type="text" value={form.title} onChange={handleInputChange} name="title" />
                       </MDBox>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
+                      <MDBox>
+                        <MDTypography variant='h6'
+                                      fontWeight='medium'>Name:</MDTypography>
+                        <MDInput type='text' value={form.name} onChange=
+                            {handleInputChange} name='name'/>
+                      </MDBox>
+                      <MDBox>
+                        <MDTypography variant='h6'
+                                      fontWeight='medium'>Surname:</MDTypography>
+                        <MDInput type='text' value={form.surname} onChange=
+                            {handleInputChange} name='surname'/>
+                      </MDBox>
+                    </Grid>
+                    <Grid item xs={4}>
                       <MDBox>
                         <MDTypography variant='h6' fontWeight='medium'>Roles: </MDTypography>
                         {!isAddRoleVisible && (
@@ -531,8 +535,8 @@ const CreatePerson =
                       </MDBox>
                     </Grid>
                   </Grid>
-                  <Grid container spacing={12}>
-                    <Grid item xs={12}>
+                  <Grid container spacing={6}>
+                    <Grid item xs={6}>
                       {form.certificates.length > 0 && (
                         <MDBox>
                           {/*Hace falta poner las cosas que se van añadiendo?
@@ -543,7 +547,7 @@ const CreatePerson =
                     </Grid>
                   </Grid>
                   <Grid container spacing={12}>
-                    <Grid item xs={12}>
+                    <Grid item xs={2}>
                       <MDBox>
                         <MDButton variant="gradient" color="dark" onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'} </MDButton>
                         <MDBox>
@@ -555,6 +559,8 @@ const CreatePerson =
                         </MDBox>
                         <DataTreeView />
                       </MDBox>
+                    </Grid>
+                    <Grid item xs={9}>
                       {selectedNode &&
                         <SkillTable skill={selectedNode} onReturnRows={handleReturnRows} />
                       }

@@ -14,6 +14,5 @@ public interface PositionCrudRepository extends Neo4jRepository<PositionNode, St
     @Query("MATCH(n:Position{code:$positionCode}) RETURN n")
     PositionNode findPosition(String positionCode);
 
-    @Query("MATCH(n:Position)-[r]-(p:Project{name:$projectCode}) RETURN n")
-    PositionNode findPositionByProject(String projectCode);
+  List<PositionNode> findByName(String positionName);
 }

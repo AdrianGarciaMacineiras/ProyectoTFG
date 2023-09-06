@@ -52,7 +52,7 @@ public class ResolveServiceNode {
             var assignmentMap = new HashMap<String, List<Assignment>>();
             for (var assignRelationship : assignedRelationshipList) {
                 var positionNode = positionCrudRepository.findByCode(assignRelationship.positionNode().getCode());
-                assignmentMap.compute(positionNode.getProject().getName(), (code, assignsList) -> {
+                assignmentMap.compute(positionNode.getName(), (code, assignsList) -> {
                     var assign = Assignment.builder()
                             .id(assignRelationship.id())
                             .role(assignRelationship.role())
@@ -78,11 +78,11 @@ public class ResolveServiceNode {
         final List<AssignedRelationship> assignedRelationshipList = new ArrayList<>();
         if (!Objects.isNull(assignmentsList)) {
             for (var assignment : assignmentsList) {
-                var position = positionCrudRepository.findPositionByProject(assignment.name());
+                var positionList = positionCrudRepository.findByName(assignment.name());
                 for (var assign : assignment.assignments()) {
                     AssignedRelationship assignedRelationship = AssignedRelationship.builder()
                             .assignDate(assign.assignDate())
-                            .positionNode(position)
+                                                                                    .positionNode(positionList.get(0))
                             .endDate(assign.endDate())
                             .initDate(assign.initDate())
                             .id(assign.id())

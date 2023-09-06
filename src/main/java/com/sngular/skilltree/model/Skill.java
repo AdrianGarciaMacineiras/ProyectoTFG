@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 import lombok.Builder;
 import lombok.Value;
 import org.apache.commons.lang3.ObjectUtils;
@@ -19,6 +18,7 @@ public class Skill {
     String code;
 
     String name;
+    String namespace;
 
     Map<String, Skill> subSkillList;
 

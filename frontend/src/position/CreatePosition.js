@@ -6,29 +6,26 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
 import {
+  FormControl,
   IconButton,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
-  Checkbox,
-  FormControlLabel,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-} from '@mui/material'; import Autocomplete from '@mui/material/Autocomplete';
+} from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import {format} from 'date-fns';
+import React, {useEffect, useState} from 'react';
 import DatePicker from 'react-datepicker';
 import VisGraph from 'react-vis-graph-wrapper';
-import Box from '@mui/material/Box';
 
 import Footer from '../components/Footer';
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
@@ -558,7 +555,21 @@ function CreatePosition() {
                         <MDTypography variant='h6' fontWeight='medium'>Name</MDTypography>
                         <MDInput type='text' value={form.name} onChange={handleInputChange} name='name' />
                         <MDTypography variant='h6' fontWeight='medium'>Priority</MDTypography>
-                        <MDInput type="text" value={form.priority} onChange={handleInputChange} name="priority" />
+                        <FormControl fullWidth>
+                          <InputLabel id="Active-select">Priority</InputLabel>
+                          <Select name="active" value={form.priority}
+                                  onChange={handleInputChange}
+                                  labelId="Active-select"
+                                  sx={{
+                                    width: 250,
+                                    height: 50,
+                                  }}>
+                            <MenuItem value='CRITICAL'>CRITICAL</MenuItem>
+                            <MenuItem value='HIGH'>HIGH</MenuItem>
+                            <MenuItem value='MEDIUM'>MEDIUM</MenuItem>
+                            <MenuItem value='LOW'>LOW</MenuItem>
+                          </Select>
+                        </FormControl>
                         <MDTypography variant='h6' fontWeight='medium'>End Date</MDTypography>
                         <DatePicker
                           selected={closingDate} dateFormat='dd-MM-yyyy'
@@ -580,7 +591,7 @@ function CreatePosition() {
                       </Grid>
                     </Grid>
                     <Grid container spacing={12}>
-                      <Grid item xs={12}>
+                      <Grid item xs={5}>
                         <MDButton variant="gradient" color="dark"
                           onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'}
                         </MDButton>
@@ -592,6 +603,8 @@ function CreatePosition() {
                             placeholder='Search' />
                         </MDBox>
                         <DataTreeView />
+                      </Grid>
+                      <Grid item xs={7}>
                         {selectedItem && (
                           <MDBox>
                             <h2>Selected Item: {selectedItem.name}</h2>
@@ -645,10 +658,11 @@ function CreatePosition() {
                             <MDButton onClick={() => setSelectedItem(null)}>Cancel</MDButton>
                           </MDBox>
                         )}
-                        {form.skills.length > 0 && <SkillsList />}
-                        <Grid item xs={12}>
-                          <MDButton variant="gradient" color="dark" onClick={handleSubmit}>Submit</MDButton>
-                        </Grid>
+                      </Grid>
+                      <Grid item xs={12}>
+                        {form.skills.length > 0 && <SkillsList/>}
+                        <MDButton variant="gradient" color="dark"
+                                  onClick={handleSubmit}>Submit</MDButton>
                       </Grid>
                     </Grid>
                   </MDBox>
