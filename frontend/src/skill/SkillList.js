@@ -375,7 +375,7 @@ function SkillList() {
 
   const handleNodeSelect = (event, item) => {
     event.stopPropagation();
-    if (!selected.includes(item.nodeId)) {
+    if (!selected.includes("'"+item.nodeId+"'")) {
       setNames(names => [...names, item.name]);
       setSelected(selected => [...selected, "'"+item.nodeId+"'"]);
     }
