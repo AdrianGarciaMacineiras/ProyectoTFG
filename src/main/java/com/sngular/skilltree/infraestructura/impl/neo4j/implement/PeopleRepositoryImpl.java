@@ -6,17 +6,18 @@ import java.util.Optional;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.common.exceptions.PositionWithoutProjectException;
 import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomPeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleView;
 import com.sngular.skilltree.model.People;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class PeopleRepositoryImpl implements PeopleRepository {
@@ -56,7 +57,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
         if (Objects.nonNull(people)) {
             for (var cover : people.getAssigns()) {
                 if (Objects.isNull(cover.positionNode().getProject())) {
-                    throw new PositionWithoutProjectException("Position", cover.positionNode().getCode());
+                    log.warn(String.format("Position: %s without project", cover.positionNode().getCode()));
                 }
             }
         } else {
