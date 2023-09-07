@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
+import {useEffect, useRef, useState} from 'react';
+import DashboardLayout from '../../components/LayoutContainers/DashboardLayout';
 import {
     Checkbox,
     FormControlLabel,
     IconButton,
+    InputLabel,
     MenuItem,
     Paper,
+    Select,
     Table,
     TableBody,
     TableCell,
@@ -13,14 +15,12 @@ import {
     TableHead,
     TablePagination,
     TableRow,
-    Select,
-    InputLabel,
 } from '@mui/material';
-import { Delete as DeleteIcon } from '@mui/icons-material';
+import {Delete as DeleteIcon} from '@mui/icons-material';
 import DatePicker from 'react-datepicker';
 import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
-import { parse } from 'date-fns';
+import {parse} from 'date-fns';
 import moment from 'moment';
 
 const levels = ['LOW', 'MIDDLE', 'ADVANCED'];

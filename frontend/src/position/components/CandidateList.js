@@ -1,4 +1,3 @@
-
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SortIcon from '@mui/icons-material/Sort';
@@ -12,7 +11,6 @@ import {
     TableRow
 } from '@mui/material';
 import React from 'react';
-import MDButton from '../components/MDButton';
 
 const CandidateList = (props) => {
     const { data, state, onStateChange, onPageChange, onRowsPerPageChange } = props;
