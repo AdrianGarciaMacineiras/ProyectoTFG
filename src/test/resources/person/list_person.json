@@ -15,36 +15,36 @@
         "name": "itxtl1"
       }
     ],
-    "roles": null,
+    "roles": [],
     "code": "1",
     "employeeId": "employeeId",
     "title": "SD3",
     "noClients": null,
     "work_with": [],
     "master": [],
-    "knows": null,
+    "knows": [],
     "name": "people",
     "noProjects": null,
     "interest": [],
     "surname": "surname",
-    "candidacies": null,
-    "certificates": null
+    "candidacies": [],
+    "certificates": []
   },
   {
-    "assigns": null,
-    "roles": null,
+    "assigns": [],
+    "roles": [],
     "code": "2",
     "employeeId": "employeeId",
     "title": "SD3",
     "noClients": null,
     "work_with": [],
     "master": [],
-    "knows": null,
+    "knows": [],
     "name": "people3",
     "noProjects": null,
     "interest": [],
     "surname": "surname3",
-    "candidacies": null,
-    "certificates": null
+    "candidacies": [],
+    "certificates": []
   }
 ]

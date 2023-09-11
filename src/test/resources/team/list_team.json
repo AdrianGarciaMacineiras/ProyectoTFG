@@ -9,21 +9,21 @@
     "members": [
       {
         "people": {
-          "assigns": null,
-          "roles": null,
+          "assigns": [],
+          "roles": [],
           "code": "1",
           "employeeId": "900003940059",
           "title": "SD2",
           "noClients": null,
           "work_with": [],
           "master": [],
-          "knows": null,
+          "knows": [],
           "name": "people2",
           "noProjects": null,
           "interest": [],
           "surname": "LaPel",
-          "candidacies": null,
-          "certificates": null
+          "candidacies": [],
+          "certificates": []
         },
         "charge": "DIRECTOR"
       }
@@ -39,21 +39,21 @@
     "members": [
       {
         "people": {
-          "assigns": null,
-          "roles": null,
+          "assigns": [],
+          "roles": [],
           "code": "1",
           "employeeId": "900003940059",
           "title": "SD2",
           "noClients": null,
           "work_with": [],
           "master": [],
-          "knows": null,
+          "knows": [],
           "name": "people2",
           "noProjects": null,
           "interest": [],
           "surname": "LaPel",
-          "candidacies": null,
-          "certificates": null
+          "candidacies": [],
+          "certificates": []
         },
         "charge": "DIRECTOR"
       }
