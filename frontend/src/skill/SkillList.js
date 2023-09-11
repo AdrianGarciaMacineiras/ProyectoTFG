@@ -36,7 +36,7 @@ import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
 import MDBox from '../components/MDBox';
 import MDButton from '../components/MDButton';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
-import NestedKnows from '../person/NestedKnows';
+import NestedKnows from '../person/components/NestedKnows';
 
 function SkillList() {
   const [skillList, setSkillList] = useState([]);
