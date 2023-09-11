@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SortIcon from '@mui/icons-material/Sort';
@@ -8,10 +7,9 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
   TablePagination,
+  TableRow,
 } from '@mui/material';
-
 
 const NestedKnows = (props) => {
   const { data, state, onStateChange, onPageChange, onRowsPerPageChange } = props;
