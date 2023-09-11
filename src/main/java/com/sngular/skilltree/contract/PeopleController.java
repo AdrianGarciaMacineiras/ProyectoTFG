@@ -1,7 +1,6 @@
 package com.sngular.skilltree.contract;
 
 import java.util.List;
-
 import com.sngular.skilltree.api.PeopleApi;
 import com.sngular.skilltree.api.PersonApi;
 import com.sngular.skilltree.api.model.CandidateDTO;
@@ -97,7 +96,7 @@ public class PeopleController implements PeopleApi, PersonApi {
     public ResponseEntity<List<PeopleDTO>> getPeopleSkills(List<String> skillList){
         return ResponseEntity.ok(peopleMapper
                 .toPeopleDto(peopleService
-                        .getPeopleSkills(skillList)));
+                               .getPeopleBySkills(skillList)));
     }
 
     @Override

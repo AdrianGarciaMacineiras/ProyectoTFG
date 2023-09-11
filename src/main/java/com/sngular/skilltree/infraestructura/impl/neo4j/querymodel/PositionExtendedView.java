@@ -1,12 +1,11 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.querymodel;
 
-import lombok.Builder;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Builder;
 
 @Builder
-public record PositionExtendedView(String code, String name, String projectCode, LocalDateTime openingDate, String priority,
+public record PositionExtendedView(String code, String name, String projectCode, String projectName, LocalDateTime openingDate, String priority,
                                    String mode, String role, List<CandidateView> candidates, String managedBy) {
 
     @Builder

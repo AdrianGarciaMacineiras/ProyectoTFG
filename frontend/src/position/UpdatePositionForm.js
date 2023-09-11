@@ -6,30 +6,24 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
 import {
+    FormControl,
     IconButton,
+    InputLabel,
+    MenuItem,
     Paper,
+    Select,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TablePagination,
     TableRow,
-    Checkbox,
-    FormControlLabel,
-    MenuItem,
-    Select,
-    FormControl,
-    InputLabel,
-} from '@mui/material'; 
+} from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import VisGraph from 'react-vis-graph-wrapper';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 
 import Footer from '../components/Footer';
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
@@ -367,7 +361,9 @@ function UpdatePositionForm() {
     const updatePosition = () => {
         const requestBody = JSON.stringify(updatedPosition);
 
-        fetch(`http://${window.location.hostname}:9080/api/position`, {
+      fetch(
+          `http://${window.location.hostname}:9080/api/position/${positionCode}`,
+          {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

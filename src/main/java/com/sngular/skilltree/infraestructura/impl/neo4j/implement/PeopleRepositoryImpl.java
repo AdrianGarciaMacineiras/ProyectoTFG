@@ -91,7 +91,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     }
 
     @Override
-    public List<People> getPeopleSkills(List<String> skills) {
+    public List<People> getPeopleBySkills(List<String> skills) {
 
         var query = String.format("WITH %s as skills " +
                 "MATCH(p:People)-[r:KNOWS]-(s:Skill) " +

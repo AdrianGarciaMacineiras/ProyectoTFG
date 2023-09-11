@@ -1800,6 +1800,8 @@ components:
           type: string
         projectCode:
           type: string
+        projectName:
+          type: string
         openingDate:
           type: string
           format: date

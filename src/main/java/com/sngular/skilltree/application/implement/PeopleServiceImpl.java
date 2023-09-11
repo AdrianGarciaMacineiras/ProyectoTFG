@@ -2,7 +2,6 @@ package com.sngular.skilltree.application.implement;
 
 import java.util.List;
 import java.util.Objects;
-
 import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.PositionService;
@@ -92,8 +91,8 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public List<People> getPeopleSkills(final List<String> skills) {
-        return peopleRepository.getPeopleSkills(skills);
+    public List<People> getPeopleBySkills(final List<String> skills) {
+        return peopleRepository.getPeopleBySkills(skills);
     }
 
     @Override

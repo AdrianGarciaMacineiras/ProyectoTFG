@@ -1,12 +1,9 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import java.time.LocalDateTime;
-import java.util.Objects;
-
 import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomPositionRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PositionExtendedView;
 import org.apache.commons.lang3.StringUtils;
@@ -58,6 +55,7 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
                         .priority(record.get("p").get("priority").asString())
                         .managedBy(getSafeValue(record, "n", "name"))
                         .projectCode(getSafeValue(record, "k", "code"))
+                        .projectName(getSafeValue(record, "k", "name"))
                         .candidates(record.get("candidateData") != null ? null : record.get("candidateData").asList(value -> {
                             Map<String, Object> candidateProperties = value.get("candidateProperties").asMap();
                             return PositionExtendedView.CandidateView.builder()

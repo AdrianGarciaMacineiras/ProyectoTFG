@@ -1,7 +1,6 @@
 package com.sngular.skilltree.infraestructura;
 
 import java.util.List;
-
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.views.PeopleView;
 
@@ -21,7 +20,7 @@ public interface PeopleRepository {
 
     List<People> findByDeletedIsFalse();
 
-    List<People> getPeopleSkills(List<String> skills);
+  List<People> getPeopleBySkills(List<String> skills);
 
     List<People> getOtherPeopleStrategicSkills(String teamCode);
 }

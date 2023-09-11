@@ -2,8 +2,10 @@ import Add from '@mui/icons-material/Add';
 import Clear from '@mui/icons-material/Clear';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import KeyboardDoubleArrowDownIcon
+    from '@mui/icons-material/KeyboardDoubleArrowDown';
+import KeyboardDoubleArrowUpIcon
+    from '@mui/icons-material/KeyboardDoubleArrowUp';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SortIcon from '@mui/icons-material/Sort';
@@ -25,15 +27,14 @@ import Card from '@mui/material/Card';
 import Collapse from '@mui/material/Collapse';
 import Grid from '@mui/material/Grid';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
 import MDBox from '../components/MDBox';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 import CandidateList from './components/CandidateList';
-
 
 const ListPositions = () => {
     const [positionList, setPositionList] = useState([]);
@@ -293,8 +294,10 @@ const ListPositions = () => {
                                                     {getSortIcon('name')}
                                                     Name
                                                 </TableCell>
-                                                <TableCell align='left' onClick={() => handleSortChange('projectCode')}>
-                                                    {getSortIcon('projectCode')}
+                                                <TableCell align='left'
+                                                           onClick={() => handleSortChange(
+                                                               'projectName')}>
+                                                    {getSortIcon('projectName')}
                                                     Project Code
                                                 </TableCell>
                                                 <TableCell align='left' onClick={() => handleSortChange('openingDate')}>
