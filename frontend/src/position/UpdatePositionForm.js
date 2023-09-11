@@ -167,18 +167,6 @@ function UpdatePositionForm() {
                 setPeopleList(data);
             });
 
-        fetch(`http://${window.location.hostname}:9080/api/people`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            }
-        })
-            .then(data => data.json())
-            .then(data => {
-                setPeopleList(data);
-            });
-
     }, [positionCode]);
 
     const getTreeItemsFromData =
