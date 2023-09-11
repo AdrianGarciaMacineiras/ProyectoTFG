@@ -75,8 +75,11 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
 
     private String getSafeValue(final Record record, final String root, final String prop) {
         String result = null;
-        if(root.equalsIgnoreCase("k") && !"NULL".equalsIgnoreCase(record.get(root).asString())){
-            result = record.get(root).get(prop).asString();
+        org.neo4j.driver.Value rootValue = record.get(root);
+
+        if(root.equalsIgnoreCase("k")){
+            if (rootValue.type().name().equals("NODE"))
+                result = record.get(root).get(prop).asString();
         } else if (!"NULL".equalsIgnoreCase(record.get(root).asString())) {
             result = record.get(root).get(prop).asString();
         }
