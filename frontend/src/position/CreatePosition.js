@@ -22,8 +22,8 @@ import {
 import Autocomplete from '@mui/material/Autocomplete';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import {format} from 'date-fns';
-import React, {useEffect, useState} from 'react';
+import { format } from 'date-fns';
+import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import VisGraph from 'react-vis-graph-wrapper';
 
@@ -34,6 +34,8 @@ import MDButton from '../components/MDButton';
 import MDInput from '../components/MDInput';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
+import SkillSelect from './components/SkillSelect';
+
 
 function CreatePosition() {
   const [form, setForm] = useState({
@@ -117,7 +119,8 @@ function CreatePosition() {
 
       return filteredItems.map(
         (treeItemData) => {
-          const isMatched = treeItemData.name.toLowerCase().includes(searchValue.toLowerCase());
+          const isMatched = 
+          treeItemData.name.toLowerCase().includes(searchValue.toLowerCase());
 
           if (isMatched) {
             return (
@@ -483,7 +486,8 @@ function CreatePosition() {
                   bgColor='info'
                   borderRadius='lg'
                   coloredShadow=
-                  'info' > <MDTypography variant='h6' color='white'>Create Position</MDTypography>
+                  'info' >
+                  <MDTypography variant='h6' color='white'>Create Position</MDTypography>
                 </MDBox>
                 <form id='positionForm' onSubmit={handleSubmit}>
                   <MDBox pt={3}>
@@ -558,12 +562,12 @@ function CreatePosition() {
                         <FormControl fullWidth>
                           <InputLabel id="Active-select">Priority</InputLabel>
                           <Select name="active" value={form.priority}
-                                  onChange={handleInputChange}
-                                  labelId="Active-select"
-                                  sx={{
-                                    width: 250,
-                                    height: 50,
-                                  }}>
+                            onChange={handleInputChange}
+                            labelId="Active-select"
+                            sx={{
+                              width: 250,
+                              height: 50,
+                            }}>
                             <MenuItem value='CRITICAL'>CRITICAL</MenuItem>
                             <MenuItem value='HIGH'>HIGH</MenuItem>
                             <MenuItem value='MEDIUM'>MEDIUM</MenuItem>
@@ -592,77 +596,29 @@ function CreatePosition() {
                     </Grid>
                     <Grid container spacing={12}>
                       <Grid item xs={5}>
-                        <MDButton variant="gradient" color="dark"
-                          onClick={handleExpandClick}> {expand.length === 0 ? 'Expand all' : 'Collapse all'}
-                        </MDButton>
-                        <MDBox>
-                          < MDInput
-                            type='text'
-                            value={searchSkill}
-                            onChange={(e) => setSearchSkill(e.target.value)}
-                            placeholder='Search' />
+                        <MDBox pt={3}>
+                          <SkillSelect
+                            expand={expand}
+                            handleExpandClick={handleExpandClick}
+                            searchSkill={searchSkill}
+                            setSearchSkill={setSearchSkill}
+                            DataTreeView={DataTreeView}
+                            selectedItem={selectedItem}
+                            setLevelReq={setLevelReq}
+                            setMinLevel={setMinLevel}
+                            setMinExp={setMinExp}
+                            levelReq={levelReq}
+                            minLevel={minLevel}
+                            minExp={minExp}
+                            handleModalSubmit={handleModalSubmit}
+                            setSelectedItem={setSelectedItem}
+                          />
                         </MDBox>
-                        <DataTreeView />
-                      </Grid>
-                      <Grid item xs={7}>
-                        {selectedItem && (
-                          <MDBox>
-                            <h2>Selected Item: {selectedItem.name}</h2>
-                            <FormControl fullWith>
-                              <MDTypography variant='h6' fontWeight='medium'>Level Required</MDTypography>
-                              <InputLabel id="Level-select">Level Required</InputLabel>
-                              <Select value={levelReq} onChange=
-                                {(e) => setLevelReq(e.target.value)}
-                                labelId="Level-select"
-                                sx={{
-                                  width: 250,
-                                  height: 50,
-                                }}>
-                                <MenuItem value='MANDATORY'>MANDATORY</MenuItem>
-                                <MenuItem value="NICE_TO_HAVE">NICE TO HAVE</MenuItem>
-                              </Select>
-                            </FormControl>
-                            <FormControl fullWidth>
-                              <InputLabel id="Minimum-select">Minimum Required</InputLabel>
-                              <MDTypography variant='h6' fontWeight='medium'>Minimum Required</MDTypography>
-                              <Select value={minLevel} onChange={(e) => setMinLevel(e.target.value)} labelId="Minimum-select"
-                                sx={{
-                                  width: 250,
-                                  height: 50,
-                                }}>
-                                <MenuItem value='HIGH'>HIGH</MenuItem>
-                                <MenuItem value="MEDIUM">MEDIUM</MenuItem>
-                                <MenuItem value='LOW'>LOW</MenuItem>
-                              </Select>
-                            </FormControl>
-                            <FormControl fullWidth>
-                              <MDTypography variant='h6' fontWeight='medium'>Minimum Experience</MDTypography>
-                              <MDInput
-                                type="text"
-                                value={minExp}
-                                onChange={(e) => {
-                                  const value = parseInt(e.target.value);
-                                  if (!isNaN(value)) {
-                                    setMinExp(value);
-                                  } else {
-                                    setMinExp(''); 
-                                  }
-                                }}
-                                sx={{
-                                  width: 250,
-                                  height: 50,
-                                }}
-                              />
-                            </FormControl>
-                            <MDButton onClick={(event) => handleModalSubmit(event)}>Save</MDButton>
-                            <MDButton onClick={() => setSelectedItem(null)}>Cancel</MDButton>
-                          </MDBox>
-                        )}
                       </Grid>
                       <Grid item xs={12}>
-                        {form.skills.length > 0 && <SkillsList/>}
+                        {form.skills.length > 0 && <SkillsList />}
                         <MDButton variant="gradient" color="dark"
-                                  onClick={handleSubmit}>Submit</MDButton>
+                          onClick={handleSubmit}>Submit</MDButton>
                       </Grid>
                     </Grid>
                   </MDBox>

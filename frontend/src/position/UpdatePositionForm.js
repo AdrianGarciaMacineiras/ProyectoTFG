@@ -22,8 +22,8 @@ import {
 import Autocomplete from '@mui/material/Autocomplete';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Footer from '../components/Footer';
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
@@ -45,7 +45,8 @@ function UpdatePositionForm() {
         priority: '',
         mode: '',
         role: '',
-        managedBy: ''
+        managedBy: '',
+        charge: ''
     });
 
     const [updatedPosition, setUpdatedPosition] = useState({
@@ -59,7 +60,8 @@ function UpdatePositionForm() {
         priority: '',
         mode: '',
         role: '',
-        managedBy: ''
+        managedBy: '',
+        charge: ''
     });
 
     const { positionCode } = useParams();
@@ -266,13 +268,13 @@ function UpdatePositionForm() {
         const handleDeleteSkill = (index) => {
             const updatedSkills = editedSkills.filter((_, i) => i !== index);
             setEditedSkills(updatedSkills); // Actualiza el estado con el nuevo array
-        
+
             setUpdatedPosition((prevUpdatedPosition) => ({
                 ...prevUpdatedPosition,
                 skills: updatedSkills,
             }));
         };
-        
+
 
         return (
             <React.Fragment>
@@ -324,13 +326,13 @@ function UpdatePositionForm() {
                                             />
                                         </TableCell>
                                         <TableCell>
-                                        <IconButton
-                                            color='error'
-                                            onClick={() => handleDeleteSkill(index)} 
-                                        >
-                                            <Clear /> 
-                                        </IconButton>
-                                    </TableCell>
+                                            <IconButton
+                                                color='error'
+                                                onClick={() => handleDeleteSkill(index)}
+                                            >
+                                                <Clear />
+                                            </IconButton>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -349,16 +351,16 @@ function UpdatePositionForm() {
     const updatePosition = () => {
         const requestBody = JSON.stringify(updatedPosition);
 
-      fetch(
-          `http://${window.location.hostname}:9080/api/position/${positionCode}`,
-          {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: requestBody,
-        })
+        fetch(
+            `http://${window.location.hostname}:9080/api/position/${positionCode}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                body: requestBody,
+            })
             .then(response => response.json())
     };
 
@@ -373,8 +375,7 @@ function UpdatePositionForm() {
 
     const handleItemClick = (event, item) => {
         event.stopPropagation();
-        console.log("itemclick", item);
-        console.log("itemclick", form.skills);
+
         const newSkill = {
             skillName: item.name,
             levelReq: 'NICE_TO_HAVE',
@@ -408,7 +409,7 @@ function UpdatePositionForm() {
             mode: '',
             role: '',
             managedBy: '',
-            office: ''
+            charge: ''
         });
     };
 
@@ -466,7 +467,11 @@ function UpdatePositionForm() {
                                                 <MDTypography variant='h6' fontWeight='medium'>Mode</MDTypography>
                                                 <FormControl fullWidth>
                                                     <InputLabel>Select an option</InputLabel>
-                                                    <Select name='mode' value={updatedPosition.mode || 'UNKNOWN'} onChange={handleInputChange}>
+                                                    <Select name='mode' value={updatedPosition.mode} onChange={handleInputChange}
+                                                        sx={{
+                                                            width: 250,
+                                                            height: 50,
+                                                        }}>
                                                         <MenuItem value='REMOTE'>Remote</MenuItem>
                                                         <MenuItem value="PRESENTIAL">Presential</MenuItem>
                                                         <MenuItem value='MIX'>Mix</MenuItem>
@@ -479,7 +484,19 @@ function UpdatePositionForm() {
                                                 <MDInput type='text' value={form.name} onChange={handleInputChange} name='name' disabled />
                                                 <MDTypography variant='h6' fontWeight='medium'>Priority</MDTypography>
                                                 <MDInput type="text" value={updatedPosition.priority} onChange={handleInputChange} name="priority" />
-                                                <MDTypography variant='h6' fontWeight='medium'>Charge</MDTypography>
+                                                <MDTypography variant='h6' fontWeight='medium'>Mode</MDTypography>
+                                                <FormControl fullWidth>
+                                                    <InputLabel>Select an option</InputLabel>
+                                                    <Select name='charge' value={updatedPosition.charge} onChange={handleInputChange}
+                                                        sx={{
+                                                            width: 250,
+                                                            height: 50,
+                                                        }}>
+                                                        <MenuItem value='DIRECTOR'>Director</MenuItem>
+                                                        <MenuItem value="HEAD">Head</MenuItem>
+                                                        <MenuItem value="UNKNOWN">Unknown</MenuItem>
+                                                    </Select>
+                                                </FormControl>
                                                 {/*<MDTypography variant='h6' fontWeight='medium'>End Date</MDTypography>
                         <DatePicker
                           selected={closingDate} dateFormat='dd-MM-yyyy'
@@ -488,7 +505,11 @@ function UpdatePositionForm() {
                         />*/}
                                                 <MDTypography variant='h6' fontWeight='medium'>Active</MDTypography >
                                                 <FormControl fullWidth><InputLabel>Select an option</InputLabel>
-                                                    <Select name="active" value={updatedPosition.active} onChange={handleInputChange}>
+                                                    <Select name="active" value={updatedPosition.active} onChange={handleInputChange}
+                                                        sx={{
+                                                            width: 250,
+                                                            height: 50,
+                                                        }}>
                                                         <MenuItem value="true">YES</MenuItem>
                                                         <MenuItem value='false'>NO</MenuItem>
                                                     </Select>

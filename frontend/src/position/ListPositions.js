@@ -160,7 +160,6 @@ const ListPositions = () => {
                             </IconButton>
                         </Tooltip>
                     </TableCell>
-                    <TableCell align="left">{row.code}</TableCell>
                     <TableCell align='left'>{row.name}</TableCell>
                     <TableCell align="left">{row.projectCode}</TableCell>
                     <TableCell align='left'>{row.openingDate}</TableCell>
@@ -236,7 +235,7 @@ const ListPositions = () => {
         if (orderBy === column) {
             return sortDirection === 'asc' ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />;
         };
-        if (column !== 'code' && column !== 'projectCode'
+        if (column !== 'projectCode'
             && column !== 'openingDate'
             && column !== 'closingDate') {
             return <SortByAlphaIcon />;
@@ -285,10 +284,6 @@ const ListPositions = () => {
                                                             <KeyboardDoubleArrowDownIcon />
                                                         }
                                                     </IconButton>
-                                                </TableCell>
-                                                <TableCell align='left' onClick={() => handleSortChange('code')}>
-                                                    {getSortIcon('code')}
-                                                    Code
                                                 </TableCell>
                                                 <TableCell align='left' onClick={() => handleSortChange('name')}>
                                                     {getSortIcon('name')}

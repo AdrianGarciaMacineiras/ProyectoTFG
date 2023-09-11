@@ -141,9 +141,9 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         for (var positionSkill : positionSkills){
             if (MANDATORY.equals(positionSkill.levelReq())) {
                 switch (positionSkill.minLevel()) {
-                    case LOW -> filter.add(fillFilterBuilder(positionSkill.skill().getCode(), LOW_LEVEL_LIST));
-                    case MEDIUM -> filter.add(fillFilterBuilder(positionSkill.skill().getCode(), MID_LEVEL_LIST));
-                    default -> filter.add(fillFilterBuilder(positionSkill.skill().getCode(), HIGH_LEVEL_LIST));
+                    case LOW -> filter.add(fillFilterBuilder(positionSkill.skill().getCode(), LOW_LEVEL_LIST, positionSkill.minExp()));
+                    case MEDIUM -> filter.add(fillFilterBuilder(positionSkill.skill().getCode(), MID_LEVEL_LIST, positionSkill.minExp()));
+                    default -> filter.add(fillFilterBuilder(positionSkill.skill().getCode(), HIGH_LEVEL_LIST, positionSkill.minExp()));
                 }
             }
         }
@@ -151,7 +151,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
                                   " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) " +
                                   "AND ANY (lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair.skillcode}))" +
-                                  "AND p.assignable = TRUE )" +
+                                  "AND p.assignable = TRUE " +
+                                  "AND r.experience >= %d)" +
                                   " RETURN DISTINCT p", String.join(",", filter));
 
         var peopleList = client.query(query).fetchAs(People.class)
@@ -289,8 +290,8 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                      .build();
     }
 
-    private String fillFilterBuilder(final String skillCode, final List<String> levelList) {
-        return String.format("{skillcode:'%s', knowslevel:[%s]}", skillCode, String.join(",", levelList));
+    private String fillFilterBuilder(final String skillCode, final List<String> levelList, final Integer minExp) {
+        return String.format("{skillcode:'%s', knowslevel:[%s], experience:%d}", skillCode, String.join(",", levelList), minExp);
     }
 
     private static BiFunction<TypeSystem, Record, People> getTypeSystemRecordPeopleBiFunction() {

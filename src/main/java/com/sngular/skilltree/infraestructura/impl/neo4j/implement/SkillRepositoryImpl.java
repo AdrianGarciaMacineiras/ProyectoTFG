@@ -65,7 +65,7 @@ public class SkillRepositoryImpl implements SkillRepository {
     @Cacheable(cacheNames = "skills")
     public Skill findSkill(String skillCode) {
         var skillNode = crud.findByCode(skillCode);
-        return Skill.builder().code(skillCode).name(skillNode.getName()).subSkillList(new HashMap<>()).build();
+        return Skill.builder().code(skillCode).name(skillNode.getName()).namespace(skillNode.getNamespace()).subSkillList(new HashMap<>()).build();
     }
 
     @Override

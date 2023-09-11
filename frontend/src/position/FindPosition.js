@@ -114,19 +114,21 @@ function FindPosition() {
           })
         });
 
-        i++;
-        graphTemp.nodes.push({
-          id: i,
-          label: response.projectCode,
-          title: JSON.stringify(response.projectCode, '', 2),
-          group: 'project'
-        });
-        graphTemp.edges.push({
-          from: i,
-          to: 1,
-          label: 'FOR_PROJECT',
-          title: JSON.stringify(response.projectCode, '', 2)
-        });
+        if (response.projectCode !== "null") {
+          i++;
+          graphTemp.nodes.push({
+            id: i,
+            label: response.projectCode,
+            title: JSON.stringify(response.projectCode, '', 2),
+            group: 'project'
+          });
+          graphTemp.edges.push({
+            from: i,
+            to: 1,
+            label: 'FOR_PROJECT',
+            title: JSON.stringify(response.projectCode, '', 2)
+          });
+        }
 
         response.candidates?.forEach(element => {
           i++;
