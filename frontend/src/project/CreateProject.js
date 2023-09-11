@@ -295,13 +295,13 @@ const CreateProject = () => {
         graphTemp.nodes.push({ id: i, label: response.name, title: JSON.stringify(temp, '', 2) });
 
         i++;
-        graphTemp.nodes.push({ id: i, label: response.clientCode, title: JSON.stringify(response.clientCode, '', 2), groups: 'client' });
+        graphTemp.nodes.push({ id: i, label: response.clientCode, title: JSON.stringify(response.clientCode, '', 2), group: 'client' });
         graphTemp.edges.push({ from: 1, to: i, label: 'FOR_CLIENT', title: response.clientCode });
 
         if (!!response.skills) {
           response.skills.forEach(element => {
             i++;
-            graphTemp.nodes.push({ id: i, label: element, title: element, groups: 'skills' });
+            graphTemp.nodes.push({ id: i, label: element, title: element, group: 'skills' });
             graphTemp.edges.push({ from: 1, to: i, label: 'REQUIRE', title: response.clientCode });
           });
         }

@@ -92,6 +92,7 @@ public class PositionController implements PositionApi {
 
     @Override
     public ResponseEntity<List<PositionResumedDTO>> getPositionResume() {
-        return ResponseEntity.ok(positionMapper.toPositionResumedDto(positionService.getAllResumed()));
+        var aux = positionService.getAllResumed();
+        return ResponseEntity.ok(positionMapper.toPositionResumedDto(aux));
     }
 }

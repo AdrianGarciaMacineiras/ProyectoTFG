@@ -45,16 +45,12 @@ public class PositionRepositoryImpl implements PositionRepository {
 
   @Override
   public List<PositionView> findAllResumed() {
-    return mapper.mapExtended(customCrud.getAllPositionExtended());
+    var aux = customCrud.getAllPositionExtended();
+    return mapper.mapExtended(aux);
   }
 
   @Override
   public Position save(Position position) {
-
-    var projectNode = projectCrud.findByCode(position.project().code());
-    if (Objects.isNull(projectNode) || projectNode.isDeleted()) {
-      throw new EntityNotFoundException("Project", projectNode.getCode());
-    }
 
     var positionNode = crud.save(mapper.toNode(position));
 

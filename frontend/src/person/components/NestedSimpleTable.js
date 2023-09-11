@@ -8,7 +8,6 @@ import {
   TablePagination,
 } from '@mui/material';
 
-
 const NestedMaster = ({ data }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);

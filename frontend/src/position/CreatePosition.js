@@ -349,8 +349,8 @@ function CreatePosition() {
           group: 'project'
         });
         graphTemp.edges.push({
-          from: i,
-          to: 1,
+          from: 1,
+          to: i,
           label: 'FOR_PROJECT',
           title: JSON.stringify(response.projectCode, '', 2)
         });

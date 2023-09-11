@@ -23,7 +23,8 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 
     @Override
     public List<Project> findAll() {
-        return mapper.map(crud.findByDeletedIsFalse());
+        var aux = crud.findByDeletedIsFalse();
+        return mapper.map(aux);
     }
 
     @Override

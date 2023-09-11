@@ -2,6 +2,7 @@ package com.sngular.skilltree.application;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.sngular.skilltree.api.model.SkillPairDTO;
 import com.sngular.skilltree.model.Client;
@@ -119,12 +120,18 @@ public class ResolveService {
 
     @Named("resolveCodePeople")
     public People resolveCodePeople(final String peopleCode) {
-        return peopleService.findPeopleByCode(peopleCode);
+        if(!peopleCode.isEmpty())
+            return peopleService.findPeopleByCode(peopleCode);
+        else
+            return null;
     }
 
     @Named("resolveCodeProject")
     public Project resolveCodeProject(final String projectCode) {
-        return projectService.findProject(projectCode);
+        if(!projectCode.isEmpty())
+            return projectService.findProject(projectCode);
+        else
+            return null;
     }
 
     @Named("resolveCodeOffice")

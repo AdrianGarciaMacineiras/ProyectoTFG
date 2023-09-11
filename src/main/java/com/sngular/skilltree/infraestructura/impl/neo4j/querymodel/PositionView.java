@@ -9,5 +9,5 @@ public interface PositionView{
 
     String getRole();
 
-    ProjectView project();
+    ProjectView getProject();
 }

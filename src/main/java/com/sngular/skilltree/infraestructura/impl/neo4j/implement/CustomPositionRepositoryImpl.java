@@ -22,15 +22,6 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
 
     private static final String NULL = "null";
 
-    /*private final static String QUERY = """
-            MATCH(p:Position)-[r:MANAGED]-(n:People),
-            OPTIONAL MATCH (p)-[c:CANDIDATE]-(m:People),
-            OPTIONAL MATCH (p)-[f:FOR_PROJECT]-(k:Project)
-            with p,r,n,k,m,collect({code: m.code, interviewDate:c.interviewDate, introductionDate:c.introductionDate,
-            resolutionDate:c.resolutionDate, creationDate:c.creationDate, status:c.status}) as candidates
-            return p,r,n,candidates,m,k
-            """;*/
-
     private final static String QUERY = """
             MATCH (p:Position)
             OPTIONAL MATCH (p)-[manages:MANAGED]->(n:People)
@@ -38,7 +29,7 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
             OPTIONAL MATCH (p)-[projects:FOR_PROJECT]->(k:Project)
             RETURN p,
                     COLLECT(DISTINCT {candidate: c, properties: properties(candidates)}) AS candidateData,
-                   COLLECT(DISTINCT k) AS projects,n
+                   k,n
             """;
 
     public CustomPositionRepositoryImpl(final Neo4jClient client) {
@@ -67,7 +58,7 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
                         .priority(record.get("p").get("priority").asString())
                         .managedBy(getSafeValue(record, "n", "name"))
                         .projectCode(getSafeValue(record, "k", "code"))
-                        .candidates(record.get("candidates") != null ? null : record.get("candidates").asList(value -> {
+                        .candidates(record.get("candidateData") != null ? null : record.get("candidateData").asList(value -> {
                             Map<String, Object> candidateProperties = value.get("candidateProperties").asMap();
                             return PositionExtendedView.CandidateView.builder()
                                     .interviewDate(getLocalDateTime(candidateProperties.get("interviewDate")))
@@ -84,7 +75,9 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
 
     private String getSafeValue(final Record record, final String root, final String prop) {
         String result = null;
-        if (!"NULL".equalsIgnoreCase(record.get(root).asString())) {
+        if(root.equalsIgnoreCase("k") && !"NULL".equalsIgnoreCase(record.get(root).asString())){
+            result = record.get(root).get(prop).asString();
+        } else if (!"NULL".equalsIgnoreCase(record.get(root).asString())) {
             result = record.get(root).get(prop).asString();
         }
         return result;

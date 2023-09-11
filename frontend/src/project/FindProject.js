@@ -18,7 +18,7 @@ function FindProject() {
 
   const graphTemp = { nodes: [], edges: [] };
 
-  const [graph, setGraph] = useState({ nodes: [], edges: [] });
+  const [graph, setGraph] = useState(null);
 
   const [aux, setAux] = useState([]);
 
@@ -86,7 +86,7 @@ function FindProject() {
           id: i,
           label: response.clientCode,
           title: JSON.stringify(response.clientCode, '', 2),
-          groups: 'client'
+          group: 'client'
         });
         graphTemp.edges.push({
           from: 1,
@@ -98,7 +98,7 @@ function FindProject() {
         if (!!response.skills) {
           response.skills.forEach(element => {
             i++;
-            graphTemp.nodes.push({ id: i, label: element, title: element, groups: 'skills' });
+            graphTemp.nodes.push({ id: i, label: element, title: element, group: 'skills' });
             graphTemp.edges.push({ from: 1, to: i, label: 'REQUIRE', title: response.clientCode });
           });
         }

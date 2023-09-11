@@ -33,7 +33,7 @@ const CreateTeam =
 
       const graphTemp = {nodes: [], edges: []};
 
-      const [graph, setGraph] = useState({nodes: [], edges: []});
+      const [graph, setGraph] = useState(null);
 
       const [aux, setAux] = useState([]);
 

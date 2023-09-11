@@ -24,7 +24,7 @@ function FindPosition() {
 
   const graphTemp = { nodes: [], edges: [] };
 
-  const [graph, setGraph] = useState({ nodes: [], edges: [] });
+  const [graph, setGraph] = useState(null);
 
   const [valor, setValor] = useState(0);
 

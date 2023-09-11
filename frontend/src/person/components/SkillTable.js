@@ -18,10 +18,10 @@ import {
 } from '@mui/material';
 import {Delete as DeleteIcon} from '@mui/icons-material';
 import DatePicker from 'react-datepicker';
-import MDButton from '../components/MDButton';
-import MDInput from '../components/MDInput';
+import MDInput from '../../components/MDInput';
 import {parse} from 'date-fns';
 import moment from 'moment';
+import MDButton from '../../components/MDButton';
 
 const levels = ['LOW', 'MIDDLE', 'ADVANCED'];
 
