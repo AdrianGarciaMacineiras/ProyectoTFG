@@ -4,18 +4,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import com.sngular.skilltree.api.model.AssignmentDTO;
-import com.sngular.skilltree.api.model.CertificateDTO;
-import com.sngular.skilltree.api.model.PatchedPeopleDTO;
-import com.sngular.skilltree.api.model.PeopleDTO;
-import com.sngular.skilltree.api.model.PeopleResumedDTO;
-import com.sngular.skilltree.api.model.RolesDTO;
+import com.sngular.skilltree.api.model.*;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Assignment;
 import com.sngular.skilltree.model.Certificate;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Role;
+import com.sngular.skilltree.model.views.PeopleNamesView;
 import com.sngular.skilltree.model.views.PeopleView;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -67,6 +63,8 @@ public interface PeopleMapper {
 
   @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
   Certificate certificateDTOToCertificate(CertificateDTO certificateDTO);
+
+  List<PeopleNamesDTO> toPeopleNamesDto(List<PeopleNamesView> all);
 
   @Named("patch")
   default People patch(People newPeople, People oldPeople) {

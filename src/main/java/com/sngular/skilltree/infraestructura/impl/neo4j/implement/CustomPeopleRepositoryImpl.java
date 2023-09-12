@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomPeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleExtendedView;
+import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleNamesView;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
@@ -14,7 +15,7 @@ public class CustomPeopleRepositoryImpl implements CustomPeopleRepository {
 
     private final Neo4jClient client;
 
-    private final static String QUERY = """
+    private final static String queryAllPeopleExtended = """
             match (t:Team)-[rt:MEMBER_OF]-(p:People {deleted: false})-[r:KNOWS]-(s:Skill)
             with t, p, collect({code:s.code, name:s.name, experience:r.experience, level:r.level, primary:r.primary}) as skills
             return t, p, skills
@@ -27,7 +28,7 @@ public class CustomPeopleRepositoryImpl implements CustomPeopleRepository {
     @Override
     public List<PeopleExtendedView> getAllPeopleExtended() {
         return new ArrayList<>(client
-                .query(QUERY)
+                .query(queryAllPeopleExtended)
                 .fetchAs(PeopleExtendedView.class)
                 .mappedBy((typeSystem, record) -> PeopleExtendedView
                         .builder()
@@ -48,6 +49,25 @@ public class CustomPeopleRepositoryImpl implements CustomPeopleRepository {
                         .employeeId(record.get("p").get("employeeId").asString())
                         .code(record.get("p").get("code").asString())
                         .build())
+                .all());
+    }
+
+    private final static String queryAllPeopleNames = """
+            MATCH (p:People) RETURN p.code, p.name, p.surname
+            """;
+
+    @Override
+    public List<PeopleNamesView> getAllPeopleNames(){
+
+        return new ArrayList<>(client
+                .query(queryAllPeopleNames)
+                .fetchAs(PeopleNamesView.class)
+                .mappedBy((typeSystem, record) -> PeopleNamesView
+                                .builder()
+                                .code(record.get("p.code").asString())
+                                .name(record.get("p.name").asString())
+                                .surname(record.get("p.surname").asString())
+                                .build())
                 .all());
     }
 }

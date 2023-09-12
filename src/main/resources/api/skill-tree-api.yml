@@ -200,6 +200,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/error"
 
+  /api/project/names:
+    summary: Company projects
+    description: Returns a list of all projects
+    get:
+      summary: List all available projects
+      operationId: getProjectNames
+      tags:
+        - project
+      responses:
+        '200':
+          description: A paged array of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/projectNames"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
   /api/position:
     summary: Company positions
     description: Returns a list of all positions
@@ -903,6 +931,34 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/peopleResumed"
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error"
+
+  /api/people/names:
+    summary: Company people
+    description: Returns a list of all people in the company
+    get:
+      summary: List all available people
+      operationId: getPeopleNames
+      tags:
+        - people
+      responses:
+        '200':
+          description: A paged array of people
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/peopleNames"
         '400':
           description: Bad Request
         '404':
@@ -1737,6 +1793,14 @@ components:
           items:
             type: string
 
+    projectNames:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+
     guards:
       type: string
       enum:
@@ -2179,6 +2243,20 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/candidate"
+
+    peopleNames:
+      type: object
+      required:
+        - code
+        - name
+        - surname
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
 
     peopleResumed:
       type: object

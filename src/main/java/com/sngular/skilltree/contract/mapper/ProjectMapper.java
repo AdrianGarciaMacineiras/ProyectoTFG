@@ -6,10 +6,12 @@ import java.util.Objects;
 
 import com.sngular.skilltree.api.model.PatchedProjectDTO;
 import com.sngular.skilltree.api.model.ProjectDTO;
+import com.sngular.skilltree.api.model.ProjectNamesDTO;
 import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.EnumGuards;
 import com.sngular.skilltree.model.Project;
+import com.sngular.skilltree.model.views.ProjectNamesView;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -28,6 +30,8 @@ public interface ProjectMapper {
     @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
     @Mapping(target = "client", source = "clientCode", qualifiedByName = {"resolveCodeClient"})
     Project toProject(ProjectDTO projectDTO);
+
+    List<ProjectNamesDTO> toProjectNamesDto(List<ProjectNamesView> all);
 
     List<ProjectDTO> toProjectsDTO(Collection<Project> projects);
 

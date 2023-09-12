@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
   Grid,
   FormControl,
@@ -28,8 +28,8 @@ function SkillSelect({
   setSelectedItem
 }) {
   return (
-    <Grid container spacing={12}>
-      <Grid item xs={5}>
+    <Fragment>
+      <Grid item xs={6}>
         <MDButton variant="gradient" color="dark" onClick={handleExpandClick}>
           {expand.length === 0 ? 'Expand all' : 'Collapse all'}
         </MDButton>
@@ -43,15 +43,17 @@ function SkillSelect({
         </MDBox>
         <DataTreeView />
       </Grid>
-      <Grid item xs={7}>
+      <Grid item xs={6}>
         {selectedItem && (
           <MDBox>
-            <h2>Selected Item: {selectedItem.name}</h2>
             <MDTypography variant='h6' fontWeight='medium'>
-                Level Required
-              </MDTypography>
+              Selected Item: {selectedItem.name}
+            </MDTypography>
+            <MDTypography variant='h6' fontWeight='medium'>
+              Level Required
+            </MDTypography>
             <FormControl fullWidth>
-            <InputLabel id="Minimum-select">Level Required</InputLabel>
+              <InputLabel id="Minimum-select">Level Required</InputLabel>
               <Select
                 value={levelReq}
                 onChange={(e) => setLevelReq(e.target.value)}
@@ -65,8 +67,8 @@ function SkillSelect({
               </Select>
             </FormControl>
             <MDTypography variant='h6' fontWeight='medium'>
-                Minimum Required
-              </MDTypography>
+              Minimum Required
+            </MDTypography>
             <FormControl fullWidth>
               <InputLabel id="Minimum-select">Minimum Required</InputLabel>
               <Select
@@ -110,7 +112,7 @@ function SkillSelect({
           </MDBox>
         )}
       </Grid>
-    </Grid>
+    </Fragment>
   );
 }
 

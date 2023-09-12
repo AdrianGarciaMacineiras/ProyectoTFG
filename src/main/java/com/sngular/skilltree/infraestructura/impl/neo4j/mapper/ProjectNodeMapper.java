@@ -6,6 +6,7 @@ import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveServiceNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.ProjectNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.ProjectRolesNode;
+import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.ProjectNamesView;
 import com.sngular.skilltree.model.Project;
 import com.sngular.skilltree.model.ProjectRoles;
 import org.mapstruct.InheritInverseConfiguration;
@@ -32,4 +33,6 @@ public interface ProjectNodeMapper {
 
     @Mapping(target = "id", source = "id", qualifiedByName = {"resolveServiceNode", "resolveId"})
     ProjectRolesNode rolesNodeToRoles(ProjectRoles rol);
+
+    List<com.sngular.skilltree.model.views.ProjectNamesView> mapProjectNames(List<ProjectNamesView> all);
 }

@@ -59,7 +59,10 @@ public class TeamRepositoryImpl implements TeamRepository {
         } else {
             teamView = crud.findByShortNameAndDeletedIsFalse(teamcode, TeamView.class);
         }
-        return mapper.map(teamView);
+        if (Objects.isNull(teamView))
+            return null;
+        else
+            return mapper.map(teamView);
     }
 
     @Override

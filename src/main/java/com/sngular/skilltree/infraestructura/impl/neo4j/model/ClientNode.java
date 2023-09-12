@@ -24,8 +24,8 @@ public class ClientNode {
 
     private String country;
 
-    @Relationship(type = "BELONG", direction = Relationship.Direction.INCOMING)
-    private List<OfficeNode> offices;
+    /*@Relationship(type = "BELONG", direction = Relationship.Direction.INCOMING)
+    private List<OfficeNode> offices;*/
 
     private boolean deleted;
 

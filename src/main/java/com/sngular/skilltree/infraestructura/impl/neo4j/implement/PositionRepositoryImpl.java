@@ -59,8 +59,10 @@ public class PositionRepositoryImpl implements PositionRepository {
 
   @Override
   public Position findByCode(String positionCode) {
-
-    return mapper.fromNode(crud.findByCode(positionCode));
+    if(Objects.isNull(crud.findByCode(positionCode)))
+      return null;
+    else
+      return mapper.fromNode(crud.findByCode(positionCode));
   }
 
     @Override

@@ -468,8 +468,8 @@ function SkillList() {
   const handleModalSubmit = (event) => {
     event.preventDefault();
     const newItem = { skill: skill, skillName, levelReq, minLevel, minExp };
-    const updatedSkills = [...selected, newItem];
-    setSelected(selected => [...selected, updatedSkills]);
+    setSelected(selected => [...selected, newItem]);
+    setSelectedItem(null)
     setSkill(null);
     setSkillName(null)
     setLevelReq('');
@@ -481,7 +481,7 @@ function SkillList() {
     (index) => {
       const updatedSkills = [...selected];
       updatedSkills.splice(index, 1);
-      setSelected(selected => [...selected, updatedSkills]);
+      setSelected(updatedSkills);
     };
 
   const SelectedList =
@@ -502,7 +502,7 @@ function SkillList() {
                 <TableBody>
                   {selected.map((skill, index) => (
                     <TableRow key={index}>
-                      {console.log(skill)}
+                      {console.log(skill.skillName)}
                       <TableCell>{skill.skillName}</TableCell>
                       <TableCell>{skill.levelReq}</TableCell>
                       <TableCell>{skill.minLevel}</TableCell>
@@ -540,42 +540,43 @@ function SkillList() {
                 <MDTypography variant='h6' color='white'>Find People by
                   Skill</MDTypography>
               </MDBox>
-              <MDBox pt={3}>
-                <Grid container spacing={12}>
-                  <Grid item xs={5}>
-                    <MDBox pt={3}>
-                      <SkillSelect
-                        expand={expand}
-                        handleExpandClick={handleExpandClick}
-                        searchSkill={searchSkill}
-                        setSearchSkill={setSearchSkill}
-                        DataTreeView={DataTreeView}
-                        selectedItem={selectedItem}
-                        setLevelReq={setLevelReq}
-                        setMinLevel={setMinLevel}
-                        setMinExp={setMinExp}
-                        levelReq={levelReq}
-                        minLevel={minLevel}
-                        minExp={minExp}
-                        handleModalSubmit={handleModalSubmit}
-                        setSelectedItem={setSelectedItem}
-                      />
-                    </MDBox>
-                    {selected.length > 0 && <SelectedList />}
-                  </Grid>
-                  <Grid item xs={12}>
-                    {(selected && selected.length > 0) &&
-                      <MDButton color='black'
-                        onClick={handleClick}> Submit </MDButton>
-                    }
-                    {isToggled &&
-                      <MDButton color='black' onClick={handleShowTable}>
-                        {showTable ? "Show Table" : "Show Graph"}
-                      </MDButton>
-                    }
-                  </Grid>
+              <Grid container spacing={12}>
+                <Grid item xs={12}>
+                  <MDBox pt={3}>
+                    <SkillSelect
+                      expand={expand}
+                      handleExpandClick={handleExpandClick}
+                      searchSkill={searchSkill}
+                      setSearchSkill={setSearchSkill}
+                      DataTreeView={DataTreeView}
+                      selectedItem={selectedItem}
+                      setLevelReq={setLevelReq}
+                      setMinLevel={setMinLevel}
+                      setMinExp={setMinExp}
+                      levelReq={levelReq}
+                      minLevel={minLevel}
+                      minExp={minExp}
+                      handleModalSubmit={handleModalSubmit}
+                      setSelectedItem={setSelectedItem}
+                    />
+                  </MDBox>
                 </Grid>
-              </MDBox>
+                  {selected.length > 0 && 
+                  (<Grid item xs={12}>
+                    <SelectedList />
+                  </Grid>)}
+                <Grid item xs={12}>
+                  {(selected && selected.length > 0) &&
+                    <MDButton color='black'
+                      onClick={handleClick}> Submit </MDButton>
+                  }
+                  {isToggled &&
+                    <MDButton color='black' onClick={handleShowTable}>
+                      {showTable ? "Show Table" : "Show Graph"}
+                    </MDButton>
+                  }
+                </Grid>
+              </Grid>
             </Card>
           </Grid>
         </Grid>

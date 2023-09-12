@@ -11,6 +11,7 @@ import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Position;
+import com.sngular.skilltree.model.views.PeopleNamesView;
 import com.sngular.skilltree.model.views.PeopleView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -38,6 +39,12 @@ public class PeopleServiceImpl implements PeopleService {
     @Cacheable(cacheNames = "peopleView")
     public List<PeopleView> getAllResumed() {
         return peopleRepository.findAllResumed();
+    }
+
+    @Override
+    @Cacheable(cacheNames = "peopleNamesView")
+    public List<PeopleNamesView> getAllNames() {
+        return peopleRepository.findAllNames();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.sngular.skilltree.infraestructura;
 
 import java.util.List;
 import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.views.PeopleNamesView;
 import com.sngular.skilltree.model.views.PeopleView;
 
 public interface PeopleRepository {
@@ -9,6 +10,8 @@ public interface PeopleRepository {
     List<People> findAll();
 
     List<PeopleView> findAllResumed();
+
+    List<PeopleNamesView> findAllNames();
 
     People save(People people);
 

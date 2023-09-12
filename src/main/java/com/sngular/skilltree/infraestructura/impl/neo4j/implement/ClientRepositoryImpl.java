@@ -1,6 +1,7 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.sngular.skilltree.infraestructura.ClientRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ClientCrudRepository;
@@ -35,7 +36,10 @@ public class ClientRepositoryImpl implements ClientRepository {
         } else {
             clientNode = crud.findByName(clientCode);
         }
-        return mapper.fromNode(clientNode);
+        if(Objects.isNull(clientCode))
+            return null;
+        else
+            return mapper.fromNode(clientNode);
     }
 
     @Override

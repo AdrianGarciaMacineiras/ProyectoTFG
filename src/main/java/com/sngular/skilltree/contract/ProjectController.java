@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.sngular.skilltree.api.ProjectApi;
 import com.sngular.skilltree.api.model.PatchedProjectDTO;
+import com.sngular.skilltree.api.model.PeopleNamesDTO;
 import com.sngular.skilltree.api.model.ProjectDTO;
+import com.sngular.skilltree.api.model.ProjectNamesDTO;
 import com.sngular.skilltree.application.ProjectService;
 import com.sngular.skilltree.application.updater.ProjectUpdater;
 import com.sngular.skilltree.contract.mapper.ProjectMapper;
@@ -66,6 +68,10 @@ public class ProjectController implements ProjectApi {
                                 .toProject(projectDTO))));
     }
 
-
+  @Override
+  public ResponseEntity<List<ProjectNamesDTO>> getProjectNames() {
+    var aux = projectService.getAllNames();
+    return ResponseEntity.ok(projectMapper.toProjectNamesDto(aux));
+  }
 
 }

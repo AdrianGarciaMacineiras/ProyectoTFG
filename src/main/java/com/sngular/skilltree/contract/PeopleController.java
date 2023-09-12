@@ -3,11 +3,7 @@ package com.sngular.skilltree.contract;
 import java.util.List;
 import com.sngular.skilltree.api.PeopleApi;
 import com.sngular.skilltree.api.PersonApi;
-import com.sngular.skilltree.api.model.CandidateDTO;
-import com.sngular.skilltree.api.model.PatchedPeopleDTO;
-import com.sngular.skilltree.api.model.PeopleDTO;
-import com.sngular.skilltree.api.model.PeopleResumedDTO;
-import com.sngular.skilltree.api.model.PositionDTO;
+import com.sngular.skilltree.api.model.*;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.updater.PeopleUpdater;
 import com.sngular.skilltree.contract.mapper.CandidateMapper;
@@ -116,5 +112,10 @@ public class PeopleController implements PeopleApi, PersonApi {
     @Override
     public ResponseEntity<List<PeopleResumedDTO>> getPeopleResume() {
         return ResponseEntity.ok(peopleMapper.toPeopleResumedDto(peopleService.getAllResumed()));
+    }
+
+    @Override
+    public ResponseEntity<List<PeopleNamesDTO>> getPeopleNames() {
+        return ResponseEntity.ok(peopleMapper.toPeopleNamesDto(peopleService.getAllNames()));
     }
 }

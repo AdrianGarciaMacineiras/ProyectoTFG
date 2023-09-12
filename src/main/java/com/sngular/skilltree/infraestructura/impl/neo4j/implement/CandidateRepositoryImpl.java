@@ -92,7 +92,10 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
     @Override
     public Candidate findByCode(String candidateCode) {
-        return mapper.fromNode(crud.findByCode(candidateCode));
+        if(Objects.isNull(crud.findByCode(candidateCode)))
+            return null;
+        else
+            return mapper.fromNode(crud.findByCode(candidateCode));
     }
 
     @Override
@@ -149,10 +152,9 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         }
 
         var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
-                                  " WHERE (p)-[:KNOWS]->(:Skill {code: pair.skillcode}) " +
-                                  "AND ANY (lvl IN pair.knowslevel WHERE (p)-[:KNOWS {level: lvl}]->(:Skill {code: pair.skillcode}))" +
-                                  "AND p.assignable = TRUE " +
-                                  "AND r.experience >= %d)" +
+                                  " WHERE (p)-[r]->(s {code: pair.skillcode}) " +
+                                  " AND ANY (lvl IN pair.knowslevel WHERE (p)-[r {level: lvl}]->(s {code: pair.skillcode}) AND r.experience >= pair.experience" +
+                                  " AND p.assignable = TRUE)) " +
                                   " RETURN DISTINCT p", String.join(",", filter));
 
         var peopleList = client.query(query).fetchAs(People.class)

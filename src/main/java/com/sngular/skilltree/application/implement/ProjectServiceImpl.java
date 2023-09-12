@@ -8,7 +8,10 @@ import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.ProjectRepository;
 import com.sngular.skilltree.model.Project;
+import com.sngular.skilltree.model.views.PeopleNamesView;
+import com.sngular.skilltree.model.views.ProjectNamesView;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +23,12 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<Project> getAll() {
         return projectRepository.findAll();
+    }
+
+    @Override
+    @Cacheable(cacheNames = "projectNamesView")
+    public List<ProjectNamesView> getAllNames() {
+        return projectRepository.findAllNames();
     }
 
     @Override

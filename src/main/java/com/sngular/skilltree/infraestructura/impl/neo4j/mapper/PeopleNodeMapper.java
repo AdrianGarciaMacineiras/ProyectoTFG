@@ -11,6 +11,7 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.model.KnowsRelationship;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.Role;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleExtendedView;
+import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleNamesView;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleView;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleView.KnowsView;
 import com.sngular.skilltree.model.Certificate;
@@ -80,6 +81,8 @@ public interface PeopleNodeMapper {
     List<People> map(List<PeopleView> all);
 
     List<com.sngular.skilltree.model.views.PeopleView> mapExtended(List<PeopleExtendedView> all);
+
+    List<com.sngular.skilltree.model.views.PeopleNamesView> mapPeopleNames(List<PeopleNamesView> all);
 
     List<Knows> mapKnows(List<PeopleExtendedView.KnowsView> all);
 

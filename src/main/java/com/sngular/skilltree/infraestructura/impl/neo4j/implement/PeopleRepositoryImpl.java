@@ -41,6 +41,11 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     }
 
     @Override
+    public List<com.sngular.skilltree.model.views.PeopleNamesView> findAllNames() {
+        return mapper.mapPeopleNames(customCrud.getAllPeopleNames());
+    }
+
+    @Override
     public People save(People people) {
         var peopleNode = mapper.toNode(people);
         return mapper.fromNode(crud.save(peopleNode));
@@ -48,7 +53,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
     @Override
     public People findByCode(String personCode) {
-        final PeopleNode people;
+        PeopleNode people;
         if (NumberUtils.isCreatable(personCode)) {
             people = crud.findByCodeAndDeletedIsFalse(personCode);
         } else {
@@ -61,7 +66,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
                 }
             }
         } else {
-            throw new EntityNotFoundException("People", personCode);
+            return null;
         }
         return mapper.fromNode(people);
     }

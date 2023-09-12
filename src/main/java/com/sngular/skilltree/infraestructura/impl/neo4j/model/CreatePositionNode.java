@@ -1,10 +1,9 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.EnumModeConverter;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateConverter;
+import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleView;
+import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.ProjectView;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,11 +13,14 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @Node("Position")
-public class PositionNode {
+public class CreatePositionNode {
 
     @Id
     private String code;
@@ -46,13 +48,13 @@ public class PositionNode {
     private String role;
 
     @Relationship(type = "FOR_PROJECT", direction = Relationship.Direction.OUTGOING)
-    private ProjectNode project;
+    private ProjectView project;
 
     /*@Relationship(type = "IN", direction = Relationship.Direction.OUTGOING)
     private OfficeNode office;*/
 
     @Relationship(type = "MANAGED", direction = Relationship.Direction.INCOMING)
-    private PeopleNode managedBy;
+    private PeopleView managedBy;
 
     @Relationship(type = "NEED", direction = Relationship.Direction.OUTGOING)
     private List<PositionSkillsRelationship> skills;

@@ -42,7 +42,7 @@ function CreatePosition() {
     code: '',
     closingDate: '',
     openingDate: '',
-    open: '',
+    active: '',
     skills: [],
     name: '',
     projectCode: '',
@@ -50,13 +50,13 @@ function CreatePosition() {
     mode: '',
     role: '',
     managedBy: '',
-    office: ''
+    //office: ''
   });
 
   const [skillList, setSkillList] = useState([]);
   const [projectList, setProjectList] = useState([]);
   const [peopleList, setPeopleList] = useState([]);
-  const [officeList, setOfficeList] = useState([]);
+  //const [officeList, setOfficeList] = useState([]);
 
   const [closingDate, setClosingDate] = useState(new Date());
   const [openingDate, setOpeningDate] = useState(new Date());
@@ -268,7 +268,7 @@ function CreatePosition() {
         setProjectList(response);
       });
 
-    fetch(`http://${window.location.hostname}:9080/api/people`, {
+    fetch(`http://${window.location.hostname}:9080/api/people/shortinfo`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -280,7 +280,7 @@ function CreatePosition() {
         setPeopleList(data);
       });
 
-    fetch(`http://${window.location.hostname}:9080/api/project`, {
+    fetch(`http://${window.location.hostname}:9080/api/project/names`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -304,7 +304,7 @@ function CreatePosition() {
         setPeopleList(data);
       });
 
-    fetch(`http://${window.location.hostname}:9080/api/office`, {
+    /*fetch(`http://${window.location.hostname}:9080/api/office`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -314,12 +314,13 @@ function CreatePosition() {
       .then(office => office.json())
       .then(office => {
         setOfficeList(office);
-      });
+      });*/
+
   }, []);
 
   const createPosition = (event) => {
     const requestBody = JSON.stringify(form);
-
+    console.log(form);
     fetch(`http://${window.location.hostname}:9080/api/position`, {
       method: 'POST',
       headers: {
@@ -333,7 +334,7 @@ function CreatePosition() {
         let i = 1
         let temp = {
           Code: response.code,
-          Active: response.open,
+          Active: response.active,
           Role: response.role,
           EndDate: response.closingDate,
           InitDate: response.openingDate
@@ -448,7 +449,7 @@ function CreatePosition() {
       code: '',
       closingDate: '',
       openingDate: '',
-      open: '',
+      active: '',
       skills: [],
       name: '',
       projectCode: '',
@@ -456,8 +457,9 @@ function CreatePosition() {
       mode: '',
       role: '',
       managedBy: '',
-      office: ''
+      //office: ''
     });
+    setSearchSkill('');
   };
 
   const handleModalSubmit = (event) => {
@@ -494,7 +496,7 @@ function CreatePosition() {
                     <Grid container spacing={6}>
                       <Grid item xs={6}>
                         <MDTypography variant='h6' fontWeight='medium'>Position code</MDTypography>
-                        <MDInput type="text" value={form.positionCode} onChange={handleInputChange} name="positionCode" />
+                        <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" />
                         <Grid item xs={6}>
                           <MDTypography variant='h6' fontWeight='medium'>Project Name</MDTypography>
                           <Autocomplete
@@ -560,10 +562,10 @@ function CreatePosition() {
                         <MDInput type='text' value={form.name} onChange={handleInputChange} name='name' />
                         <MDTypography variant='h6' fontWeight='medium'>Priority</MDTypography>
                         <FormControl fullWidth>
-                          <InputLabel id="Active-select">Priority</InputLabel>
-                          <Select name="active" value={form.priority}
+                          <InputLabel id="Priority-select">Priority</InputLabel>
+                          <Select name="priority" value={form.priority}
                             onChange={handleInputChange}
-                            labelId="Active-select"
+                            labelId="Priority-select"
                             sx={{
                               width: 250,
                               height: 50,
