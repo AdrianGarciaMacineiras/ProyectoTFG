@@ -52,9 +52,9 @@ public class PositionRepositoryImpl implements PositionRepository {
   @Override
   public Position save(Position position) {
 
-    var positionNode = crud.save(mapper.toNode(position));
+    var positionNode = crud.save(mapper.toPositionAbstractNode(position));
 
-    return mapper.fromNode(positionNode);
+    return mapper.fromPositionAbstractNode(positionNode);
   }
 
   @Override

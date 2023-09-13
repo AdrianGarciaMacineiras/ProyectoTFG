@@ -2,7 +2,6 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.EnumModeConverter;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateConverter;
-import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.ManagerView;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleView;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.ProjectView;
 import lombok.Getter;
@@ -20,15 +19,40 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CreatePositionNode extends PositionAbstractNode {
+@Node("Position")
+public abstract class PositionAbstractNode {
 
-    @Relationship(type = "FOR_PROJECT", direction = Relationship.Direction.OUTGOING)
-    private ProjectView project;
+    @Id
+    private String code;
+
+    private String name;
+
+    private boolean deleted;
+
+    private String active;
+
+    @ConvertWith(converter = LocalDateConverter.class)
+    @Property("initDate")
+    private LocalDate openingDate;
+
+    @ConvertWith(converter = LocalDateConverter.class)
+    @Property("endDate")
+    private LocalDate closingDate;
+
+    private String priority;
+
+    @ConvertWith(converter = EnumModeConverter.class)
+    private EnumMode mode;
+
+    @Property("charge")
+    private String role;
 
     /*@Relationship(type = "IN", direction = Relationship.Direction.OUTGOING)
     private OfficeNode office;*/
 
-    @Relationship(type = "MANAGED", direction = Relationship.Direction.INCOMING)
-    private ManagerView managedBy;
+    @Relationship(type = "NEED", direction = Relationship.Direction.OUTGOING)
+    private List<PositionSkillsRelationship> skills;
 
+    @Relationship(type = "CANDIDATE", direction = Relationship.Direction.OUTGOING)
+    private List<CandidateRelationship> candidates;
 }

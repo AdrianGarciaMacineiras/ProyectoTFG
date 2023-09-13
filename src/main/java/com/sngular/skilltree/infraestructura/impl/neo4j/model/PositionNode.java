@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.EnumModeConverter;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateConverter;
+import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.ManagerView;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,33 +18,7 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 @Getter
 @Setter
 @NoArgsConstructor
-@Node("Position")
-public class PositionNode {
-
-    @Id
-    private String code;
-
-    private String name;
-
-    private boolean deleted;
-
-    private String active;
-
-    @ConvertWith(converter = LocalDateConverter.class)
-    @Property("initDate")
-    private LocalDate openingDate;
-
-    @ConvertWith(converter = LocalDateConverter.class)
-    @Property("endDate")
-    private LocalDate closingDate;
-
-    private String priority;
-
-    @ConvertWith(converter = EnumModeConverter.class)
-    private EnumMode mode;
-
-    @Property("charge")
-    private String role;
+public class PositionNode extends PositionAbstractNode{
 
     @Relationship(type = "FOR_PROJECT", direction = Relationship.Direction.OUTGOING)
     private ProjectNode project;
@@ -53,11 +28,5 @@ public class PositionNode {
 
     @Relationship(type = "MANAGED", direction = Relationship.Direction.INCOMING)
     private PeopleNode managedBy;
-
-    @Relationship(type = "NEED", direction = Relationship.Direction.OUTGOING)
-    private List<PositionSkillsRelationship> skills;
-
-    @Relationship(type = "CANDIDATE", direction = Relationship.Direction.OUTGOING)
-    private List<CandidateRelationship> candidates;
 
 }
