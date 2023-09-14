@@ -1,6 +1,7 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
         if (dateObject == null || "NULL".equalsIgnoreCase(dateObject.toString())) {
             return null;
         }
-        return LocalDateTime.parse(dateObject.toString());
+        return LocalDateTime.parse(dateObject.toString(), DateTimeFormatter.ISO_DATE_TIME);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
                         .code(record.get("p").get("code").asString())
                         .mode(NULL.equalsIgnoreCase(StringUtils.upperCase(record.get("p").get("mode").asString())) ? null : StringUtils.upperCase(record.get("p").get("mode").asString()))
                         .role(record.get("p").get("role").asString())
-                        .openingDate(NULL.equalsIgnoreCase(record.get("p").get("openingDate").asString()) ? null : record.get("p").get("openingDate").asLocalDateTime())
+                        .openingDate(getLocalDateTime(record.get("p").get("initDate")))
                         .priority(record.get("p").get("priority").asString())
                         .managedBy(getSafeValue(record, "n", "name"))
                         .projectCode(getSafeValue(record, "k", "code"))

@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.PositionRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.ClientCrudRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.OfficeCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PositionCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ProjectCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomPositionRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PositionNodeMapper;
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateTimeConverter;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.PositionAssignment;
@@ -52,22 +50,51 @@ public class PositionRepositoryImpl implements PositionRepository {
   @Override
   public Position save(Position position) {
 
-    var positionNode = crud.save(mapper.toPositionAbstractNode(position));
+      var queryCreatePosition = String.format("CREATE(p:Position{code:'%s', name:'%s', deleted:false, initDate:datetime('%s')" +
+                        ", endDate:datetime('%s'), priority:'%s', mode:'%s', charge:'%s', active: true})", position.code(), position.name(),
+                        position.openingDate().atStartOfDay(), position.closingDate().atStartOfDay(), position.priority(),
+                        position.mode(), position.role());
 
-    return mapper.fromPositionAbstractNode(positionNode);
+      client.query(queryCreatePosition).run();
+
+      var queryCreateProjectRelationship = String.format("MATCH(p:Position), (n:Project)" +
+                        "WHERE p.code = '%s' AND n.code='%s'" +
+                        "CREATE (p)-[:FOR_PROJECT]->(n)",
+                        position.code(), position.project().code());
+
+      client.query(queryCreateProjectRelationship).run();
+
+      var queryCreateManagedByRelationship = String.format("MATCH(p:People), (n:Position)" +
+                        "WHERE p.code='%s' AND n.code='%s'" +
+                        "CREATE(p)-[m:MANAGED]->(n)",
+                        position.managedBy().code(), position.code());
+
+      client.query(queryCreateManagedByRelationship).run();
+
+      for (var skill : position.skills()){
+          var queryCreateNeedSkillRelationship = String.format("MATCH(p:Position), (s:Skill)" +
+                            "WHERE p.code='%s' AND s.code='%s'" +
+                            "CREATE(p)-[n:NEED{req_level:'%s'," +
+                            "min_level:'%s',min_exp:%d}]->(s)",position.code(), skill.skill().getCode(), skill.levelReq(),
+                            skill.minLevel(), skill.minExp());
+
+          client.query(queryCreateNeedSkillRelationship).run();
+      }
+      var aux = crud.getByCode(position.code());
+      return mapper.fromNode(aux);
   }
 
   @Override
   public Position findByCode(String positionCode) {
-    if(Objects.isNull(crud.findByCode(positionCode)))
+    if(Objects.isNull(crud.getByCode(positionCode)))
       return null;
     else
-      return mapper.fromNode(crud.findByCode(positionCode));
+      return mapper.fromNode(crud.getByCode(positionCode));
   }
 
     @Override
     public boolean deleteByCode(String positionCode) {
-        var node = crud.findByCode(positionCode);
+        var node = crud.getByCode(positionCode);
         node.setDeleted(true);
         crud.save(node);
         return true;
@@ -90,7 +117,7 @@ public class PositionRepositoryImpl implements PositionRepository {
 
         return positionCodes
                 .parallelStream()
-            .map(crud::findByCode)
+            .map(crud::getByCode)
             .map(mapper::fromNode)
             .toList();
   }

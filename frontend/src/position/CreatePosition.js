@@ -497,6 +497,67 @@ function CreatePosition() {
                       <Grid item xs={6}>
                         <MDTypography variant='h6' fontWeight='medium'>Position code</MDTypography>
                         <MDInput type="text" value={form.code} onChange={handleInputChange} name="code" />
+                        <MDTypography variant='h6' fontWeight='medium'>Name</MDTypography>
+                        <MDInput type='text' value={form.name} onChange={handleInputChange} name='name' />
+                        <MDTypography variant='h6' fontWeight='medium'>Role</MDTypography>
+                        <MDInput type="text" value={form.role} onChange={handleInputChange} name="role" />
+                        <MDTypography variant='h6' fontWeight='medium'>Init Date</MDTypography>
+                        <DatePicker
+                          selected={openingDate}
+                          dateFormat="dd-MM-yyyy"
+                          onSelect={(date) => setOpeningDate(date)}
+                          onChange={(date) => handleInputChange({ target: { name: "openingDate", value: format(date, 'dd-MM-yyyy') } })}
+                        />
+                        <MDTypography variant='h6' fontWeight='medium'>End Date</MDTypography>
+                        <DatePicker
+                          selected={closingDate} dateFormat='dd-MM-yyyy'
+                          onSelect={(date) => setClosingDate(date)} onChange=
+                          {(date) => handleInputChange({ target: { name: 'closingDate', value: format(date, 'dd-MM-yyyy') } })}
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                      <MDTypography variant='h6' fontWeight='medium'>Mode</MDTypography>
+                        <FormControl fullWidth>
+                          <InputLabel id="Mode-select">Mode</InputLabel>
+                          <Select name='mode' value={form.mode} onChange={handleInputChange} labelId="Mode-select"
+                            sx={{
+                              width: 250,
+                              height: 50,
+                            }}>
+                            <MenuItem value='REMOTE'>Remote</MenuItem>
+                            <MenuItem value="PRESENTIAL">Presential</MenuItem>
+                            <MenuItem value='MIX'>Mix</MenuItem>
+                            <MenuItem value="UNKNOWN">Unknown</MenuItem>
+                          </Select>
+                        </FormControl>
+                        <MDTypography variant='h6' fontWeight='medium'>Priority</MDTypography>
+                        <FormControl fullWidth>
+                          <InputLabel id="Priority-select">Priority</InputLabel>
+                          <Select name="priority" value={form.priority}
+                            onChange={handleInputChange}
+                            labelId="Priority-select"
+                            sx={{
+                              width: 250,
+                              height: 50,
+                            }}>
+                            <MenuItem value='CRITICAL'>CRITICAL</MenuItem>
+                            <MenuItem value='HIGH'>HIGH</MenuItem>
+                            <MenuItem value='MEDIUM'>MEDIUM</MenuItem>
+                            <MenuItem value='LOW'>LOW</MenuItem>
+                          </Select>
+                        </FormControl>
+                        <MDTypography variant='h6' fontWeight='medium'>Active</MDTypography >
+                        <FormControl fullWidth>
+                          <InputLabel id="Active-select">Active</InputLabel>
+                          <Select name="active" value={form.active} onChange={handleInputChange} labelId="Active-select"
+                            sx={{
+                              width: 250,
+                              height: 50,
+                            }}>
+                            <MenuItem value="true">YES</MenuItem>
+                            <MenuItem value='false'>NO</MenuItem>
+                          </Select>
+                        </FormControl>
                         <Grid item xs={6}>
                           <MDTypography variant='h6' fontWeight='medium'>Project Name</MDTypography>
                           <Autocomplete
@@ -533,67 +594,6 @@ function CreatePosition() {
                             )}
                           />
                         </Grid >
-                        <MDTypography variant='h6' fontWeight='medium'>Role</MDTypography>
-                        <MDInput type="text" value={form.role} onChange={handleInputChange} name="role" />
-                        <MDTypography variant='h6' fontWeight='medium'>Init Date</MDTypography>
-                        <DatePicker
-                          selected={openingDate}
-                          dateFormat="dd-MM-yyyy"
-                          onSelect={(date) => setOpeningDate(date)}
-                          onChange={(date) => handleInputChange({ target: { name: "openingDate", value: format(date, 'dd-MM-yyyy') } })}
-                        />
-                        <MDTypography variant='h6' fontWeight='medium'>Mode</MDTypography>
-                        <FormControl fullWidth>
-                          <InputLabel id="Mode-select">Mode</InputLabel>
-                          <Select name='mode' value={form.mode} onChange={handleInputChange} labelId="Mode-select"
-                            sx={{
-                              width: 250,
-                              height: 50,
-                            }}>
-                            <MenuItem value='REMOTE'>Remote</MenuItem>
-                            <MenuItem value="PRESENTIAL">Presential</MenuItem>
-                            <MenuItem value='MIX'>Mix</MenuItem>
-                            <MenuItem value="UNKNOWN">Unknown</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <MDTypography variant='h6' fontWeight='medium'>Name</MDTypography>
-                        <MDInput type='text' value={form.name} onChange={handleInputChange} name='name' />
-                        <MDTypography variant='h6' fontWeight='medium'>Priority</MDTypography>
-                        <FormControl fullWidth>
-                          <InputLabel id="Priority-select">Priority</InputLabel>
-                          <Select name="priority" value={form.priority}
-                            onChange={handleInputChange}
-                            labelId="Priority-select"
-                            sx={{
-                              width: 250,
-                              height: 50,
-                            }}>
-                            <MenuItem value='CRITICAL'>CRITICAL</MenuItem>
-                            <MenuItem value='HIGH'>HIGH</MenuItem>
-                            <MenuItem value='MEDIUM'>MEDIUM</MenuItem>
-                            <MenuItem value='LOW'>LOW</MenuItem>
-                          </Select>
-                        </FormControl>
-                        <MDTypography variant='h6' fontWeight='medium'>End Date</MDTypography>
-                        <DatePicker
-                          selected={closingDate} dateFormat='dd-MM-yyyy'
-                          onSelect={(date) => setClosingDate(date)} onChange=
-                          {(date) => handleInputChange({ target: { name: 'closingDate', value: format(date, 'dd-MM-yyyy') } })}
-                        />
-                        <MDTypography variant='h6' fontWeight='medium'>Active</MDTypography >
-                        <FormControl fullWidth>
-                          <InputLabel id="Active-select">Active</InputLabel>
-                          <Select name="active" value={form.active} onChange={handleInputChange} labelId="Active-select"
-                            sx={{
-                              width: 250,
-                              height: 50,
-                            }}>
-                            <MenuItem value="true">YES</MenuItem>
-                            <MenuItem value='false'>NO</MenuItem>
-                          </Select>
-                        </FormControl>
                       </Grid>
                     </Grid>
                     <Grid container spacing={12}>

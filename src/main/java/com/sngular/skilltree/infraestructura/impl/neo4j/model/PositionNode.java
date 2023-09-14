@@ -18,7 +18,33 @@ import org.springframework.data.neo4j.core.schema.Relationship;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PositionNode extends PositionAbstractNode{
+@Node("Position")
+public class PositionNode {
+
+    @Id
+    private String code;
+
+    private String name;
+
+    private boolean deleted;
+
+    private String active;
+
+    @ConvertWith(converter = LocalDateConverter.class)
+    @Property("initDate")
+    private LocalDate openingDate;
+
+    @ConvertWith(converter = LocalDateConverter.class)
+    @Property("endDate")
+    private LocalDate closingDate;
+
+    private String priority;
+
+    @ConvertWith(converter = EnumModeConverter.class)
+    private EnumMode mode;
+
+    @Property("charge")
+    private String role;
 
     @Relationship(type = "FOR_PROJECT", direction = Relationship.Direction.OUTGOING)
     private ProjectNode project;
@@ -28,5 +54,11 @@ public class PositionNode extends PositionAbstractNode{
 
     @Relationship(type = "MANAGED", direction = Relationship.Direction.INCOMING)
     private PeopleNode managedBy;
+
+    @Relationship(type = "NEED", direction = Relationship.Direction.OUTGOING)
+    private List<PositionSkillsRelationship> skills;
+
+    @Relationship(type = "CANDIDATE", direction = Relationship.Direction.OUTGOING)
+    private List<CandidateRelationship> candidates;
 
 }

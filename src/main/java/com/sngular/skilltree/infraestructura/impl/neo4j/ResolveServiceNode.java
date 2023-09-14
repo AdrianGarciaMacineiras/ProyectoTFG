@@ -51,7 +51,7 @@ public class ResolveServiceNode {
         if (Objects.nonNull(assignedRelationshipList)) {
             var assignmentMap = new HashMap<String, List<Assignment>>();
             for (var assignRelationship : assignedRelationshipList) {
-                var positionNode = positionCrudRepository.findByCode(assignRelationship.positionNode().getCode());
+                var positionNode = positionCrudRepository.getByCode(assignRelationship.positionNode().getCode());
                 assignmentMap.compute(positionNode.getName(), (code, assignsList) -> {
                     var assign = Assignment.builder()
                             .id(assignRelationship.id())

@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.infraestructura.impl.neo4j.ResolveServiceNode;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.CreatePositionNode;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.PositionAbstractNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PositionNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PositionSkillsRelationship;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PositionExtendedView;
@@ -28,15 +26,7 @@ public interface PositionNodeMapper {
 
   @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
-  CreatePositionNode toPositionAbstractNode(Position position);
-
-  @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
-  @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
   Position fromNode(PositionNode positionNode);
-
-  @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
-  @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
-  Position fromPositionAbstractNode(PositionAbstractNode positionNode);
 
   @Mapping(target = "min_exp", source = "minExp")
   @Mapping(target = "min_level", source = "minLevel")

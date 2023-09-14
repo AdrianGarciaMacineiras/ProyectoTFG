@@ -11,8 +11,10 @@ import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.views.PositionView;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +36,8 @@ public class PositionServiceImpl implements PositionService {
   }
 
   @Override
+  @CacheEvict(cacheNames = "positionView")
+  @Transactional
   public Position create(final Position position) {
     validateExist(position.code());
     positionRepository.save(position);

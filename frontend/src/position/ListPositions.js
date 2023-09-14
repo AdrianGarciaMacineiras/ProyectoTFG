@@ -163,9 +163,9 @@ const ListPositions = () => {
                     <TableCell align='left'>{row.name}</TableCell>
                     <TableCell align="left">{row.projectCode}</TableCell>
                     <TableCell align='left'>{row.openingDate}</TableCell>
-                    <TableCell align="left">{row.priority}</TableCell>
+                    <TableCell align="left">{row.priority==="null"? '' : row.priority}</TableCell>
                     <TableCell align="left">{row.mode}</TableCell>
-                    <TableCell align="left">{row.role}</TableCell>
+                    <TableCell align="left">{row.role==="null"? '' : row.role}</TableCell>
                     <TableCell align="left">{row.managedBy}</TableCell>
                     <TableCell>
                         <Tooltip title='Update element'>< IconButton

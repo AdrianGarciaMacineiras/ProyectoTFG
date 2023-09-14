@@ -14,5 +14,5 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 public record PositionSkillsRelationship(@RelationshipId String id, @TargetNode SkillNode skill,
                                          @ConvertWith(converter = EnumLevelReqConverter.class) EnumLevelReq req_level,
                                          @ConvertWith(converter = EnumMinLevelConverter.class) EnumMinLevel min_level,
-                                         String min_exp) {
+                                         Integer min_exp) {
 }

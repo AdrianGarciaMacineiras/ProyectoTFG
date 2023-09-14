@@ -68,7 +68,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
         for (var positionNode : positionNodeList){
             candidateRelationshipList.addAll(positionNode.getCandidates());
-            candidateBuilder.position(positionNodeMapper.fromNode(positionCrudRepository.findByCode(positionNode.getCode())));
+            candidateBuilder.position(positionNodeMapper.fromNode(positionCrudRepository.getByCode(positionNode.getCode())));
         }
 
         for (var candidateRelationship : candidateRelationshipList){
@@ -210,7 +210,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     @Override
     public void assignCandidate(String positionCode, String peopleCode, Candidate candidate) {
 
-        var position = positionCrudRepository.findByCode(positionCode);
+        var position = positionCrudRepository.getByCode(positionCode);
 
         if (Objects.isNull(candidate)) {
             throw new AssignUnableException("Candidate");
