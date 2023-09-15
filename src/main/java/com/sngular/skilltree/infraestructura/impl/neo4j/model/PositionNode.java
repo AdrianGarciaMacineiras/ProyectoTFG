@@ -28,7 +28,7 @@ public class PositionNode {
 
     private boolean deleted;
 
-    private String active;
+    private boolean active;
 
     @ConvertWith(converter = LocalDateConverter.class)
     @Property("initDate")

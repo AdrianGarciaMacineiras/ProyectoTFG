@@ -28,6 +28,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     @CachePut(cacheNames = "teams", key = "#team.shortName")
+    @CacheEvict(cacheNames = "teams")
     public Team create(final Team team) {
         validateExist(team.code());
         return teamRepository.save(team);

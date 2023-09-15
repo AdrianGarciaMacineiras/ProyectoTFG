@@ -11,6 +11,7 @@ import com.sngular.skilltree.model.Project;
 import com.sngular.skilltree.model.views.PeopleNamesView;
 import com.sngular.skilltree.model.views.ProjectNamesView;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "projectNamesView")
     public Project create(final Project project) {
         validateExist(project.code());
         return projectRepository.save(project);

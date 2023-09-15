@@ -51,9 +51,9 @@ public class PositionRepositoryImpl implements PositionRepository {
   public Position save(Position position) {
 
       var queryCreatePosition = String.format("CREATE(p:Position{code:'%s', name:'%s', deleted:false, initDate:datetime('%s')" +
-                        ", endDate:datetime('%s'), priority:'%s', mode:'%s', charge:'%s', active: true})", position.code(), position.name(),
-                        position.openingDate().atStartOfDay(), position.closingDate().atStartOfDay(), position.priority(),
-                        position.mode(), position.role());
+                        ", endDate:datetime('%s'), priority:'%s', mode:'%s', charge:'%s', active: %s})", position.code(),
+                        position.name(), position.openingDate().atStartOfDay(), position.closingDate().atStartOfDay(),
+                        position.priority(), position.mode(), position.role(), position.active().equalsIgnoreCase("true"));
 
       client.query(queryCreatePosition).run();
 

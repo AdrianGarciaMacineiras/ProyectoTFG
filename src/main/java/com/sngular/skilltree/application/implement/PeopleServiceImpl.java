@@ -49,6 +49,7 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Override
     @CachePut(cacheNames = "people")
+    @CacheEvict(cacheNames = {"peopleView","peopleNamesView","people"})
     public People create(final People people) {
         validateExist(people.code());
         People.PeopleBuilder builder = people.toBuilder();

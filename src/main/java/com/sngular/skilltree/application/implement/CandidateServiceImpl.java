@@ -11,6 +11,7 @@ import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.PositionSkill;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +42,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
+    @Transactional
     public List<Candidate> generateCandidates(final String positionCode, final List<PositionSkill> positionSkills) {
         return candidateRepository.generateCandidates(positionCode, positionSkills);
     }

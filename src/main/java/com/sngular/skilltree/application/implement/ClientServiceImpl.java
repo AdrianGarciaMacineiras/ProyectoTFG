@@ -8,6 +8,7 @@ import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.ClientRepository;
 import com.sngular.skilltree.model.Client;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "clients")
     public Client create(final Client client) {
         validateExist(client.code());
         return clientRepository.save(client);
