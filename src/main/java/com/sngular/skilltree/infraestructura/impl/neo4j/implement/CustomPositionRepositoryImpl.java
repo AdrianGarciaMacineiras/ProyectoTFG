@@ -1,10 +1,13 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+
 import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomPositionRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PositionExtendedView;
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +18,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class CustomPositionRepositoryImpl implements CustomPositionRepository {
+
+    private final static Pattern ISO_DATE_TIME = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}Z");
 
     private final Neo4jClient client;
 
@@ -38,7 +43,11 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
         if (dateObject == null || "NULL".equalsIgnoreCase(dateObject.toString())) {
             return null;
         }
-        return LocalDateTime.parse(dateObject.toString(), DateTimeFormatter.ISO_DATE_TIME);
+        if (ISO_DATE_TIME.matcher(dateObject.toString()).matches()) {
+            return LocalDateTime.parse(dateObject.toString(), DateTimeFormatter.ISO_DATE_TIME);
+        } else {
+            return LocalDate.parse(dateObject.toString()).atStartOfDay();
+        }
     }
 
     @Override

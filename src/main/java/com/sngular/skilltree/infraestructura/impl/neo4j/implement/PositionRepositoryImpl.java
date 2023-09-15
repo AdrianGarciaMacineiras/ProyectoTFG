@@ -6,10 +6,8 @@ import java.util.Objects;
 
 import com.sngular.skilltree.infraestructura.PositionRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PositionCrudRepository;
-import com.sngular.skilltree.infraestructura.impl.neo4j.ProjectCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomPositionRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PositionNodeMapper;
-import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateTimeConverter;
 import com.sngular.skilltree.model.People;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.PositionAssignment;
@@ -27,8 +25,6 @@ public class PositionRepositoryImpl implements PositionRepository {
   private final PositionCrudRepository crud;
 
   private final CustomPositionRepository customCrud;
-
-  private final ProjectCrudRepository projectCrud;
 
   private final PositionNodeMapper mapper;
 
@@ -84,6 +80,10 @@ public class PositionRepositoryImpl implements PositionRepository {
       return mapper.fromNode(aux);
   }
 
+  @Override
+  public boolean existByCode(String positionCode) {
+    return crud.existsByCodeAndDeletedFalse(positionCode);
+  }
   @Override
   public Position findByCode(String positionCode) {
     if(Objects.isNull(crud.getByCode(positionCode)))

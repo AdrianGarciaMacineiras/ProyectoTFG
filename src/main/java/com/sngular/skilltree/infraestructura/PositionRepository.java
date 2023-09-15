@@ -14,6 +14,8 @@ public interface PositionRepository {
 
   Position save(Position position);
 
+  boolean existByCode(String positionCode);
+
   Position findByCode(String positionCode);
 
     boolean deleteByCode(String positionCode);

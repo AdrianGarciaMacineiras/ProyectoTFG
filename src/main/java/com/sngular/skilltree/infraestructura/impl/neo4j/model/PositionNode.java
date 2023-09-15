@@ -3,9 +3,9 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.BooleanConverter;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.EnumModeConverter;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateConverter;
-import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.ManagerView;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +28,7 @@ public class PositionNode {
 
     private boolean deleted;
 
+  @ConvertWith(converter = BooleanConverter.class)
     private boolean active;
 
     @ConvertWith(converter = LocalDateConverter.class)

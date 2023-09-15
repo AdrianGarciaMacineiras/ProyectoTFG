@@ -2,6 +2,7 @@ package com.sngular.skilltree.application.implement;
 
 import java.util.List;
 import java.util.Objects;
+
 import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.application.PositionService;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
@@ -92,8 +93,8 @@ public class PositionServiceImpl implements PositionService {
     }
 
   private void validateExist(final String code) {
-    var oldPosition = positionRepository.findByCode(code);
-    if (!Objects.isNull(oldPosition) && !oldPosition.deleted()) {
+    var oldPosition = positionRepository.existByCode(code);
+    if (oldPosition) {
       throw new EntityFoundException("Position", code);
     }
   }

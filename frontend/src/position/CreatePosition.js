@@ -22,8 +22,8 @@ import {
 import Autocomplete from '@mui/material/Autocomplete';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import {format} from 'date-fns';
+import React, {useEffect, useState} from 'react';
 import DatePicker from 'react-datepicker';
 import VisGraph from 'react-vis-graph-wrapper';
 
@@ -35,7 +35,6 @@ import MDInput from '../components/MDInput';
 import MDTypography from '../components/MDTypography';
 import DashboardNavbar from '../components/Navbars/DashboardNavbar';
 import SkillSelect from './components/SkillSelect';
-
 
 function CreatePosition() {
   const [form, setForm] = useState({
@@ -597,8 +596,8 @@ function CreatePosition() {
                       </Grid>
                     </Grid>
                     <Grid container spacing={12}>
-                      <Grid item xs={5}>
-                        <MDBox pt={3}>
+                      <Grid item xs={12}>
+                        <MDBox pt={12}>
                           <SkillSelect
                             expand={expand}
                             handleExpandClick={handleExpandClick}

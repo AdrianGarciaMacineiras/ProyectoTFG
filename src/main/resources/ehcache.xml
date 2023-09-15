@@ -1,0 +1,70 @@
+<config
+  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+  xmlns='http://www.ehcache.org/v3'
+  xsi:schemaLocation="
+        http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd">
+
+  <cache alias="skills">
+    <key-type>java.lang.String</key-type>
+    <value-type>com.sngular.skilltree.model.Skill</value-type>
+    <loader-writer>
+      <class>com.pany.ehcache.integration.ProductCacheLoaderWriter</class>
+    </loader-writer>
+    <heap unit="entries">1000</heap>
+  </cache>
+
+  <cache alias="people">
+    <key-type>java.lang.String</key-type>
+    <value-type>com.sngular.skilltree.model.People</value-type>
+    <loader-writer>
+      <class>com.pany.ehcache.integration.ProductCacheLoaderWriter</class>
+    </loader-writer>
+    <heap unit="entries">1500</heap>
+  </cache>
+
+  <cache alias="peopleView">
+    <key-type>java.lang.String</key-type>
+    <value-type>com.sngular.skilltree.model.views.PeopleView</value-type>
+    <loader-writer>
+      <class>com.pany.ehcache.integration.ProductCacheLoaderWriter</class>
+    </loader-writer>
+    <heap unit="entries">1500</heap>
+  </cache>
+
+  <cache alias="position">
+    <key-type>java.lang.String</key-type>
+    <value-type>com.sngular.skilltree.model.Position</value-type>
+    <loader-writer>
+      <class>com.pany.ehcache.integration.ProductCacheLoaderWriter</class>
+    </loader-writer>
+    <heap unit="entries">1500</heap>
+  </cache>
+
+  <cache alias="positionView">
+    <key-type>java.lang.String</key-type>
+    <value-type>com.sngular.skilltree.model.views.PeopleView</value-type>
+    <loader-writer>
+      <class>com.pany.ehcache.integration.ProductCacheLoaderWriter</class>
+    </loader-writer>
+    <heap unit="entries">1500</heap>
+  </cache>
+
+  <cache alias="clients">
+    <key-type>java.lang.String</key-type>
+    <value-type>com.sngular.skilltree.model.Client</value-type>
+    <loader-writer>
+      <class>com.pany.ehcache.integration.ProductCacheLoaderWriter</class>
+    </loader-writer>
+    <heap unit="entries">500</heap>
+  </cache>
+
+  <cache alias="teams">
+    <key-type>java.lang.String</key-type>
+    <value-type>com.sngular.skilltree.model.Team</value-type>
+    <loader-writer>
+      <class>com.pany.ehcache.integration.ProductCacheLoaderWriter</class>
+    </loader-writer>
+    <heap unit="entries">100</heap>
+  </cache>
+
+</config>

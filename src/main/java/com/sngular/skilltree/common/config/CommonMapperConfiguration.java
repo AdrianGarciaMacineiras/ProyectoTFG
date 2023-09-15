@@ -5,6 +5,8 @@ import org.mapstruct.MapperConfig;
 import org.mapstruct.MappingConstants.ComponentModel;
 import org.mapstruct.NullValueMappingStrategy;
 
-@MapperConfig(injectionStrategy = InjectionStrategy.CONSTRUCTOR, componentModel = ComponentModel.SPRING, nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
+@MapperConfig(injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    componentModel = ComponentModel.SPRING,
+    nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
 public interface CommonMapperConfiguration {
 }
