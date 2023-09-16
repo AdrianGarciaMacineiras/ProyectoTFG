@@ -12,7 +12,6 @@ import brandWhite from './assets/images/logo-ct.png';
 // Material Dashboard 2 React themes
 import theme from './assets/theme';
 // Material Dashboard 2 React Dark Mode themes
-import Configurator from './components/Configurator';
 // Material Dashboard 2 React example components
 import Sidenav from './components/Sidenav';
 // Material Dashboard 2 React contexts
@@ -86,10 +85,8 @@ function App() {
                onMouseLeave={
         handleOnMouseLeave}
              />
-             <Configurator />
            </>
          )}
-         {layout === "vr" && <Configurator />}
          <Routes>
            {getRoutes(routes)}
            <Route path='*' element={<Navigate to='/' />} />
