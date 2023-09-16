@@ -1,20 +1,24 @@
 package com.sngular.skilltree.application;
 
-import static com.sngular.skilltree.application.PersonFixtures.PEOPLE_BY_CODE;
-import static com.sngular.skilltree.application.PersonFixtures.PEOPLE_BY_CODE_DELETE_TRUE;
-import static com.sngular.skilltree.application.PositionFixtures.*;
+import static com.sngular.skilltree.application.PositionFixtures.CANDIDATE2_BY_CODE;
+import static com.sngular.skilltree.application.PositionFixtures.CANDIDATE_BY_CODE;
+import static com.sngular.skilltree.application.PositionFixtures.POSITION_2_BY_CODE;
+import static com.sngular.skilltree.application.PositionFixtures.POSITION_BY_CODE;
+import static com.sngular.skilltree.application.PositionFixtures.POSITION_BY_CODE_DELETED_TRUE;
+import static com.sngular.skilltree.application.PositionFixtures.POSITION_LIST;
+import static com.sngular.skilltree.application.PositionFixtures.POSITION_SKILL;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import com.sngular.skilltree.application.implement.PositionServiceImpl;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
-import com.sngular.skilltree.infraestructura.CandidateRepository;
 import com.sngular.skilltree.infraestructura.PositionRepository;
-import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.PositionSkill;
 import org.junit.jupiter.api.Assertions;
@@ -38,9 +42,6 @@ class PositionServiceTest {
     @Mock
     private CandidateService candidateService;
 
-    @Mock
-    private CandidateRepository candidateRepository;
-
     @Captor
     ArgumentCaptor<List<PositionSkill>> listArgumentCaptor;
 
@@ -56,7 +57,7 @@ class PositionServiceTest {
     @DisplayName("Testing save opportunity")
     void testSave() {
         when(positionRepository.save(POSITION_BY_CODE)).thenReturn(POSITION_BY_CODE);
-        when(positionRepository.findByCode(anyString())).thenReturn(null, POSITION_BY_CODE);
+        when(positionRepository.findByCode(anyString())).thenReturn(POSITION_BY_CODE);
         Position result = positionService.create(POSITION_BY_CODE);
         assertThat(result).isEqualTo(POSITION_BY_CODE);
     }
@@ -64,7 +65,7 @@ class PositionServiceTest {
     @Test
     @DisplayName("Testing save position exception already exists")
     void testSaveExceptionDeletedFalse(){
-        when(positionRepository.findByCode(anyString())).thenReturn(POSITION_BY_CODE_DELETED_FALSE);
+        when(positionRepository.existByCode(anyString())).thenReturn(true);
         Assertions.assertThrows(EntityFoundException.class, () ->
                 positionService.create(POSITION_BY_CODE)
         );

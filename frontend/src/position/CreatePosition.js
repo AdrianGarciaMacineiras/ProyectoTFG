@@ -596,8 +596,6 @@ function CreatePosition() {
                       </Grid>
                     </Grid>
                     <Grid container spacing={12}>
-                      <Grid item xs={12}>
-                        <MDBox pt={12}>
                           <SkillSelect
                             expand={expand}
                             handleExpandClick={handleExpandClick}
@@ -614,8 +612,6 @@ function CreatePosition() {
                             handleModalSubmit={handleModalSubmit}
                             setSelectedItem={setSelectedItem}
                           />
-                        </MDBox>
-                      </Grid>
                       <Grid item xs={12}>
                         {form.skills.length > 0 && <SkillsList />}
                         <MDButton variant="gradient" color="dark"
