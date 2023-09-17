@@ -24,19 +24,19 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    @Cacheable(cacheNames = "skills")
+    //@Cacheable(cacheNames = "skills")
     public Skill findByCode(final String skillCode) {
         return skillRepository.findByCode(skillCode);
     }
 
     @Override
-    @Cacheable(cacheNames = "skills")
+    //@Cacheable(cacheNames = "skills")
     public Skill findSkill(final String skillCode) {
         return skillRepository.findSkill(skillCode);
     }
 
     @Override
-    @Cacheable(cacheNames = "skills")
+    //@Cacheable(cacheNames = "skills")
     public Skill findByName(final String skillName) {
         return skillRepository.findByName(skillName);
     }

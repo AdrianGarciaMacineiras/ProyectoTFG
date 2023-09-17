@@ -39,8 +39,8 @@ import SkillSelect from './components/SkillSelect';
 function CreatePosition() {
   const [form, setForm] = useState({
     code: '',
-    closingDate: '',
-    openingDate: '',
+    closingDate: new Date(),
+    openingDate: new Date(),
     active: '',
     skills: [],
     name: '',
@@ -49,13 +49,11 @@ function CreatePosition() {
     mode: '',
     role: '',
     managedBy: '',
-    //office: ''
   });
 
   const [skillList, setSkillList] = useState([]);
   const [projectList, setProjectList] = useState([]);
   const [peopleList, setPeopleList] = useState([]);
-  //const [officeList, setOfficeList] = useState([]);
 
   const [closingDate, setClosingDate] = useState(new Date());
   const [openingDate, setOpeningDate] = useState(new Date());
@@ -255,18 +253,6 @@ function CreatePosition() {
         setSkillList(skillsData);
       });
 
-    fetch(`http://${window.location.hostname}:9080/api/project`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-      .then(response => response.json())
-      .then(response => {
-        setProjectList(response);
-      });
-
     fetch(`http://${window.location.hostname}:9080/api/people/shortinfo`, {
       method: 'GET',
       headers: {
@@ -290,30 +276,6 @@ function CreatePosition() {
       .then(response => {
         setProjectList(response);
       });
-
-    fetch(`http://${window.location.hostname}:9080/api/people`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-      .then(data => data.json())
-      .then(data => {
-        setPeopleList(data);
-      });
-
-    /*fetch(`http://${window.location.hostname}:9080/api/office`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-      .then(office => office.json())
-      .then(office => {
-        setOfficeList(office);
-      });*/
 
   }, []);
 

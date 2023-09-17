@@ -21,14 +21,14 @@ public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
 
     @Override
-    @Cacheable(cacheNames = "teams")
+    //@Cacheable(cacheNames = "teams")
     public List<Team> getAll() {
         return teamRepository.findAll();
     }
 
     @Override
-    @CachePut(cacheNames = "teams", key = "#team.shortName")
-    @CacheEvict(cacheNames = "teams")
+    //@CachePut(cacheNames = "teams", key = "#team.shortName")
+    //@CacheEvict(cacheNames = "teams")
     public Team create(final Team team) {
         validateExist(team.code());
         return teamRepository.save(team);
@@ -37,8 +37,8 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Team findByCode(final String teamcode) {
         var team = teamRepository.findByCode(teamcode);
-        if (Objects.isNull(team) || team.deleted())
-            throw new EntityNotFoundException("Team", teamcode);
+            if (Objects.isNull(team) || team.deleted())
+                throw new EntityNotFoundException("Team", teamcode);
         return team;
     }
 
@@ -49,7 +49,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    @CacheEvict(cacheNames = "teams")
+    //@CacheEvict(cacheNames = "teams")
     public boolean deleteByCode(final String teamCode) {
         validateDoesNotExist(teamCode);
         return teamRepository.deleteByCode(teamCode);

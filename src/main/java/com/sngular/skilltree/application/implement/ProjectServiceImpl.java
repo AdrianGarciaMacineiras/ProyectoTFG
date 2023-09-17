@@ -27,13 +27,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    @Cacheable(cacheNames = "projectNamesView")
+    //@Cacheable(cacheNames = "projectNamesView")
     public List<ProjectNamesView> getAllNames() {
         return projectRepository.findAllNames();
     }
 
     @Override
-    @CacheEvict(cacheNames = "projectNamesView")
+    //@CacheEvict(cacheNames = "projectNamesView")
     public Project create(final Project project) {
         validateExist(project.code());
         return projectRepository.save(project);

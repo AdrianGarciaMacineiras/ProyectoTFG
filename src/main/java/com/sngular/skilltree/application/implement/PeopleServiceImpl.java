@@ -30,26 +30,27 @@ public class PeopleServiceImpl implements PeopleService {
     private final PositionService positionService;
 
     @Override
-    @Cacheable(cacheNames = "people")
+
+    //@Cacheable(cacheNames = "people")
     public List<People> getAll() {
         return peopleRepository.findAll();
     }
 
     @Override
-    @Cacheable(cacheNames = "peopleView")
+    //@Cacheable(cacheNames = "peopleView")
     public List<PeopleView> getAllResumed() {
         return peopleRepository.findAllResumed();
     }
 
     @Override
-    @Cacheable(cacheNames = "peopleNamesView")
+    //@Cacheable(cacheNames = "peopleNamesView")
     public List<PeopleNamesView> getAllNames() {
         return peopleRepository.findAllNames();
     }
 
     @Override
-    @CachePut(cacheNames = "people")
-    @CacheEvict(cacheNames = {"peopleView","peopleNamesView","people"})
+    //@CachePut(cacheNames = "people")
+    //@CacheEvict(cacheNames = {"peopleView","peopleNamesView","people"})
     public People create(final People people) {
         validateExist(people.code());
         People.PeopleBuilder builder = people.toBuilder();
@@ -58,7 +59,7 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    @Cacheable(cacheNames = "people", key = "#peopleCode")
+    //@Cacheable(cacheNames = "people", key = "#peopleCode")
     public People findByCode(final String peopleCode) {
         var people = peopleRepository.findByCode(peopleCode);
         if (Objects.isNull(people) || people.deleted())
@@ -70,7 +71,7 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    @Cacheable(cacheNames = "people", key = "#peopleCode")
+    //@Cacheable(cacheNames = "people", key = "#peopleCode")
     public People findPeopleByCode(final String peopleCode) {
         var people = peopleRepository.findPeopleByCode(peopleCode);
         if (Objects.isNull(people) || people.deleted())
@@ -79,7 +80,7 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    @CacheEvict(cacheNames = "people", key = "#peopleCode")
+    //@CacheEvict(cacheNames = "people", key = "#peopleCode")
     public boolean deleteByCode(final String peopleCode) {
         validateDoesNotExist(peopleCode);
         return peopleRepository.deleteByCode(peopleCode);

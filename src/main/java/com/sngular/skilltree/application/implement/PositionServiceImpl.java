@@ -31,13 +31,13 @@ public class PositionServiceImpl implements PositionService {
   }
 
   @Override
-  @Cacheable(cacheNames = "positionView")
+  //@Cacheable(cacheNames = "positionView")
   public List<PositionView> getAllResumed() {
     return positionRepository.findAllResumed();
   }
 
   @Override
-  @CacheEvict(cacheNames = "positionView")
+  //@CacheEvict(cacheNames = "positionView")
   @Transactional
   public Position create(final Position position) {
     validateExist(position.code());

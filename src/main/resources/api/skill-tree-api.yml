@@ -2495,13 +2495,14 @@ components:
       type: object
       properties:
         people:
-          $ref: "#/components/schemas/people"
+          type: string
         charge:
           type: string
           enum:
             - DIRECTOR
             - HEAD
             - UNKNOWN
+
     strategicTeamSkillNotUsed:
       type: object
       properties:

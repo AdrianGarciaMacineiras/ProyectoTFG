@@ -92,10 +92,11 @@ public class CandidateRepositoryImpl implements CandidateRepository {
 
     @Override
     public Candidate findByCode(String candidateCode) {
-        if(Objects.isNull(crud.findByCode(candidateCode)))
+        var candidate = crud.findByCode(candidateCode);
+        if(Objects.isNull(candidate))
             return null;
         else
-            return mapper.fromNode(crud.findByCode(candidateCode));
+            return mapper.fromNode(candidate);
     }
 
     @Override

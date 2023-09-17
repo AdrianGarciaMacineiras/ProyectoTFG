@@ -5,37 +5,30 @@
         http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd">
 
   <cache alias="skills">
-    <value-type>com.sngular.skilltree.model.Skill</value-type>
     <heap unit="entries">1000</heap>
   </cache>
 
   <cache alias="people">
-    <value-type>com.sngular.skilltree.model.People</value-type>
     <heap unit="entries">1500</heap>
   </cache>
 
   <cache alias="peopleView">
-    <value-type>com.sngular.skilltree.model.views.PeopleView</value-type>
     <heap unit="entries">1500</heap>
   </cache>
 
   <cache alias="position">
-    <value-type>com.sngular.skilltree.model.Position</value-type>
     <heap unit="entries">1500</heap>
   </cache>
 
   <cache alias="positionView">
-    <value-type>com.sngular.skilltree.model.views.PeopleView</value-type>
     <heap unit="entries">1500</heap>
   </cache>
 
   <cache alias="clients">
-    <value-type>com.sngular.skilltree.model.Client</value-type>
     <heap unit="entries">500</heap>
   </cache>
 
   <cache alias="teams">
-    <value-type>com.sngular.skilltree.model.Team</value-type>
     <heap unit="entries">100</heap>
   </cache>
 

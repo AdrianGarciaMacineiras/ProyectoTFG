@@ -19,20 +19,20 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
 
     @Override
-    @Cacheable(cacheNames = "clients")
+    //@Cacheable(cacheNames = "clients")
     public List<Client> getAll() {
         return clientRepository.findAll();
     }
 
     @Override
-    @CacheEvict(cacheNames = "clients")
+    //@CacheEvict(cacheNames = "clients")
     public Client create(final Client client) {
         validateExist(client.code());
         return clientRepository.save(client);
     }
 
     @Override
-    @Cacheable(cacheNames = "clients")
+    //@Cacheable(cacheNames = "clients")
     public Client findByCode(final String clientCode) {
         var client = clientRepository.findByCode(clientCode);
         if (Objects.isNull(client) || client.deleted())

@@ -291,8 +291,8 @@ const ListPositions = () => {
                                                 </TableCell>
                                                 <TableCell align='left'
                                                            onClick={() => handleSortChange(
-                                                               'projectName')}>
-                                                    {getSortIcon('projectName')}
+                                                               'projectCode')}>
+                                                    {getSortIcon('projectCode')}
                                                     Project Code
                                                 </TableCell>
                                                 <TableCell align='left' onClick={() => handleSortChange('openingDate')}>
