@@ -11,10 +11,7 @@ import com.sngular.skilltree.application.ResolveService;
 import com.sngular.skilltree.common.config.CommonMapperConfiguration;
 import com.sngular.skilltree.model.Member;
 import com.sngular.skilltree.model.Team;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 @Mapper(config = CommonMapperConfiguration.class, uses = {PeopleMapper.class, ResolveService.class})
 public interface TeamMapper {
@@ -35,8 +32,10 @@ public interface TeamMapper {
         return MemberDTO.Charge.valueOf(charge.toUpperCase());
     }
 
+    @Mapping(source = "people.employeeId", target = "people")
     MemberDTO toMemberDTO(Member members);
 
+    @Mapping(source = "people", target = "people", qualifiedByName = {"resolveCodePeople" })
     Member toMember(MemberDTO membersDTO);
 
     Team toTeam(TeamDTO teamDTO);

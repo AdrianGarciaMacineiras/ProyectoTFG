@@ -99,20 +99,6 @@ function FindTeam() {
           graphTemp.edges.push(
             { from: i, to: 1, label: 'MEMBER_OF', title: element.charge });
         });
-
-        response.strategics?.forEach(element => {
-          i++; var temp = {
-            Name: element.name,
-            Code: element.code
-          }; graphTemp.nodes.push({
-            id: i,
-            label: element.name,
-            title: JSON.stringify(temp, '', 2),
-            group: 'skills'
-          });
-          graphTemp.edges.push({ from: 1, to: i, label: 'STRATEGIC' });
-        });
-        console.log("graphtemp", graphTemp);
         setGraph(prev => graphTemp);
       });
 

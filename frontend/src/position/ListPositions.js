@@ -27,8 +27,8 @@ import Card from '@mui/material/Card';
 import Collapse from '@mui/material/Collapse';
 import Grid from '@mui/material/Grid';
 import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import DashboardLayout from '../components/LayoutContainers/DashboardLayout';
 import MDBox from '../components/MDBox';
@@ -59,8 +59,17 @@ const ListPositions = () => {
         })
             .then((response) => response.json())
             .then(
-                (data) => setPositionList(data.map(
-                    (position) => ({ ...position, open: false, tabValue: 0 }))));
+                (data) => {
+                    data.forEach(element => {
+                        if(element.name === 'CreateName'){
+                            console.log(element.candidates);
+                            console.log(element.code)
+                        }
+                    });
+                    setPositionList(data.map(
+                    (position) => ({ ...position, open: false, tabValue: 0 })))}
+
+            );
     }, []);
 
     const handleAdd = () => {
@@ -163,9 +172,9 @@ const ListPositions = () => {
                     <TableCell align='left'>{row.name}</TableCell>
                     <TableCell align="left">{row.projectCode}</TableCell>
                     <TableCell align='left'>{row.openingDate}</TableCell>
-                    <TableCell align="left">{row.priority==="null"? '' : row.priority}</TableCell>
+                    <TableCell align="left">{row.priority === "null" ? '' : row.priority}</TableCell>
                     <TableCell align="left">{row.mode}</TableCell>
-                    <TableCell align="left">{row.role==="null"? '' : row.role}</TableCell>
+                    <TableCell align="left">{row.role === "null" ? '' : row.role}</TableCell>
                     <TableCell align="left">{row.managedBy}</TableCell>
                     <TableCell>
                         <Tooltip title='Update element'>< IconButton
@@ -290,8 +299,8 @@ const ListPositions = () => {
                                                     Name
                                                 </TableCell>
                                                 <TableCell align='left'
-                                                           onClick={() => handleSortChange(
-                                                               'projectCode')}>
+                                                    onClick={() => handleSortChange(
+                                                        'projectCode')}>
                                                     {getSortIcon('projectCode')}
                                                     Project Code
                                                 </TableCell>

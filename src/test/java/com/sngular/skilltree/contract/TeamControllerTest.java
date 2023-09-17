@@ -112,8 +112,8 @@ class TeamControllerTest {
     static class OpportunityControllerTestConfiguration {
 
         @Bean
-        TeamMapper teamMapper(final PeopleMapper peopleMapper) {
-            return new TeamMapperImpl(peopleMapper);
+        TeamMapper teamMapper(final ResolveService resolveService) {
+            return new TeamMapperImpl(resolveService);
         }
 
         @Bean

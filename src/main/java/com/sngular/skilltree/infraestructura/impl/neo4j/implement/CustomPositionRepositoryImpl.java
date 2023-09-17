@@ -30,9 +30,7 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
             OPTIONAL MATCH (p)-[manages:MANAGED]->(n:People)
             OPTIONAL MATCH (p)-[candidates:CANDIDATE]->(c:People)
             OPTIONAL MATCH (p)-[projects:FOR_PROJECT]->(k:Project)
-            RETURN p,
-                    COLLECT(DISTINCT {candidate: c, properties: properties(candidates)}) AS candidateData,
-                   k,n
+            RETURN p, candidates, c, k, n
             """;
 
     public CustomPositionRepositoryImpl(final Neo4jClient client) {
@@ -52,7 +50,7 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
 
     @Override
     public List<PositionExtendedView> getAllPositionExtended(){
-        return new ArrayList<>(client
+        var aux = new ArrayList<>(client
                 .query(QUERY)
                 .fetchAs(PositionExtendedView.class)
                 .mappedBy((typeSystem, record) -> PositionExtendedView
@@ -66,19 +64,18 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
                         .managedBy(getSafeValue(record, "n", "name"))
                         .projectCode(getSafeValue(record, "k", "code"))
                         .projectName(getSafeValue(record, "k", "name"))
-                        .candidates(record.get("candidateData") != null ? null : record.get("candidateData").asList(value -> {
-                            Map<String, Object> candidateProperties = value.get("candidateProperties").asMap();
-                            return PositionExtendedView.CandidateView.builder()
-                                    .interviewDate(getLocalDateTime(candidateProperties.get("interviewDate")))
-                                    .introductionDate(getLocalDateTime(candidateProperties.get("introductionDate")))
-                                    .resolutionDate(getLocalDateTime(candidateProperties.get("resolutionDate")))
-                                    .status((StringUtils.upperCase((String) candidateProperties.get("status"))))
-                                    .creationDate(getLocalDateTime(candidateProperties.get("creationDate")))
-                                    .code((String) candidateProperties.get("code"))
+                        .candidates( PositionExtendedView.CandidateView.builder()
+                                    .interviewDate(getLocalDateTime(record.get("candidates").get("interviewDate")))
+                                    .introductionDate(getLocalDateTime(record.get("candidates").get("introductionDate")))
+                                    .resolutionDate(getLocalDateTime(record.get("candidates").get("resolutionDate")))
+                                    .status((StringUtils.upperCase(record.get("candidates").get("status").asString())))
+                                    .creationDate(getLocalDateTime(record.get("candidates").get("creationDate")))
+                                    .code(record.get("c").get("code").asString())
                                     .build();
-                        }))
+                        )
                         .build())
-                        .all());
+                .all());
+        return aux;
     }
 
     private String getSafeValue(final Record record, final String root, final String prop) {

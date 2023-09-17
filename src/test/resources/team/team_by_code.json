@@ -7,23 +7,7 @@
   "code": "t1120",
   "members": [
     {
-      "people": {
-        "assigns": [],
-        "roles": [],
-        "code": "1",
-        "employeeId": "900003940059",
-        "title": "SD2",
-        "noClients": null,
-        "work_with": [],
-        "master": [],
-        "knows": [],
-        "name": "people2",
-        "noProjects": null,
-        "interest": [],
-        "surname": "LaPel",
-        "candidacies": [],
-        "certificates": []
-      },
+      "people":"900003940059",
       "charge": "DIRECTOR"
     }
   ]

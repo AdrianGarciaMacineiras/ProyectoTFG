@@ -123,20 +123,6 @@ function UpdatePositionForm() {
                     managedBy: positionData.managedBy,
                 });
 
-                /*  if (positionData.managedBy && positionData.managedBy !== "Unknown") {
-                      const personResponse = await fetch(`http://${window.location.hostname}:9080/api/person/${positionData.managedBy}`);
-                      const personData = await personResponse.json();
-
-                      setForm((prevForm) => ({
-                          ...prevForm,
-                          managedBy: personData.name,
-                      }));
-
-                      setUpdatedPosition((prevUpdatedPosition) => ({
-                          ...prevUpdatedPosition,
-                          managedBy: personData.name,
-                      }));
-                  }*/
             } catch (error) {
                 console.error('Error al cargar datos:', error);
             }
