@@ -41,12 +41,16 @@ public interface PositionNodeMapper {
 
   List<PositionView> mapExtended(List<PositionExtendedView> all);
 
-  @Mapping(target = "managedBy", source = "managedBy", qualifiedByName = {"resolveServiceNode", "mapToManagedByPeople"})
+  @Mapping(target = "managedBy", source = "managedBy", qualifiedByName = {"resolveServiceNode", "mapToPeople"})
   PositionView mapToPositionView(PositionExtendedView positionExtendedView);
 
+
+  List<Candidate> mapCandidates(List<PositionExtendedView.CandidateView> all);
+
+  @Mapping(target = "candidate", source = "candidateCode", qualifiedByName = {"resolveServiceNode", "mapToPeople"})
   @Mapping(target = "introductionDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "resolutionDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "creationDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "interviewDate", dateFormat = "dd-MM-yyyy")
-  List<Candidate> mapCandidates(List<PositionExtendedView.CandidateView> all);
+  Candidate candidateViewToCandidate(PositionExtendedView.CandidateView candidateView);
 }

@@ -60,12 +60,6 @@ const ListPositions = () => {
             .then((response) => response.json())
             .then(
                 (data) => {
-                    data.forEach(element => {
-                        if(element.name === 'CreateName'){
-                            console.log(element.candidates);
-                            console.log(element.code)
-                        }
-                    });
                     setPositionList(data.map(
                     (position) => ({ ...position, open: false, tabValue: 0 })))}
 

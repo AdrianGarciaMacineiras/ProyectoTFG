@@ -183,8 +183,8 @@ public class ResolveServiceNode {
         return projectNameList;
     }
 
-    @Named("mapToManagedByPeople")
-    public People mapToManagedByPeople(String managedBy){
+    @Named("mapToPeople")
+    public People mapToPeople(String managedBy){
         if (managedBy!=null) {
             var peopleNode = peopleCrudRepository.findByEmployeeId(managedBy);
             return People.builder()

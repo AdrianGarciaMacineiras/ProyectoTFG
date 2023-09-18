@@ -3,10 +3,7 @@ package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomPositionRepository;
@@ -65,24 +62,42 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
                             .projectCode(getSafeValue(record, "k", "code"))
                             .projectName(getSafeValue(record, "k", "name"))
                             .managedBy(getSafeValue(record, "n", "name"));
-                            List<PositionExtendedView.CandidateView> candidatesList = new ArrayList<>();
-                            if (record.get("c") != null || !"NULL".equalsIgnoreCase(record.get("c").asString())) {
-                                candidatesList.add(PositionExtendedView.CandidateView.builder()
-                                        .interviewDate(getLocalDateTime(getSafeObject(record, "candidates", "interviewDate")))
-                                        .introductionDate(getLocalDateTime(getSafeObject(record, "candidates", "introductionDate")))
-                                        .resolutionDate(getLocalDateTime(getSafeObject(record, "candidates", "resolutionDate")))
-                                        .status(StringUtils.upperCase(getSafeValue(record, "candidates", "status")))
-                                        .creationDate(getLocalDateTime(getSafeObject(record, "candidates", "creationDate")))
-                                        .code(getSafeValue(record, "c", "code"))
-                                        .build());
-                            }
 
-                            builder.candidates(candidatesList);
-                            return builder.build();
+                    List<PositionExtendedView.CandidateView> candidatesList = new ArrayList<>();
+                    if (record.get("c").type().name().equals("NODE")) {
+                        candidatesList.add(PositionExtendedView.CandidateView.builder()
+                                .interviewDate(getLocalDateTime(getSafeObject(record, "candidates", "interviewDate")))
+                                .introductionDate(getLocalDateTime(getSafeObject(record, "candidates", "introductionDate")))
+                                .resolutionDate(getLocalDateTime(getSafeObject(record, "candidates", "resolutionDate")))
+                                .status(StringUtils.upperCase(getSafeValue(record, "candidates", "status")))
+                                .creationDate(getLocalDateTime(getSafeObject(record, "candidates", "creationDate")))
+                                .code(getSafeValue(record, "candidates", "code"))
+                                .candidateCode(getSafeValue(record,"c", "employeeId"))
+                                .build());
+                    }
+
+                    builder.candidates(candidatesList);
+                    return builder.build();
                 })
                 .all());
 
-        return aux;
+        Map<String, PositionExtendedView> positionMap = new HashMap<>();
+
+        aux.forEach(position ->
+                positionMap.compute(position.code(), (code, aggPosition) -> {
+                    if(Objects.isNull(aggPosition)){
+                        return position;
+                    } else {
+                        var candidatesList = new ArrayList<>(aggPosition.candidates());
+                        candidatesList.addAll(position.candidates());
+                        aggPosition = aggPosition.toBuilder().candidates(candidatesList).build();
+                    }
+                    return aggPosition;
+                })
+        );
+
+
+        return new ArrayList<>(positionMap.values());
     }
 
     private Value getSafeObject(final Record record, final String root, final String prop) {
