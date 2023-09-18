@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -12,6 +13,7 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomP
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PositionExtendedView;
 import org.apache.commons.lang3.StringUtils;
 import org.neo4j.driver.Record;
+import org.neo4j.driver.Value;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
 
@@ -48,44 +50,60 @@ public class CustomPositionRepositoryImpl implements CustomPositionRepository {
         }
     }
 
-    @Override
-    public List<PositionExtendedView> getAllPositionExtended(){
+    public List<PositionExtendedView> getAllPositionExtended() {
         var aux = new ArrayList<>(client
                 .query(QUERY)
                 .fetchAs(PositionExtendedView.class)
-                .mappedBy((typeSystem, record) -> PositionExtendedView
-                        .builder()
-                        .name(record.get("p").get("name").asString())
-                        .code(record.get("p").get("code").asString())
-                        .mode(NULL.equalsIgnoreCase(StringUtils.upperCase(record.get("p").get("mode").asString())) ? null : StringUtils.upperCase(record.get("p").get("mode").asString()))
-                        .role(record.get("p").get("role").asString())
-                        .openingDate(getLocalDateTime(record.get("p").get("initDate")))
-                        .priority(record.get("p").get("priority").asString())
-                        .managedBy(getSafeValue(record, "n", "name"))
-                        .projectCode(getSafeValue(record, "k", "code"))
-                        .projectName(getSafeValue(record, "k", "name"))
-                        .candidates( PositionExtendedView.CandidateView.builder()
-                                    .interviewDate(getLocalDateTime(record.get("candidates").get("interviewDate")))
-                                    .introductionDate(getLocalDateTime(record.get("candidates").get("introductionDate")))
-                                    .resolutionDate(getLocalDateTime(record.get("candidates").get("resolutionDate")))
-                                    .status((StringUtils.upperCase(record.get("candidates").get("status").asString())))
-                                    .creationDate(getLocalDateTime(record.get("candidates").get("creationDate")))
-                                    .code(record.get("c").get("code").asString())
-                                    .build();
-                        )
-                        .build())
+                .mappedBy((typeSystem, record) -> {
+                    PositionExtendedView.PositionExtendedViewBuilder builder = PositionExtendedView.builder()
+                            .name(record.get("p").get("name").asString())
+                            .code(record.get("p").get("code").asString())
+                            .mode(NULL.equalsIgnoreCase(StringUtils.upperCase(record.get("p").get("mode").asString())) ? null : StringUtils.upperCase(record.get("p").get("mode").asString()))
+                            .role(record.get("p").get("role").asString())
+                            .openingDate(getLocalDateTime(record.get("p").get("initDate")))
+                            .priority(record.get("p").get("priority").asString())
+                            .projectCode(getSafeValue(record, "k", "code"))
+                            .projectName(getSafeValue(record, "k", "name"))
+                            .managedBy(getSafeValue(record, "n", "name"));
+                            List<PositionExtendedView.CandidateView> candidatesList = new ArrayList<>();
+                            if (record.get("c") != null || !"NULL".equalsIgnoreCase(record.get("c").asString())) {
+                                candidatesList.add(PositionExtendedView.CandidateView.builder()
+                                        .interviewDate(getLocalDateTime(getSafeObject(record, "candidates", "interviewDate")))
+                                        .introductionDate(getLocalDateTime(getSafeObject(record, "candidates", "introductionDate")))
+                                        .resolutionDate(getLocalDateTime(getSafeObject(record, "candidates", "resolutionDate")))
+                                        .status(StringUtils.upperCase(getSafeValue(record, "candidates", "status")))
+                                        .creationDate(getLocalDateTime(getSafeObject(record, "candidates", "creationDate")))
+                                        .code(getSafeValue(record, "c", "code"))
+                                        .build());
+                            }
+
+                            builder.candidates(candidatesList);
+                            return builder.build();
+                })
                 .all());
+
         return aux;
+    }
+
+    private Value getSafeObject(final Record record, final String root, final String prop) {
+        org.neo4j.driver.Value result = null;
+        org.neo4j.driver.Value rootValue = record.get(root);
+
+        if (!rootValue.isNull())
+            result = record.get(root).get(prop);
+        return result;
     }
 
     private String getSafeValue(final Record record, final String root, final String prop) {
         String result = null;
         org.neo4j.driver.Value rootValue = record.get(root);
 
-        if(root.equalsIgnoreCase("k")){
+        if(root.equalsIgnoreCase("k") || root.equalsIgnoreCase("c")) {
             if (rootValue.type().name().equals("NODE"))
                 result = record.get(root).get(prop).asString();
-        } else if (!"NULL".equalsIgnoreCase(record.get(root).asString())) {
+        } else if (rootValue.type().name().equals("RELATIONSHIP") && !rootValue.isNull()){
+            result = record.get(root).get(prop).asString();
+        } else if (!"NULL".equalsIgnoreCase(rootValue.asString()) || !rootValue.isNull()) {
             result = record.get(root).get(prop).asString();
         }
         return result;
