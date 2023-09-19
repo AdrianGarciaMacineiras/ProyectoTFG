@@ -81,23 +81,22 @@ function FindTeam() {
         })
 
         response.members?.forEach(element => {
-          i++; var temp = {
-            Code: element.people.code,
-            Name: element.people.name,
-            Surname: element.people.surname,
-            Email: element.people.email,
-            EmployeeId: element.people.employeeId,
-            FriendlyName: element.people.friendlyName,
-            Title: element.people.title,
-            BirthDate: element.people.birthDate
-          }; graphTemp.nodes.push({
+          i++;
+          var temp = {
+            Code: element.people,
+          };
+          graphTemp.nodes.push({
             id: i,
-            label: element.people.name + ' ' + element.people.surname,
+            label: element.people,
             title: JSON.stringify(temp, '', 2),
             group: 'members'
           });
-          graphTemp.edges.push(
-            { from: i, to: 1, label: 'MEMBER_OF', title: element.charge });
+          graphTemp.edges.push({
+            from: i,
+            to: 1,
+            label: 'MEMBER_OF',
+            title: element.charge
+          });
         });
         setGraph(prev => graphTemp);
       });
