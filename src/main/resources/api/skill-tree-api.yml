@@ -846,18 +846,17 @@ paths:
                 $ref: "#/components/schemas/error"
 
   /api/people/skills:
-    get:
+    post:
       summary: List of people that know all the skills given
-      parameters:
-        - in: query
-          name: skillList
-          required: true
-          explode: false
-          schema:
-            type: array
-            items:
-              type: string
-          description: List of skills
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/peopleSkill"
+        description: List of skills
       operationId: getPeopleSkills
       tags:
         - people
@@ -2147,6 +2146,29 @@ components:
         minExp:
           type: integer
           format: int32
+
+    peopleSkill:
+      type: object
+      required:
+      - code
+      - level
+      - experience
+      - primary
+      properties:
+        code:
+          type: string
+        level:
+          type: string
+          enum:
+          - ADVANCED
+          - MIDDLE
+          - LOW
+          - UNKNOWN
+        experience:
+          type: integer
+          format: int32
+        primary:
+          type: boolean
 
     people:
       type: object

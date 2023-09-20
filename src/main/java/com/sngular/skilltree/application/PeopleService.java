@@ -1,8 +1,10 @@
 package com.sngular.skilltree.application;
 
 import java.util.List;
+
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.PeopleSkill;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.views.PeopleNamesView;
 import com.sngular.skilltree.model.views.PeopleView;
@@ -27,7 +29,7 @@ public interface PeopleService {
 
     List<Candidate> getCandidates(final String peopleCode);
 
-  List<People> getPeopleBySkills(final List<String> skills);
+  List<People> getPeopleBySkills(final List<PeopleSkill> skills);
 
     List<People> getOtherPeopleStrategicSkills(final String teamCode);
 

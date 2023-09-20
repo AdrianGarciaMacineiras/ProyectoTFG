@@ -2,6 +2,7 @@ package com.sngular.skilltree.application.implement;
 
 import java.util.List;
 import java.util.Objects;
+
 import com.sngular.skilltree.application.CandidateService;
 import com.sngular.skilltree.application.PeopleService;
 import com.sngular.skilltree.application.PositionService;
@@ -10,13 +11,11 @@ import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.PeopleSkill;
 import com.sngular.skilltree.model.Position;
 import com.sngular.skilltree.model.views.PeopleNamesView;
 import com.sngular.skilltree.model.views.PeopleView;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -100,7 +99,7 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public List<People> getPeopleBySkills(final List<String> skills) {
+    public List<People> getPeopleBySkills(final List<PeopleSkill> skills) {
         return peopleRepository.getPeopleBySkills(skills);
     }
 

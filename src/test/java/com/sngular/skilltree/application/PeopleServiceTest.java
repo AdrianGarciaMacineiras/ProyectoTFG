@@ -1,7 +1,5 @@
 package com.sngular.skilltree.application;
 
-import java.util.List;
-
 import static com.sngular.skilltree.application.CandidateFixtures.CANDIDATE2_BY_CODE;
 import static com.sngular.skilltree.application.CandidateFixtures.CANDIDATE_BY_CODE;
 import static com.sngular.skilltree.application.CandidateFixtures.CANDIDATE_LIST;
@@ -15,12 +13,15 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
+
 import com.sngular.skilltree.application.implement.PeopleServiceImpl;
 import com.sngular.skilltree.common.exceptions.EntityFoundException;
 import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.model.Candidate;
 import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.PeopleSkill;
 import com.sngular.skilltree.model.Position;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -131,7 +132,7 @@ class PeopleServiceTest {
     @DisplayName("Testing get people with a set of skills")
     void testGetPeopleSkills(){
         when(peopleRepository.getPeopleBySkills(anyList())).thenReturn(PEOPLE_LIST);
-        List<People> result = peopleService.getPeopleBySkills(List.of("s1120"));
+        List<People> result = peopleService.getPeopleBySkills(List.of(PeopleSkill.builder().skillCode("s1120").build()));
         assertThat(result).containsExactly(PEOPLE_BY_CODE, PEOPLE2_BY_CODE);
     }
 

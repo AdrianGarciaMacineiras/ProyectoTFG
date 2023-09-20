@@ -1,9 +1,10 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.implement;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import com.sngular.skilltree.common.exceptions.EntityNotFoundException;
+
 import com.sngular.skilltree.infraestructura.PeopleRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.PeopleCrudRepository;
 import com.sngular.skilltree.infraestructura.impl.neo4j.customrepository.CustomPeopleRepository;
@@ -11,6 +12,7 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.mapper.PeopleNodeMapper;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.PeopleNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.querymodel.PeopleView;
 import com.sngular.skilltree.model.People;
+import com.sngular.skilltree.model.PeopleSkill;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -21,6 +23,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class PeopleRepositoryImpl implements PeopleRepository {
+
+    private static final List<String> LOW_LEVEL_LIST = List.of("'low'", "'middle'", "'advanced'");
+
+    private static final List<String> MID_LEVEL_LIST = List.of("'middle'", "'advanced'");
+
+    private static final List<String> HIGH_LEVEL_LIST = List.of("'advanced'");
 
     private final PeopleCrudRepository crud;
 
@@ -96,14 +104,23 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     }
 
     @Override
-    public List<People> getPeopleBySkills(List<String> skills) {
+    public List<People> getPeopleBySkills(List<PeopleSkill> skills) {
 
-        var query = String.format("WITH %s as skills " +
-                "MATCH(p:People)-[r:KNOWS]-(s:Skill) " +
-                "WHERE s.code in skills " +
-                "WITH p, size(skills) AS inputCnt, COUNT(DISTINCT s) AS cnt " +
-                "WHERE cnt = inputCnt " +
-                "RETURN p.code",skills);
+        final var filter = new ArrayList<String>();
+        for (var positionSkill : skills) {
+            switch (positionSkill.level()) {
+                case LOW -> filter.add(fillFilterBuilder(positionSkill, LOW_LEVEL_LIST));
+                case MIDDLE -> filter.add(fillFilterBuilder(positionSkill, MID_LEVEL_LIST));
+                default -> filter.add(fillFilterBuilder(positionSkill, HIGH_LEVEL_LIST));
+            }
+        }
+
+        var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
+                                  " WHERE (p)-[r]->(s {code: pair.skillcode}) " +
+                                  " AND ANY (lvl IN pair.knowslevel WHERE (p)-[r {level: lvl}]->(s {code: pair.skillcode}) AND r.experience >= pair.experience and r.primary = " +
+                                  "pair.primary" +
+                                  " AND p.assignable = TRUE)) " +
+                                  " RETURN DISTINCT p", String.join(",", filter));
 
         var peopleCodes = client.query(query).fetchAs(String.class).all();
 
@@ -114,6 +131,11 @@ public class PeopleRepositoryImpl implements PeopleRepository {
                 .map(mapper::fromView)
                 .toList();
 
+    }
+
+    private String fillFilterBuilder(final PeopleSkill peopleSkill, final List<String> levelList) {
+        return String.format("{skillcode:'%s', knowslevel:[%s], experience:%d, primary:%s}", peopleSkill.skillCode(), String.join(",", levelList), peopleSkill.minExp(),
+                             peopleSkill.primary());
     }
 
     @Override
