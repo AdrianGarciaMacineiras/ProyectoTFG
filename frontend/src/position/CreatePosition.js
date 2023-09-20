@@ -39,8 +39,8 @@ import SkillSelect from './components/SkillSelect';
 function CreatePosition() {
   const [form, setForm] = useState({
     code: '',
-    closingDate: new Date(),
-    openingDate: new Date(),
+    closingDate: format(new Date(), 'dd-MM-yyyy'),
+    openingDate: format(new Date(), 'dd-MM-yyyy'),
     active: '',
     skills: [],
     name: '',

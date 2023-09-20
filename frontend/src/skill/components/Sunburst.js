@@ -40,7 +40,7 @@ const Sunburst = ({ data }) => {
 
       // Create the SVG container.
       const svg = d3.create("svg")
-        .attr("viewBox", [-width / 2, -height / 1.33, width * 1.5, height * 1.5])
+        .attr("viewBox", [-width / 1.4, -height / 1.33, width * 1.5, height * 1.5])
         .style("font", "10px sans-serif");
 
       // Append the arcs.

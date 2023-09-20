@@ -151,6 +151,20 @@ function FindPosition() {
           });
         }
 
+        i++;
+        graphTemp.nodes.push({
+          id: i,
+          label: response.managedBy,
+          title: response.managedBy,
+          group: 'managedBy'
+        });
+        graphTemp.edges.push({
+          from: i,
+          to: 1,
+          label: 'MANAGED',
+          title: JSON.stringify(temp, '', 2)
+        });
+        
         response.candidates?.forEach(element => {
           i++;
           graphTemp.nodes.push({
@@ -373,12 +387,12 @@ function FindPosition() {
   const handleAssignarClick = (candidateCode) => {
     console.log("Entro en assignar click");
     const fetchData = async () => {
-      const regeneratedCandidates = await fetch(`http://${window.location.hostname}:9080/api/position/${form.positionCode}/people/${candidateCode}`,{
+      const regeneratedCandidates = await fetch(`http://${window.location.hostname}:9080/api/position/${form.positionCode}/people/${candidateCode}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
-      }
+        }
       });
       console.log("Hago la llamada a fetch");
       const candidatesData = await regeneratedCandidates.json();
@@ -466,7 +480,7 @@ function FindPosition() {
       }
     };
     fetchData();
-    
+
   };
 
   return (
@@ -551,7 +565,7 @@ function FindPosition() {
                               onPageChange={newPage => handleCandidatePageChange(newPage)}
                               onRowsPerPageChange={newRowsPerPage => handleCandidateRowsPerPageChange(newRowsPerPage)}
                               onAssignarClick={(event) => handleAssignarClick(event)}
-                              showState={true}/>
+                              showState={true} />
                           </CustomTabPanel>
                           <CustomTabPanel value={valor} index={2}>
                             {console.log(aux.positionAssignment)}
@@ -562,7 +576,7 @@ function FindPosition() {
                               onStateChange={newState => handleAssignedStateChange(newState)}
                               onPageChange={newPage => handleAssignedPageChange(newPage)}
                               onRowsPerPageChange={newRowsPerPage => handleAssignedRowsPerPageChange(newRowsPerPage)}
-                               />
+                            />
                           </CustomTabPanel>
                         </MDBox>
                       </TableCell>
