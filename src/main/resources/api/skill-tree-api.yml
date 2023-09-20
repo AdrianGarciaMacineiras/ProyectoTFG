@@ -2280,7 +2280,7 @@ components:
           type: string
         teamShortName:
           type: string
-        knows:
+        knowsResumed:
           type: array
           items:
             type: object
@@ -2335,7 +2335,11 @@ components:
           items:
             type: object
             properties:
+              id:
+                type: string
               code:
+                type: string
+              name:
                 type: string
               level:
                 type: string
