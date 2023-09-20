@@ -29,6 +29,7 @@ import org.neo4j.driver.Record;
 import org.neo4j.driver.types.TypeSystem;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
@@ -197,10 +198,18 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     @Override
     public Optional<Candidate> findByPeopleAndPosition(String positionCode, String peopleCode) {
 
-        var query = String.format("MATCH(p:People{code:%s})-[r:CANDIDATE]-(n:Position{code:'%s'}) " +
-                        "WHERE NOT(r.status NOT IN %s) RETURN p,r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n",
-                peopleCode, positionCode, CANDIDATE_OPEN_STATUS);
+        var assigned = crud.findAssignedByPosition(positionCode);
 
+        if (!Objects.isNull(assigned)) {
+            var queryAssignDedication = String.format("MATCH(p:People)-[r:COVER{code:'%s'}]-(s) SET r.dedication=0 AND " +
+                    "r.status = 'KO' AND p.assignable = true", assigned.code());
+            client.query(queryAssignDedication).run();
+        }
+
+        var query = String.format("MATCH(p:People{code:'%s'})-[r:CANDIDATE]-(n:Position{code:'%s'}) " +
+                        "WHERE NOT(r.status IN %s) RETURN p,r.code, r.creationDate, r.status, ID(r), n",
+                peopleCode, positionCode, CANDIDATE_OPEN_STATUS);
+        //r.introductionDate, r.resolutionDate,
         return client
                 .query(query)
                 .fetchAs(Candidate.class)
@@ -209,6 +218,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     }
 
     @Override
+    @Transactional
     public void assignCandidate(String positionCode, String peopleCode, Candidate candidate) {
 
         var position = positionCrudRepository.getByCode(positionCode);
@@ -218,14 +228,14 @@ public class CandidateRepositoryImpl implements CandidateRepository {
         }
 
         var query = String.format("MATCH(p:People),(s:Position)" +
-                        "WHERE p.code=%s AND s.code='%s'" +
+                        "WHERE p.code='%s' AND s.code='%s'" +
                         "CREATE(s)-[r:COVER{assignDate:date('%s'), role:'%s', dedication:100}]->(p)",
                 peopleCode, positionCode, LocalDate.now(), position.getRole());
         client.query(query).run();
 
-        var queryStatusOK = String.format("MATCH(p:People)-[r:CANDIDATE]-(s:Position) " +
-                        "WHERE ID(r) = %s SET r.status = 'OK'"
-                , candidate.id());
+        var queryStatusOK = String.format("MATCH(p:People)-[r:CANDIDATE{code:'%s'}]-(s:Position) " +
+                        "SET r.status = 'OK'"
+                , candidate.code());
         client.query(queryStatusOK).run();
 
         var queryStatusKO = String.format("MATCH(p:People)-[r:CANDIDATE]-(n:Position{code:'%s'}) " +
@@ -233,7 +243,7 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                 , positionCode);
         client.query(queryStatusKO).run();
 
-        var queryAssignableTrue = String.format("MATCH(p:People{code:%s}) SET p.assignable = FALSE"
+        var queryAssignableTrue = String.format("MATCH(p:People{code:'%s'}) SET p.assignable = FALSE"
                 , peopleCode);
         client.query(queryAssignableTrue).run();
     }
@@ -241,9 +251,9 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     @Override
     public List<Candidate> getCandidatesByPosition(String positionCode) {
         var query = String.format("MATCH(n:Position{code:'%s'})-[r:CANDIDATE]-(p:People) " +
-                        "RETURN p, r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n.code",
+                        "RETURN p, r.code, r.creationDate, r.status, n.code",
                 positionCode);
-
+    // r.introductionDate, r.resolutionDate,
         return new ArrayList<>(client
                 .query(query)
                 .fetchAs(Candidate.class)
@@ -254,9 +264,9 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     @Override
     public List<Candidate> getCandidatesByPeople(String peopleCode) {
         var query = String.format("MATCH(n:Position)-[r:CANDIDATE]-(p:People{code:%s}) " +
-                        "RETURN p, r.code, r.introductionDate, r.resolutionDate, r.creationDate, r.status, ID(r), n.code",
+                        "RETURN p, r.code,  r.creationDate, r.status, n.code",
                 peopleCode);
-
+        //r.introductionDate, r.resolutionDate,
         return new ArrayList<>(client
                 .query(query)
                 .fetchAs(Candidate.class)
@@ -267,7 +277,6 @@ public class CandidateRepositoryImpl implements CandidateRepository {
     private Candidate.CandidateBuilder getCandidateBuilder(Record result) {
 
         var candidateBuilder = Candidate.builder();
-        candidateBuilder.id(result.get("ID(r)").toString());
         candidateBuilder.code(result.get("r.code").asString());
         candidateBuilder.status(EnumStatus.valueOf(result.get("r.status").asString()));
         candidateBuilder.introductionDate(NULL.equalsIgnoreCase(result.get("r.introductionDate").asString()) ? null : result.get("r.introductionDate").asLocalDate());
@@ -310,5 +319,6 @@ public class CandidateRepositoryImpl implements CandidateRepository {
                          .build();
         };
     }
+
 
 }

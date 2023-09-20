@@ -127,7 +127,7 @@ public class PositionRepositoryImpl implements PositionRepository {
   public List<PositionAssignment> getPeopleAssignedToPosition(String positionCode) {
     var query = String.format("MATCH(p:People)-[r:COVER]-(s:Position{code:'%s'}) RETURN p,r", positionCode);
 
-    return new ArrayList<>(client
+    var aux = new ArrayList<>(client
                              .query(query)
                              .fetchAs(PositionAssignment.class)
                              .mappedBy((TypeSystem t, Record people) -> {
@@ -136,18 +136,18 @@ public class PositionRepositoryImpl implements PositionRepository {
 
                                var assign = people.get("r");
 
-                               return PositionAssignment.builder()
-                                                        .assignDate(NULL.equalsIgnoreCase(assign.get("assignDate").asString()) ? null : assign.get("assignDate").asLocalDate())
+                                 assign.get("dedication").asInt();
+                                 return PositionAssignment.builder()
+                                                        .assignDate(assign.get("assignDate").asLocalDate())
                                                         .id(assign.get("id").asString())
                                                         .assigned(person)
                                                         .role(assign.get("role").asString())
-                                                        //.dedication(Objects.isNull(assign.get("dedication").asInt()) ? null : assign.get("dedication").asInt())
-                                                        .endDate(NULL.equalsIgnoreCase(assign.get("endDate").asString()) ? null : assign.get("endDate").asLocalDate())
+                                                        .dedication(assign.get("dedication").asInt())
                                                         .build();
 
                              })
             .all());
-
+    return aux;
   }
 
   private static People getPeople(Record result) {

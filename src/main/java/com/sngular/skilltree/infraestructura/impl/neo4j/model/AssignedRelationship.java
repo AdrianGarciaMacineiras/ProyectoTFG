@@ -12,8 +12,8 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 @RelationshipProperties
 @Builder(toBuilder = true)
 public record AssignedRelationship(@RelationshipId String id, @TargetNode PositionNode positionNode,
-                                   @ConvertWith(converter = LocalDateConverter.class) LocalDate endDate,
-                                   @ConvertWith(converter = LocalDateConverter.class) LocalDate initDate,
+                                   //@ConvertWith(converter = LocalDateConverter.class) LocalDate endDate,
+                                   //@ConvertWith(converter = LocalDateConverter.class) LocalDate initDate,
                                    @ConvertWith(converter = LocalDateConverter.class) LocalDate assignDate,
                                    String role, Integer dedication) {
 }

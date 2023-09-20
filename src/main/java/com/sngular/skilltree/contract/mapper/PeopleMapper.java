@@ -45,13 +45,13 @@ public interface PeopleMapper {
   @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
   RolesDTO roleToRolesDTO(Role role);
 
-  @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
-  @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
+  //@Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+  //@Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "assignDate", dateFormat = "dd-MM-yyyy")
   Assignment assignmentDTOToAssignment(AssignmentDTO assignmentDTO);
 
-  @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
-  @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
+  //@Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+  //@Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "assignDate", dateFormat = "dd-MM-yyyy")
   AssignmentDTO assignmentToAssignmentDTO(Assignment assignment);
 

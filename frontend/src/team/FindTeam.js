@@ -115,7 +115,7 @@ function FindTeam() {
 
     setForm({ teamCode: '' })
   }
-  console.log("graph", graph);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />

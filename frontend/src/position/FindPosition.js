@@ -32,6 +32,27 @@ function FindPosition() {
 
   const navigate = useNavigate();
 
+  const initialCandidateState = {
+    page: 0,
+    rowsPerPage: 10
+  };
+
+  const [candidateState, setCandidateState] = useState(initialCandidateState);
+
+  const initialAssignedState = {
+    page: 0,
+    rowsPerPage: 10
+  };
+
+  const [assignedState, setAssignedState] = useState(initialAssignedState);
+
+  const initialSkillListState = {
+    page: 0,
+    rowsPerPage: 10
+  };
+
+  const [skillListState, setSkillListState] = useState(initialSkillListState);
+
   const options = {
     layout: { improvedLayout: true },
     nodes: { shape: 'dot', scaling: { min: 10, label: false } },
@@ -168,7 +189,6 @@ function FindPosition() {
 
     FindPosition(form.positionCode);
 
-    setForm({ positionCode: '' })
   };
 
   function CustomTabPanel(props) {
@@ -205,13 +225,6 @@ function FindPosition() {
     setValor(newValue);
   };
 
-  const initialCandidateState = {
-    page: 0,
-    rowsPerPage: 10
-  };
-
-  const [candidateState, setCandidateState] = useState(initialCandidateState);
-
   const handleCandidateStateChange = (newState) => {
     setCandidateState(prevState => ({
       ...prevState,
@@ -230,13 +243,6 @@ function FindPosition() {
     });
   };
 
-  const initialAssignedState = {
-    page: 0,
-    rowsPerPage: 10
-  };
-
-  const [assignedState, setAssignedState] = useState(initialAssignedState);
-
   const handleAssignedStateChange = (newState) => {
     setAssignedState(prevState => ({
       ...prevState,
@@ -254,13 +260,6 @@ function FindPosition() {
       page: 0
     });
   };
-
-  const initialSkillListState = {
-    page: 0,
-    rowsPerPage: 10
-  };
-
-  const [skillListState, setSkillListState] = useState(initialSkillListState);
 
   const handleSkillListStateChange = (newState) => {
     setSkillListState(prevState => ({
@@ -282,7 +281,7 @@ function FindPosition() {
 
   const regenerateCandidates = () => {
     const fetchData = async () => {
-      const regeneratedCandidates = await fetch(`http://${window.location.hostname}:9080//api/position/${form.positionCode}/candidates`);
+      const regeneratedCandidates = await fetch(`http://${window.location.hostname}:9080/api/position/${form.positionCode}/candidates`);
       const candidatesData = await regeneratedCandidates.json();
 
       if (candidatesData) {
@@ -371,6 +370,105 @@ function FindPosition() {
     fetchData();
   }
 
+  const handleAssignarClick = (candidateCode) => {
+    console.log("Entro en assignar click");
+    const fetchData = async () => {
+      const regeneratedCandidates = await fetch(`http://${window.location.hostname}:9080/api/position/${form.positionCode}/people/${candidateCode}`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+      }
+      });
+      console.log("Hago la llamada a fetch");
+      const candidatesData = await regeneratedCandidates.json();
+
+      if (candidatesData) {
+        const positionData = await fetch(`http://${window.location.hostname}:9080/api/position/${form.positionCode}`);
+        const position = await positionData.json();
+        setAux(position);
+        var i = 1
+        var temp = {
+          Code: position.code,
+          Name: position.name,
+          Charge: position.charge,
+          Active: position.active,
+          Role: position.role,
+          EndDate: position.closingDate,
+          InitDate: position.openingDate
+        };
+        graphTemp.nodes.push({
+          id: i,
+          label: position.name,
+          title: JSON.stringify(temp, '', 2)
+        });
+
+        position.assignedPeople?.forEach(element => {
+          i++;
+          var temp = {
+            AssignDate: element.assignDate,
+            InitDate: element.initDate,
+            EndDate: element.endDate,
+            Dedication: element.dedication,
+            Role: element.role
+          };
+          graphTemp.nodes.push({
+            id: i,
+            label: element.assigned,
+            title: JSON.stringify(element.assigned, '', 2),
+            group: 'assigned'
+          });
+          graphTemp.edges.push({
+            from: i,
+            to: 1,
+            label: 'COVER',
+            title: JSON.stringify(temp, '', 2)
+          })
+        });
+
+        i++;
+        graphTemp.nodes.push({
+          id: i,
+          label: position.projectCode,
+          title: JSON.stringify(position.projectCode, '', 2),
+          group: 'project'
+        });
+        graphTemp.edges.push({
+          from: i,
+          to: 1,
+          label: 'FOR_PROJECT',
+          title: JSON.stringify(position.projectCode, '', 2)
+        });
+
+        position.candidates?.forEach(element => {
+          i++;
+          graphTemp.nodes.push({
+            id: i,
+            label: element.candidateCode,
+            title: element.candidateCode,
+            group: 'candidates'
+          });
+          var temp = {
+            Code: element.code,
+            Status: element.status,
+            IntroductionDate: element.introductionDate,
+            ResolutionDate: element.resolutionDate,
+            CreationDate: element.creationDate
+          };
+          graphTemp.edges.push({
+            from: 1,
+            to: i,
+            label: 'CANDIDATE',
+            title: JSON.stringify(temp, '', 2)
+          });
+        })
+        setGraph(graphTemp);
+      }
+    };
+    fetchData();
+    
+  };
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -451,16 +549,20 @@ function FindPosition() {
                               state={candidateState}
                               onStateChange={newState => handleCandidateStateChange(newState)}
                               onPageChange={newPage => handleCandidatePageChange(newPage)}
-                              onRowsPerPageChange={newRowsPerPage => handleCandidateRowsPerPageChange(newRowsPerPage)} />
+                              onRowsPerPageChange={newRowsPerPage => handleCandidateRowsPerPageChange(newRowsPerPage)}
+                              onAssignarClick={(event) => handleAssignarClick(event)}
+                              showState={true}/>
                           </CustomTabPanel>
                           <CustomTabPanel value={valor} index={2}>
+                            {console.log(aux.positionAssignment)}
                             <AssignedList
                               key={aux.code}
                               data={aux.assignedPeople}
                               state={assignedState}
                               onStateChange={newState => handleAssignedStateChange(newState)}
                               onPageChange={newPage => handleAssignedPageChange(newPage)}
-                              onRowsPerPageChange={newRowsPerPage => handleAssignedRowsPerPageChange(newRowsPerPage)} />
+                              onRowsPerPageChange={newRowsPerPage => handleAssignedRowsPerPageChange(newRowsPerPage)}
+                               />
                           </CustomTabPanel>
                         </MDBox>
                       </TableCell>

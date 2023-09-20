@@ -11,11 +11,7 @@ import com.sngular.skilltree.infraestructura.impl.neo4j.model.ProjectNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillNode;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SkillsCandidateRelationship;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.SubSkillsRelationship;
-import com.sngular.skilltree.model.Assignment;
-import com.sngular.skilltree.model.Assignments;
-import com.sngular.skilltree.model.People;
-import com.sngular.skilltree.model.Skill;
-import com.sngular.skilltree.model.SkillsCandidate;
+import com.sngular.skilltree.model.*;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
@@ -56,8 +52,8 @@ public class ResolveServiceNode {
                     var assign = Assignment.builder()
                             .id(assignRelationship.id())
                             .role(assignRelationship.role())
-                            .initDate(assignRelationship.initDate())
-                            .endDate(assignRelationship.endDate())
+                            //.initDate(assignRelationship.initDate())
+                            //.endDate(assignRelationship.endDate())
                             .assignDate(assignRelationship.assignDate())
                             .dedication(assignRelationship.dedication())
                             .build();
@@ -82,9 +78,9 @@ public class ResolveServiceNode {
                 for (var assign : assignment.assignments()) {
                     AssignedRelationship assignedRelationship = AssignedRelationship.builder()
                             .assignDate(assign.assignDate())
-                                                                                    .positionNode(positionList.get(0))
-                            .endDate(assign.endDate())
-                            .initDate(assign.initDate())
+                            .positionNode(positionList.get(0))
+                            //.endDate(assign.endDate())
+                            //.initDate(assign.initDate())
                             .id(assign.id())
                             .role(assign.role())
                             .build();

@@ -4,11 +4,9 @@
       "assignments": [
         {
           "assignDate": "20-01-2023",
-          "initDate": null,
           "dedication": 100,
           "role": "Tech Leader",
-          "id": "a1120",
-          "endDate": null
+          "id": "a1120"
         }
       ],
       "name": "itxtl1"

@@ -22,10 +22,12 @@ public interface PositionNodeMapper {
   @InheritInverseConfiguration(name="fromNode")
   @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
+  //@Mapping(target = "assigns", source = "assignedPeople", qualifiedByName = {"resolveServiceNode", "assignedRelationshipToPositionAssignment"})
   PositionNode toNode(Position position);
 
   @Mapping(target = "openingDate", dateFormat = "dd-MM-yyyy")
   @Mapping(target = "closingDate", dateFormat = "dd-MM-yyyy")
+  //@Mapping(target = "assignedPeople", source = "assigns", qualifiedByName = {"resolveServiceNode", "positionAssignmentToAssignedRelationship"})
   Position fromNode(PositionNode positionNode);
 
   @Mapping(target = "min_exp", source = "minExp")
@@ -43,7 +45,6 @@ public interface PositionNodeMapper {
 
   @Mapping(target = "managedBy", source = "managedBy", qualifiedByName = {"resolveServiceNode", "mapToPeople"})
   PositionView mapToPositionView(PositionExtendedView positionExtendedView);
-
 
   List<Candidate> mapCandidates(List<PositionExtendedView.CandidateView> all);
 

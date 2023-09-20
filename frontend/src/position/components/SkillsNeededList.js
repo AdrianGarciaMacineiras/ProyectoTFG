@@ -1,20 +1,16 @@
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SortIcon from '@mui/icons-material/Sort';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import {
-    IconButton,
     Table,
     TableBody,
     TableCell,
     TableHead,
     TablePagination,
     TableRow,
-    Tooltip
 } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 
 const SkillsNeededList = (props) => {
     const { data, state, onStateChange, onPageChange, onRowsPerPageChange } = props;
@@ -47,26 +43,10 @@ const SkillsNeededList = (props) => {
         }
     };
     const DataSkill = ({ row }) => {
-        const [open, setOpen] = useState(false);
 
         return (
             <React.Fragment >
                 <TableRow sx={{ '& > *': { borderBottom: 'unset' } }} key={row.index}>
-                    <TableCell>
-                        <Tooltip title="Expand row">
-                            <IconButton
-                                aria-label='expand row'
-                                size='small'
-                                onClick={() => setOpen(!open)}
-                                style={{ width: '5%' }}
-                            >
-                                {open ?
-                                    <KeyboardArrowUpIcon /> :
-                                    <KeyboardArrowDownIcon />
-                                }
-                            </IconButton>
-                        </Tooltip>
-                    </TableCell>
                     <TableCell align="left">{row.skill}</TableCell>
                     <TableCell align='left'>{row.levelReq}</TableCell>
                     <TableCell align="left">{row.minLevel}</TableCell>

@@ -53,7 +53,7 @@ public class CandidateServiceImpl implements CandidateService {
         if (candidate.isEmpty()) {
             throw new EntityNotFoundException("Candidate", positionCode, peopleCode);
         }
-        candidate.ifPresent(candidat -> candidateRepository.assignCandidate(positionCode, peopleCode, candidat));
+        candidate.ifPresent(candidate1 -> candidateRepository.assignCandidate(positionCode, peopleCode, candidate1));
     }
 
     @Override

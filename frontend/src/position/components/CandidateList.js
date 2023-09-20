@@ -11,9 +11,10 @@ import {
     TableRow
 } from '@mui/material';
 import React from 'react';
+import MDButton from '../../components/MDButton';
 
 const CandidateList = (props) => {
-    const { data, state, onStateChange, onPageChange, onRowsPerPageChange } = props;
+    const { data, state, onStateChange, onPageChange, onRowsPerPageChange, onAssignarClick, showState } = props;
     const { page = 0, rowsPerPage = 10, orderBy, sortDirection } = state || {};
 
     const handleSortChange = (column) => {
@@ -45,6 +46,11 @@ const CandidateList = (props) => {
 
     const DataCandidate = ({ row }) => {
 
+        const handleAsignarClick = (event, candidateCode) => {
+            event.preventDefault();
+            onAssignarClick(candidateCode);
+        };
+
         return (
             <React.Fragment >
                 <TableRow sx={{ '& > *': { borderBottom: 'unset' } }} key={row.index}>
@@ -54,6 +60,13 @@ const CandidateList = (props) => {
                     <TableCell align='left'>{row.creationDate}</TableCell>
                     <TableCell align="left">{row.status}</TableCell>
                     <TableCell align="left">{row.candidateCode}</TableCell>
+                    {showState &&
+                        <TableCell align="left">
+                            <MDButton variant="contained" color="primary" onClick={(event) => handleAsignarClick(event, row.candidateCode)}>
+                                Asignar
+                            </MDButton>
+                        </TableCell>
+                    }
                 </TableRow>
             </React.Fragment >
         );

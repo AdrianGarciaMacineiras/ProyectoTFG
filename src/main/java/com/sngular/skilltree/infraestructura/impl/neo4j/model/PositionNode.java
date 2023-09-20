@@ -1,11 +1,13 @@
 package com.sngular.skilltree.infraestructura.impl.neo4j.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.BooleanConverter;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.EnumModeConverter;
 import com.sngular.skilltree.infraestructura.impl.neo4j.model.converter.LocalDateConverter;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +30,7 @@ public class PositionNode {
 
     private boolean deleted;
 
-  @ConvertWith(converter = BooleanConverter.class)
+    @ConvertWith(converter = BooleanConverter.class)
     private boolean active;
 
     @ConvertWith(converter = LocalDateConverter.class)
@@ -61,5 +63,9 @@ public class PositionNode {
 
     @Relationship(type = "CANDIDATE", direction = Relationship.Direction.OUTGOING)
     private List<CandidateRelationship> candidates;
+
+    /*@Relationship(type = "COVER", direction = Relationship.Direction.INCOMING)
+    private List<AssignedRelationship> assigns;
+     */
 
 }

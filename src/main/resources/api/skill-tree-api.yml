@@ -2418,12 +2418,12 @@ components:
           type: string
         role:
           type: string
-        initDate:
-          type: string
-          format: date
-        endDate:
-          type: string
-          format: date
+        ##initDate:
+          ##type: string
+          ##format: date
+        ##endDate:
+          ##type: string
+          ##format: date
         assignDate:
           type: string
           format: date

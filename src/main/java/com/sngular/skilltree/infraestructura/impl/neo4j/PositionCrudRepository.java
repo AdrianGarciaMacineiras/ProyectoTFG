@@ -18,4 +18,5 @@ public interface PositionCrudRepository extends Neo4jRepository<PositionNode, St
   List<PositionNode> findByName(String positionName);
 
   boolean existsByCodeAndDeletedFalse(String positionCode);
+
 }

@@ -206,6 +206,8 @@ const ListPositions = () => {
                                         onStateChange={newState => handleCandidateStateChange(row.code, newState)}
                                         onPageChange={newPage => handleCandidatePageChange(row.code, newPage)}
                                         onRowsPerPageChange={newRowsPerPage => handleCandidateRowsPerPageChange(row.code, newRowsPerPage)}
+                                        assingState={false}
+                                        showState={false}
                                     />
                                 </CustomTabPanel>
                             </MDBox>

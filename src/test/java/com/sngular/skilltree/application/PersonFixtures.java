@@ -32,12 +32,12 @@ public final class PersonFixtures extends CommonFixtures {
                   .surname("surname")
                   .employeeId("employeeId")
                   .title("SD3")
-            //.birthDate(date)
-            .assignable(true)
-            .assigns(List.of(ASSIGNMENTS))
-            .deleted(false)
-            .candidacies(Collections.emptyList())
-            .build();
+                  //.birthDate(date)
+                  .assignable(true)
+                  .assigns(List.of(ASSIGNMENTS))
+                  .deleted(false)
+                  .candidacies(Collections.emptyList())
+                  .build();
 
   public static final People PEOPLE_BY_CODE_DELETE_TRUE =
           People.builder()
