@@ -372,14 +372,6 @@ const SkillTable = ({ skill, onReturnRows, listToUpdate }) => {
                                             onChange={(date) => handleDateChange(date, 'certificates', rowIndex)}
                                             dateFormat='dd-MM-yyyy'
                                         />
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    checked={row.certificates.add}
-                                                    onChange={(event) => handleComplexCheckboxChange(event, rowIndex, 'certificates.add')}
-                                                />
-                                            }
-                                        />
                                     </TableCell>
                                     <TableCell>
                                         <IconButton onClick={() => handleDeleteRow(rowIndex)}>
