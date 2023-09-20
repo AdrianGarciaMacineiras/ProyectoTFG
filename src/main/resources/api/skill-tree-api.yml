@@ -2153,7 +2153,6 @@ components:
       - code
       - level
       - experience
-      - primary
       properties:
         code:
           type: string
@@ -2167,8 +2166,6 @@ components:
         experience:
           type: integer
           format: int32
-        primary:
-          type: boolean
 
     people:
       type: object

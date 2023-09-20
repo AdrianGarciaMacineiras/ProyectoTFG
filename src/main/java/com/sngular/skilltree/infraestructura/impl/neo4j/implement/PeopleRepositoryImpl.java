@@ -117,8 +117,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
 
         var query = String.format("MATCH (p:People)-[r:KNOWS]->(s:Skill) WHERE ALL(pair IN [%s] " +
                                   " WHERE (p)-[r]->(s {code: pair.skillcode}) " +
-                                  " AND ANY (lvl IN pair.knowslevel WHERE (p)-[r {level: lvl}]->(s {code: pair.skillcode}) AND r.experience >= pair.experience and r.primary = " +
-                                  "pair.primary" +
+                                  " AND ANY (lvl IN pair.knowslevel WHERE (p)-[r {level: lvl}]->(s {code: pair.skillcode}) AND r.experience >= pair.experience " +
                                   " AND p.assignable = TRUE)) " +
                                   " RETURN DISTINCT p", String.join(",", filter));
 
@@ -134,8 +133,7 @@ public class PeopleRepositoryImpl implements PeopleRepository {
     }
 
     private String fillFilterBuilder(final PeopleSkill peopleSkill, final List<String> levelList) {
-        return String.format("{skillcode:'%s', knowslevel:[%s], experience:%d, primary:%s}", peopleSkill.skillCode(), String.join(",", levelList), peopleSkill.minExp(),
-                             peopleSkill.primary());
+        return String.format("{skillcode:'%s', knowslevel:[%s], experience:%d}", peopleSkill.skillCode(), String.join(",", levelList), peopleSkill.minExp());
     }
 
     @Override
