@@ -79,8 +79,8 @@ function SkillSelect({
                   height: 50,
                 }}
               >
-                <MenuItem value='HIGH'>HIGH</MenuItem>
-                <MenuItem value="MEDIUM">MEDIUM</MenuItem>
+                <MenuItem value='ADVANCED'>ADVANCED</MenuItem>
+                <MenuItem value="MIDDLE">MIDDLE</MenuItem>
                 <MenuItem value='LOW'>LOW</MenuItem>
               </Select>
             </FormControl>

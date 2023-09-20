@@ -300,7 +300,6 @@ function SkillList() {
 
   const handleClick = () => {
     setToggled(!isToggled)
-    console.log(sendSelected);
     const requestBody = JSON.stringify(sendSelected);
     fetch(
       `http://${window.location.hostname}:9080/api/people/skills`,
