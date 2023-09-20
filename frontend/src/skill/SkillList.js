@@ -57,7 +57,7 @@ function SkillList() {
   const [minExp, setMinExp] = useState(0);
   const [skill, setSkill] = useState(null);
   const [skillName, setSkillName] = useState(null);
-
+  const [sendSelected, setSendSelected] = useState([]);
   const [searchSkill, setSearchSkill] = useState('');
 
   const graphTemp = { nodes: [], edges: [] };
@@ -300,15 +300,17 @@ function SkillList() {
 
   const handleClick = () => {
     setToggled(!isToggled)
-    console.log(selected);
+    console.log(sendSelected);
+    const requestBody = JSON.stringify(sendSelected);
     fetch(
-      `http://${window.location.hostname}:9080/api/people/skills?skillList=${selected}`,
+      `http://${window.location.hostname}:9080/api/people/skills`,
       {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
-        }
+        },
+        body : requestBody,
       })
       .then(response => {
         return response.json()
@@ -468,7 +470,9 @@ function SkillList() {
   const handleModalSubmit = (event) => {
     event.preventDefault();
     const newItem = { skill: skill, skillName, levelReq, minLevel, minExp };
+    const sendItem = {code: skill, level: minLevel, experience: minExp };
     setSelected(selected => [...selected, newItem]);
+    setSendSelected(sendSelected => [...sendSelected, sendItem])
     setSelectedItem(null)
     setSkill(null);
     setSkillName(null)
@@ -502,7 +506,6 @@ function SkillList() {
                 <TableBody>
                   {selected.map((skill, index) => (
                     <TableRow key={index}>
-                      {console.log(skill.skillName)}
                       <TableCell>{skill.skillName}</TableCell>
                       <TableCell>{skill.levelReq}</TableCell>
                       <TableCell>{skill.minLevel}</TableCell>

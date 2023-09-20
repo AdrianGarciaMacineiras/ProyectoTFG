@@ -2299,7 +2299,7 @@ components:
           type: string
         teamShortName:
           type: string
-        knowsResumed:
+        knows:
           type: array
           items:
             type: object
