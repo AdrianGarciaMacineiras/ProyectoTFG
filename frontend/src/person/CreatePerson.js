@@ -215,20 +215,6 @@ const CreatePerson =
 
       createPerson();
 
-      setForm({
-        code: '',
-        employeeId: '',
-        name: '',
-        surname: '',
-        //birthDate: '',
-        title: '',
-        roles: [],
-        knows: [],
-        work_with: [],
-        master: [],
-        interest: [],
-        certificates: [],
-      });
     };
 
     const handleShowAddRoleForm = () => {

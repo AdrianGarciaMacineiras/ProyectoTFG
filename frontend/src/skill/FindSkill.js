@@ -129,7 +129,6 @@ function FindSkill() {
 
     FindSkill(form.skillCode);
 
-    setForm({ skillCode: '' })
   }
 
   return (

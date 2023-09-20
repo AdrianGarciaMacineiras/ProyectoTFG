@@ -118,12 +118,6 @@ const ClientForm = () => {
 
     createClient();
 
-    setClientData({
-      code: '',
-      name: '',
-      industry: '',
-      country: ''
-    });
   };
 
   return (

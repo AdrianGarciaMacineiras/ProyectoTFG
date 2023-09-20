@@ -112,8 +112,6 @@ function FindTeam() {
     event.preventDefault();
 
     findTeam(form.teamCode);
-
-    setForm({ teamCode: '' })
   }
 
   return (

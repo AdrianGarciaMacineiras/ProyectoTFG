@@ -118,7 +118,6 @@ function FindProject() {
 
     findProject(form.projectCode);
 
-    setForm({ projectCode: '' })
   }
 
   return (

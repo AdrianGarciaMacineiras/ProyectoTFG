@@ -101,9 +101,6 @@ function FindClient() {
 
     findClient(form.clientCode);
 
-    setForm({
-      clientCode: ''
-    })
   }
 
   return (

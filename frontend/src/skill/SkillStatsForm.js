@@ -65,7 +65,6 @@ const SkillStatsForm = () => {
 
         skillStat(form.title);
 
-        setForm({ title: '' });
     }
 
 

@@ -236,7 +236,6 @@ const CreateTeam =
 
       setGraph({ nodes: [], edges: [] });
 
-      setForm({ code: '', name: '', description: '', tags: [], members: [] });
     }
 
     const handleRemoveMember = (index) => {

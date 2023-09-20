@@ -406,20 +406,6 @@ function CreatePosition() {
 
     createPosition();
 
-    setForm({
-      code: '',
-      closingDate: '',
-      openingDate: '',
-      active: '',
-      skills: [],
-      name: '',
-      projectCode: '',
-      priority: '',
-      mode: '',
-      role: '',
-      managedBy: '',
-      //office: ''
-    });
     setSearchSkill('');
   };
 

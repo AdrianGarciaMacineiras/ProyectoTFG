@@ -314,25 +314,6 @@ const CreateProject = () => {
 
     createProject();
 
-    setGraph({
-      nodes: [],
-      edges: []
-    });
-
-    setForm({
-      code: '',
-      clientCode: '',
-      tag: '',
-      name: '',
-      desc: '',
-      initDate: '',
-      endDate: '',
-      area: '',
-      domain: '',
-      duration: '',
-      guards: 'NONE',
-      skills: [],
-    });
   };
 
   return (

@@ -201,7 +201,6 @@ function FindPerson() {
 
     findPerson(form.personCode);
 
-    setForm({ personCode: '' })
   }
 
   return (
