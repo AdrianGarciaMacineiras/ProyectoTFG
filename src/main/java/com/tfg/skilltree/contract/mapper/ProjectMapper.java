@@ -1,0 +1,70 @@
+package com.tfg.skilltree.contract.mapper;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+
+import com.tfg.skilltree.api.model.PatchedProjectDTO;
+import com.tfg.skilltree.api.model.ProjectDTO;
+import com.tfg.skilltree.api.model.ProjectNamesDTO;
+import com.tfg.skilltree.application.ResolveService;
+import com.tfg.skilltree.common.config.CommonMapperConfiguration;
+import com.tfg.skilltree.model.EnumGuards;
+import com.tfg.skilltree.model.Project;
+import com.tfg.skilltree.model.views.ProjectNamesView;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+
+@Mapper(config = CommonMapperConfiguration.class, uses = {ResolveService.class})
+public interface ProjectMapper {
+
+    @Mapping(source = "client.code", target = "clientCode")
+    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveSkillCodeList"})
+    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
+    ProjectDTO toProjectDTO(Project project);
+
+    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveCodeSkillList"})
+    @Mapping(target = "initDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "endDate", dateFormat = "dd-MM-yyyy")
+    @Mapping(target = "client", source = "clientCode", qualifiedByName = {"resolveCodeClient"})
+    Project toProject(ProjectDTO projectDTO);
+
+    List<ProjectNamesDTO> toProjectNamesDto(List<ProjectNamesView> all);
+
+    List<ProjectDTO> toProjectsDTO(Collection<Project> projects);
+
+    @Mapping(source = "skills", target = "skills", qualifiedByName = {"resolveCodeSkillList"})
+    Project toProject(PatchedProjectDTO patchedProjectDTO);
+
+    @Named("patch")
+    default Project patch(Project newProject, Project oldProject) {
+        Project.ProjectBuilder projectBuilder = oldProject.toBuilder();
+
+        return projectBuilder
+          .code(oldProject.code())
+          .duration((Objects.isNull(newProject.duration())) ? oldProject.duration() : newProject.duration())
+          .initDate((Objects.isNull(newProject.initDate())) ? oldProject.initDate() : newProject.initDate())
+          .tag((Objects.isNull(newProject.tag())) ? oldProject.tag() : newProject.tag())
+          .skills((Objects.isNull(newProject.skills())) ? oldProject.skills() : newProject.skills())
+          .name((Objects.isNull(newProject.name())) ? oldProject.name() : newProject.name())
+          .area((Objects.isNull(newProject.area())) ? oldProject.area() : newProject.area())
+          .historic((Objects.isNull(newProject.historic())) ? oldProject.historic() : newProject.historic())
+          .endDate((Objects.isNull(newProject.endDate())) ? oldProject.endDate() : newProject.endDate())
+          .domain((Objects.isNull(newProject.domain())) ? oldProject.domain() : newProject.domain())
+          .client((Objects.isNull(newProject.client())) ? oldProject.client() : newProject.client())
+          .desc((Objects.isNull(newProject.desc())) ? oldProject.desc() : newProject.desc())
+          .guards((Objects.isNull(newProject.guards())) ? oldProject.guards() : newProject.guards())
+          .build();
+
+    }
+
+    default ProjectDTO.Guards mapProjectGuards(EnumGuards guards) {
+        return ProjectDTO.Guards.valueOf(guards.name());
+    }
+
+    default EnumGuards mapProjectGuards(ProjectDTO.Guards guards) {
+        return EnumGuards.valueOf(guards.name());
+    }
+}

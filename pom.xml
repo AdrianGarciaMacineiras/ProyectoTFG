@@ -181,8 +181,8 @@
               <specFiles>
                 <specFile>
                   <filePath>${project.basedir}/src/main/resources/api/skill-tree-api.yml</filePath>
-                  <apiPackage>com.sngular.skilltree.api</apiPackage>
-                  <modelPackage>com.sngular.skilltree.api.model</modelPackage>
+                  <apiPackage>com.tfg.skilltree.api</apiPackage>
+                  <modelPackage>com.tfg.skilltree.api.model</modelPackage>
                   <modelNameSuffix>DTO</modelNameSuffix>
                   <useLombokModelAnnotation>true</useLombokModelAnnotation>
                   <useTagsGroup>true</useTagsGroup>
