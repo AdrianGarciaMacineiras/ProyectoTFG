@@ -12,7 +12,7 @@
   <artifactId>ubikservice</artifactId>
   <version>1.5.1</version>
   <name>SkillTree</name>
-  <description>SkillTree Gateway for Sngular Skills Management</description>
+  <description>SkillTree Gateway for Skills Management</description>
   <properties>
     <java.version>17</java.version>
     <spring-cloud.version>2022.0.3</spring-cloud.version>
@@ -170,7 +170,7 @@
       <plugin>
         <groupId>com.sngular</groupId>
         <artifactId>scs-multiapi-maven-plugin</artifactId>
-        <version>4.9.7</version>
+        <version>5.3.5</version>
         <executions>
           <execution>
             <id>openapi</id>
